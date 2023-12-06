@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Nunito+Sans:opsz,wght@6..12,200&family=Roboto:wght@100&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

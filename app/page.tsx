@@ -1,7 +1,15 @@
+import LandingPage from "@/components/landingPage/page";
+import AboutHackfest from "@/components/aboutHackfest/page";
+import Footer from "@/components/footer/page";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>Hello from Hackfest team!</div>
+    <main
+    // className={`bg-[url('/assets/backgroundGraphic.png')] bg-center bg-fixed bg-cover `}
+    >
+      <LandingPage />
+      <AboutHackfest />
+      <Footer />
     </main>
   );
 }
