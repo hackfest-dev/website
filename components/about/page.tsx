@@ -18,7 +18,7 @@ const About = () => {
         </motion.h1>
 
         <motion.div
-          initial={{ opacity: 1, x: -500 }}
+          initial={{ opacity: 1, x: -150 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
           className="bg-black/60 space-y-6 p-6 rounded-3xl mx-4"
