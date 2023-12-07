@@ -4,9 +4,7 @@ import Footer from "@/components/footer/page";
 
 export default function Home() {
   return (
-    <main
-    // className={`bg-[url('/assets/backgroundGraphic.png')] bg-center bg-fixed bg-cover `}
-    >
+    <main>
       <LandingPage />
       <AboutHackfest />
       <Footer />

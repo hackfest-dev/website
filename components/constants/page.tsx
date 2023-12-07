@@ -35,13 +35,13 @@ export const social = [
     name: "Instagram",
   },
   {
-    link: "mailto:tech@hackfest.dev",
+    link: "mailto:admin@hackfest.dev",
     icon: <AiOutlineMail className="h-7 w-7 hover:text-yellow-500" />,
     name: "E-mail",
   },
-  {
-    link: "tel:8197903771",
-    icon: <AiOutlinePhone className="h-7 w-7 hover:text-yellow-500" />,
-    name: "Call Us",
-  },
+  // {
+  //   link: "tel:8197903771",
+  //   icon: <AiOutlinePhone className="h-7 w-7 hover:text-yellow-500" />,
+  //   name: "Call Us",
+  // },
 ];
