@@ -7,8 +7,8 @@ const LandingPage = () => {
         <motion.div
           initial={{ y: -200, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex justify-between lg:px-32 lg:py-12 md:px-20 md:py-10 sm:px-6 sm:py-4 p-4 items-center"
+          transition={{ duration: 0.8 }}
+          className="flex justify-between lg:px-32 lg:py-12 md:px-20 md:py-10 py-8 px-4 items-center"
         >
           <img
             src="/assets/flcLogo.png"
@@ -22,12 +22,12 @@ const LandingPage = () => {
           />
         </motion.div>
 
-        <div className="flex flex-col justify-center lg:pt-36 md:pt-44 sm:pt-64 pt-80 space-y-6">
+        <div className="flex flex-col justify-center md:h-[60dvh] h-[80dvh] space-y-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="relative bg-[url('/assets/textMaterial.jpg')]  inline-block bg-center bg-contain font-anton bg-clip-text text-transparent text-center lg:text-[16rem] md:text-[12rem] md:leading-[12rem] sm:text-[10rem] text-[4rem] leading-[4rem] sm:leading-[10rem] lg:leading-[16rem] overflow-hidden"
+            className="relative bg-[url('/assets/textMaterial.jpg')] md:bg-fixed inline-block bg-center bg-contain font-anton bg-clip-text text-transparent text-center lg:text-[16rem] md:text-[12rem] md:leading-[12rem] sm:text-[10rem] text-[4rem] leading-[4rem] sm:leading-[10rem] lg:leading-[16rem] overflow-hidden"
           >
             HACKFEST
             <span className="flex absolute top-0 left-1/4 animate-pulse">
@@ -60,7 +60,7 @@ const LandingPage = () => {
             className={`flex w-full justify-center `}
           >
             <h3
-              className={`lg:text-5xl md:text-3xl sm:text-2xl text-xl  font-nunito text-center font-bold inline-block bg-[url('/assets/rockMaterial.png')]`}
+              className={`lg:text-5xl md:text-3xl sm:text-2xl text-xl font-nunito text-center font-bold inline-block bg-[url('/assets/rockMaterial.png')]`}
             >
               36 HOURS NATIONAL LEVEL HACKATHON
             </h3>

@@ -19,7 +19,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-black dark:text-gray-200">
+            <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-200">
               NMAM Institute of Technology, Nitte, SH1, Karkala, Karnataka,
               KARKALA, NMAMIT 574110, IN
             </p>
@@ -30,7 +30,7 @@ const Footer = () => {
               <li key={index}>
                 <a
                   href={link.link}
-                  className="text-black transition hover:text-gray-200/75 dark:text-gray-100"
+                  className="transition hover:text-gray-200/75 text-gray-100"
                   target="_blank"
                 >
                   <span className="sr-only">{link.name}</span>

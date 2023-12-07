@@ -50,28 +50,7 @@ export const social: Array<{
   // },
 ];
 
-export const somains: Array<{
+export const domains: Array<{
   name?: string;
-  img: string;
-}> = [
-  {
-    name: "Web Development",
-    img: "/assets/web.png",
-  },
-  {
-    name: "App Development",
-    img: "/assets/app.png",
-  },
-  {
-    name: "Machine Learning",
-    img: "/assets/ml.png",
-  },
-  {
-    name: "Blockchain",
-    img: "/assets/blockchain.png",
-  },
-  {
-    name: "Open Innovation",
-    img: "/assets/innovation.png",
-  },
-];
+  img?: string;
+}> = [{}, {}, {}, {}, {}];
