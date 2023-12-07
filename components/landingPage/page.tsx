@@ -27,7 +27,7 @@ const LandingPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="relative bg-[url('/assets/textMaterial.jpg')] bg-fixed inline-block bg-center bg-contain font-anton bg-clip-text text-transparent text-center lg:text-[16rem] md:text-[12rem] md:leading-[12rem] sm:text-[10rem] text-[4rem] leading-[4rem] sm:leading-[10rem] lg:leading-[16rem] overflow-hidden"
+            className="relative bg-[url('/assets/textMaterial.jpg')]  inline-block bg-center bg-contain font-anton bg-clip-text text-transparent text-center lg:text-[16rem] md:text-[12rem] md:leading-[12rem] sm:text-[10rem] text-[4rem] leading-[4rem] sm:leading-[10rem] lg:leading-[16rem] overflow-hidden"
           >
             HACKFEST
             <span className="flex absolute top-0 left-1/4 animate-pulse">
