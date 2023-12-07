@@ -28,7 +28,11 @@ export const cardContent: Array<{
   },
 ];
 
-export const social = [
+export const social: Array<{
+  link: string;
+  icon: JSX.Element;
+  name: string;
+}> = [
   {
     link: "https://www.instagram.com/hackfest.dev",
     icon: <AiOutlineInstagram className="h-7 w-7 hover:text-yellow-500" />,
@@ -44,4 +48,30 @@ export const social = [
   //   icon: <AiOutlinePhone className="h-7 w-7 hover:text-yellow-500" />,
   //   name: "Call Us",
   // },
+];
+
+export const somains: Array<{
+  name?: string;
+  img: string;
+}> = [
+  {
+    name: "Web Development",
+    img: "/assets/web.png",
+  },
+  {
+    name: "App Development",
+    img: "/assets/app.png",
+  },
+  {
+    name: "Machine Learning",
+    img: "/assets/ml.png",
+  },
+  {
+    name: "Blockchain",
+    img: "/assets/blockchain.png",
+  },
+  {
+    name: "Open Innovation",
+    img: "/assets/innovation.png",
+  },
 ];

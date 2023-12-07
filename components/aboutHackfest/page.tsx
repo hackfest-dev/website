@@ -1,23 +1,34 @@
 import { cardContent } from "../constants/page";
+import { motion } from "framer-motion";
 
 const AboutHackfest = () => {
   return (
     <>
-      <div className="flex flex-col justify-center min-h-screen mx-4">
-        <section className="text-center space-y-4">
-          <h1 className="lg:text-9xl md:text-8xl sm:text-7xl text-5xl font-anton">
+      <div className="flex flex-col justify-center min-h-screen mx-4 transition-all duration-300">
+        <motion.section
+          className="text-center space-y-4 "
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="lg:text-9xl md:text-8xl sm:text-7xl text-5xl font-anton inline-block">
             WHAT IS <span className="text-[#f3bc1f]">HACKFEST</span>?
           </h1>
           <h3 className="lg:text-3xl md:text-2xl sm:text-xl font-nunito font-bold">
             3 Day Long Fun-Filled Technical Fest at NMAMIT, Nitte!
           </h3>
-        </section>
+        </motion.section>
 
         <section className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-12 md:gap-10 gap-8 lg:mx-20 md:mx-12 mx-6 justify-center py-12">
           {cardContent.map((card, index) => (
-            <div
+            <motion.div
+              initial={{ rotateY: 180 }}
+              animate={{ rotateY: 180 }}
+              whileInView={{ rotateY: 0 }}
+              transition={{ duration: 0.6 }}
+              style={{ transformStyle: "preserve-3d" }}
               key={index}
-              className="bg-[#f1f1f1] rounded-3xl px-8 pt-8 pb-16 flex flex-col text-black text-center space-y-6"
+              className="bg-[#f1f1f1] rounded-3xl px-8 pt-8 pb-12 flex flex-col text-black text-center space-y-6"
             >
               <img src={card.img} alt={"cardImage"} />
               <div className="space-y-4">
@@ -28,7 +39,7 @@ const AboutHackfest = () => {
                   {card.content}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </section>
       </div>

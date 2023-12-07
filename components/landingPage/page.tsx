@@ -1,8 +1,15 @@
+import { motion } from "framer-motion";
+
 const LandingPage = () => {
   return (
     <>
       <div className="min-h-screen relative">
-        <div className="flex justify-between lg:px-32 lg:py-12 md:px-20 md:py-10 sm:px-6 sm:py-4 p-4 items-center">
+        <motion.div
+          initial={{ y: -200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex justify-between lg:px-32 lg:py-12 md:px-20 md:py-10 sm:px-6 sm:py-4 p-4 items-center"
+        >
           <img
             src="/assets/flcLogo.png"
             alt="flcLogo"
@@ -11,15 +18,17 @@ const LandingPage = () => {
           <img
             src="/assets/NMAMITLogo.png"
             alt="flcLogo"
-            className="lg:h-16 md:h-12 lg:w-80 md:w-72 sm:h-8 sm:w-48 h-6 w-32"
+            className="lg:h-16 md:h-12 lg:w-96 md:w-72 sm:h-8 sm:w-48 h-6 w-32"
           />
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col justify-center lg:pt-24 md:pt-28 sm:pt-44 pt-60 space-y-6">
-          <h1 className="text-center lg:text-6xl md:text-4xl sm:text-3xl text-2xl font-nunito font-bold">
-            PROPOSAL FOR
-          </h1>
-          <div className="relative bg-[url('/assets/textMaterial.jpg')] bg-fixed inline-block bg-center bg-contain font-anton bg-clip-text text-transparent text-center lg:text-[16rem] md:text-[12rem] md:leading-[12rem] sm:text-[10rem] text-[4rem] leading-[4rem] sm:leading-[10rem] lg:leading-[16rem] overflow-hidden">
+        <div className="flex flex-col justify-center lg:pt-36 md:pt-44 sm:pt-64 pt-80 space-y-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative bg-[url('/assets/textMaterial.jpg')] bg-fixed inline-block bg-center bg-contain font-anton bg-clip-text text-transparent text-center lg:text-[16rem] md:text-[12rem] md:leading-[12rem] sm:text-[10rem] text-[4rem] leading-[4rem] sm:leading-[10rem] lg:leading-[16rem] overflow-hidden"
+          >
             HACKFEST
             <span className="flex absolute top-0 left-1/4 animate-pulse">
               <img
@@ -42,13 +51,20 @@ const LandingPage = () => {
                 alt=""
               />
             </span>
-          </div>
+          </motion.div>
 
-          <div
-            className={`lg:text-5xl md:text-3xl sm:text-2xl text-xl  font-nunito text-center font-bold`}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className={`flex w-full justify-center `}
           >
-            36 HOURS NATIONAL LEVEL HACKATHON
-          </div>
+            <h3
+              className={`lg:text-5xl md:text-3xl sm:text-2xl text-xl  font-nunito text-center font-bold inline-block bg-[url('/assets/rockMaterial.png')]`}
+            >
+              36 HOURS NATIONAL LEVEL HACKATHON
+            </h3>
+          </motion.div>
         </div>
       </div>
     </>
