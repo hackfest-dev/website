@@ -37,9 +37,9 @@ const About = () => {
               constituent college of Nitte University, Mangaluru, since June
               2022. Ranked 175 in the National Institutional Ranking Framework
               (NIRF) 2022 by MHRD, GoI among the engineering colleges in India,
-              the College has been placed under the "Platinum" category for
-              having high industry linkages by the AICTE-CII Survey of
-              Industry-Linked Technical Institutes 2020. For details, visit
+              the College has been placed under the &quot;Platinum&quot;
+              category for having high industry linkages by the AICTE-CII Survey
+              of Industry-Linked Technical Institutes 2020. For details, visit
               www.nmamit.nitte.edu.in
             </p>
           </div>

@@ -21,7 +21,7 @@ const Sponsors = () => {
             <span className="text-[#f3bc1f] underline underline-offset-8">
               <a href="mailto:sponsor@hackfest.dev">sponsor@hackfest.dev</a>
             </span>{" "}
-            Let's make it happen!
+            Let&apos;s make it happen!
           </h3>
         </motion.section>
       </div>
