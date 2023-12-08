@@ -24,11 +24,14 @@ const About = () => {
           className="bg-black/60 space-y-6 p-6 rounded-3xl mx-4"
         >
           <div className="flex md:flex-row flex-col justify-between gap-10 items-center ">
-            <img
-              src="/assets/NMAMITLogo.png"
-              alt="NMAMITLogo"
-              className="h-12 w-72"
-            />
+            <a href="https://nmamit.nitte.edu.in/" target="_blank">
+              <motion.img
+                whileTap={{ scale: 0.9 }}
+                src="/assets/NMAMITLogo.png"
+                alt="NMAMITLogo"
+                className="h-12 w-72"
+              />
+            </a>
 
             <p className=" max-w-2xl font-roboto font-bold md:text-lg text-sm text-justify">
               Nitte Mahalinga Adyantaya Memorial Institute of Technology
@@ -49,11 +52,14 @@ const About = () => {
           </div>
 
           <div className="flex md:flex-row flex-col justify-between gap-10 items-center ">
-            <img
-              src="/assets/flcLogo.png"
-              alt="FLCLogo"
-              className="h-24 w-64"
-            />
+            <a href="https://finiteloop.co.in" target="_blank">
+              <motion.img
+                whileTap={{ scale: 0.9 }}
+                src="/assets/flcLogo.png"
+                alt="FLCLogo"
+                className="h-24 w-64"
+              />
+            </a>
 
             <p className="max-w-2xl font-roboto font-bold md:text-lg text-sm text-justify">
               Finite Loop is a Coding Club, which aims to give a good

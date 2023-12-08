@@ -15,7 +15,16 @@ const AboutHackfest = () => {
           transition={{ duration: 1.2 }}
         >
           <h1 className="lg:text-9xl md:text-8xl sm:text-7xl text-5xl font-anton inline-block">
-            WHAT IS <span className="text-[#f3bc1f]">HACKFEST</span>?
+            WHAT IS{" "}
+            <motion.span
+              whileHover={{
+                textShadow: "0px 0px 8px rgb(243, 188, 31)",
+              }}
+              className="text-[#f3bc1f]"
+            >
+              HACKFEST
+            </motion.span>
+            ?
           </h1>
           <h3 className="lg:text-3xl md:text-2xl sm:text-xl font-nunito font-bold">
             3 Day Long Fun-Filled Technical Fest at NMAMIT, Nitte!
