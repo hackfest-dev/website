@@ -1,8 +1,4 @@
-import {
-  AiOutlineInstagram,
-  AiOutlineMail,
-  AiOutlinePhone,
-} from "react-icons/ai";
+import { AiOutlineInstagram, AiOutlineMail } from "react-icons/ai";
 
 export const cardContent: Array<{
   img: string;
@@ -23,7 +19,7 @@ export const cardContent: Array<{
   },
   {
     img: "/assets/about3.png",
-    header: "ENGAEMENT & NETWORKING",
+    header: "ENGAGEMENT & NETWORKING",
     content: `A lot more than just a ${"'"}Hackathon${"'"}, more of a tech fest with Engagement Activities`,
   },
 ];
@@ -43,11 +39,6 @@ export const social: Array<{
     icon: <AiOutlineMail className="h-7 w-7 hover:text-yellow-500" />,
     name: "E-mail",
   },
-  // {
-  //   link: "tel:8197903771",
-  //   icon: <AiOutlinePhone className="h-7 w-7 hover:text-yellow-500" />,
-  //   name: "Call Us",
-  // },
 ];
 
 export const domains: Array<{
