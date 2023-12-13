@@ -1,0 +1,108 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  phone         String?
+  accounts      Account[]
+  sessions      Session[]
+  //Place and college
+  state			String?
+  collegeId     String?
+  college       College?  @relation(fields: [collegeId], references: [id])
+  //payment and registration
+  isVerified    Boolean   @default(false)
+  paymentStatus String?   @default("PENDING")
+  //team and role
+  teamId        String?
+  team          Team?     @relation(fields: [teamId], references: [id])
+  isLeader      Boolean   @default(false)
+  role          Role      @default(PARTICIPANT)
+  //Other info
+  destination	String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([collegeId])
+  @@index([teamId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model College{
+	id		String @id @default(cuid())
+	name	String
+	state	String
+	users	User[]
+}
+
+model Team{
+    id			String @id @default(cuid())
+	name		String @unique
+	members		User[]
+	isComplete	Boolean @default(false)
+	//TODO: Add score details
+
+	createdAt	DateTime @default(now())
+	updatedAt	DateTime @updatedAt
+}
+
+enum Role {
+  PARTICIPANT
+  ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+
