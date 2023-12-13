@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { signIn } from "next-auth/react";
 
 const LandingPage = () => {
   return (
