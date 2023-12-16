@@ -77,6 +77,10 @@ const LandingPage = () => {
             >
               36 HOURS NATIONAL LEVEL HACKATHON
             </h3>
+			<button onClick={()=>{
+				fetch("/api/payments/makePayment", {method:"POST"})
+			}}
+			>Test</button>
           </motion.div>
         </div>
       </div>

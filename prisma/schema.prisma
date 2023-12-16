@@ -43,7 +43,6 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
-  image         String?
   phone         String?
   accounts      Account[]
   sessions      Session[]
@@ -52,8 +51,14 @@ model User {
   collegeId     String?
   college       College?  @relation(fields: [collegeId], references: [id])
   //payment and registration
+  image         String?
+  course		Courses
+  adhaar		String
+  college_id    String
   isVerified    Boolean   @default(false)
   paymentStatus String?   @default("PENDING")
+  paymentId     String?
+  payment       Payments? 
   //team and role
   teamId        String?
   team          Team?     @relation(fields: [teamId], references: [id])
@@ -89,14 +94,44 @@ model Team{
 	members		User[]
 	isComplete	Boolean @default(false)
 	//TODO: Add score details
+	videoSubmission VideoSubmissions?
 
 	createdAt	DateTime @default(now())
 	updatedAt	DateTime @updatedAt
 }
 
+model Payments{
+	id				String	@id @default(cuid())
+	userId			String	@unique
+	user			User	@relation(fields: [userId], references: [id])
+	amount			Float
+	transactionId	String
+	createdAt		DateTime @default(now())
+}
+
+model VideoSubmissions{
+	id		Int @id @default(autoincrement())
+	teamId	String @unique
+	Team	Team @relation(fields: [teamId], references: [id])
+	url		String 
+}
+
+model AppSettings{
+	id						Int @id @default(autoincrement())
+	isRegistrationOpen		Boolean @default(true)
+	isPaymentOpen			Boolean @default(true)
+	isVideoSubmissionOpen	Boolean @default(true)
+	isProfileEditOpen		Boolean @default(true)
+}
+
 enum Role {
   PARTICIPANT
   ADMIN
+}
+
+enum Courses{
+	course_1
+	//TODO: Add other courses
 }
 
 enum PaymentStatus {
