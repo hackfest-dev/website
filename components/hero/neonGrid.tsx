@@ -27,6 +27,12 @@ const NeonGrid = () => {
 
   const temp = new Array(20).fill(0); // temporary array to map the grid
 
+  const colorMap = [
+    ["#EB24B6", "#F05CC8", "#F594DB"],
+    ["#F26868", "#F68E8E", "#F9B4B4"],
+    ["#FFB85C", "#FFCA85", "#FFDCAD"],
+  ];
+
   const handleHover = (
     e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>
   ) => {
@@ -34,9 +40,11 @@ const NeonGrid = () => {
       x: (e.target as HTMLDivElement).offsetLeft,
       y: (e.target as HTMLDivElement).offsetTop,
     };
+    const color = colorMap[Math.floor(Math.random() * colorMap.length)];
     boxes.current.map((row) => {
       row.map((box) => {
         if (box) {
+          // box.style.boxShadow = "0 0 0px 0px #fff";
           // Giving a 3D effect to boxes adjacent to the hovered box including diagonal boxes
           if (
             Math.sqrt(
@@ -44,8 +52,10 @@ const NeonGrid = () => {
                 (box.offsetTop - position.y) ** 2
             ) <=
             (Math.SQRT2 * boxSize.width) / Math.cos(Math.PI / 9)
-          )
+          ) {
             box.style.transform = "perspective(100px) translateZ(-10px)";
+            box.style.boxShadow = `0 0 10px 5px ${color[1]}`;
+          }
           // Giving a 3D effect to boxes second adjacent to the hovered box (diagonal boxes excluded)
           else if (
             Math.sqrt(
@@ -53,22 +63,38 @@ const NeonGrid = () => {
                 (box.offsetTop - position.y) ** 2
             ) <=
             (2 * boxSize.width) / Math.cos(Math.PI / 9)
-          )
+          ) {
             box.style.transform = "perspective(100px) translateZ(-5px)";
+            box.style.boxShadow = `0 0 10px 5px ${color[2]}`;
+          }
           // Removing 3D effect from all other boxes
-          else box.style.transform = "perspective(100px) translateZ(-0px)";
+          // else {
+          //   box.style.transform = "perspective(100px) translateZ(-0px)";
+          // }
         }
       });
     });
     // Giving a 3D effect to the hovered box
     if (e.target && e.target instanceof HTMLDivElement) {
       e.target.style.transform = "perspective(100px) translateZ(-20px)";
+      e.target.style.boxShadow = `0 0 15px 10px ${color[0]}`;
     }
+  };
+
+  const handleMouseLeave = () => {
+    boxes.current.map((row) => {
+      row.map((box) => {
+        if (box) {
+          box.style.transform = "perspective(100px) translateZ(-0px)";
+          box.style.boxShadow = "0 0 0px 0px #fff";
+        }
+      });
+    });
   };
 
   return (
     <>
-      <div className="overflow-hidden">
+      <div className="overflow-hidden bg-primary-300">
         <div style={{ perspective }}>
           <div
             className="h-screen relative"
@@ -95,8 +121,10 @@ const NeonGrid = () => {
                             {/* Grid boxes */}
                             <div
                               onTouchStart={(e) => handleHover(e)}
-                              onMouseOver={(e) => handleHover(e)}
-                              className="flex gap-1 justify-center items-center relative bg-white transition-all duration-300 ease-linear"
+                              onTouchEnd={() => handleMouseLeave()}
+                              onMouseEnter={(e) => handleHover(e)}
+                              onMouseLeave={() => handleMouseLeave()}
+                              className="flex gap-1 justify-center items-center relative bg-gray-900 transition-all duration-300 ease-linear"
                               key={j}
                               style={{
                                 height: boxSize.height - 4,
