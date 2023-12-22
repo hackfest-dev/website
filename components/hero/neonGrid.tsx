@@ -44,7 +44,6 @@ const NeonGrid = () => {
     boxes.current.map((row) => {
       row.map((box) => {
         if (box) {
-          // box.style.boxShadow = "0 0 0px 0px #fff";
           // Giving a 3D effect to boxes adjacent to the hovered box including diagonal boxes
           if (
             Math.sqrt(
@@ -53,7 +52,8 @@ const NeonGrid = () => {
             ) <=
             (Math.SQRT2 * boxSize.width) / Math.cos(Math.PI / 9)
           ) {
-            box.style.transform = "perspective(100px) translateZ(-10px)";
+            box.style.transform = "perspective(100px) translateZ(5px)";
+            box.style.zIndex = "1";
             box.style.boxShadow = `0 0 10px 5px ${color[1]}`;
           }
           // Giving a 3D effect to boxes second adjacent to the hovered box (diagonal boxes excluded)
@@ -64,29 +64,32 @@ const NeonGrid = () => {
             ) <=
             (2 * boxSize.width) / Math.cos(Math.PI / 9)
           ) {
-            box.style.transform = "perspective(100px) translateZ(-5px)";
+            box.style.transform = "perspective(100px) translateZ(3px)";
+            box.style.zIndex = "0";
             box.style.boxShadow = `0 0 10px 5px ${color[2]}`;
           }
-          // Removing 3D effect from all other boxes
-          // else {
-          //   box.style.transform = "perspective(100px) translateZ(-0px)";
-          // }
         }
       });
     });
     // Giving a 3D effect to the hovered box
     if (e.target && e.target instanceof HTMLDivElement) {
-      e.target.style.transform = "perspective(100px) translateZ(-20px)";
+      e.target.style.transform = "perspective(100px) translateZ(10px)";
+      e.target.style.zIndex = "2";
       e.target.style.boxShadow = `0 0 15px 10px ${color[0]}`;
+    }
+    if (e.target && e.type === "mousedown") {
+      (e.target as HTMLDivElement).style.transitionProperty = "all";
     }
   };
 
   const handleMouseLeave = () => {
+    // Removing 3D effect from all other boxes
     boxes.current.map((row) => {
       row.map((box) => {
         if (box) {
           box.style.transform = "perspective(100px) translateZ(-0px)";
-          box.style.boxShadow = "0 0 0px 0px #fff";
+          box.style.zIndex = "0";
+          box.style.boxShadow = "0 0 0px 0px #AC61E5";
         }
       });
     });
@@ -94,7 +97,10 @@ const NeonGrid = () => {
 
   return (
     <>
-      <div className="overflow-hidden bg-primary-300">
+      <div
+        className="bg-primary-300 h-full w-full"
+        style={{ contain: "paint" }}
+      >
         <div style={{ perspective }}>
           <div
             className="h-screen relative"
@@ -124,12 +130,14 @@ const NeonGrid = () => {
                               onTouchEnd={() => handleMouseLeave()}
                               onMouseEnter={(e) => handleHover(e)}
                               onMouseLeave={() => handleMouseLeave()}
-                              className="flex gap-1 justify-center items-center relative bg-gray-900 transition-all duration-300 ease-linear"
-                              key={j}
+                              className="flex gap-1 justify-center items-center relative bg-gray-900 ease-linear"
+                              key={`${i}-${j}`}
                               style={{
+                                transitionProperty: "transform, box-shadow",
                                 height: boxSize.height - 4,
                                 width: boxSize.width - 4,
                                 transformStyle: "preserve-3d",
+                                transitionDuration: "0.3s",
                               }}
                               ref={(ref) => (boxes.current[i][j] = ref)}
                             ></div>
