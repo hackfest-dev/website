@@ -5,7 +5,7 @@ const test = () => {
   return (
     <>
       <NeonGrid />
-      <Timeline
+      {/* <Timeline
         events={[
           { title: "Registration begins", time: "test" },
           { title: "Registration Ends", time: "test2" },
@@ -14,7 +14,7 @@ const test = () => {
           { title: "First Day Of Hackathon", time: "test3" },
           { title: "Final Day and Results", time: "test4" },
         ]}
-      />
+      /> */}
       <section className="h-screen bg-blue-950"></section>
     </>
   );
