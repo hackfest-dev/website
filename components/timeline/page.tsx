@@ -30,7 +30,11 @@ const Timeline = ({ events }: { events: Event[] }) => {
   return (
     <>
       {/* Main div which spans entire scroll area for the animation */}
-      <div className="h-[200vh]" ref={ref}>
+      <div
+        className="h-[200vh] pointer-events-none"
+        ref={ref}
+        style={{ zIndex: 2 }}
+      >
         {/* Div which is sticky and spans the height of the viewport */}
         <div className="h-screen sticky top-0">
           {/* Wheel container */}
