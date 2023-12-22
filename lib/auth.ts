@@ -2,6 +2,7 @@ import { DefaultSession, NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "lib/db";
+import { secrets } from "./secrets";
 
 declare module "next-auth" {
 	interface Session {
@@ -22,7 +23,7 @@ declare module "next-auth" {
 }
 
 export const authOptions: NextAuthOptions = {
-	secret: process.env.NEXTAUTH_SECRET,
+	secret: secrets.NEXTAUTH_SECRET as string,
 
 	session: {
 		strategy: "jwt",
@@ -38,10 +39,10 @@ export const authOptions: NextAuthOptions = {
 			}
 			return url;
 		},
-		async session({ session, user }) {
+		async session({ session }) {
 			const dbUser = await prisma.user.findUnique({
 				where: {
-					id: user.id,
+					email: session.user.email as string,
 				},
 				include: {
 					team: true,
@@ -50,8 +51,8 @@ export const authOptions: NextAuthOptions = {
 			if (!dbUser) {
 				throw new Error("User not found");
 			}
-			session.user.id = dbUser?.id;
-			if (dbUser.team?.id) {
+			session.user.id = dbUser.id;
+			if (dbUser.team) {
 				const team = {
 					id: dbUser?.team?.id,
 					name: dbUser?.team?.name,
@@ -68,8 +69,8 @@ export const authOptions: NextAuthOptions = {
 
 	providers: [
 		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+			clientId: secrets.GOOGLE_CLIENT_ID as string,
+			clientSecret: secrets.GOOGLE_CLIENT_SECRET as string,
 		}),
 	],
 

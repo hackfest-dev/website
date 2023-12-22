@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BiMenuAltRight,BiX } from "react-icons/bi";
 import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 
 const links= [
     {url: '#', label: 'Home'},
@@ -31,7 +32,15 @@ return(
         ))}
     </div>
     <div className="">
-    <button  className="hidden md:block text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-2 drop-shadow-lg">Register</button>
+    <button  onClick = {()=>signIn("google")} className="hidden md:block text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-2 drop-shadow-lg">Register</button>
+    <button  onClick = {()=>fetch("/api/user/updateProfile",{
+	method: "POST",
+	credentials: "include",
+	body: JSON.stringify({
+		name: "test",
+		adhaar: "test",
+	}),
+	})} className="hidden md:block text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-2 drop-shadow-lg">Request</button>
     </div>
     <div className="flex items-center space-x-4 md:hidden">
             {menu ? (
