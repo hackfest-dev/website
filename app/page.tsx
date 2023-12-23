@@ -8,6 +8,7 @@ import AlertBanner from "@/components/alertBanner/page";
 import Sponsors from "@/components/sponsors/page";
 import About from "@/components/about/page";
 import Navbar from "@/components/navbar/page";
+import NeonGrid from "@/components/hero/neonGrid";
 
 export default function Home() {
   return (
