@@ -6,7 +6,7 @@ import Hero from "@/components/hero/page";
 const test = () => {
   return (
     <>
-      {/* <Hero></Hero> */}
+      <Hero></Hero>
       {/* <Timeline
         events={[
           { title: "Registration begins", time: "test" },
@@ -24,7 +24,7 @@ const test = () => {
 
         <BorderedContainer
           className="p-5 w-full"
-          parentClassName="w-full"
+          parentClassName="w-80"
           varient="primary"
         >
           {/* 

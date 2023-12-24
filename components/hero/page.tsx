@@ -35,11 +35,11 @@ const Hero: React.FC = () => {
 
   return (
     <main className="">
-      <div ref={container} className="relative h-[200vh]">
+      <div ref={container} className="relative h-[100vh]">
         <div className="absolute h-full w-full">
           <NeonGrid />
         </div>
-        <div
+        {/* <div
           ref={stickyMask}
           className="flex sticky overflow-hidden top-0 h-screen justify-center z-10 pointer-events-none"
           style={{
@@ -50,7 +50,7 @@ const Hero: React.FC = () => {
           }}
         >
           <div className="h-full w-full bg-gray-600"></div>
-        </div>
+        </div> */}
       </div>
     </main>
   );
