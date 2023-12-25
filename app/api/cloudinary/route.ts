@@ -2,8 +2,8 @@ import { secrets } from "@/lib/secrets";
 import { v2 as cloudinary } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
-export function POST(req: NextRequest, res: NextResponse) {
-	const { timestamp, signature } = getSignature();
+export async function POST(req: NextRequest, res: NextResponse) {
+	const { timestamp, signature } = await getSignature();
 	NextResponse.json({ timestamp, signature });
 }
 
@@ -14,7 +14,7 @@ const cloudinaryConfig = cloudinary.config({
 	secure: true,
 });
 
-export function getSignature() {
+async function getSignature() {
 	const timestamp = Math.round(new Date().getTime() / 1000);
 	const signature = cloudinary.utils.api_sign_request(
 		{
@@ -25,4 +25,3 @@ export function getSignature() {
 	);
 	return { timestamp, signature };
 }
-
