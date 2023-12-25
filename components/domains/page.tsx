@@ -1,8 +1,9 @@
 "use client";
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
-import { cubicBezier, useAnimate } from "framer-motion";
+import { cubicBezier, stagger, useAnimate, motion } from "framer-motion";
 import Image from "next/image";
+import { GiTronArrow } from "react-icons/gi";
 
 type DomainProps = {
   name: string;
@@ -66,20 +67,24 @@ type DomainProps = {
 const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
   const domains = useRef<Array<HTMLDivElement | null>>([]);
   const [contents, setContents] = useState<DomainProps>({
-    name: "",
+    name: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam sequi similique dignissimos alias consequatur incidunt asperiores, id quibusdam pariatur exercitationem.",
     image: "",
     prize: null,
-    description: "",
+    description:
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam sequi similique dignissimos alias consequatur incidunt asperiores, id quibusdam pariatur exercitationem.",
   });
 
+  const activeDomain = useRef<HTMLDivElement | null>(null);
   const [scope, animate] = useAnimate();
   const domainPosRef = useRef(null);
   const contentRef = useRef(null);
 
   const enterAnimation = async (e: MouseEvent | TouchEvent) => {
     if (e.target && e.target instanceof HTMLDivElement) {
-      e.target.style.zIndex = "40";
       setContents(domainList[parseInt(e.target.dataset.id as string)]);
+      activeDomain.current = e.target;
+      // console.log(contents);
+      e.target.style.zIndex = "40";
 
       const domainPos =
         domainPosRef.current &&
@@ -97,31 +102,56 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         { opacity: 1 },
         { ease: "linear", duration: 0.5, delay: 1 }
       );
-      const promises = domains.current.map((domain) => {
-        if (domain !== e.target && domain) {
-          return animate(
-            domain,
-            { opacity: 0.8, scale: 0.75 },
-            { ease: "linear", duration: 1 }
-          );
-        }
-      });
-      const translateAnimate = await animate(
+      // const promises = domains.current.map((domain) => {
+      //   if (domain !== e.target && domain) {
+      //     return animate(
+      //       domain,
+      //       { opacity: 0.8, scale: 0.75 },
+      //       { ease: "linear", duration: 1 }
+      //     );
+      //   }
+      // });
+      const domainNameFade = animate(
+        "#domainName",
+        { opacity: 0 },
+        { ease: "linear", duration: 0.5 }
+      );
+      const translateAnimate = animate(
         e.target as any,
         {
-          x: domainPos ? (domainPos as DOMRect).x - currentPos.x : 0,
-          y: domainPos ? (domainPos as DOMRect).y - currentPos.y : 0,
-          scale: 2,
+          x: domainPos
+            ? (domainPos as DOMRect).x - currentPos.x - currentPos.width / 2
+            : 0,
+          y: domainPos
+            ? (domainPos as DOMRect).y - currentPos.y - currentPos.height / 2
+            : 0,
+          scale: 2.5,
         },
         { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
+      );
+
+      const domainBorderAnimate = animate(
+        "#imgBorder",
+        { borderColor: "rgba(194, 18, 146, 0)" },
+        { ease: "linear", duration: 0.5 }
       );
       document.body.style.overflow = "hidden";
 
       if (contentRef.current)
         (contentRef.current as HTMLDivElement).style.pointerEvents = "all";
 
-      promises.push(blockAnimate, translateAnimate, contentAnimate);
-      await Promise.all(promises);
+      await animate(
+        "h2",
+        { y: 0, opacity: 1 },
+        { ease: "easeInOut", delay: stagger(0.08, { startDelay: 0.75 }) }
+      );
+      await Promise.all([
+        translateAnimate,
+        domainBorderAnimate,
+        domainNameFade,
+      ]);
+
+      await Promise.all([blockAnimate, translateAnimate, contentAnimate]);
     }
   };
 
@@ -136,15 +166,41 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       { opacity: 0 },
       { ease: "linear", duration: 0.5 }
     );
-    const promises = domains.current.map((domain) => {
-      if (domain) {
-        return animate(
-          domain,
-          { opacity: 1, scale: 1, x: 0, y: 0 },
-          { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
-        );
-      }
-    });
+    // const promises = domains.current.map((domain) => {
+    //   if (domain) {
+    //     return animate(
+    //       domain,
+    //       {
+    //         opacity: 1,
+    //         scale: 1,
+    //         x: 0,
+    //         y: 0,
+    //         borderColor: "rgba(194, 18, 146, 1)",
+    //       },
+    //       { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
+    //     );
+    //   }
+    // });
+    const translateAnimate = animate(
+      activeDomain.current as any,
+      { x: 0, y: 0, scale: 1 },
+      { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
+    );
+    const domainBorderAnimate = animate(
+      "#imgBorder",
+      { borderColor: "rgba(194, 18, 146, 1)" },
+      { ease: "linear", duration: 0.5 }
+    );
+    const domainNameFade = animate(
+      "#domainName",
+      { opacity: 1 },
+      { ease: "linear", duration: 0.5, delay: 0.5 }
+    );
+    const contentTitleAnimate = animate(
+      "h2",
+      { y: "100%", opacity: 0 },
+      { ease: "easeInOut", delay: stagger(0.08) }
+    );
     document.body.style.overflow = "visible";
     if (contentRef.current)
       (contentRef.current as HTMLDivElement).style.pointerEvents = "none";
@@ -156,72 +212,130 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         }
         document.body.style.overflow = "visible";
       });
+      setContents({
+        name: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam sequi similique dignissimos alias consequatur incidunt asperiores, id quibusdam pariatur exercitationem.",
+        image: "",
+        prize: null,
+        description:
+          "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam sequi similique dignissimos alias consequatur incidunt asperiores, id quibusdam pariatur exercitationem.",
+      });
     }, 1000);
 
-    promises.push(blockAnimate, contentAnimate);
-    await Promise.all(promises);
+    // promises.push(
+    //   domainBorderAnimate,
+    //   blockAnimate,
+    //   contentAnimate,
+    //   domainNameFade,
+    //   contentTitleAnimate
+    // );
+    await Promise.all([
+      translateAnimate,
+      domainBorderAnimate,
+      blockAnimate,
+      contentAnimate,
+      domainNameFade,
+      contentTitleAnimate,
+    ]);
   };
 
   return (
     <>
-      <section className="" ref={scope}>
+      <section className="max-w-screen-xl p-12 mx-auto" ref={scope}>
         <div
           id="contents"
           ref={contentRef}
-          className="fixed inset-0 z-50 bg-transparent"
+          className="fixed inset-0 z-50 bg-transparent max-w-screen-xl mx-auto"
           style={{
             pointerEvents: "none",
             opacity: 0,
           }}
         >
-          <div
-            className="absolute top-3 right-3 z-10"
-            onClick={() => exitAnimaiton()}
-          >
-            X
-          </div>
           {/* Position of domain image when viewing contents */}
           <div
             ref={domainPosRef}
-            className="opacity-0 absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2"
+            className="opacity-0 absolute top-1/2 left-2/3 translate-x-1/2 -translate-y-1/2"
           />
           {/* Contents go here */}
           <div className="p-5 top-0 left-0 h-full absolute w-1/2 flex flex-col justify-center items-center gap-6">
-            <h1 className="text-4xl font-bold">{contents.name}</h1>
+            <div className="text-4xl font-bold flex flex-wrap overflow-clip">
+              {contents.name.split("").map((char, idx) => {
+                return (
+                  <h2
+                    key={idx}
+                    className="block transition-all duration-300 ease-in-out opacity-0"
+                    style={{ transform: "translateY(100%)" }}
+                  >
+                    {char}
+                  </h2>
+                );
+              })}
+            </div>
             <div className="flex flex-col gap-3">
-              <p className="text-xl">{contents.description}</p>
-              <p className="text-xl">{contents.prize}</p>
+              <p className="text-xl">{contents && contents.description}</p>
+              <p className="text-xl">{contents && contents.prize}</p>
+            </div>
+            <div
+              className="-scale-x-[2] rotate-12 cursor-pointer hover:text-secondary-500 transition-all duration-300 ease-in-out"
+              onClick={() => exitAnimaiton()}
+            >
+              <GiTronArrow className="text-3xl" />
             </div>
           </div>
         </div>
         {/* Div to block background */}
         <div
           id="bgBlock"
-          className="inset-0 fixed bg-gray-800 z-40 pointer-events-none"
+          className="inset-0 bg-black/90 fixed z-40 pointer-events-none"
           style={{ opacity: 0 }}
-        ></div>
+        >
+          <Image
+            src={"/domains-bg.jpg"}
+            alt="background"
+            fill
+            className="object-center object-cover"
+          />
+          <div className="w-full h-full bg-black/30 absolute top-0 left-0"></div>
+        </div>
         {/* Grids */}
-        <div className="flex flex-wrap">
-          {domainList.map((domain, index) => {
-            return (
-              <div key={index} className="relative">
-                <div
-                  data-id={index}
-                  className="flex justify-center items-baseline w-40 h-40 bg-gradient-to-tr from-primary-400 to-secondary-800 rounded-xl shadow-xl relative z-39"
-                  ref={(ref) => (domains.current[index] = ref)}
-                  onClick={(e) => enterAnimation(e)}
-                >
-                  <Image
-                    src={domain.image}
-                    alt={domain.name}
-                    fill
-                    className="object-center object-contain pointer-events-none"
-                  />
-                  <p className="mb-3">{domain.name}</p>
+        <div className="flex flex-col gap-20">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent w-fit">
+            Domains
+          </h1>
+          <div className="flex flex-wrap gap-5 justify-center items-center">
+            {domainList.map((domain, index) => {
+              return (
+                <div key={index} className="relative">
+                  <div
+                    data-id={index}
+                    className="flex justify-center items-end w-52 h-40 rounded-xl relative z-39 cursor-pointer group mb-5"
+                    style={{ transformOrigin: "center center" }}
+                    ref={(ref) => (domains.current[index] = ref)}
+                    onClick={(e) => enterAnimation(e)}
+                  >
+                    <div
+                      id="imgBorder"
+                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-secondary-500 border-double rounded-xl transition-scale duration-300 ease-in-out pointer-events-none"
+                    >
+                      <Image
+                        src={domain.image}
+                        alt={domain.name}
+                        fill
+                        className="object-center object-contain pointer-events-none p-3 lg:group-hover:scale-125 transition-all duration-300 ease-in-out"
+                      />
+                      <div
+                        id="domainName"
+                        className="absolute top-full -translate-y-1/2 bg-secondary-950 border-2 border-secondary-500 p-2 rounded-lg "
+                      >
+                        <p className="text-xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent pointer-events-none">
+                          {domain.name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
     </>
