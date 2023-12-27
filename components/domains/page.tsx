@@ -30,7 +30,6 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
     if (e.target && e.target instanceof HTMLDivElement) {
       setContents(domainList[parseInt(e.target.dataset.id as string)]);
       activeDomain.current = e.target;
-      // console.log(contents);
       e.target.style.zIndex = "40";
 
       const domainPos =
@@ -39,21 +38,16 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       const currentPos = e.target.getBoundingClientRect();
 
       // Enter animation
-      const blockAnimate = animate(
-        "#bgBlock",
-        { opacity: 1 },
-        { ease: "linear", duration: 0.5, delay: 0.5 }
-      );
-      const contentAnimate = animate(
-        "#contents",
-        { opacity: 1 },
-        { ease: "linear", duration: 0.5, delay: 1 }
-      );
-      const domainNameFade = animate(
-        "#domainName",
-        { opacity: 0 },
-        { ease: "linear", duration: 0.5 }
-      );
+      // const blockAnimate = animate(
+      //   "#bgBlock",
+      //   { opacity: 1 },
+      //   { ease: "linear", duration: 0.5, delay: 0.5 }
+      // );
+      // const contentAnimate = animate(
+      //   "#contents",
+      //   { opacity: 1 },
+      //   { ease: "linear", duration: 0.5, delay: 1 }
+      // );
       const translateAnimate = animate(
         e.target as any,
         {
@@ -68,71 +62,43 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
       );
 
-      const domainBorderAnimate = animate(
-        "#imgBorder",
-        { borderColor: "rgba(194, 18, 146, 0)" },
-        { ease: "linear", duration: 0.5 }
-      );
       document.body.style.overflow = "hidden";
 
       if (contentRef.current)
         (contentRef.current as HTMLDivElement).style.pointerEvents = "all";
 
+      await Promise.all([translateAnimate]);
       await Promise.all([
-        translateAnimate,
-        domainBorderAnimate,
-        domainNameFade,
-      ]);
-      await Promise.all([
-        blockAnimate,
-        contentAnimate,
-        animate("h2", { y: 0, opacity: 1 }, { ease: "linear" }),
+        // blockAnimate,
+        // contentAnimate,
+        // animate("h2", { y: 0, opacity: 1 }, { ease: "linear" }),
       ]);
     }
   };
 
   const exitAnimaiton = async () => {
-    const contentAnimate = animate(
-      "#contents",
-      { opacity: 0 },
-      { ease: "linear", duration: 0.5 }
-    );
-    const blockAnimate = animate(
-      "#bgBlock",
-      { opacity: 0 },
-      { ease: "linear", duration: 0.5 }
-    );
+    // const contentAnimate = animate(
+    //   "#contents",
+    //   { opacity: 0 },
+    //   { ease: "linear", duration: 0.5 }
+    // );
+    // const blockAnimate = animate(
+    //   "#bgBlock",
+    //   { opacity: 0 },
+    //   { ease: "linear", duration: 0.5 }
+    // );
     const translateAnimate = animate(
       activeDomain.current as any,
       { x: 0, y: 0, scale: 1 },
       { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
-    );
-    const domainBorderAnimate = animate(
-      "#imgBorder",
-      { borderColor: "rgba(194, 18, 146, 1)" },
-      { ease: "linear", duration: 0.5 }
-    );
-    const domainNameFade = animate(
-      "#domainName",
-      { opacity: 1 },
-      { ease: "linear", duration: 0.5, delay: 0.5 }
-    );
-    const contentTitleAnimate = animate(
-      "h2",
-      { y: "100%", opacity: 0 },
-      { ease: "easeInOut", delay: 0.5 }
     );
     document.body.style.overflow = "visible";
     if (contentRef.current)
       (contentRef.current as HTMLDivElement).style.pointerEvents = "none";
 
     setTimeout(() => {
-      domains.current.map((domain) => {
-        if (domain) {
-          domain.style.zIndex = "39";
-        }
-        document.body.style.overflow = "visible";
-      });
+      (activeDomain.current as HTMLDivElement).style.zIndex = "39";
+      document.body.style.overflow = "visible";
       setContents({
         name: "",
         image: "",
@@ -143,11 +109,9 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
     await Promise.all([
       translateAnimate,
-      domainBorderAnimate,
-      blockAnimate,
-      contentAnimate,
-      domainNameFade,
-      contentTitleAnimate,
+      // blockAnimate,
+      // contentAnimate,
+      // animate("h2",{ y: "100%", opacity: 0 },{ ease: "easeInOut", delay: 0.5 }),
     ]);
   };
 
@@ -220,23 +184,25 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             {domainList.map((domain, index) => {
               return (
                 <div key={index} className="relative">
-                  <div
-                    data-id={index}
-                    className="flex justify-center items-end w-52 h-40 rounded-xl relative z-39 cursor-pointer group mb-5"
-                    style={{ transformOrigin: "center center" }}
-                    ref={(ref) => (domains.current[index] = ref)}
-                    onClick={(e) => enterAnimation(e)}
-                  >
+                  <div className="flex justify-center items-end w-52 h-40 rounded-xl relative z-39 cursor-pointer group mb-5">
                     <div
                       id="imgBorder"
-                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-secondary-500 border-double rounded-xl transition-scale duration-300 ease-in-out pointer-events-none"
+                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-secondary-500 border-double rounded-xl transition-scale duration-300 ease-in-out"
                     >
-                      <Image
-                        src={domain.image}
-                        alt={domain.name}
-                        fill
-                        className="object-center object-contain pointer-events-none p-3 lg:group-hover:scale-125 transition-all duration-300 ease-in-out"
-                      />
+                      <div
+                        className="h-full w-full rounded-xl"
+                        style={{ transformOrigin: "center center" }}
+                        ref={(ref) => (domains.current[index] = ref)}
+                        onClick={(e) => enterAnimation(e)}
+                        data-id={index}
+                      >
+                        <Image
+                          src={domain.image}
+                          alt={domain.name}
+                          fill
+                          className="object-center object-contain pointer-events-none p-3 lg:group-hover:scale-125 transition-all duration-300 ease-in-out"
+                        />
+                      </div>
                       <div
                         id="domainName"
                         className="absolute top-full -translate-y-1/2 bg-secondary-950 border-2 border-secondary-500 p-2 rounded-lg "
