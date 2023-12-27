@@ -38,16 +38,16 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       const currentPos = e.target.getBoundingClientRect();
 
       // Enter animation
-      // const blockAnimate = animate(
-      //   "#bgBlock",
-      //   { opacity: 1 },
-      //   { ease: "linear", duration: 0.5, delay: 0.5 }
-      // );
-      // const contentAnimate = animate(
-      //   "#contents",
-      //   { opacity: 1 },
-      //   { ease: "linear", duration: 0.5, delay: 1 }
-      // );
+      const blockAnimate = animate(
+        "#bgBlock",
+        { opacity: 1 },
+        { ease: "linear", duration: 0.5, delay: 0.5 }
+      );
+      const contentAnimate = animate(
+        "#contents",
+        { opacity: 1 },
+        { ease: "linear", duration: 0.5, delay: 1 }
+      );
       const translateAnimate = animate(
         e.target as any,
         {
@@ -69,24 +69,24 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
       await Promise.all([translateAnimate]);
       await Promise.all([
-        // blockAnimate,
-        // contentAnimate,
-        // animate("h2", { y: 0, opacity: 1 }, { ease: "linear" }),
+        blockAnimate,
+        contentAnimate,
+        animate("h2", { y: 0, opacity: 1 }, { ease: "linear" }),
       ]);
     }
   };
 
   const exitAnimaiton = async () => {
-    // const contentAnimate = animate(
-    //   "#contents",
-    //   { opacity: 0 },
-    //   { ease: "linear", duration: 0.5 }
-    // );
-    // const blockAnimate = animate(
-    //   "#bgBlock",
-    //   { opacity: 0 },
-    //   { ease: "linear", duration: 0.5 }
-    // );
+    const contentAnimate = animate(
+      "#contents",
+      { opacity: 0 },
+      { ease: "linear", duration: 0.5 }
+    );
+    const blockAnimate = animate(
+      "#bgBlock",
+      { opacity: 0 },
+      { ease: "linear", duration: 0.5 }
+    );
     const translateAnimate = animate(
       activeDomain.current as any,
       { x: 0, y: 0, scale: 1 },
@@ -109,9 +109,13 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
     await Promise.all([
       translateAnimate,
-      // blockAnimate,
-      // contentAnimate,
-      // animate("h2",{ y: "100%", opacity: 0 },{ ease: "easeInOut", delay: 0.5 }),
+      blockAnimate,
+      contentAnimate,
+      animate(
+        "h2",
+        { y: "100%", opacity: 0 },
+        { ease: "easeInOut", delay: 0.5 }
+      ),
     ]);
   };
 
