@@ -1,9 +1,9 @@
 "use client";
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
-import { cubicBezier, stagger, useAnimate, motion } from "framer-motion";
 import Image from "next/image";
 import { GiTronArrow } from "react-icons/gi";
+import styles from "./style.module.css";
 
 type DomainProps = {
   name: string;
@@ -22,114 +22,100 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
   });
 
   const activeDomain = useRef<HTMLDivElement | null>(null);
-  const [scope, animate] = useAnimate();
   const domainPosRef = useRef(null);
   const contentRef = useRef(null);
+  const bgBlockRef = useRef(null);
+  const contentTitleRef = useRef(null);
+  const contentDescriptionRef = useRef(null);
+  const contentPrizeRef = useRef(null);
 
   const enterAnimation = async (e: MouseEvent | TouchEvent) => {
     if (e.target && e.target instanceof HTMLDivElement) {
       setContents(domainList[parseInt(e.target.dataset.id as string)]);
       activeDomain.current = e.target;
-      e.target.style.zIndex = "40";
 
       const domainPos =
         domainPosRef.current &&
         (domainPosRef.current as HTMLDivElement).getBoundingClientRect();
       const currentPos = e.target.getBoundingClientRect();
 
+      const x = domainPos
+        ? (domainPos as DOMRect).x - currentPos.x - currentPos.width / 2
+        : 0;
+      const y = domainPos
+        ? (domainPos as DOMRect).y - currentPos.y - currentPos.height / 2
+        : 0;
+
       // Enter animation
-      const blockAnimate = animate(
-        "#bgBlock",
-        { opacity: 1 },
-        { ease: "linear", duration: 0.5, delay: 0.5 }
-      );
-      const contentAnimate = animate(
-        "#contents",
-        { opacity: 1 },
-        { ease: "linear", duration: 0.5, delay: 1 }
-      );
-      const translateAnimate = animate(
-        e.target as any,
-        {
-          x: domainPos
-            ? (domainPos as DOMRect).x - currentPos.x - currentPos.width / 2
-            : 0,
-          y: domainPos
-            ? (domainPos as DOMRect).y - currentPos.y - currentPos.height / 2
-            : 0,
-          scale: 2.5,
-        },
-        { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
-      );
+      e.target.style.zIndex = "40";
+      e.target.style.transform = `translate(${x}px, ${y}px) scale(2.5)`;
 
+      bgBlockRef.current &&
+        (bgBlockRef.current as HTMLDivElement).classList.add(
+          `${styles.active}`
+        );
+      contentRef.current &&
+        (contentRef.current as HTMLDivElement).classList.add(
+          `${styles.active}`
+        );
+      contentTitleRef.current &&
+        (contentTitleRef.current as HTMLDivElement).classList.add(
+          `${styles.active}`
+        );
+      contentDescriptionRef.current &&
+        (contentDescriptionRef.current as HTMLDivElement).classList.add(
+          `${styles.active}`
+        );
+      contentPrizeRef.current &&
+        (contentPrizeRef.current as HTMLDivElement).classList.add(
+          `${styles.active}`
+        );
       document.body.style.overflow = "hidden";
-
-      if (contentRef.current)
-        (contentRef.current as HTMLDivElement).style.pointerEvents = "all";
-
-      await Promise.all([translateAnimate]);
-      await Promise.all([
-        blockAnimate,
-        contentAnimate,
-        animate("h2", { y: 0, opacity: 1 }, { ease: "linear" }),
-      ]);
     }
   };
 
   const exitAnimaiton = async () => {
-    const contentAnimate = animate(
-      "#contents",
-      { opacity: 0 },
-      { ease: "linear", duration: 0.5 }
-    );
-    const blockAnimate = animate(
-      "#bgBlock",
-      { opacity: 0 },
-      { ease: "linear", duration: 0.5 }
-    );
-    const translateAnimate = animate(
-      activeDomain.current as any,
-      { x: 0, y: 0, scale: 1 },
-      { ease: cubicBezier(1, 0, 0.7, 1), duration: 1 }
-    );
-    document.body.style.overflow = "visible";
-    if (contentRef.current)
-      (contentRef.current as HTMLDivElement).style.pointerEvents = "none";
+    bgBlockRef.current &&
+      (bgBlockRef.current as HTMLDivElement).classList.remove(
+        `${styles.active}`
+      );
+    contentRef.current &&
+      (contentRef.current as HTMLDivElement).classList.remove(
+        `${styles.active}`
+      );
+    contentTitleRef.current &&
+      (contentTitleRef.current as HTMLDivElement).classList.remove(
+        `${styles.active}`
+      );
+    contentDescriptionRef.current &&
+      (contentDescriptionRef.current as HTMLDivElement).classList.remove(
+        `${styles.active}`
+      );
+    contentPrizeRef.current &&
+      (contentPrizeRef.current as HTMLDivElement).classList.remove(
+        `${styles.active}`
+      );
 
     setTimeout(() => {
       (activeDomain.current as HTMLDivElement).style.zIndex = "39";
       document.body.style.overflow = "visible";
-      setContents({
-        name: "",
-        image: "",
-        prize: null,
-        description: "",
-      });
     }, 1000);
 
-    await Promise.all([
-      translateAnimate,
-      blockAnimate,
-      contentAnimate,
-      animate(
-        "h2",
-        { y: "100%", opacity: 0 },
-        { ease: "easeInOut", delay: 0.5 }
-      ),
-    ]);
+    (
+      activeDomain.current as HTMLDivElement
+    ).style.transform = `translate(0, 0) scale(1)`;
   };
 
   return (
     <>
-      <section className="max-w-screen-xl p-12 mx-auto" ref={scope}>
+      <section className="max-w-screen-xl p-12 mx-auto">
         <div
           id="contents"
           ref={contentRef}
-          className="fixed inset-0 z-50 bg-transparent max-w-screen-xl mx-auto"
-          style={{
-            pointerEvents: "none",
-            opacity: 0,
-          }}
+          className={
+            styles.contents +
+            " fixed inset-0 z-50 bg-transparent max-w-screen-xl mx-auto"
+          }
         >
           {/* Position of domain image when viewing contents */}
           <div
@@ -139,23 +125,25 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           {/* Contents go here */}
           <div className="p-5 top-0 left-0 h-full absolute w-1/2 flex flex-col justify-center items-center gap-6">
             <div className="text-4xl font-bold flex flex-wrap overflow-clip">
-              <h2
-                style={{ transform: "translateY(100%)", opacity: 0 }}
-                className="overflow-clip"
-              >
+              <div ref={contentTitleRef} className={styles.contentElements}>
                 {contents.name}
-              </h2>
+              </div>
             </div>
             <div className="flex flex-col gap-3">
               <div className="text-xl flex flex-wrap overflow-clip">
-                <h2
-                  style={{ transform: "translateY(100%)", opacity: 0 }}
-                  className="overflow-clip"
+                <div
+                  ref={contentDescriptionRef}
+                  className={styles.contentElements}
                 >
                   {contents.description}
-                </h2>
+                </div>
               </div>
-              <p className="text-xl">{contents && contents.prize}</p>
+              <div
+                className={styles.contentElements + " text-xl"}
+                ref={contentPrizeRef}
+              >
+                {contents && contents.prize}
+              </div>
             </div>
             <div
               className="-scale-x-[2] rotate-12 cursor-pointer hover:text-secondary-500 transition-all duration-300 ease-in-out"
@@ -167,9 +155,12 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         </div>
         {/* Div to block background */}
         <div
+          ref={bgBlockRef}
           id="bgBlock"
-          className="inset-0 bg-black/90 fixed z-40 pointer-events-none"
-          style={{ opacity: 0 }}
+          className={
+            styles.bgBlock +
+            ` inset-0 bg-black/90 fixed z-40 pointer-events-none`
+          }
         >
           <Image
             src={"/domains-bg.jpg"}
@@ -195,7 +186,11 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                     >
                       <div
                         className="h-full w-full rounded-xl"
-                        style={{ transformOrigin: "center center" }}
+                        style={{
+                          transformOrigin: "center center",
+                          transition:
+                            "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
+                        }}
                         ref={(ref) => (domains.current[index] = ref)}
                         onClick={(e) => enterAnimation(e)}
                         data-id={index}

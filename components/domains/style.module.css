@@ -1,0 +1,30 @@
+.contents {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out 0.5s;
+}
+
+.contents.active {
+  pointer-events: all;
+  opacity: 1;
+}
+
+.bgBlock {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out 0.5s;
+}
+
+.bgBlock.active {
+  opacity: 1;
+}
+
+.contentElements {
+  opacity: 0;
+  transform: translate(0, 100%);
+  transition: opacity 0.5s linear 0.5s, transform 0.5s linear 0.5s;
+}
+
+.contentElements.active {
+  opacity: 1;
+  transform: translate(0, 0);
+}
