@@ -9,6 +9,7 @@ import Sponsors from "@/components/sponsors/page";
 import About from "@/components/about/page";
 import Navbar from "@/components/navbar/page";
 import NeonGrid from "@/components/hero/neonGrid";
+import PrizePool from "@/components/prizePool/page";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Navbar />
       <LandingPage />
       <AboutHackfest />
+      <PrizePool />
       <Domains
         domainList={[
           {

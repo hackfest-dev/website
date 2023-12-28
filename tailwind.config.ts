@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   content: [
@@ -17,6 +18,20 @@ const config: Config = {
         anton: ["Anton", "sans-serif"],
         nunito: ["Nunito Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
+      },
+      animation: {
+        "meteor-effect": "meteor 5s linear infinite",
+      },
+      keyframes: {
+ 
+        meteor: {
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": {
+            transform: "rotate(215deg) translateX(-500px)",
+            opacity: "0",
+          },
+        },
       },
       colors: {
         primary: {
@@ -139,6 +154,21 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins:  [
+    plugin(function({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'translate-z': (value) => ({
+            '--tw-translate-z': value,
+            transform: ` translate3d(var(--tw-translate-x), var(--tw-translate-y), var(--tw-translate-z)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`,
+          }), // this is actual CSS
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),   
+        },
+        { values: theme('translate'), supportsNegativeValues: true }
+      )
+    })
+  ],
 };
 export default config;
