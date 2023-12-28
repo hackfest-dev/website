@@ -24,7 +24,7 @@ return(
     <div className="max-w-6xl mx-auto">
     <div className="flex justify-between items-center h-16 px-4">
     <Link href="/">
-    <Image src="/assets/logo.png" alt="logo" width={72} height={72} className="drop-shadow-lg"/>
+    <Image src="/assets/logo.png" alt="logo" width={72} height={72} className="select-none drop-shadow-lg"/>
     </Link>     
     <div className="hidden md:flex space-x-7 font-medium text-base cursor-pointer">
         {links.map(({url, label}) => (
