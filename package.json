@@ -14,12 +14,13 @@
 		"@prisma/client": "5.5.2",
 		"@setu/upi-deep-links": "^3.0.0",
 		"cloudinary": "^1.41.1",
-		"framer-motion": "^10.16.15",
+		"framer-motion": "^10.16.16",
 		"next": "^14.0.3",
 		"next-auth": "^4.24.5",
 		"react": "^18.2.0",
 		"react-aria-components": "^1.0.0",
 		"react-dom": "^18.2.0",
+		"react-dom-confetti": "^0.2.0",
 		"react-icons": "^4.12.0"
 	},
 	"devDependencies": {
