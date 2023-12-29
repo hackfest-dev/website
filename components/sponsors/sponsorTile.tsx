@@ -16,6 +16,7 @@ export const SponsorsTile: React.FC<{
             glareMaxOpacity={0.3}
             glarePosition="all"
             style={{ transformStyle: "preserve-3d" }}
+            className={backcolor==="diamond"?"[&>.glare-wrapper]:rotate-45":""}
         >
             <div
                 className={`group bg-black p-5 shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f] border-2 rounded-3xl
