@@ -1,5 +1,7 @@
-import { social } from '../constants';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { social } from "../constants";
+import NMAMITLogo from '../../public/assets/NMAMITLogo.png'
+import FLCLogo from '../../public/assets/flcLogo.png'
 
 const Footer = () => {
   return (
@@ -8,19 +10,17 @@ const Footer = () => {
         <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-10">
             <a href="https://finiteloop.co.in" target="_blank">
-              <motion.img
-                whileTap={{ scale: 0.9 }}
-                src="/logos/flcLogo.png"
-                alt="flcLogo"
-                className="lg:h-24 md:h-20 lg:w-64 md:w-56 sm:w-42 sm:h-16 w-32 h-12"
+              <Image
+                src={FLCLogo}
+                alt="FLC Logo"
+                className="lg:h-24 md:h-20 lg:w-64 md:w-56 sm:w-42 sm:h-16 w-32 h-12 active:scale-95"
               />
             </a>
             <a href="https://nmamit.nitte.edu.in/" target="_blank">
-              <motion.img
-                whileTap={{ scale: 0.9 }}
-                src="/logos/NMAMITLogo.png"
-                alt="flcLogo"
-                className="lg:h-16 md:h-12 lg:w-96 md:w-72 sm:h-8 sm:w-48 h-6 w-32"
+              <Image
+                src={NMAMITLogo}
+                alt="NMAMIT Logo"
+                className="lg:h-16 md:h-12 lg:w-96 md:w-72 sm:h-8 sm:w-48 h-6 w-32 active:scale-95"
               />
             </a>
           </div>
