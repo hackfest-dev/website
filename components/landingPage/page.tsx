@@ -1,5 +1,7 @@
+"use client"
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 const LandingPage = () => {
   return (
@@ -14,24 +16,30 @@ const LandingPage = () => {
           >
             HACKFEST
             <span className="flex absolute top-0 left-1/4 animate-pulse">
-              <img
+              <Image
                 src="/assets/star.png"
                 className="md:w-12 md:h-12 w-6 h-6 rotate-45 "
                 alt=""
+                width={0}
+                height={0}
               />
             </span>
             <span className="flex absolute bottom-0 left-1/2 animate-pulse">
-              <img
+              <Image
                 src="/assets/star.png"
                 className="md:w-12 md:h-12 w-6 h-6 rotate-45 "
                 alt=""
+                width={0}
+                height={0}
               />
             </span>
             <span className="flex absolute top-0 left-2/3 animate-pulse">
-              <img
+              <Image
                 src="/assets/star.png"
                 className="md:w-12 md:h-12 w-6 h-6 rotate-45 "
                 alt=""
+                width={0}
+                height={0}
               />
             </span>
           </motion.div>

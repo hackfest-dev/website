@@ -1,3 +1,4 @@
+"use client"
 import { motion } from "framer-motion";
 import { SectionHeading } from "../ui/sectionHeading/page";
 import { SponsorsTile } from "./sponsorTile";

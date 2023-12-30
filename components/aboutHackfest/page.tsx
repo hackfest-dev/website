@@ -1,3 +1,4 @@
+"use server"
 import { BorderedContainer } from "../ui/page";
 import { GiDiamonds } from "react-icons/gi";
 const AboutHackfest = () => {
