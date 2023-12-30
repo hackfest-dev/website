@@ -162,7 +162,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           }
         >
           <Image
-            src={'/domains-bg.jpg'}
+            src={'/images/domains-bg.jpg'}
             alt="background"
             fill
             className="object-center object-cover"

@@ -1,8 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Confetti from 'react-dom-confetti';
-import { use, useEffect, useState } from 'react';
-import SparklesCore from './SparklesCore';
+import { useEffect, useState } from 'react';
 import { Meteors } from './meteors';
 import { useRef } from 'react';
 import { useInView } from 'framer-motion';
@@ -69,7 +68,7 @@ const PrizePool = () => {
           <div>
             <h1 className="text-5xl font-bold">Prize Pool</h1>
             <Image
-              src="/ufo.png"
+              src="/images/ufo.png"
               width={250}
               height={200}
               alt="UFO"

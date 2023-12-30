@@ -27,7 +27,7 @@ const About = () => {
             <a href="https://nmamit.nitte.edu.in/" target="_blank">
               <motion.img
                 whileTap={{ scale: 0.9 }}
-                src="/assets/NMAMITLogo.png"
+                src="/logos/NMAMITLogo.png"
                 alt="NMAMITLogo"
                 className="h-12 w-72"
               />
@@ -55,7 +55,7 @@ const About = () => {
             <a href="https://finiteloop.co.in" target="_blank">
               <motion.img
                 whileTap={{ scale: 0.9 }}
-                src="/assets/flcLogo.png"
+                src="/logos/flcLogo.png"
                 alt="FLCLogo"
                 className="h-24 w-64"
               />

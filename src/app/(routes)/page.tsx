@@ -19,21 +19,21 @@ export default function Home() {
         domainList={[
           {
             name: 'Metaverse',
-            image: '/metaverse.svg',
+            image: '/images/metaverse.svg',
             description:
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!',
             prize: 10000,
           },
           {
             name: 'Open Innovation',
-            image: '/metaverse.svg',
+            image: '/images/metaverse.svg',
             description:
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!',
             prize: 10000,
           },
           {
             name: 'Healthcare',
-            image: '/metaverse.svg',
+            image: '/images/metaverse.svg',
             description:
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!',
             prize: 10000,
