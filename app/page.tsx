@@ -1,4 +1,4 @@
-"use client";
+"use server";
 
 import LandingPage from "@/components/landingPage/page";
 import AboutHackfest from "@/components/aboutHackfest/page";
@@ -10,8 +10,9 @@ import About from "@/components/about/page";
 import Navbar from "@/components/navbar/page";
 import NeonGrid from "@/components/hero/neonGrid";
 import PrizePool from "@/components/prizePool/page";
+import { FAQ } from "@/components/faq/page";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="flex flex-col gap-20">
       <Navbar />
@@ -44,6 +45,7 @@ export default function Home() {
         ]}
       />
       <Sponsors />
+      <FAQ/>
       <About />
       <Footer />
     </main>
