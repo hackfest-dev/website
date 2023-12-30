@@ -1,6 +1,9 @@
 "use server";
 
+import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { getSession } from "next-auth/react";
 import os from "os";
 
 const verifyUser = async (userId: string) => {
@@ -43,7 +46,7 @@ const downloadList = async () => {
 				},
 			},
 		});
-		console.log(TeamsList)
+		console.log(TeamsList);
 		let csv = "";
 		TeamsList.map((team) => {
 			const leader = team.members.find(
@@ -61,11 +64,41 @@ const downloadList = async () => {
 				},,,,`;
 			});
 		});
-		return { message: 'success', csv };
+		return { message: "success", csv };
 	} catch (error) {
 		console.log(error);
 		return { message: "An error occurred!" };
 	}
 };
 
-export { verifyUser, getTeamsList, downloadList };
+const updateProfile = async (data: FormData) => {
+	try {
+		const user = await getServerSession(authOptions);
+		console.log(user);
+		//get image from form data as file and upload it to cloudinary
+		//get image url
+		const adhaarUrl = "";
+		const collegeIdUrl = "";
+		await prisma.user.update({
+			where: {
+				id: user?.user.id,
+			},
+			data: {
+				name: data.get("name") as string,
+				adhaar: adhaarUrl,
+				college_id: collegeIdUrl,
+				phone: data.get("phone") as string,
+				college: {
+					connect: {
+						id: data.get("college") as string,
+					},
+				},
+			},
+		});
+	} catch (error) {
+		console.log(error);
+		throw new Error("Something went wrong");
+	}
+	return "success";
+};
+export { verifyUser, getTeamsList, downloadList, updateProfile };

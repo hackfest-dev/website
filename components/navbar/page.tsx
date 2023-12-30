@@ -33,14 +33,6 @@ return(
     </div>
     <div className="">
     <button  onClick = {()=>signIn("google")} className="hidden md:block text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-2 drop-shadow-lg">Register</button>
-    <button  onClick = {()=>fetch("/api/user/updateProfile",{
-	method: "POST",
-	credentials: "include",
-	body: JSON.stringify({
-		name: "test",
-		adhaar: "test",
-	}),
-	})} className="hidden md:block text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-2 drop-shadow-lg">Request</button>
     </div>
     <div className="flex items-center space-x-4 md:hidden">
             {menu ? (
