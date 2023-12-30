@@ -4,7 +4,17 @@ import Confetti from 'react-dom-confetti'
 import { use, useEffect, useState } from 'react';
 import SparklesCore from './SparlesCore';
 import { Meteors } from './meteors';
+import { useRef } from 'react';
+import { useInView } from "framer-motion"
+
 const PrizePool = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref)
+  useEffect(() => {
+    if (isInView) {
+      ConfettiExplosion();
+    }
+  }, [isInView])
   const config = {
     angle: 290,
     spread: 360,
@@ -58,7 +68,7 @@ const PrizePool = () => {
         <Confetti active={show} config={config} />
     </div>  
     
-    <div className='flex flex-row justify-between items-center space-x-16 max-w-5xl'>
+    <div className='flex flex-row justify-between items-center space-x-16 max-w-5xl' ref={ref}>
       
       {/* Iterate cards */}
     <div className='relative'>
