@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
@@ -9,28 +9,28 @@ import os from "os";
 // -----------------User functions-----------------
 // Set user as verified on successful verification
 const verifyUser = async (userId: string) => {
-	try {
-		await prisma.user.update({
-			where: { id: userId },
-			data: { isVerified: true },
-		});
-	} catch (error) {
-		console.log(error);
-		throw new Error("Error verifying user");
-	}
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { isVerified: true },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error verifying user');
+  }
 };
 
 // Get details of user by email
 const getUserByEmail = async (email: string) => {
-	try {
-		return await prisma.user.findUnique({
-			where: { email },
-			include: { college: true },
-		});
-	} catch (error) {
-		console.log(error);
-		throw new Error("Error getting user by email");
-	}
+  try {
+    return await prisma.user.findUnique({
+      where: { email },
+      include: { college: true },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error getting user by email');
+  }
 };
 
 // Update user profile
@@ -145,10 +145,10 @@ const downloadList = async () => {
 };
 
 export {
-	verifyUser,
-	getTeamsList,
-	downloadList,
-	updateProfile,
-	getUserByEmail,
-	getOptionsData,
+  verifyUser,
+  getTeamsList,
+  downloadList,
+  updateProfile,
+  getUserByEmail,
+  getOptionsData,
 };

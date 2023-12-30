@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState, MouseEvent, TouchEvent } from "react";
-import { useWindowSize } from "../customHooks/page";
+import { useWindowSize } from '@/app/hooks/useWindowSize';
+import { useEffect, useRef, useState, MouseEvent, TouchEvent } from 'react';
 
 const NeonGrid = () => {
   const boxes = useRef<Array<Array<HTMLDivElement | null>>>([]);
@@ -28,9 +28,9 @@ const NeonGrid = () => {
   const temp = new Array(20).fill(0); // temporary array to map the grid
 
   const colorMap = [
-    ["#EB24B6", "#F05CC8", "#F594DB"],
-    ["#F26868", "#F68E8E", "#F9B4B4"],
-    ["#FFB85C", "#FFCA85", "#FFDCAD"],
+    ['#EB24B6', '#F05CC8', '#F594DB'],
+    ['#F26868', '#F68E8E', '#F9B4B4'],
+    ['#FFB85C', '#FFCA85', '#FFDCAD'],
   ];
 
   const handleHover = (
@@ -52,8 +52,8 @@ const NeonGrid = () => {
             ) <=
             (Math.SQRT2 * boxSize.width) / Math.cos(Math.PI / 9)
           ) {
-            box.style.transform = "perspective(100px) translateZ(5px)";
-            box.style.zIndex = "1";
+            box.style.transform = 'perspective(100px) translateZ(5px)';
+            box.style.zIndex = '1';
             box.style.boxShadow = `0 0 10px 5px ${color[1]}`;
           }
           // Giving a 3D effect to boxes second adjacent to the hovered box (diagonal boxes excluded)
@@ -64,8 +64,8 @@ const NeonGrid = () => {
             ) <=
             (2 * boxSize.width) / Math.cos(Math.PI / 9)
           ) {
-            box.style.transform = "perspective(100px) translateZ(3px)";
-            box.style.zIndex = "0";
+            box.style.transform = 'perspective(100px) translateZ(3px)';
+            box.style.zIndex = '0';
             box.style.boxShadow = `0 0 10px 5px ${color[2]}`;
           }
         }
@@ -73,12 +73,12 @@ const NeonGrid = () => {
     });
     // Giving a 3D effect to the hovered box
     if (e.target && e.target instanceof HTMLDivElement) {
-      e.target.style.transform = "perspective(100px) translateZ(10px)";
-      e.target.style.zIndex = "2";
+      e.target.style.transform = 'perspective(100px) translateZ(10px)';
+      e.target.style.zIndex = '2';
       e.target.style.boxShadow = `0 0 15px 10px ${color[0]}`;
     }
-    if (e.target && e.type === "mousedown") {
-      (e.target as HTMLDivElement).style.transitionProperty = "all";
+    if (e.target && e.type === 'mousedown') {
+      (e.target as HTMLDivElement).style.transitionProperty = 'all';
     }
   };
 
@@ -87,9 +87,9 @@ const NeonGrid = () => {
     boxes.current.map((row) => {
       row.map((box) => {
         if (box) {
-          box.style.transform = "perspective(100px) translateZ(-0px)";
-          box.style.zIndex = "0";
-          box.style.boxShadow = "0 0 0px 0px #AC61E5";
+          box.style.transform = 'perspective(100px) translateZ(-0px)';
+          box.style.zIndex = '0';
+          box.style.boxShadow = '0 0 0px 0px #AC61E5';
         }
       });
     });
@@ -99,15 +99,15 @@ const NeonGrid = () => {
     <>
       <div
         className="bg-primary-300 h-full w-full"
-        style={{ contain: "paint" }}
+        style={{ contain: 'paint' }}
       >
         <div style={{ perspective }}>
           <div
             className="h-screen relative"
             style={{
-              transformOrigin: "center",
-              transform: "rotateX(18deg)",
-              transformStyle: "preserve-3d",
+              transformOrigin: 'center',
+              transform: 'rotateX(18deg)',
+              transformStyle: 'preserve-3d',
             }}
           >
             {/* Grid container */}
@@ -135,13 +135,13 @@ const NeonGrid = () => {
                               className="relative ease-linear"
                               key={`${i}-${j}`}
                               style={{
-                                transitionProperty: "transform, box-shadow",
+                                transitionProperty: 'transform, box-shadow',
                                 height: boxSize.height - 4,
                                 width: boxSize.width - 4,
-                                transformStyle: "preserve-3d",
-                                transitionDuration: "0.3s",
-                                perspective: "100px",
-                                transform: "rotate3d(1.5, -1.5, -0.25, 45deg)",
+                                transformStyle: 'preserve-3d',
+                                transitionDuration: '0.3s',
+                                perspective: '100px',
+                                transform: 'rotate3d(1.5, -1.5, -0.25, 45deg)',
                               }}
                               ref={(ref) => (boxes.current[i][j] = ref)}
                             >
@@ -149,15 +149,15 @@ const NeonGrid = () => {
                               <div
                                 className="absolute inset-0 bg-gray-900 border-[1px] border-white/25"
                                 style={{
-                                  transform: "scaleY(1) ",
+                                  transform: 'scaleY(1) ',
                                 }}
                               ></div>
                               {/* Front face: this */}
                               <div
                                 className="absolute bottom-0 bg-gray-900 h-full w-full"
                                 style={{
-                                  transform: "rotateX(90deg)",
-                                  transformOrigin: "bottom",
+                                  transform: 'rotateX(90deg)',
+                                  transformOrigin: 'bottom',
                                 }}
                               ></div>
                               {/* Right face */}
@@ -172,8 +172,8 @@ const NeonGrid = () => {
                               <div
                                 className="absolute right-0 bg-gray-900 h-full w-full"
                                 style={{
-                                  transform: "rotateY(-90deg) scaleY(1)",
-                                  transformOrigin: "right",
+                                  transform: 'rotateY(-90deg) scaleY(1)',
+                                  transformOrigin: 'right',
                                 }}
                               ></div>
                             </div>

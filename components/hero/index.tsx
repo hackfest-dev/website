@@ -1,7 +1,6 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
-import NeonGrid from "./neonGrid";
+'use client';
+import React, { useEffect, useRef } from 'react';
+import NeonGrid from './neonGrid';
 
 const Hero: React.FC = () => {
   const container = useRef(null);
@@ -12,13 +11,14 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     requestAnimationFrame(animate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const animate = () => {
     const maskSizeProgress = targetMaskSize * getScrollProgress();
     if (stickyMask.current && stickyMask.current instanceof HTMLDivElement) {
       stickyMask.current.style.maskSize =
-        (initialMaskSize + maskSizeProgress) * 100 + "%";
+        (initialMaskSize + maskSizeProgress) * 100 + '%';
     }
     requestAnimationFrame(animate);
   };

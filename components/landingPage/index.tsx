@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { signIn } from "next-auth/react";
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const LandingPage = () => {
   return (
@@ -14,21 +14,27 @@ const LandingPage = () => {
           >
             HACKFEST
             <span className="flex absolute top-0 left-1/4 animate-pulse">
-              <img
+              <Image
                 src="/assets/star.png"
+                width={12}
+                height={12}
                 className="md:w-12 md:h-12 w-6 h-6 rotate-45 "
                 alt=""
               />
             </span>
             <span className="flex absolute bottom-0 left-1/2 animate-pulse">
-              <img
+              <Image
+                width={12}
+                height={12}
                 src="/assets/star.png"
                 className="md:w-12 md:h-12 w-6 h-6 rotate-45 "
                 alt=""
               />
             </span>
             <span className="flex absolute top-0 left-2/3 animate-pulse">
-              <img
+              <Image
+                width={12}
+                height={12}
                 src="/assets/star.png"
                 className="md:w-12 md:h-12 w-6 h-6 rotate-45 "
                 alt=""
@@ -43,14 +49,17 @@ const LandingPage = () => {
             className={`flex w-full justify-center `}
           >
             <h3
-              className={`lg:text-5xl md:text-3xl sm:text-2xl text-xl font-nunito text-center font-bold inline-block bg-[url('/assets/rockMaterial.png')]`}
+              className={`lg:text-5xl md:text-3xl sm:text-2xl text-xl text-center font-bold inline-block bg-[url('/assets/rockMaterial.png')]`}
             >
               36 HOURS NATIONAL LEVEL HACKATHON
             </h3>
-			<button onClick={()=>{
-				fetch("/api/payments/makePayment", {method:"POST"})
-			}}
-			>Test</button>
+            <button
+              onClick={() => {
+                fetch('/api/payments/makePayment', { method: 'POST' });
+              }}
+            >
+              Test
+            </button>
           </motion.div>
         </div>
       </div>
