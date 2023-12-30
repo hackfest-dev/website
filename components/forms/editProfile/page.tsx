@@ -3,9 +3,10 @@ import { getOptionsData, getUserByEmail, updateProfile } from "@/app/_actions";
 import { getSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
-import img from "next/image";
+import Image from "next/image";
 
 export default function EditProfile() {
+	//Define states
 	const [colleges, setColleges] = useState<{ id: string; name: string }[]>(
 		[]
 	);
@@ -16,6 +17,8 @@ export default function EditProfile() {
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [CollegeIdUrl, setCollegeIdUrl] = useState("");
 	const [AdhaarUrl, setAdhaarUrl] = useState("");
+
+	// Fetch data and initialize the form
 	useEffect(() => {
 		(async () => {
 			const data = await getSession();
@@ -26,15 +29,13 @@ export default function EditProfile() {
 			setCourses(courses);
 			setStates(states);
 			setUser(user);
+			setCollegeIdUrl(user?.college_id || "");
+			setAdhaarUrl(user?.adhaar || "");
 			setIsLoading(false);
 		})();
-
-		//fetch colleges states and courses
 	}, []);
-	const submit = async (e: FormData) => {
-		await updateProfile(e);
-		setIsSuccess(true);
-	};
+
+	// Hide success message after 3 seconds
 	useEffect(() => {
 		if (isSuccess) {
 			setTimeout(() => {
@@ -43,6 +44,13 @@ export default function EditProfile() {
 		}
 	}, [isSuccess]);
 
+	// Handle form submission
+	const submit = async (e: FormData) => {
+		await updateProfile(e);
+		setIsSuccess(true);
+	};
+
+	// Preview images
 	const previewCollegeId = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
 		if (files) {
@@ -60,6 +68,7 @@ export default function EditProfile() {
 
 	return (
 		<>
+			{/* Show loading while intializing */}
 			{isLoading && (
 				<div className=" sm:p-4 rounded grid sm:max-w-xl m-auto">
 					Loading...
@@ -87,6 +96,7 @@ export default function EditProfile() {
 						placeholder="Phone"
 						defaultValue={user?.phone || ""}
 					/>
+
 					{/* list of colleges*/}
 					<select
 						name="college"
@@ -111,6 +121,7 @@ export default function EditProfile() {
 							);
 						})}
 					</select>
+
 					{/* list of states*/}
 					<select
 						name="state"
@@ -170,11 +181,12 @@ export default function EditProfile() {
 						/>
 						{CollegeIdUrl && (
 							<span>
-								<img
-									src={CollegeIdUrl || user?.collegeId || ""}
+								<Image
+									src={CollegeIdUrl || ""}
 									alt="collegeID"
 									width={100}
 									height={100}
+									unoptimized={true}
 								/>
 								<button
 									onClick={() => {
@@ -204,11 +216,12 @@ export default function EditProfile() {
 						/>
 						{AdhaarUrl && (
 							<span>
-								<img
-									src={AdhaarUrl || user?.collegeId || ""}
+								<Image
+									src={AdhaarUrl || ""}
 									alt="Adhaar"
 									width={100}
 									height={100}
+									unoptimized={true}
 								/>{" "}
 								<button
 									onClick={() => {
@@ -226,6 +239,7 @@ export default function EditProfile() {
 							</span>
 						)}
 					</div>
+
 					<button
 						type="submit"
 						className="border rounded p-2 mt-6 hover:bg-cyan-500"
