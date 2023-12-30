@@ -14,7 +14,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen self-center">
+    <div className="relative">
       <div className="grid w-fit m-auto self-center">
         <h2 className="text-center">Something went wrong!</h2>
         <button

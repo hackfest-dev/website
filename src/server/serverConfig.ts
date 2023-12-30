@@ -15,6 +15,12 @@ export const publicAction =
     callback: (values: Infer<T>, ctx: Context) => Promise<any>
   ) =>
   async (value: Infer<T>) => {
+    const result = schema.safeParse(value);
+    if (!result.success) {
+      return {
+        message: result.error.errors[0].message,
+      };
+    }
     const session = await getCurrentUser();
     return callback(value, {
       session,
@@ -29,9 +35,14 @@ export const protectedAction =
   ) =>
   async (value: Infer<T>) => {
     const session = await getCurrentUser();
+    const result = schema.safeParse(value);
+    if (!result.success) {
+      return {
+        message: result.error.errors[0].message,
+      };
+    }
     if (!session) {
       return {
-        error: true,
         message: 'Not Authenticated',
       };
     }
@@ -49,15 +60,20 @@ export const adminAction =
   async (value: Infer<T>) => {
     const session = await getCurrentUser();
 
+    const result = schema.safeParse(value);
+    if (!result.success) {
+      return {
+        message: result.error.errors[0].message,
+      };
+    }
+
     if (!session) {
       return {
-        error: true,
         message: 'Not Authenticated',
       };
     }
     if (session.role != 'ADMIN') {
       return {
-        error: true,
         message: 'Not Authorized',
       };
     }

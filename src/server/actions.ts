@@ -1,12 +1,10 @@
 'use server';
-
-import { authOptions } from '@/src/lib/auth';
 import { prisma } from '@/src/lib/db';
 import { uploadFile } from '@/src/lib/utils/cloudinary';
-import { getServerSession } from 'next-auth';
 import os from 'os';
 import { protectedAction } from './serverConfig';
-import { getUserByEmailZ, updateUserZ } from '../lib/zod-schema';
+import { updateUserZ, updateProfileZ } from '../lib/zod-schema';
+import { revalidatePath } from 'next/cache';
 
 // -----------------User functions-----------------
 // Set user as verified on successful verification
@@ -22,70 +20,35 @@ const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
   }
 });
 
-// Get details of user by email
-const getUserByEmail = protectedAction(
-  getUserByEmailZ,
-  async (value, { db }) => {
-    try {
-      return await db.user.findUnique({
-        where: { email: value.email },
-        include: { college: true },
-      });
-    } catch (error) {
-      console.log(error);
-      throw new Error('Error getting user by email');
-    }
-  }
-);
+// Update User Profile
+const updateProfile = protectedAction(
+  updateProfileZ,
+  async (data, { db, session }) => {
+    // upload to cloudinary
+    const adhaarUrl = await uploadFile(data.aadharFile as File);
+    const collegeIdUrl = await uploadFile(data.collegeIdFile as File);
 
-// Update user profile
-const updateProfile = async (data: FormData) => {
-  try {
-    const user = await getServerSession(authOptions);
-    console.log(data.get('adhaar') as File);
-    //get image from form data as file and upload it to cloudinary
-    //get image url
-
-    const adhaarUrl = await uploadFile(data.get('adhaar') as File);
-    const collegeIdUrl = await uploadFile(data.get('collegeId') as File);
-    console.log(adhaarUrl, collegeIdUrl);
-    await prisma.user.update({
-      where: {
-        id: user?.user.id,
-      },
+    await db.user.update({
+      where: { id: session?.id },
       data: {
-        name: data.get('name') as string,
-        adhaar: adhaarUrl,
-        college_id: collegeIdUrl,
-        phone: data.get('phone') as string,
+        name: data.name,
+        phone: data.phone,
         college: {
           connect: {
-            id: data.get('college') as string,
+            id: data.college,
           },
         },
+        adhaar: adhaarUrl,
+        college_id: collegeIdUrl,
       },
     });
-  } catch (error) {
-    console.log(error);
-    throw new Error('Something went wrong');
-  }
-  return 'success';
-};
 
-// -----------------Form controls-----------------
-// Get options(dropdown) data for profile form
-const getOptionsData = async () => {
-  const colleges = await prisma.college.findMany({
-    select: {
-      id: true,
-      name: true,
-    },
-  });
-  //TODO:get states and courses
-  const states: string[] = [];
-  const courses: string[] = [];
-  return { colleges, states, courses };
-};
+    revalidatePath('/user/profile');
+    return {
+      message: 'Profile Updated',
+    };
+  }
+);
 
 // -------------Admin functions----------------
 // Team functions
@@ -147,11 +110,4 @@ const downloadList = async () => {
   }
 };
 
-export {
-  verifyUser,
-  getTeamsList,
-  downloadList,
-  updateProfile,
-  getUserByEmail,
-  getOptionsData,
-};
+export { verifyUser, getTeamsList, downloadList, updateProfile };
