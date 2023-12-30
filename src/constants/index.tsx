@@ -45,3 +45,14 @@ export const domains: Array<{
   name?: string;
   img?: string;
 }> = [{}, {}, {}, {}, {}];
+
+export const siteMetadata = {
+  title: 'Hackfest',
+  author: 'Technical Team of Hackfest',
+  description:
+    'Hackfest is a 36h long National level Hackathon at NMAMIT, Nitte coupled with a lot of Interactive Activities & Tech Conference talks!',
+  siteUrl: 'https://hackfest.dev',
+  email: 'admin@hackfest.com',
+  address: 'N.M.A.M. Institute of Technology, Nitte, Kalya, Karnataka 574110',
+  instagram: 'hackfest.dev',
+};

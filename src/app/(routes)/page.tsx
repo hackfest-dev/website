@@ -1,17 +1,14 @@
 import LandingPage from '@/src/components/landingPage';
 import AboutHackfest from '@/src/components/aboutHackfest';
-import Footer from '@/src/components/footer';
 import Domains from '@/src/components/domains';
 import Sponsors from '@/src/components/sponsors';
 import About from '@/src/components/about';
-import Navbar from '@/src/components/navbar';
 import PrizePool from '@/src/components/prizePool';
 import { FAQ } from '@/src/components/faq';
 
 export default async function Home() {
   return (
     <main className="flex flex-col gap-20">
-      <Navbar />
       <LandingPage />
       <AboutHackfest />
       <PrizePool />
@@ -43,7 +40,6 @@ export default async function Home() {
       <Sponsors />
       <FAQ />
       <About />
-      <Footer />
     </main>
   );
 }
