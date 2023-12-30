@@ -1,5 +1,5 @@
-import { social } from "../constants/page";
-import { motion } from "framer-motion";
+import { social } from '../constants';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
   return (

@@ -1,11 +1,11 @@
-import EditProfile from "@/components/forms/editProfile/page";
+import EditProfile from '@/components/forms/editProfile';
 
 export default async function Profile() {
-	return (
-		<>
-			<div className="bg-white text-black min-h-screen flex self-center">
-				<EditProfile />
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className="bg-white text-black min-h-screen flex self-center">
+        <EditProfile />
+      </div>
+    </>
+  );
 }

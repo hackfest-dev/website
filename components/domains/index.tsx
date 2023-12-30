@@ -1,9 +1,8 @@
-"use client";
-
-import { MouseEvent, TouchEvent, useRef, useState } from "react";
-import Image from "next/image";
-import { GiTronArrow } from "react-icons/gi";
-import styles from "./style.module.css";
+'use client';
+import { MouseEvent, TouchEvent, useRef, useState } from 'react';
+import Image from 'next/image';
+import { GiTronArrow } from 'react-icons/gi';
+import styles from './style.module.css';
 
 type DomainProps = {
   name: string;
@@ -15,10 +14,10 @@ type DomainProps = {
 const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
   const domains = useRef<Array<HTMLDivElement | null>>([]);
   const [contents, setContents] = useState<DomainProps>({
-    name: "",
-    image: "",
+    name: '',
+    image: '',
     prize: null,
-    description: "",
+    description: '',
   });
 
   const activeDomain = useRef<HTMLDivElement | null>(null);
@@ -47,7 +46,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         : 0;
 
       // Enter animation
-      e.target.style.zIndex = "40";
+      e.target.style.zIndex = '40';
       e.target.style.transform = `translate(${x}px, ${y}px) scale(2.5)`;
 
       bgBlockRef.current &&
@@ -70,7 +69,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         (contentPrizeRef.current as HTMLDivElement).classList.add(
           `${styles.active}`
         );
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     }
   };
 
@@ -97,8 +96,8 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       );
 
     setTimeout(() => {
-      (activeDomain.current as HTMLDivElement).style.zIndex = "39";
-      document.body.style.overflow = "visible";
+      (activeDomain.current as HTMLDivElement).style.zIndex = '39';
+      document.body.style.overflow = 'visible';
     }, 1000);
 
     (
@@ -114,7 +113,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           ref={contentRef}
           className={
             styles.contents +
-            " fixed inset-0 z-50 bg-transparent max-w-screen-xl mx-auto"
+            ' fixed inset-0 z-50 bg-transparent max-w-screen-xl mx-auto'
           }
         >
           {/* Position of domain image when viewing contents */}
@@ -139,7 +138,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                 </div>
               </div>
               <div
-                className={styles.contentElements + " text-xl"}
+                className={styles.contentElements + ' text-xl'}
                 ref={contentPrizeRef}
               >
                 {contents && contents.prize}
@@ -163,7 +162,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           }
         >
           <Image
-            src={"/domains-bg.jpg"}
+            src={'/domains-bg.jpg'}
             alt="background"
             fill
             className="object-center object-cover"
@@ -187,9 +186,9 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                       <div
                         className="h-full w-full rounded-xl"
                         style={{
-                          transformOrigin: "center center",
+                          transformOrigin: 'center center',
                           transition:
-                            "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
+                            'transform 1s cubic-bezier(1, 0, 0.7, 1) 0s',
                         }}
                         ref={(ref) => (domains.current[index] = ref)}
                         onClick={(e) => enterAnimation(e)}

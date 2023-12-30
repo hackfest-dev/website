@@ -1,135 +1,134 @@
-"use server";
+'use server';
 
-import { authOptions } from "@/lib/auth";
-import prisma from "@/lib/db";
-import { getServerSession } from "next-auth";
-import { getSession } from "next-auth/react";
-import os from "os";
+import { authOptions } from '@/lib/auth';
+import prisma from '@/lib/db';
+import { getServerSession } from 'next-auth';
+import os from 'os';
 
 const verifyUser = async (userId: string) => {
-	try {
-		await prisma.user.update({
-			where: { id: userId },
-			data: { isVerified: true },
-		});
-	} catch (error) {
-		console.log(error);
-		throw new Error("Error verifying user");
-	}
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { isVerified: true },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error verifying user');
+  }
 };
 
 const getUserByEmail = async (email: string) => {
-	try {
-		return await prisma.user.findUnique({
-			where: { email },
-			include: { college: true },
-		});
-	} catch (error) {
-		console.log(error);
-		throw new Error("Error getting user by email");
-	}
+  try {
+    return await prisma.user.findUnique({
+      where: { email },
+      include: { college: true },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error getting user by email');
+  }
 };
 const getOptionsData = async () => {
-	const colleges = await prisma.college.findMany({
-		select: {
-			id: true,
-			name: true,
-		},
-	});
-	//TODO:get states and courses
-	const states: string[] = [];
-	const courses: string[] = [];
-	return { colleges, states, courses };
+  const colleges = await prisma.college.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+  //TODO:get states and courses
+  const states: string[] = [];
+  const courses: string[] = [];
+  return { colleges, states, courses };
 };
 
 const getTeamsList = async () => {
-	try {
-		return await prisma.team.findMany({
-			include: {
-				members: {
-					include: { college: true },
-				},
-			},
-		});
-	} catch (error) {
-		console.log(error);
-		throw new Error("Error getting teams list");
-	}
+  try {
+    return await prisma.team.findMany({
+      include: {
+        members: {
+          include: { college: true },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error getting teams list');
+  }
 };
 const downloadList = async () => {
-	//console.log("download list");
-	//return {message:"download list"};
-	//
-	try {
-		const TeamsList = await prisma.team.findMany({
-			include: {
-				members: {
-					include: {
-						college: true,
-					},
-				},
-			},
-		});
-		console.log(TeamsList);
-		let csv = "";
-		TeamsList.map((team) => {
-			const leader = team.members.find(
-				(member) => member.isLeader === true
-			)?.name;
-			const college = team?.members[0].college?.name;
-			csv += `${os.EOL}${team.name},${
-				college ? college : "Not Available"
-			},${leader ? leader : "Not Available"},${team.members.length},`;
-			team.members.map((member) => {
-				csv += `"Name:${member?.name}\nPhone:${
-					member.phone ? member.phone : "Not available"
-				}\nEmail:${member.email ? member.email : "Not available"}"${
-					os.EOL
-				},,,,`;
-			});
-		});
-		return { message: "success", csv };
-	} catch (error) {
-		console.log(error);
-		return { message: "An error occurred!" };
-	}
+  //console.log("download list");
+  //return {message:"download list"};
+  //
+  try {
+    const TeamsList = await prisma.team.findMany({
+      include: {
+        members: {
+          include: {
+            college: true,
+          },
+        },
+      },
+    });
+    console.log(TeamsList);
+    let csv = '';
+    TeamsList.map((team) => {
+      const leader = team.members.find(
+        (member) => member.isLeader === true
+      )?.name;
+      const college = team?.members[0].college?.name;
+      csv += `${os.EOL}${team.name},${college ? college : 'Not Available'},${
+        leader ? leader : 'Not Available'
+      },${team.members.length},`;
+      team.members.map((member) => {
+        csv += `"Name:${member?.name}\nPhone:${
+          member.phone ? member.phone : 'Not available'
+        }\nEmail:${member.email ? member.email : 'Not available'}"${
+          os.EOL
+        },,,,`;
+      });
+    });
+    return { message: 'success', csv };
+  } catch (error) {
+    console.log(error);
+    return { message: 'An error occurred!' };
+  }
 };
 
 const updateProfile = async (data: FormData) => {
-	try {
-		const user = await getServerSession(authOptions);
-		console.log(data);
-		//get image from form data as file and upload it to cloudinary
-		//get image url
-		const adhaarUrl = "";
-		const collegeIdUrl = "";
-		await prisma.user.update({
-			where: {
-				id: user?.user.id,
-			},
-			data: {
-				name: data.get("name") as string,
-				adhaar: adhaarUrl,
-				college_id: collegeIdUrl,
-				phone: data.get("phone") as string,
-				college: {
-					connect: {
-						id: data.get("college") as string,
-					},
-				},
-			},
-		});
-	} catch (error) {
-		console.log(error);
-		throw new Error("Something went wrong");
-	}
-	return "success";
+  try {
+    const user = await getServerSession(authOptions);
+    console.log(data);
+    //get image from form data as file and upload it to cloudinary
+    //get image url
+    const adhaarUrl = '';
+    const collegeIdUrl = '';
+    await prisma.user.update({
+      where: {
+        id: user?.user.id,
+      },
+      data: {
+        name: data.get('name') as string,
+        adhaar: adhaarUrl,
+        college_id: collegeIdUrl,
+        phone: data.get('phone') as string,
+        college: {
+          connect: {
+            id: data.get('college') as string,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Something went wrong');
+  }
+  return 'success';
 };
 export {
-	verifyUser,
-	getTeamsList,
-	downloadList,
-	updateProfile,
-	getUserByEmail,
-	getOptionsData,
+  verifyUser,
+  getTeamsList,
+  downloadList,
+  updateProfile,
+  getUserByEmail,
+  getOptionsData,
 };

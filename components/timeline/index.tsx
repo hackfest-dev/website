@@ -1,8 +1,7 @@
-"use client";
-
-import { useScroll, useTransform, motion, useSpring } from "framer-motion";
-import { useRef } from "react";
-import Image from "next/image";
+'use client';
+import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
+import { useRef } from 'react';
+import Image from 'next/image';
 
 type Event = {
   title: string;
@@ -13,7 +12,7 @@ const Timeline = ({ events }: { events: Event[] }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["50% end", "end end"],
+    offset: ['50% end', 'end end'],
   });
   const smoothScroll = useSpring(scrollYProgress, {
     mass: 0.5,
@@ -24,7 +23,7 @@ const Timeline = ({ events }: { events: Event[] }) => {
   const angle = useTransform(
     smoothScroll,
     [0, 1],
-    ["0deg", `-${360 - 360 / divisions}deg`]
+    ['0deg', `-${360 - 360 / divisions}deg`]
   );
 
   return (
@@ -47,7 +46,7 @@ const Timeline = ({ events }: { events: Event[] }) => {
               className="relative origin-center bg-black rounded-full w-full h-full"
             >
               <Image
-                src={"/cd.png"}
+                src={'/cd.png'}
                 fill
                 alt="CD"
                 className="object-center object-cover"

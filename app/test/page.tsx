@@ -1,7 +1,5 @@
-import NeonGrid from "@/components/hero/neonGrid";
-import Timeline from "@/components/timeline/page";
-import { BorderedContainer, Button } from "@/components/ui/page";
-import Hero from "@/components/hero/page";
+import { BorderedContainer, Button } from '@/components/ui';
+import Hero from '@/components/hero';
 
 const test = () => {
   return (
