@@ -13,7 +13,6 @@
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/client": "latest",
-    "@prisma/extension-accelerate": "^0.6.2",
     "@setu/upi-deep-links": "^3.0.0",
     "@tsparticles/engine": "^3.0.3",
     "@tsparticles/react": "^3.0.0",
