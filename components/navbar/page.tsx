@@ -20,11 +20,11 @@ const Navbar = () =>{
       };
     
 return(
-<nav className="fixed top-0 w-full z-50 bg-purple-600 text-white backdrop-blur-lg bg-opacity-60">
+<nav className="fixed top-0 w-full z-50 bg-gradient-to-r from-primary-600 via-primary-800 to-primary-600 text-white backdrop-blur-lg bg-opacity-60">
     <div className="max-w-6xl mx-auto">
     <div className="flex justify-between items-center h-16 px-4">
     <Link href="/">
-    <Image src="/assets/logo.png" alt="logo" width={72} height={72} className="drop-shadow-lg"/>
+    <Image src="/assets/logo.png" alt="logo" width={72} height={72} className="select-none drop-shadow-lg"/>
     </Link>     
     <div className="hidden md:flex space-x-7 font-medium text-base cursor-pointer">
         {links.map(({url, label}) => (
