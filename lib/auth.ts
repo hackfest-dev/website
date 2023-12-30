@@ -1,10 +1,10 @@
-import { DefaultSession, NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "lib/db";
-import { secrets } from "./secrets";
+import { DefaultSession, NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import prisma from 'lib/db';
+import { secrets } from './secrets';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: {
       id: string;
@@ -18,7 +18,7 @@ declare module "next-auth" {
         | undefined;
       isLeader: boolean;
       phone: string;
-    } & DefaultSession["user"];
+    } & DefaultSession['user'];
   }
 }
 
@@ -26,16 +26,16 @@ export const authOptions: NextAuthOptions = {
   secret: secrets.NEXTAUTH_SECRET as string,
 
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   pages: {
-    error: "/auth/error",
+    error: '/auth/error',
   },
   callbacks: {
     async redirect({ url }) {
-      if (url.includes("/auth/error")) {
-        url = url.replace("/auth/error", "/profile");
-        url = url.replace(/\?.*/, "");
+      if (url.includes('/auth/error')) {
+        url = url.replace('/auth/error', '/profile');
+        url = url.replace(/\?.*/, '');
       }
       return url;
     },
@@ -49,7 +49,7 @@ export const authOptions: NextAuthOptions = {
         },
       });
       if (!dbUser) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
       session.user.id = dbUser.id;
       if (dbUser.team) {
@@ -62,7 +62,7 @@ export const authOptions: NextAuthOptions = {
       }
       session.user.team = null;
       session.user.isLeader = dbUser?.isLeader;
-      session.user.phone = dbUser?.phone || "";
+      session.user.phone = dbUser?.phone || '';
       return session;
     },
   },
