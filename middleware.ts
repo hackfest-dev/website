@@ -1,7 +1,7 @@
 //This is a middleware that runs prior to the controller
 
 //import { getSession } from "next-auth/react";
-//import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 //import prisma from "@/lib/db";
 //import { getServerSession } from "next-auth";
 //import { authOptions } from "./lib/auth";
@@ -46,4 +46,8 @@
 //	matcher: ["/api/user/:path*"],
 //};
 //
-export { default } from "next-auth/middleware";
+// export { default } from "next-auth/middleware";
+
+export async function middleware(req: NextRequest) {
+  return NextResponse.next();
+}
