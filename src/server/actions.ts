@@ -1,9 +1,8 @@
 'use server';
 
-import { authOptions } from '@/src/lib/auth';
-import { prisma } from '@/src/lib/db';
+import prisma from '@/src/lib/db';
 import { uploadFile } from '@/src/lib/utils/cloudinary';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/src/auth';
 import os from 'os';
 import { protectedAction } from './serverConfig';
 import { getUserByEmailZ, updateUserZ } from '../lib/zod-schema';
@@ -41,7 +40,7 @@ const getUserByEmail = protectedAction(
 // Update user profile
 const updateProfile = async (data: FormData) => {
   try {
-    const user = await getServerSession(authOptions);
+    const user = await auth();
     console.log(data.get('adhaar') as File);
     //get image from form data as file and upload it to cloudinary
     //get image url

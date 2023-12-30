@@ -2,7 +2,7 @@ import { z, type infer as Infer } from 'zod';
 import { getCurrentUser } from '@/src/lib/session';
 
 import type { Session } from '@/src/lib/auth';
-import { prisma } from '@/src/lib/db';
+import prisma from '@/src/lib/db';
 
 interface Context {
   session: Session['user'] | undefined;

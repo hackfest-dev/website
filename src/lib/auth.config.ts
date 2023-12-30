@@ -1,7 +1,6 @@
-import { DefaultSession, NextAuthOptions } from 'next-auth';
+import { DefaultSession, NextAuthConfig } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from '@/src/lib/db';
+import prisma from '@/src/lib/db';
 import { secrets } from './secrets';
 import type { Role } from '@prisma/client';
 
@@ -41,12 +40,7 @@ export interface Session extends DefaultSession {
   } & DefaultSession['user'];
 }
 
-export const authOptions: NextAuthOptions = {
-  secret: secrets.NEXTAUTH_SECRET as string,
-
-  session: {
-    strategy: 'jwt',
-  },
+export default {
   pages: {
     error: '/auth/error',
   },
@@ -82,6 +76,7 @@ export const authOptions: NextAuthOptions = {
       session.user.team = null;
       session.user.isLeader = dbUser?.isLeader;
       session.user.phone = dbUser?.phone || '';
+      session.user.role = dbUser.role;
       return session;
     },
   },
@@ -92,6 +87,4 @@ export const authOptions: NextAuthOptions = {
       clientSecret: secrets.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-
-  adapter: PrismaAdapter(prisma),
-};
+} satisfies NextAuthConfig;
