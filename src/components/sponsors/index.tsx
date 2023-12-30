@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '../ui/sectionHeading';
 import { SponsorsTile } from './sponsorTile';

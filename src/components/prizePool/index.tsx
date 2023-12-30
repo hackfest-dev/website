@@ -37,12 +37,12 @@ const PrizePool = () => {
   };
 
   const [show, setShow] = useState(false);
-//   useEffect(() => {
-//     const ConfettiExplosion = () => {
-//       setShow(true);
-//       setTimeout(() => setShow(false), 1000);
-//     };
-//   }, []);
+  //   useEffect(() => {
+  //     const ConfettiExplosion = () => {
+  //       setShow(true);
+  //       setTimeout(() => setShow(false), 1000);
+  //     };
+  //   }, []);
 
   const ConfettiExplosion = () => {
     setShow(true);

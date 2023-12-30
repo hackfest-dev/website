@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import { social } from "../constants";
-import NMAMITLogo from '../../public/assets/NMAMITLogo.png'
-import FLCLogo from '../../public/assets/flcLogo.png'
+import { social } from '../constants';
+import NMAMITLogo from '@/public/logos/NMAMITLogo.png';
+import FLCLogo from '@/public/logos/flcLogo.png';
 
 const Footer = () => {
   return (

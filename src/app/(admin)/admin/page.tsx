@@ -10,7 +10,7 @@ export default function Admin() {
   type data = Team & { members: members[] };
   const [data, setData] = useState<data[]>([]);
   const [downloadData, setdownloadData] = useState<string>('');
-  
+
   useEffect(() => {
     (async () => {
       const res = await getTeamsList();
