@@ -3,7 +3,7 @@ import {
   getOptionsData,
   getUserByEmail,
   updateProfile,
-} from '@/src/server/_actions';
+} from '@/src/server/actions';
 import { getSession, signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { User } from '@prisma/client';
@@ -25,7 +25,7 @@ export default function EditProfile() {
     (async () => {
       const data = await getSession();
       if (!data) return signIn('google');
-      const user = await getUserByEmail(data.user.email as string);
+      const user = await getUserByEmail({ email: data.user.email as string });
       const { courses, states, colleges } = await getOptionsData();
       setColleges(colleges);
       setCourses(courses);

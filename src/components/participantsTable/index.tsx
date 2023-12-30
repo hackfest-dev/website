@@ -1,5 +1,5 @@
 'use client';
-import { verifyUser } from '@/src/server/_actions';
+import { verifyUser } from '@/src/server/actions';
 import { College, Team, User } from '@prisma/client';
 import Image from 'next/image';
 import {
@@ -69,7 +69,7 @@ export default function ParticipantsTable({ data }: { data: data[] }) {
                         onClick={(e) => {
                           const id = e.currentTarget.getAttribute('data-uid');
                           console.log(id);
-                          if (id) verifyUser(id);
+                          if (id) verifyUser({ userId: id });
                         }}
                         className="bg-white p-4 rounded text-black"
                       >

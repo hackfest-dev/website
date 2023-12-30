@@ -24,6 +24,7 @@ async function getSignature() {
   );
   return { timestamp, signature };
 }
+
 async function uploadFile(file: File) {
   const { signature, timestamp } = await getSignature();
   const formData = new FormData();

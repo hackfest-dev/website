@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
-export const exampleZ = z.object({
-  name: z.string(),
+const updateUserZ = z.object({
+  userId: z.string(),
 });
 
-export type Example = z.infer<typeof exampleZ>;
+const getUserByEmailZ = z.object({
+  email: z.string(),
+});
+
+export { updateUserZ, getUserByEmailZ };

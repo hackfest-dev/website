@@ -1,8 +1,8 @@
 'use client';
 import ParticipantsTable from '@/src/components/participantsTable';
-import { getTeamsList } from '../../../server/_actions';
+import { getTeamsList } from '../../../server/actions';
 import { useEffect, useState } from 'react';
-import { downloadList } from '../../../server/_actions';
+import { downloadList } from '../../../server/actions';
 import { Team, User, College } from '@prisma/client';
 
 export default function Admin() {
@@ -10,12 +10,14 @@ export default function Admin() {
   type data = Team & { members: members[] };
   const [data, setData] = useState<data[]>([]);
   const [downloadData, setdownloadData] = useState<string>('');
+  
   useEffect(() => {
     (async () => {
       const res = await getTeamsList();
       setData(res);
     })();
   }, []);
+
   useEffect(() => {
     if (!downloadData) return;
     const url = window.URL.createObjectURL(new Blob([downloadData]));
@@ -26,6 +28,7 @@ export default function Admin() {
     link.click();
     link.remove();
   }, [downloadData]);
+
   return (
     <>
       <div className="w-full border-b">

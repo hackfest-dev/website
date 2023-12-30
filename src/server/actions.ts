@@ -1,37 +1,42 @@
 'use server';
 
 import { authOptions } from '@/src/lib/auth';
-import prisma from '@/src/lib/db';
+import { prisma } from '@/src/lib/db';
 import { uploadFile } from '@/src/lib/utils/cloudinary';
 import { getServerSession } from 'next-auth';
 import os from 'os';
+import { protectedAction } from './serverConfig';
+import { getUserByEmailZ, updateUserZ } from '../lib/zod-schema';
 
 // -----------------User functions-----------------
 // Set user as verified on successful verification
-const verifyUser = async (userId: string) => {
+const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
   try {
-    await prisma.user.update({
-      where: { id: userId },
+    await db.user.update({
+      where: { id: value.userId },
       data: { isVerified: true },
     });
   } catch (error) {
     console.log(error);
     throw new Error('Error verifying user');
   }
-};
+});
 
 // Get details of user by email
-const getUserByEmail = async (email: string) => {
-  try {
-    return await prisma.user.findUnique({
-      where: { email },
-      include: { college: true },
-    });
-  } catch (error) {
-    console.log(error);
-    throw new Error('Error getting user by email');
+const getUserByEmail = protectedAction(
+  getUserByEmailZ,
+  async (value, { db }) => {
+    try {
+      return await db.user.findUnique({
+        where: { email: value.email },
+        include: { college: true },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error getting user by email');
+    }
   }
-};
+);
 
 // Update user profile
 const updateProfile = async (data: FormData) => {
@@ -83,7 +88,6 @@ const getOptionsData = async () => {
 };
 
 // -------------Admin functions----------------
-
 // Team functions
 const getTeamsList = async () => {
   try {
