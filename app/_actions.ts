@@ -18,6 +18,30 @@ const verifyUser = async (userId: string) => {
 	}
 };
 
+const getUserByEmail = async (email: string) => {
+	try {
+		return await prisma.user.findUnique({
+			where: { email },
+			include: { college: true },
+		});
+	} catch (error) {
+		console.log(error);
+		throw new Error("Error getting user by email");
+	}
+};
+const getOptionsData = async () => {
+	const colleges = await prisma.college.findMany({
+		select: {
+			id: true,
+			name: true,
+		},
+	});
+	//TODO:get states and courses
+	const states: string[] = [];
+	const courses: string[] = [];
+	return { colleges, states, courses };
+};
+
 const getTeamsList = async () => {
 	try {
 		return await prisma.team.findMany({
@@ -74,7 +98,7 @@ const downloadList = async () => {
 const updateProfile = async (data: FormData) => {
 	try {
 		const user = await getServerSession(authOptions);
-		console.log(user);
+		console.log(data);
 		//get image from form data as file and upload it to cloudinary
 		//get image url
 		const adhaarUrl = "";
@@ -101,4 +125,11 @@ const updateProfile = async (data: FormData) => {
 	}
 	return "success";
 };
-export { verifyUser, getTeamsList, downloadList, updateProfile };
+export {
+	verifyUser,
+	getTeamsList,
+	downloadList,
+	updateProfile,
+	getUserByEmail,
+	getOptionsData,
+};
