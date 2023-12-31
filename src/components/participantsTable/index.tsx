@@ -1,6 +1,6 @@
 'use client';
 import { verifyUser } from '@/src/server/actions';
-import { College, Team, User } from '@prisma/client';
+import { TeamsData } from '@/src/types';
 import Image from 'next/image';
 import {
   Cell,
@@ -11,10 +11,7 @@ import {
   TableHeader,
 } from 'react-aria-components';
 
-type members = User & { college: College | null };
-type data = Team & { members: members[] };
-
-export default function ParticipantsTable({ data }: { data: data[] }) {
+export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
   return (
     <>
       <Table className="m-auto w-full" aria-label="Files">
@@ -50,6 +47,7 @@ export default function ParticipantsTable({ data }: { data: data[] }) {
                         alt="ID"
                         width="100"
                         height="100"
+                        unoptimized
                       />
                     </Cell>
                     <Cell className={'text-center border p-4'}>
@@ -58,6 +56,7 @@ export default function ParticipantsTable({ data }: { data: data[] }) {
                         alt="Adhaar"
                         width="100"
                         height="100"
+                        unoptimized
                       />
                     </Cell>
                     <Cell className={'text-center border p-4'}>
