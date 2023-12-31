@@ -1,5 +1,4 @@
 'use client';
-
 import { College, User } from '@prisma/client';
 import { updateProfile } from '@/src/server/actions';
 import { useState } from 'react';
@@ -21,15 +20,14 @@ const EditProfileForm = ({
   states: string[];
   courses: string[];
 }) => {
-  const [form, setForm] = useState({
-    name: user?.name || '',
-    phone: user?.phone || '',
-    college: user?.college?.id || '',
-    state: user?.college?.state || '',
-    course: user?.course || '',
-    CollegeIdUrl: '',
-    AdhaarUrl: '',
-  });
+  const [collegeId, setCollegeId] = useState<{
+    url: string;
+    file: File | undefined;
+  }>();
+  const [aadhaar, setAadhaar] = useState<{
+    url: string;
+    file: File | undefined;
+  }>();
 
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +37,7 @@ const EditProfileForm = ({
     const files = e.target.files;
     if (files) {
       const url = URL.createObjectURL(files[0]);
-      setForm({ ...form, CollegeIdUrl: url });
+      setCollegeId({ url, file: files[0] });
     }
   };
 
@@ -47,7 +45,7 @@ const EditProfileForm = ({
     const files = e.target.files;
     if (files) {
       const url = URL.createObjectURL(files[0]);
-      setForm({ ...form, AdhaarUrl: url });
+      setAadhaar({ url, file: files[0] });
     }
   };
 
@@ -56,15 +54,10 @@ const EditProfileForm = ({
       onSubmit={async (e) => {
         setLoading(true);
         e.preventDefault();
-        const res = await updateProfile({
-          name: form.name,
-          phone: form.phone,
-          college: form.college,
-          state: form.state,
-          course: form.course,
-          aadharFile: form.AdhaarUrl,
-          collegeIdFile: form.CollegeIdUrl,
-        });
+        const formData = new FormData(e.target as HTMLFormElement);
+        formData.append('collegeId', collegeId?.file || '');
+        formData.append('adhaar', aadhaar?.file || '');
+        const res = await updateProfile(formData);
         setError(res.message);
         setLoading(false);
       }}
@@ -73,7 +66,7 @@ const EditProfileForm = ({
       <h1 className="text-center text-xl">Update Profile</h1>
       <p
         className={`text-center ${
-          error.includes('Updated') ? 'text-green-500' : 'text-red-500'
+          error.includes('updated') ? 'text-green-500' : 'text-red-500'
         }`}
       >
         {error}
@@ -83,28 +76,23 @@ const EditProfileForm = ({
         type="text"
         name="name"
         placeholder="Name"
-        value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
+        defaultValue={user.name || ''}
       />
       <input
         className="border rounded p-1 m-2"
         type="number"
         name="phone"
         placeholder="Phone"
-        value={form.phone}
-        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+        defaultValue={user.phone || ''}
       />
 
       {/* list of colleges*/}
       <select
         name="college"
         className="bg-white border shadow-gray-50 rounded m-2 p-2"
-        onChange={(e) => {
-          setForm({ ...form, college: e.target.value });
-        }}
-        value={form.college}
+        defaultValue={user.college?.id || undefined}
       >
-        <option value="" disabled defaultValue={''}>
+        <option value="" disabled>
           Select College
         </option>
         {colleges.map((college) => {
@@ -120,12 +108,9 @@ const EditProfileForm = ({
       <select
         name="state"
         className=" bg-white border shadow-gray-50 rounded m-2 p-2"
-        onChange={(e) => {
-          setForm({ ...form, state: e.target.value });
-        }}
-        value={form.state}
+        defaultValue={user?.state || undefined}
       >
-        <option value="" disabled defaultValue={''}>
+        <option value="" disabled>
           Select State
         </option>
         {states.map((state, index) => {
@@ -141,21 +126,14 @@ const EditProfileForm = ({
       <select
         name="course"
         className=" bg-white border shadow-gray-50 rounded m-2 p-2"
-        onChange={(e) => {
-          setForm({ ...form, course: e.target.value });
-        }}
-        value={form.course}
+        defaultValue={user?.course || undefined}
       >
-        <option value="" disabled defaultValue={''}>
+        <option value="" disabled>
           Select Course
         </option>
         {courses.map((course, index) => {
           return (
-            <option
-              key={index}
-              value={course}
-              selected={course === user?.course ? true : false}
-            >
+            <option key={index} value={course}>
               {course}
             </option>
           );
@@ -173,26 +151,30 @@ const EditProfileForm = ({
           onChange={previewCollegeId}
           id="collegeId"
         />
-        {(form.CollegeIdUrl || user?.collegeId) && (
+        {(collegeId?.url || user?.college_id) && (
           <span>
             <Image
-              src={form.CollegeIdUrl || user?.college_id || ''}
+              src={collegeId?.url || user?.college_id || ''}
               alt="collegeID"
               width={100}
               height={100}
               unoptimized
             />
-            <button
-              onClick={() => {
-                setForm({ ...form, CollegeIdUrl: '' });
-                (
-                  document.getElementById('collegeId') as HTMLInputElement
-                ).value = '';
-              }}
-              className="bg-red-500 text-white text-center w-fit p-1 rounded cursor-pointer"
-            >
-              x
-            </button>
+            {user.college_id && !collegeId?.url && 'Uploaded File'}
+            {collegeId?.url && (
+              <button
+                onClick={() => {
+                  setCollegeId({ url: '', file: undefined });
+                  (
+                    document.getElementById('collegeId') as HTMLInputElement
+                  ).value = '';
+                }}
+                className="bg-red-500 text-white text-center w-fit p-1 rounded cursor-pointer"
+                type="button"
+              >
+                Close Preview
+              </button>
+            )}
           </span>
         )}
       </div>
@@ -207,25 +189,30 @@ const EditProfileForm = ({
           onChange={previewAdhaar}
           id="adhaar"
         />
-        {(form.AdhaarUrl || user?.adhaar) && (
+        {(aadhaar?.url || user?.adhaar) && (
           <span>
             <Image
-              src={form.AdhaarUrl || user?.adhaar || ''}
+              src={aadhaar?.url || user?.adhaar || ''}
               alt="Adhaar"
               width={100}
               height={100}
               unoptimized
             />{' '}
-            <button
-              onClick={() => {
-                setForm({ ...form, AdhaarUrl: '' });
-                (document.getElementById('adhaar') as HTMLInputElement).value =
-                  '';
-              }}
-              className="bg-red-500 text-white text-center w-fit p-1 rounded cursor-pointer"
-            >
-              x
-            </button>
+            {user?.adhaar && !aadhaar?.url && 'Uploaded File'}
+            {aadhaar?.url && (
+              <button
+                onClick={() => {
+                  setAadhaar({ url: '', file: undefined });
+                  (
+                    document.getElementById('adhaar') as HTMLInputElement
+                  ).value = '';
+                }}
+                className="bg-red-500 text-white text-center w-fit p-1 rounded cursor-pointer"
+                type="button"
+              >
+                Close Preview
+              </button>
+            )}
           </span>
         )}
       </div>

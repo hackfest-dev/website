@@ -130,6 +130,8 @@ enum Role {
 
 enum Courses {
   course_1
+  course_2
+  course_3
   //TODO: Add other courses
 }
 
