@@ -1,12 +1,12 @@
-'use client'
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+"use client";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 const LandingPage = () => {
   return (
     <>
       <div className="min-h-screen">
-        <div className="flex flex-col justify-center md:h-[60dvh] h-[80dvh] space-y-6">
+        {/* <div className="flex flex-col justify-center md:h-[60dvh] h-[80dvh] space-y-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -56,13 +56,13 @@ const LandingPage = () => {
             </h3>
             <button
               onClick={() => {
-                fetch('/api/payments/makePayment', { method: 'POST' });
+                fetch("/api/payments/makePayment", { method: "POST" });
               }}
             >
               Test
             </button>
           </motion.div>
-        </div>
+        </div> */}
       </div>
     </>
   );
