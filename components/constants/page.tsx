@@ -42,6 +42,51 @@ export const social: Array<{
 ];
 
 export const domains: Array<{
-  name?: string;
-  img?: string;
-}> = [{}, {}, {}, {}, {}];
+  name: string;
+  image: string;
+  description: string;
+  prize: number | null;
+}> = [
+  {
+    name: "Fintech",
+    image: "/metaverse.svg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
+    prize: 10000,
+  },
+  {
+    name: "Sustainable Development",
+    image: "/metaverse.svg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
+    prize: 10000,
+  },
+  {
+    name: "Healthcare",
+    image: "/metaverse.svg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
+    prize: 10000,
+  },
+  {
+    name: "Metaverse",
+    image: "/metaverse.svg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
+    prize: 10000,
+  },
+  {
+    name: "Logistics & Supply Chain",
+    image: "/metaverse.svg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
+    prize: 10000,
+  },
+  {
+    name: "Open Innovation",
+    image: "/metaverse.svg",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
+    prize: null,
+  },
+];

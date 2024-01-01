@@ -4,6 +4,7 @@ import LandingPage from "@/components/landingPage/page";
 import AboutHackfest from "@/components/aboutHackfest/page";
 import Footer from "@/components/footer/page";
 import Domains from "@/components/domains/page";
+import { domains } from "@/components/constants/page";
 import AlertBanner from "@/components/alertBanner/page";
 import Sponsors from "@/components/sponsors/page";
 import About from "@/components/about/page";
@@ -18,31 +19,7 @@ export default function Home() {
       <LandingPage />
       <AboutHackfest />
       <PrizePool />
-      <Domains
-        domainList={[
-          {
-            name: "Metaverse",
-            image: "/metaverse.svg",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
-            prize: 10000,
-          },
-          {
-            name: "Open Innovation",
-            image: "/metaverse.svg",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
-            prize: 10000,
-          },
-          {
-            name: "Healthcare",
-            image: "/metaverse.svg",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
-            prize: 10000,
-          },
-        ]}
-      />
+      <Domains domainList={domains} />
       <Sponsors />
       <About />
       <Footer />
