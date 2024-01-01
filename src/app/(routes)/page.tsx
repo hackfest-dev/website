@@ -1,47 +1,23 @@
-import LandingPage from "@/src/components/landingPage";
-import AboutHackfest from "@/src/components/aboutHackfest";
-import Domains from "@/src/components/domains";
-import Sponsors from "@/src/components/sponsors";
-import About from "@/src/components/about";
-import PrizePool from "@/src/components/prizePool";
-import { FAQ } from "@/src/components/faq";
-import TimelineTape from "@/src/components/timelineTape";
+import Hero from '@/src/components/Hero';
+import AboutHackfest from '@/src/components/aboutHackfest';
+import Domains from '@/src/components/domains';
+import Sponsors from '@/src/components/sponsors';
+import About from '@/src/components/about';
+import PrizePool from '@/src/components/prizePool';
+import { FAQ } from '@/src/components/faq';
+import TimelineTape from '@/src/components/timelineTape';
+import { domains } from '@/src/constants';
 
 export default async function Home() {
   return (
-    <main className="flex flex-col gap-20">
-      <LandingPage />
+    <main className="mx-auto pt-20">
+      <Hero />
       <AboutHackfest />
       <PrizePool />
-      <Domains
-        domainList={[
-          {
-            name: "Metaverse",
-            image: "/images/metaverse.svg",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
-            prize: 10000,
-          },
-          {
-            name: "Open Innovation",
-            image: "/images/metaverse.svg",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
-            prize: 10000,
-          },
-          {
-            name: "Healthcare",
-            image: "/images/metaverse.svg",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!",
-            prize: 10000,
-          },
-        ]}
-      />
-      <div className="flex flex-col items-center justify-center h-screen">
+      <Domains domainList={domains} />
+      <div className="flex flex-col items-center justify-center h-screen overflow-hidden">
         <TimelineTape />
       </div>
-
       <Sponsors />
       <FAQ />
       <About />

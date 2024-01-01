@@ -42,9 +42,33 @@ export const social: Array<{
 ];
 
 export const domains: Array<{
-  name?: string;
-  img?: string;
-}> = [{}, {}, {}, {}, {}];
+  name: string;
+  image: string;
+  description: string;
+  prize: number | null;
+}> = [
+  {
+    name: 'Metaverse',
+    image: '/images/metaverse.svg',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!',
+    prize: 10000,
+  },
+  {
+    name: 'Open Innovation',
+    image: '/images/metaverse.svg',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!',
+    prize: 10000,
+  },
+  {
+    name: 'Healthcare',
+    image: '/images/metaverse.svg',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis modi dolor qui atque vero libero odit, tempora dolores impedit ut!',
+    prize: 10000,
+  },
+];
 
 export const siteMetadata = {
   title: 'Hackfest',
