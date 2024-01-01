@@ -1,26 +1,25 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  relationMode = "prisma"
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -47,25 +46,25 @@ model User {
   accounts      Account[]
   sessions      Session[]
   //Place and college
-  state			String?
+  state         String?
   collegeId     String?
   college       College?  @relation(fields: [collegeId], references: [id])
   //payment and registration
   image         String?
-  course		Courses?
-  adhaar		String?
+  course        Courses?
+  adhaar        String?
   college_id    String?
   isVerified    Boolean   @default(false)
   paymentStatus String?   @default("PENDING")
   paymentId     String?
-  payment       Payments? 
+  payment       Payments?
   //team and role
   teamId        String?
   team          Team?     @relation(fields: [teamId], references: [id])
   isLeader      Boolean   @default(false)
   role          Role      @default(PARTICIPANT)
   //Other info
-  destination	String?
+  destination   String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -81,47 +80,47 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model College{
-	id		String @id @default(cuid())
-	name	String
-	state	String
-	users	User[]
+model College {
+  id    String @id @default(cuid())
+  name  String
+  state String
+  users User[]
 }
 
-model Team{
-    id			String @id @default(cuid())
-	name		String @unique
-	members		User[]
-	isComplete	Boolean @default(false)
-	//TODO: Add score details
-	videoSubmission VideoSubmissions?
+model Team {
+  id              String            @id @default(cuid())
+  name            String            @unique
+  members         User[]
+  isComplete      Boolean           @default(false)
+  //TODO: Add score details
+  videoSubmission VideoSubmissions?
 
-	createdAt	DateTime @default(now())
-	updatedAt	DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Payments{
-	id				String	@id @default(cuid())
-	userId			String	@unique
-	user			User	@relation(fields: [userId], references: [id])
-	amount			Float
-	transactionId	String
-	createdAt		DateTime @default(now())
+model Payments {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  amount        Float
+  transactionId String
+  createdAt     DateTime @default(now())
 }
 
-model VideoSubmissions{
-	id		Int @id @default(autoincrement())
-	teamId	String @unique
-	Team	Team @relation(fields: [teamId], references: [id])
-	url		String 
+model VideoSubmissions {
+  id     Int    @id @default(autoincrement())
+  teamId String @unique
+  Team   Team   @relation(fields: [teamId], references: [id])
+  url    String
 }
 
-model AppSettings{
-	id						Int @id @default(autoincrement())
-	isRegistrationOpen		Boolean @default(true)
-	isPaymentOpen			Boolean @default(true)
-	isVideoSubmissionOpen	Boolean @default(true)
-	isProfileEditOpen		Boolean @default(true)
+model AppSettings {
+  id                    Int     @id @default(autoincrement())
+  isRegistrationOpen    Boolean @default(true)
+  isPaymentOpen         Boolean @default(true)
+  isVideoSubmissionOpen Boolean @default(true)
+  isProfileEditOpen     Boolean @default(true)
 }
 
 enum Role {
@@ -129,9 +128,11 @@ enum Role {
   ADMIN
 }
 
-enum Courses{
-	course_1
-	//TODO: Add other courses
+enum Courses {
+  course_1
+  course_2
+  course_3
+  //TODO: Add other courses
 }
 
 enum PaymentStatus {
@@ -139,5 +140,3 @@ enum PaymentStatus {
   PAID
   FAILED
 }
-
-

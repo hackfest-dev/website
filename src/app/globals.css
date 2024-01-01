@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*UFO*/
+@keyframes fly-up-down {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.fly-up-down {
+  animation: fly-up-down 1.5s ease-in-out infinite;
+}
+
+.planet-background-1 {
+  background: radial-gradient(
+    80.36% 80.36% at 18.95% 26.51%,
+    #60dbff 0.56%,
+    #60d5ff 9.37%,
+    #5fc4ff 21.1%,
+    #5da9ff 34.46%,
+    #5a82ff 49.03%,
+    #5751ff 64.42%,
+    #5643ff 68.44%,
+    #563df8 74.32%,
+    #552ee5 82.82%,
+    #5315c6 92.87%,
+    #5200ab 100%
+  );
+  background-size: 150% 150%;
+  animation: none; /* Disable the initial rotation animation */
+}
