@@ -1,4 +1,4 @@
-import Hero from '@/src/components/Hero';
+import Hero from '@/src/components/hero';
 import AboutHackfest from '@/src/components/aboutHackfest';
 import Domains from '@/src/components/domains';
 import Sponsors from '@/src/components/sponsors';

@@ -1,8 +1,9 @@
 'use client';
 import Image from 'next/image';
-import HeroForeground from '@/public/images/hero-fg.svg';
+import HeroForeground from '@/public/images/hero-foreground.svg';
 import HeroBackground from '@/public/images/hero-background.svg';
 import HeroHoverboard from '@/public/images/hero-hoverboard.svg';
+import HackfestFont from '@/public/images/hackfest-text.png';
 import { MouseEvent, useRef, useState } from 'react';
 import { useScroll, useTransform, motion } from 'framer-motion';
 
@@ -15,6 +16,7 @@ const HeroParallax = () => {
 
   const y = useTransform(scrollYProgress, [0, 1], [-150, 200]);
   const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
   const [style, setStyle] = useState(0);
 
@@ -29,7 +31,7 @@ const HeroParallax = () => {
         style={{
           y: y,
         }}
-        className="absolute inset-0"
+        className="absolute inset-0 translate-y-0"
       >
         <Image
           src={HeroBackground}
@@ -37,12 +39,14 @@ const HeroParallax = () => {
           className="h-full w-full"
         />
       </motion.div>
-      <Image
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full"
-        src={HeroForeground}
-        alt="Hero Foreground"
-      />
-      <motion.div
+      <motion.div className="absolute inset-0">
+        <Image
+          className="w-full h-full"
+          src={HeroForeground}
+          alt="Hero Foreground"
+        />
+      </motion.div>
+      {/* <motion.div
         style={{ y: y2 }}
         className="absolute inset-0 flex justify-center items-center flex-col px-5 sm:px-7 lg:px-10"
       >
@@ -52,12 +56,21 @@ const HeroParallax = () => {
         <p className="text-3xl font-bold text-left text-shadow shadow-black">
           Hack the Time Stream!
         </p>
+      </motion.div> */}
+
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute inset-0 flex justify-center items-center"
+      >
+        <Image className="w-[800px]" src={HackfestFont} alt="Hackfest Font" />
       </motion.div>
 
       <motion.div
-        style={{
-          x: style - 750,
-        }}
+        style={
+          {
+            // x: style - 750,
+          }
+        }
         className="absolute inset-0"
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setStyle(0)}
