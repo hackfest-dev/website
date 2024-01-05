@@ -2,7 +2,7 @@
 import { checkName, createTeam, joinTeam } from "@/src/server/actions";
 import { useEffect, useState } from "react";
 
-export default function CreateTeam({ team }: { team: string }) {
+export default function CreateTeam() {
 	const [isNameAvailable, setIsNameAvailable] = useState(false);
 	const [Error, setError] = useState("");
 	const [Message, setMessage] = useState("");
@@ -35,91 +35,87 @@ export default function CreateTeam({ team }: { team: string }) {
 
 	return (
 		<>
-			{!team && (
-				<div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto">
-					<h1 className="text-xl text-center">Team management</h1>
-					{(Error || Message) && (
-						<p
-							className={`text-center ${
-								!Error ? "text-green-500" : "text-red-500"
-							}`}
-						>
-							{Error || Message}
-						</p>
-					)}
-
-					<form
-						className="grid text-center border my-4 p-4 rounded"
-						onSubmit={async (e) => {
-							setLoading(true);
-							e.preventDefault();
-							const formData = new FormData(
-								e.target as HTMLFormElement
-							);
-							const res = await createTeam(formData);
-							if (res.status === "error") setError(res.message);
-							if (res.status === "success")
-								setMessage(res.message);
-							setLoading(false);
-						}}
+			<div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto">
+				<h1 className="text-xl text-center">Team management</h1>
+				{(Error || Message) && (
+					<p
+						className={`text-center ${
+							!Error ? "text-green-500" : "text-red-500"
+						}`}
 					>
-						<h1>Create a Team</h1>
+						{Error || Message}
+					</p>
+				)}
 
-						<input
-							onChange={(e) => nameHandler(e.target.value)}
-							type="text"
-							placeholder="Team Name"
-							className={`text-center bg-white border rounded m-2 p-2 ${
-								isNameAvailable ? "bg-green-100" : "bg-red-100"
-							}`}
-							name="teamname"
-							required
-						/>
-						<button
-							type="submit"
-							className={`border rounded p-2 mt-6 hover:bg-blue-700 hover:text-white font-semibold ${
-								!isNameAvailable && "cursor-not-allowed"
-							}`}
-							disabled={!isNameAvailable}
-						>
-							Create Team
-						</button>
-					</form>
+				<form
+					className="grid text-center border my-4 p-4 rounded"
+					onSubmit={async (e) => {
+						setLoading(true);
+						e.preventDefault();
+						const formData = new FormData(
+							e.target as HTMLFormElement
+						);
+						const res = await createTeam(formData);
+						if (res.status === "error") setError(res.message);
+						if (res.status === "success") setMessage(res.message);
+						setLoading(false);
+					}}
+				>
+					<h1>Create a Team</h1>
 
-					<form
-						className="grid text-center border p-4 rounded"
-						onSubmit={async (e) => {
-							setLoading(true);
-							e.preventDefault();
-							const formData = new FormData(
-								e.target as HTMLFormElement
-							);
-							const res = await joinTeam(formData);
-							if (res.status === "error") setError(res.message);
-							if (res.status === "success")
-								setMessage(res.message);
-							setLoading(false);
-						}}
+					<input
+						onChange={(e) => nameHandler(e.target.value)}
+						type="text"
+						placeholder="Team Name"
+						className={`text-center bg-white border rounded m-2 p-2 ${
+							isNameAvailable ? "bg-green-100" : "bg-red-100"
+						}`}
+						name="teamname"
+						required
+					/>
+					<button
+						type="submit"
+						className={`border rounded p-2 mt-6 hover:bg-blue-700 hover:text-white font-semibold ${
+							!isNameAvailable && "cursor-not-allowed"
+						}`}
+						disabled={!isNameAvailable}
 					>
-						<h1>Join a Team</h1>
-						<input
-							onChange={(e) => nameHandler(e.target.value)}
-							type="text"
-							className=" bg-white border rounded m-2 p-2" /* Todo: change border according to name availability*/
-							placeholder="Team Id"
-							name="teamid"
-							required
-						/>
-						<button
-							type="submit"
-							className=" border rounded p-2 mt-6 hover:bg-blue-700 hover:text-white font-semibold"
-							value=""
-						>
-							Join Team
-						</button>
-					</form>
-				</div>
-			)}
+						Create Team
+					</button>
+				</form>
+
+				<form
+					className="grid text-center border p-4 rounded"
+					onSubmit={async (e) => {
+						setLoading(true);
+						e.preventDefault();
+						const formData = new FormData(
+							e.target as HTMLFormElement
+						);
+						const res = await joinTeam(formData);
+						if (res.status === "error") setError(res.message);
+						if (res.status === "success") setMessage(res.message);
+						setLoading(false);
+					}}
+				>
+					<h1>Join a Team</h1>
+					<input
+						onChange={(e) => nameHandler(e.target.value)}
+						type="text"
+						className=" bg-white border rounded m-2 p-2" /* Todo: change border according to name availability*/
+						placeholder="Team Id"
+						name="teamid"
+						required
+					/>
+					<button
+						type="submit"
+						className=" border rounded p-2 mt-6 hover:bg-blue-700 hover:text-white font-semibold"
+						value=""
+					>
+						Join Team
+					</button>
+				</form>
+			</div>
 		</>
 	);
 }

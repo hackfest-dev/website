@@ -1,7 +1,7 @@
 import CreateTeam from "@/src/components/forms/createTeam";
 import EditProfile from "@/src/components/forms/editProfile";
+import TeamDetails from "@/src/components/forms/teamInfo";
 import { getCurrentUser } from "@/src/lib/session";
-import { createTeam } from "@/src/server/actions";
 
 export default async function Profile() {
 	const user = await getCurrentUser();
@@ -13,12 +13,15 @@ export default async function Profile() {
 				</div>
 			</>
 		);
-	console.log(user.team);
 	return (
 		<>
 			<div className="p-6 md:p-auto m-auto bg-white text-black min-h-screen md:flex self-center justify-evenly">
 				<EditProfile />
-				<CreateTeam team={user?.team?.id || ""} />
+				{!user.team?.id ? (
+					<CreateTeam />
+				) : (
+					<TeamDetails teamid={user.team?.id} />
+				)}
 			</div>
 		</>
 	);
