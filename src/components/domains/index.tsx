@@ -107,7 +107,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
   return (
     <>
-      <section className="max-w-screen-xl p-12 mx-auto">
+      <section className="max-w-screen-xl p-12 mx-auto w-full">
         <div
           id="contents"
           ref={contentRef}
@@ -123,13 +123,13 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           />
           {/* Contents go here */}
           <div className="p-5 top-0 left-0 h-full absolute w-1/2 flex flex-col justify-center items-center gap-6">
-            <div className="text-4xl font-bold flex flex-wrap overflow-clip">
+            <div className="text-4xl font-bold flex overflow-clip">
               <div ref={contentTitleRef} className={styles.contentElements}>
                 {contents.name}
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <div className="text-xl flex flex-wrap overflow-clip">
+              <div className="text-xl flex overflow-clip">
                 <div
                   ref={contentDescriptionRef}
                   className={styles.contentElements}
@@ -137,11 +137,10 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   {contents.description}
                 </div>
               </div>
-              <div
-                className={styles.contentElements + " text-xl"}
-                ref={contentPrizeRef}
-              >
-                {contents && contents.prize}
+              <div className="text-xl flex overflow-clip">
+                <div ref={contentPrizeRef} className={styles.contentElements}>
+                  {contents.prize}
+                </div>
               </div>
             </div>
             <div
@@ -170,7 +169,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           <div className="w-full h-full bg-black/30 absolute top-0 left-0"></div>
         </div>
         {/* Grids */}
-        <div className="flex flex-col gap-20">
+        <div className="flex flex-col gap-20 w-full">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent w-fit">
             Domains
           </h1>
@@ -181,7 +180,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   <div className="flex justify-center items-end w-52 h-40 rounded-xl relative z-39 cursor-pointer group mb-5">
                     <div
                       id="imgBorder"
-                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-secondary-500 border-double rounded-xl transition-scale duration-300 ease-in-out"
+                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-secondary-500 border-double rounded-2xl transition-scale duration-300 ease-in-out"
                     >
                       <div
                         className="h-full w-full rounded-xl"
@@ -203,7 +202,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                       </div>
                       <div
                         id="domainName"
-                        className="absolute top-full -translate-y-1/2 bg-secondary-950 border-2 border-secondary-500 p-2 rounded-lg "
+                        className="absolute top-full -translate-y-1/2 bg-secondary-950 border-2 border-secondary-500 p-3 rounded-3xl z-[39] flex justify-center items-center max-w-[85%] text-center pointer-events-none"
                       >
                         <p className="text-xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent pointer-events-none">
                           {domain.name}
@@ -215,6 +214,28 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               );
             })}
           </div>
+          {/* <div className="relative h-screen">
+            <div className="h-[240px] w-[400px] absolute bg-gray-500">
+              <svg
+                viewBox="0 0 500 300"
+                style={{ height: "100%", width: "100%" }}
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 100L200 300L500 0L100 0L0 100Z" fill="#D9D9D9" />
+              </svg>
+            </div>
+            <div className="h-[240px] w-[400px] absolute bg-gray-500 ">
+              <svg
+                viewBox="0 0 500 300"
+                style={{ height: "100%", width: "100%", transform: "rotate(180deg)" }}
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 100L200 300L500 0L100 0L0 100Z" fill="#D9D9D9" />
+              </svg>
+            </div>
+          </div> */}
         </div>
       </section>
     </>
