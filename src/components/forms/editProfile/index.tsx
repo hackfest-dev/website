@@ -1,3 +1,4 @@
+"use server"
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/src/lib/auth';
 import { prisma } from '@/src/lib/db';
@@ -6,9 +7,6 @@ import { Courses } from '@prisma/client';
 
 export default async function EditProfile() {
   const session = await getServerSession(authOptions);
-  // TODO: Please login Fallback UI
-  if (!session) return <>Please login</>;
-
   const user = await prisma.user.findUnique({
     where: { email: session?.user.email! },
     include: { college: true },
