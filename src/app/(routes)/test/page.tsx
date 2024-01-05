@@ -1,5 +1,5 @@
 import { BorderedContainer, Button } from '@/src/components/ui';
-import Hero from '@/src/components/Hero';
+import Hero from '@/src/components/hero';
 
 const test = () => {
   return (

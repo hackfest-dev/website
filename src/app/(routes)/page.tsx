@@ -10,7 +10,7 @@ import { domains } from '@/src/constants';
 
 export default async function Home() {
   return (
-    <main className="mx-auto pt-20">
+    <main className="mx-auto">
       <Hero />
       <AboutHackfest />
       <PrizePool />
