@@ -97,6 +97,20 @@ const config: Config = {
     },
   },
   plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.rotate-x-20': {
+          transform: 'rotateX(20deg)',
+        },
+      });
+    }),
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.-rotate-z-20': {
+          transform: 'rotateZ(-20deg)',
+        },
+      });
+    }),
     plugin(function ({ matchUtilities, theme }) {
       matchUtilities(
         {
@@ -113,4 +127,5 @@ const config: Config = {
     }),
   ],
 };
+
 export default config;
