@@ -1,21 +1,21 @@
-'use client';
-import Image from 'next/image';
-import HeroForeground from '@/public/images/hero-foreground.svg';
-import HeroBackground from '@/public/images/hero-background.svg';
-import HeroHoverboard from '@/public/images/hero-hoverboard.svg';
-import HackfestFont from '@/public/images/hackfest-text.png';
-import { MouseEvent, useRef, useState } from 'react';
-import { useScroll, useTransform, motion } from 'framer-motion';
-import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+"use client";
+import Image from "next/image";
+import HeroForeground from "@/public/images/hero-foreground2.svg";
+import HeroBackground from "@/public/images/hero-background.svg";
+import HeroHoverboard from "@/public/images/hero-hoverboard.svg";
+import HackfestFont from "@/public/images/hackfest-text.png";
+import { MouseEvent, useRef, useState } from "react";
+import { useScroll, useTransform, motion } from "framer-motion";
+import { Alignment, Fit, Layout, useRive } from "@rive-app/react-canvas";
 
 const HeroParallax = () => {
   const ref = useRef(null);
   const { RiveComponent: Synthwave } = useRive({
-    src: `/rive/synthwave.riv/`,
+    src: `/rive/synthwave2.riv/`,
     // stateMachines: ['state-machine'],
     autoplay: true,
     layout: new Layout({
-      fit: Fit.FitWidth,
+      fit: Fit.Cover,
       alignment: Alignment.BottomCenter,
     }),
   });
@@ -25,14 +25,14 @@ const HeroParallax = () => {
     // stateMachines: ['state-machine'],
     autoplay: true,
     layout: new Layout({
-      fit: Fit.FitWidth,
+      fit: Fit.FitHeight,
       alignment: Alignment.BottomCenter,
     }),
   });
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start end', 'end start'],
+    offset: ["start end", "end start"],
   });
 
   const bgSpeed = useTransform(scrollYProgress, [0, 1], [-150, 200]);
@@ -47,14 +47,34 @@ const HeroParallax = () => {
   // };
 
   return (
-    <div ref={ref}>
-      <Synthwave className="w-screen h-screen absolute inset-0 z-10" />
+    <div className="relative h-screen w-screen" ref={ref}>
+      <motion.div
+        style={{ y: textSpeed }}
+        className="absolute inset-0 flex justify-center items-center">
+        <Image className="w-[800px]" src={HackfestFont} alt="Hackfest Font" />
+      </motion.div>
+
+      <Image
+        src={HeroForeground}
+        alt="Hero Background"
+        className="z-30 h-2/3 w-screen object-cover  object-bottom -mb-2 mt-2"
+      />
+      <Synthwave className=" z-30 w-screen h-1/3 " />
+
+      <motion.div style={{ y: bgSpeed }} className="absolute -z-10 inset-0">
+        <Image
+          src={HeroBackground}
+          alt="Hero Background"
+          className="h-screen w-screen object-cover object-top"
+        />
+      </motion.div>
+      {/* <Synthwave className=" absolute inset-0 z-10" />
 
       <motion.div style={{ y: bgSpeed }} className="absolute inset-0">
         <Image
           src={HeroBackground}
           alt="Hero Background"
-          className="h-full w-full"
+          className="h-screen w-screen object-cover"
         />
       </motion.div>
 
@@ -62,18 +82,17 @@ const HeroParallax = () => {
         <Image
           src={HeroForeground}
           alt="Hero Foreground"
-          className="h-full w-full mt-5"
+          className="h-screen w-screen object-contain "
         />
       </motion.div>
 
       <motion.div
         style={{ y: textSpeed }}
-        className="absolute inset-0 flex justify-center items-center"
-      >
+        className="absolute inset-0 flex justify-center items-center">
         <Image className="w-[800px]" src={HackfestFont} alt="Hackfest Font" />
       </motion.div>
 
-      {/* <div className="absolute inset-0 h-full w-full flex justify-center items-center">
+      <div className="absolute inset-0 h-full w-full flex justify-center items-center">
         <Hoverboard className="h-[300px] w-[300px]" />
       </div> */}
     </div>
