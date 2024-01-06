@@ -6,7 +6,7 @@ import type { HTMLAttributes } from 'react';
 import { useContainerSize } from '@/src/app/hooks/useContainerSize';
 
 type Props = HTMLAttributes<HTMLDivElement> & {
-  varient?: 'primary' | 'secondary';
+  varient?: 'base' | 'supporting';
   borderFace?: 'default' | 'inverted';
   parentClassName?: string;
 };
@@ -16,8 +16,8 @@ const BorderedContainer = (props: Props) => {
   const { width, height } = useContainerSize(ref);
 
   const gradients = {
-    primary: 'from-primary-600 to-secondary-500',
-    secondary: 'from-tertiary-600 to-quaternary-500',
+    base: 'from-base-600 to-supporting-500',
+    supporting: 'from-tertiary-600 to-quaternary-500',
   };
   const borderFaces = {
     default: 'rotate-0',
@@ -39,7 +39,7 @@ const BorderedContainer = (props: Props) => {
           className={
             styles.containerBorder +
             ' ' +
-            (varient ? gradients[varient] : gradients.primary) +
+            (varient ? gradients[varient] : gradients.base) +
             ' ' +
             (borderFace ? borderFaces[borderFace] : borderFaces.default) +
             ' bg-gradient-to-tl h-[117.24%] w-full absolute inset-0'

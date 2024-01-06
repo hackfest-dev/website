@@ -145,7 +145,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               </div>
             </div>
             <div
-              className="-scale-x-[2] rotate-12 cursor-pointer hover:text-secondary-500 transition-all duration-300 ease-in-out"
+              className="-scale-x-[2] rotate-12 cursor-pointer hover:text-supporting-500 transition-all duration-300 ease-in-out"
               onClick={() => exitAnimaiton()}
             >
               <GiTronArrow className="text-3xl" />
@@ -171,7 +171,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         </div>
         {/* Grids */}
         <div className="flex flex-col gap-20">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent w-fit">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-base-300 to-supporting-500 bg-clip-text text-transparent w-fit">
             Domains
           </h1>
           <div className="flex flex-wrap gap-5 justify-center items-center">
@@ -181,7 +181,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   <div className="flex justify-center items-end w-52 h-40 rounded-xl relative z-39 cursor-pointer group mb-5">
                     <div
                       id="imgBorder"
-                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-secondary-500 border-double rounded-xl transition-scale duration-300 ease-in-out"
+                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-supporting-500 border-double rounded-xl transition-scale duration-300 ease-in-out"
                     >
                       <div
                         className="h-full w-full rounded-xl"
@@ -203,9 +203,9 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                       </div>
                       <div
                         id="domainName"
-                        className="absolute top-full -translate-y-1/2 bg-secondary-950 border-2 border-secondary-500 p-2 rounded-lg "
+                        className="absolute top-full -translate-y-1/2 bg-supporting-950 border-2 border-supporting-500 p-2 rounded-lg "
                       >
-                        <p className="text-xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent pointer-events-none">
+                        <p className="text-xl font-bold bg-gradient-to-r from-base-300 to-supporting-500 bg-clip-text text-transparent pointer-events-none">
                           {domain.name}
                         </p>
                       </div>

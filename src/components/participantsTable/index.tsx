@@ -3,45 +3,45 @@ import { verifyUser } from '@/src/server/actions';
 import { TeamsData } from '@/src/types';
 import Image from 'next/image';
 import {
-  Cell,
-  Column,
-  Row,
+  TableCell,
+  TableHead,
+  TableRow,
   Table,
   TableBody,
   TableHeader,
-} from 'react-aria-components';
+} from '@/src/components/ui/table';
 
 export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
   return (
     <>
       <Table className="m-auto w-full" aria-label="Files">
         <TableHeader className="border-2">
-          <Column isRowHeader className={'p-4 border-2'}>
+          <TableHead className={'p-4 border-2'}>
             Name
-          </Column>
-          <Column className={'p-4 border-2'}>College</Column>
-          <Column className={'p-4 border-2'}>ID</Column>
-          <Column className={'p-4 border-2'}>Adhaar</Column>
-          <Column className={'p-4 border-2'}>Payment Status</Column>
-          <Column className={'p-4 border-2'}>Action</Column>
+          </TableHead>
+          <TableHead className={'p-4 border-2'}>College</TableHead>
+          <TableHead className={'p-4 border-2'}>ID</TableHead>
+          <TableHead className={'p-4 border-2'}>Adhaar</TableHead>
+          <TableHead className={'p-4 border-2'}>Payment Status</TableHead>
+          <TableHead className={'p-4 border-2'}>Action</TableHead>
         </TableHeader>
         <TableBody>
-          {/*Loop over members and insert rows*/}
+          {/*Loop over members and insert TableRows*/}
           {data.map((element) => {
             return element.members.map((member, index) => {
               return (
                 <>
-                  <Row className={'border p-2 text-xl'}>
-                    <Cell>Team: {element.name}</Cell>
-                  </Row>
-                  <Row key={index}>
-                    <Cell className={'text-center border p-4'}>
+                  <TableRow className={'border p-2 text-xl'}>
+                    <TableCell>Team: {element.name}</TableCell>
+                  </TableRow>
+                  <TableRow key={index}>
+                    <TableCell className={'text-center border p-4'}>
                       {member.name}
-                    </Cell>
-                    <Cell className={'text-center border p-4'}>
+                    </TableCell>
+                    <TableCell className={'text-center border p-4'}>
                       {member.college?.name}
-                    </Cell>
-                    <Cell className={'text-center border p-4'}>
+                    </TableCell>
+                    <TableCell className={'text-center border p-4'}>
                       <Image
                         src={member.college_id ? member.college_id : ''}
                         alt="ID"
@@ -49,8 +49,8 @@ export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
                         height="100"
                         unoptimized
                       />
-                    </Cell>
-                    <Cell className={'text-center border p-4'}>
+                    </TableCell>
+                    <TableCell className={'text-center border p-4'}>
                       <Image
                         src={member.adhaar ? member.adhaar : ''}
                         alt="Adhaar"
@@ -58,11 +58,11 @@ export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
                         height="100"
                         unoptimized
                       />
-                    </Cell>
-                    <Cell className={'text-center border p-4'}>
+                    </TableCell>
+                    <TableCell className={'text-center border p-4'}>
                       {member.paymentStatus}
-                    </Cell>
-                    <Cell className={'text-center border p-4'}>
+                    </TableCell>
+                    <TableCell className={'text-center border p-4'}>
                       <button
                         data-uid={member.id}
                         onClick={(e) => {
@@ -74,8 +74,8 @@ export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
                       >
                         Verify
                       </button>
-                    </Cell>
-                  </Row>
+                    </TableCell>
+                  </TableRow>
                 </>
               );
             });

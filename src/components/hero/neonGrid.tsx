@@ -98,7 +98,7 @@ const NeonGrid = () => {
   return (
     <>
       <div
-        className="bg-primary-300 h-full w-full"
+        className="bg-base-300 h-full w-full"
         style={{ contain: 'paint' }}
       >
         <div style={{ perspective }}>
