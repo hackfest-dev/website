@@ -1,5 +1,5 @@
-import type { Config } from 'tailwindcss';
-import plugin from 'tailwindcss/plugin';
+import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 const config: Config = {
   content: [
@@ -16,6 +16,7 @@ const config: Config = {
       },
       animation: {
         'meteor-effect': 'meteor 5s linear infinite',
+        'flicker':"flicker 20s linear infinite"
       },
       keyframes: {
         meteor: {
@@ -26,7 +27,23 @@ const config: Config = {
             opacity: '0',
           },
         },
+        flicker:{
+            '0%': { opacity: '0.1' },
+            '1%': { opacity: '1' },
+            '4%': { opacity: '0.1' },
+            '4.5%': { opacity: '1' },
+            '6%': { opacity: '0.1' },
+            '10%': { opacity: '1' },
+            '12.5%': { opacity: '0.3' },
+            '15%': { opacity: '1' },
+            '35%': { opacity: '0.7' },
+            '36%': { opacity: '0.2' },
+            '38.5%': { opacity: '0.9' },
+            '50%': { opacity: '0.9' },
+            '100%':{opacity:'1'}
+          }
       },
+          
       colors: {
         primary: {
           50: '#DFE4F6',
@@ -102,14 +119,14 @@ const config: Config = {
         '.rotate-x-20': {
           transform: 'rotateX(20deg)',
         },
-      });
+      })
     }),
     plugin(function ({ addUtilities }) {
       addUtilities({
         '.-rotate-z-20': {
           transform: 'rotateZ(-20deg)',
         },
-      });
+      })
     }),
     plugin(function ({ matchUtilities, theme }) {
       matchUtilities(
@@ -123,9 +140,9 @@ const config: Config = {
           }),
         },
         { values: theme('translate'), supportsNegativeValues: true }
-      );
+      )
     }),
   ],
-};
+}
 
-export default config;
+export default config

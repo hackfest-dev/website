@@ -49,17 +49,17 @@ export const authOptions: NextAuthOptions = {
 	session: {
 		strategy: "jwt",
 	},
-	pages: {
-		error: "/auth/error",
-	},
+	// pages: {
+	// 	error: "/auth/error",
+	// },
 	callbacks: {
-		async redirect({ url }) {
-			if (url.includes("/auth/error")) {
-				url = url.replace("/auth/error", "/profile");
-				url = url.replace(/\?.*/, "");
-			}
-			return url;
-		},
+		// async redirect({ url }) {
+		// 	if (url.includes("/auth/error")) {
+		// 		url = url.replace("/auth/error", "/profile");
+		// 		url = url.replace(/\?.*/, "");
+		// 	}
+		// 	return url;
+		// },
 		async session({ session }) {
 			const dbUser = await prisma.user.findUnique({
 				where: {
