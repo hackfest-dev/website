@@ -32,11 +32,12 @@ const HeroParallax = () => {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start end', 'start start'],
+    offset: ['start end', 'end start'],
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [-150, 200]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+  const bgSpeed = useTransform(scrollYProgress, [0, 1], [-150, 200]);
+  const textSpeed = useTransform(scrollYProgress, [0, 1], [-300, 300]);
+  const fgSpeed = useTransform(scrollYProgress, [0, 1], [-150, 150]);
 
   // const [x, setX] = useState(0);
 
@@ -47,23 +48,31 @@ const HeroParallax = () => {
 
   return (
     <div ref={ref}>
-      <Synthwave className="w-screen h-screen" />
-      <Image
-        src={HeroBackground}
-        alt="Hero Background"
-        className="h-full w-full absolute inset-0"
-      />
-      <Image
-        src={HeroForeground}
-        alt="Hero Foreground"
-        className="h-full w-full absolute inset-0 mt-5"
-      />
+      <Synthwave className="w-screen h-screen absolute inset-0 z-10" />
+
+      <motion.div style={{ y: bgSpeed }} className="absolute inset-0">
+        <Image
+          src={HeroBackground}
+          alt="Hero Background"
+          className="h-full w-full"
+        />
+      </motion.div>
+
+      <motion.div style={{ y: fgSpeed }} className="absolute inset-0">
+        <Image
+          src={HeroForeground}
+          alt="Hero Foreground"
+          className="h-full w-full mt-5"
+        />
+      </motion.div>
+
       <motion.div
-        // style={{ y: y2 }}
+        style={{ y: textSpeed }}
         className="absolute inset-0 flex justify-center items-center"
       >
         <Image className="w-[800px]" src={HackfestFont} alt="Hackfest Font" />
       </motion.div>
+
       {/* <div className="absolute inset-0 h-full w-full flex justify-center items-center">
         <Hoverboard className="h-[300px] w-[300px]" />
       </div> */}
