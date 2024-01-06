@@ -86,7 +86,7 @@ const PrizePool = () => {
           {/* Iterate cards */}
           <div className="relative">
             <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" />
-            <div className="relative shadow-xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
+            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
               <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
                 Runner Up
               </h1>
@@ -102,7 +102,7 @@ const PrizePool = () => {
           </div>
           <div className="relative">
             <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" />
-            <div className="relative shadow-xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-800 border border-gray-800  px-4 py-12 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
+            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-12 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
               <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
                 Winner
               </h1>
@@ -118,7 +118,7 @@ const PrizePool = () => {
           </div>
           <div className="relative">
             <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" />
-            <div className="relative shadow-xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
+            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
               <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
                 2nd Runner Up
               </h1>

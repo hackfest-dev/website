@@ -2,6 +2,7 @@
 import { User } from "@prisma/client";
 import Image from "next/image";
 import { LogoutButton } from "./logout";
+import { Modal } from "../ui/modal";
 // import { ButtonModalComponent } from "../ui/modal/button";
 
 export const Profile: React.FC<{ user: User }> = ({ user }) => {
@@ -9,7 +10,7 @@ export const Profile: React.FC<{ user: User }> = ({ user }) => {
         <>
             <div className="flex flex-col gap-4 justify-center items-left text-white bg-black shadow-md shadow-tertiary-700 rounded-lg p-5">
                 <div className="flex justify-between">
-                    <div className="from-secondary-300 w-fit h-fit to-secondary-600 bg-gradient-to-b rounded-full">
+                    <div className="from-supporting-300 w-fit h-fit to-supporting-600 bg-gradient-to-b rounded-full">
                         <Image
                             src={user.image ?? ""}
                             alt="Profile Picture"
@@ -23,6 +24,9 @@ export const Profile: React.FC<{ user: User }> = ({ user }) => {
                             sjdfk
                         </div>
                     </ButtonModalComponent> */}
+                    <Modal title="Hello" description="Hello" buttonContent={"Edit Profile"} footer={<></>}>
+
+                    </Modal>
                     <LogoutButton/>
                 </div>
                 <div>

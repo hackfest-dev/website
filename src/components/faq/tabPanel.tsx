@@ -6,7 +6,7 @@ export const Tabpanel: React.FC<{
       {faq.map(({ question, answer }, key) => (
         <div className="w-full" key={key}>
           <details className="group [&[open]_summary]:mb-0 [&[open]_summary]:border-opacity-50 [&[open]_article]:ml-10">
-            <summary className="flex items-center border-b border-t rounded-lg border-primary-300 -mb-5 pb-5 gap-3 px-4 py-3 font-medium marker:content-none hover:cursor-pointer transition-all">
+            <summary className="flex items-center border-b border-t rounded-lg border-base-300 -mb-5 pb-5 gap-3 px-4 py-3 font-medium marker:content-none hover:cursor-pointer transition-all">
               <svg
                 className="w-5 h-5 text-gray-500 transition group-open:rotate-90"
                 xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ export const Tabpanel: React.FC<{
               <span>{question}</span>
             </summary>
 
-            <article className="p-4 border-b ml-0 border-primary-300 rounded-md transition-all duration-1000">
+            <article className="p-4 border-b ml-0 border-base-300 rounded-md transition-all duration-1000">
               <p>{answer}</p>
             </article>
           </details>
