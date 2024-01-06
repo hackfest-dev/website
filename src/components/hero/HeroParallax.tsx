@@ -38,28 +38,36 @@ const HeroParallax = () => {
   const bgSpeed = useTransform(scrollYProgress, [0, 1], [-150, 200]);
   const textSpeed = useTransform(scrollYProgress, [0, 1], [-300, 300]);
   const fgSpeed = useTransform(scrollYProgress, [0, 1], [-150, 150]);
+  const swSpeed = useTransform(scrollYProgress, [0, 1], [-130, 130]);
+  const [x, setX] = useState(0);
 
-  // const [x, setX] = useState(0);
-
-  // const handleMouseMove = (e: MouseEvent) => {
-  //   const x = e.clientX;
-  //   setX(x === 0 ? 750 : x);
-  // };
+  const handleMouseMove = (e: MouseEvent) => {
+    const x = e.clientX;
+    setX(x === 0 ? 750 : x);
+  };
 
   return (
-    <div className="relative h-screen w-screen" ref={ref}>
+    <div
+      onMouseMove={handleMouseMove}
+      className="relative h-screen w-screen"
+      ref={ref}>
       <motion.div
         style={{ y: textSpeed }}
-        className="absolute inset-0 flex justify-center items-center">
+        className="absolute inset-0 z-30 flex justify-center items-center">
         <Image className="w-[800px]" src={HackfestFont} alt="Hackfest Font" />
       </motion.div>
-
-      <Image
-        src={HeroForeground}
-        alt="Hero Background"
-        className="z-30 h-2/3 w-screen object-cover  object-bottom -mb-2 mt-2"
-      />
-      <Synthwave className=" z-30 w-screen h-1/3 " />
+      <motion.div
+        style={{ y: fgSpeed }}
+        className="h-2/3 -mb-2 mt-2  w-screen ">
+        <Image
+          src={HeroForeground}
+          alt="Hero Background"
+          className="object-cover -z-20  w-full h-full object-bottom "
+        />
+      </motion.div>
+      <motion.div style={{ y: swSpeed }} className="z-30 h-1/3  w-screen ">
+        <Synthwave className="z-10 w-full h-full" />
+      </motion.div>
 
       <motion.div style={{ y: bgSpeed }} className="absolute -z-10 inset-0">
         <Image
@@ -68,6 +76,11 @@ const HeroParallax = () => {
           className="h-screen w-screen object-cover object-top"
         />
       </motion.div>
+
+      <div className={`z-50 absolute h-96 w-44 bottom-5`} style={{ left: x }}>
+        <Hoverboard className="w-full h-full" />
+      </div>
+
       {/* <Synthwave className=" absolute inset-0 z-10" />
 
       <motion.div style={{ y: bgSpeed }} className="absolute inset-0">
