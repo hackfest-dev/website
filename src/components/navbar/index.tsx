@@ -1,60 +1,51 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import AuthButtons from './authButton';
+import { navLinks } from '@/src/constants';
 import { MobileNavbar } from './mobileNavbar';
-import { RequestButton } from './request';
-
-const links = [
-  { url: '#', label: 'Home' },
-  { url: '#', label: 'About' },
-  { url: '#', label: 'Tracks' },
-  { url: '#', label: 'Timeline' },
-  { url: '#', label: 'Sponsors' },
-  { url: '#', label: 'Prizes' },
-];
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 w-full z-50 bg-gradient-to-r from-base-600 via-base-800 to-base-600 text-white backdrop-blur-lg bg-opacity-60">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center h-16 px-4">
-          <Link href="/">
-            <Image
-              src="/logos/logo.png"
-              alt="logo"
-              width={72}
-              height={72}
-              className="select-none drop-shadow-lg"
-            />
+    <div className="flex justify-center mx-3">
+      <nav className="border border-white/30 px-5 max-w-6xl w-full fixed rounded-full  mt-3 sm:mt-5 z-[60] bg-white/5 bg-clip-padding backdrop-blur-lg backdrop-filter">
+        <div className="flex h-16 items-center justify-between px-4">
+          <Link
+            href={'/'}
+            className="flex items-center gap-3 font-semibold text-white"
+          >
+            <div className="lg:w-30 lg:h-30">
+              <Image
+                className="w-auto "
+                src="/logos/logo.png"
+                priority
+                alt="Logo - Hackfest"
+                width={50}
+                height={50}
+              />
+            </div>
           </Link>
-          <div className="hidden md:flex space-x-7 font-medium text-base cursor-pointer">
-            {links.map(({ url, label }) => (
-              <Link href={url} key={label}>
-                {label}
-              </Link>
+
+          <div className="hidden items-center space-x-8 lg:flex">
+            {navLinks.map((link, index) => (
+              <div key={index} className="relative group">
+                <Link
+                  href={link.url}
+                  className={`text-white hover:text-gray-300`}
+                >
+                  {link.label}
+                </Link>
+              </div>
             ))}
           </div>
-          <div className="">
-            <RequestButton />
+
+          <div className="hidden  lg:flex">
+            <AuthButtons />
           </div>
         </div>
-        <MobileNavbar links={links} />
-        {/* {menu && <MobileNavbar />} */}
-      </div>
-    </nav>
+      </nav>
+      <MobileNavbar />
+    </div>
   );
 };
 
 export default Navbar;
-
-// const MobileNavbar = () => {
-//     return (
-//       <div className="flex flex-col space-y-4 md:hidden text-right px-4 pb-4">
-//         {links.map(({ url, label }) => (
-//           <Link href={url} key={label} className="text-white hover:text-gray-300">
-//             {label}
-//           </Link>
-//         ))}
-
-//       </div>
-//     );
-//   }
