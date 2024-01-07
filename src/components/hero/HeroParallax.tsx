@@ -1,86 +1,97 @@
 'use client';
 import Image from 'next/image';
-import HeroForeground from '@/public/images/hero-foreground.svg';
+import HeroForeground from '@/public/images/hero-foreground2.svg';
 import HeroBackground from '@/public/images/hero-background.svg';
-import HeroHoverboard from '@/public/images/hero-hoverboard.svg';
 import HackfestFont from '@/public/images/hackfest-text.png';
-import { MouseEvent, useRef, useState } from 'react';
-import { useScroll, useTransform, motion } from 'framer-motion';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
+import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 
 const HeroParallax = () => {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'start start'],
+  const { RiveComponent: Synthwave } = useRive({
+    src: `/rive/synthwave.riv/`,
+    autoplay: true,
+    layout: new Layout({
+      fit: Fit.Cover,
+      alignment: Alignment.BottomCenter,
+    }),
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [-150, 200]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const { RiveComponent: Hoverboard } = useRive({
+    src: `/rive/hoverboard.riv/`,
+    autoplay: true,
+    layout: new Layout({
+      fit: Fit.FitHeight,
+      alignment: Alignment.BottomCenter,
+    }),
+  });
 
-  const [style, setStyle] = useState(0);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+
+  const smoothScroll = useSpring(scrollYProgress, {
+    mass: 0.5,
+    damping: 25,
+    stiffness: 150,
+  });
+
+  const textSpeed = useTransform(smoothScroll, [0, 1], [-300, 300]);
+  const fgSpeed = useTransform(smoothScroll, [0, 1], [-150, 150]);
+
+  const textScale = useTransform(smoothScroll, [0, 1], [1.5, 0.5]);
+
+  const [x, setX] = useState(0);
 
   const handleMouseMove = (e: MouseEvent) => {
     const x = e.clientX;
-    setStyle(x === 0 ? 750 : x);
+    setX(x);
   };
 
   return (
-    <div ref={ref}>
+    <div
+      onMouseMove={handleMouseMove}
+      className="relative h-screen w-screen"
+      ref={ref}
+    >
       <motion.div
-        style={{
-          y: y,
-        }}
-        className="absolute inset-0 translate-y-0"
+        style={{ y: textSpeed, scale: textScale }}
+        className="absolute inset-0 z-10 flex justify-center items-center"
       >
+        <Image className={`w-[800px]`} src={HackfestFont} alt="Hackfest Font" />
+      </motion.div>
+
+      <motion.div
+        style={{ y: fgSpeed }}
+        className="-z-20 h-2/3 -mb-2 mt-2 w-screen relative"
+      >
+        <Image
+          src={HeroForeground}
+          alt="Hero Foreground"
+          className="object-cover w-full h-full object-bottom"
+        />
+      </motion.div>
+
+      <div className="z-20 absolute h-1/3 w-screen">
+        <Synthwave className="w-full h-full" />
+      </div>
+
+      <div className="absolute -z-30 inset-0">
         <Image
           src={HeroBackground}
           alt="Hero Background"
-          className="h-full w-full"
+          className="h-screen w-screen object-cover object-top"
         />
-      </motion.div>
-      <motion.div className="absolute inset-0">
-        <Image
-          className="w-full h-full"
-          src={HeroForeground}
-          alt="Hero Foreground"
-        />
-      </motion.div>
-      {/* <motion.div
-        style={{ y: y2 }}
-        className="absolute inset-0 flex justify-center items-center flex-col px-5 sm:px-7 lg:px-10"
-      >
-        <h1 className="text-9xl font-black text-shadow shadow-black tracking-widest uppercase">
-          Hackfest
-        </h1>
-        <p className="text-3xl font-bold text-left text-shadow shadow-black">
-          Hack the Time Stream!
-        </p>
-      </motion.div> */}
+      </div>
 
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute inset-0 flex justify-center items-center"
+      <div
+        className={`z-40 absolute h-[30rem] w-[30rem] bottom-0`}
+        style={{ left: x }}
       >
-        <Image className="w-[800px]" src={HackfestFont} alt="Hackfest Font" />
-      </motion.div>
-
-      <motion.div
-        style={
-          {
-            // x: style - 750,
-          }
-        }
-        className="absolute inset-0"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setStyle(0)}
-      >
-        <Image
-          className={`w-full h-full`}
-          src={HeroHoverboard}
-          alt="Hero Hoverboard"
-        />
-      </motion.div>
+        <Hoverboard className="w-full h-full" />
+      </div>
     </div>
   );
 };

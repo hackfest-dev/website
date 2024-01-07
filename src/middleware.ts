@@ -42,12 +42,12 @@ import { NextRequest, NextResponse } from 'next/server';
 //	//Add middleware for other paths here
 //}
 //
-//export const config = {
-//	matcher: ["/api/user/:path*"],
-//};
+export const config = {
+	matcher: ["/user/:path*"],
+};
 //
-// export { default } from "next-auth/middleware";
+export { default } from "next-auth/middleware";
 
-export async function middleware(req: NextRequest) {
-  return NextResponse.next();
-}
+// export async function middleware(req: NextRequest) {
+//   return NextResponse.next();
+// }

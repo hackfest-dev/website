@@ -244,7 +244,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                         id="domainName"
                         className="absolute top-full -translate-y-1/2 bg-secondary-950 border-2 border-secondary-500 p-3 rounded-3xl z-[39] flex justify-center items-center max-w-[85%] text-center pointer-events-none"
                       >
-                        <p className="text-xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent pointer-events-none">
+                        <p className="text-xl font-bold bg-gradient-to-r from-base-300 to-supporting-500 bg-clip-text text-transparent pointer-events-none">
                           {domain.name}
                         </p>
                       </div>

@@ -1,22 +1,22 @@
 'use client';
 import { useState } from 'react';
-import { Tabs, TabList, Tab, TabPanel, Key } from 'react-aria-components';
+import { Tabs,TabsList,TabsContent, TabsTrigger } from '../ui/tabs';
 export const TabFaq: React.FC<{
   foodTab: React.ReactNode;
   generalTab: React.ReactNode;
   stayTab: React.ReactNode;
   travelTab: React.ReactNode;
 }> = ({ foodTab, generalTab, stayTab, travelTab }) => {
-  const [selectedTab, setSelectedTab] = useState<Key>('tab-general');
+  const [selectedTab, setSelectedTab] = useState<string>('tab-general');
   return (
-    <Tabs selectedKey={selectedTab} onSelectionChange={setSelectedTab}>
-      <TabList
+    <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+      <TabsList
         aria-label="Frequently Asked Questions"
         className="flex lg:gap-28 md:gap-10 gap-3 justify-center mb-5"
       >
-        <Tab
-          id="tab-general"
-          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-primary-300 rounded-full focus-visible:outline-none 
+        <TabsTrigger
+          value="tab-general"
+          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-base-300 rounded-full focus-visible:outline-none 
                     ${
                       selectedTab == 'tab-general'
                         ? 'shadow-lg scale-105 font-bold'
@@ -24,10 +24,10 @@ export const TabFaq: React.FC<{
                     }`}
         >
           General
-        </Tab>
-        <Tab
-          id="tab-food"
-          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-primary-300 rounded-full focus-visible:outline-none 
+        </TabsTrigger>
+        <TabsTrigger
+          value="tab-food"
+          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-base-300 rounded-full focus-visible:outline-none 
                     ${
                       selectedTab == 'tab-food'
                         ? 'shadow-lg scale-105 font-bold'
@@ -35,10 +35,10 @@ export const TabFaq: React.FC<{
                     }`}
         >
           Food
-        </Tab>
-        <Tab
-          id="tab-stay"
-          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-primary-300 rounded-full focus-visible:outline-none 
+        </TabsTrigger>
+        <TabsTrigger
+          value="tab-stay"
+          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-base-300 rounded-full focus-visible:outline-none 
                     ${
                       selectedTab == 'tab-stay'
                         ? 'shadow-lg scale-105 font-bold'
@@ -46,10 +46,10 @@ export const TabFaq: React.FC<{
                     }`}
         >
           Stay
-        </Tab>
-        <Tab
-          id="tab-travel"
-          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-primary-300 rounded-full focus-visible:outline-none 
+        </TabsTrigger>
+        <TabsTrigger
+          value="tab-travel"
+          className={`cursor-pointer p-2 md:px-5 w-20 md:w-28 text-center shadow-base-300 rounded-full focus-visible:outline-none 
                     ${
                       selectedTab == 'tab-travel'
                         ? 'shadow-lg scale-105 font-bold'
@@ -57,12 +57,12 @@ export const TabFaq: React.FC<{
                     }`}
         >
           Travel
-        </Tab>
-      </TabList>
-      <TabPanel id="tab-general">{generalTab}</TabPanel>
-      <TabPanel id="tab-food">{foodTab}</TabPanel>
-      <TabPanel id="tab-stay">{stayTab}</TabPanel>
-      <TabPanel id="tab-travel">{travelTab}</TabPanel>
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab-general">{generalTab}</TabsContent>
+      <TabsContent value="tab-food">{foodTab}</TabsContent>
+      <TabsContent value="tab-stay">{stayTab}</TabsContent>
+      <TabsContent value="tab-travel">{travelTab}</TabsContent>
     </Tabs>
   );
 };

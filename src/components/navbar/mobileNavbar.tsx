@@ -1,44 +1,54 @@
 'use client';
-import { BiMenuAltRight, BiX } from 'react-icons/bi';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
+import AuthButtons from './authButton';
+import { navLinks } from '@/src/constants';
+import { IoMdClose } from 'react-icons/io';
+import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 
-export const MobileNavbar: FC<{ links: { url: string; label: string }[] }> = ({
-  links,
-}) => {
-  const [menu, setMenu] = useState(false);
-  const changeMenu = () => {
-    setMenu(!menu);
-  };
+export const MobileNavbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <div className="flex fixed right-3 top-5 items-center space-x-4 md:hidden">
-        {menu ? (
-          <BiX
-            className="h-6 w-6 text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
-            onClick={changeMenu}
-          />
-        ) : (
-          <BiMenuAltRight
-            className=" text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] h-6 w-6 "
-            onClick={changeMenu}
-          />
-        )}
+      <div className="fixed right-5 top-6 flex items-center space-x-4 lg:hidden z-[60]">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Menu"
+          className="inline-flex items-center justify-center rounded-full p-2 text-white hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-300/20"
+        >
+          {isOpen ? (
+            <IoMdClose className="h-6 w-6" />
+          ) : (
+            <HiOutlineMenuAlt3 className="h-6 w-6" />
+          )}
+        </button>
       </div>
-      {menu && (
-        <div className="flex flex-col space-y-4 md:hidden text-right px-4 pb-4">
-          {links.map(({ url, label }) => (
+
+      <div
+        className={`flex w-full justify-center fixed top-20 mt-1 transition-transform duration-200 ${
+          isOpen ? 'z-[60] translate-y-0' : '-translate-y-[30rem] z-0'
+        } px-2 lg:hidden`}
+      >
+        <div
+          className={`mt-2 z-[60] py-5 rounded-xl w-full space-y-3 border hover:border-white/40 border-white/30 bg-white/5 bg-clip-padding backdrop-blur-lg backdrop-filter lg:hidden 
+               flex flex-col justify-center" 
+            `}
+        >
+          {navLinks.map((link, index) => (
             <Link
-              href={url}
-              key={label}
-              className="text-white hover:text-gray-300"
+              key={index}
+              href={link.url}
+              onClick={() => setIsOpen(false)}
+              className={`text-white pl-4 underline-offset-4 hover:underline text-lg text-center`}
             >
-              {label}
+              {link.label}
             </Link>
           ))}
+
+          <AuthButtons />
         </div>
-      )}
+      </div>
     </>
   );
 };

@@ -56,6 +56,7 @@ model User {
   college_id    String?
   isVerified    Boolean   @default(false)
   paymentStatus String?   @default("PENDING")
+  profileProgress Progress @default(FILL_DETAILS)
   paymentId     String?
   payment       Payments?
   //team and role
@@ -139,4 +140,10 @@ enum PaymentStatus {
   PENDING
   PAID
   FAILED
+}
+enum Progress {
+  FILL_DETAILS
+  PAYMENT
+  FORM_TEAM
+  COMPLETE
 }

@@ -1,5 +1,12 @@
 ## Hackfest Website
 
+### Colors (Renamed)
+- ~~primary~~ base
+- ~~secondary~~ supporting
+- tertiary
+- ~~accent1~~ highlight1
+- ~~accent2~~ highlight2
+
 ### Directory Structure
 
 ```bash
