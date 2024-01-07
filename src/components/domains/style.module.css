@@ -28,3 +28,93 @@
   opacity: 1;
   transform: translate(0, 0);
 }
+
+.contentPrize {
+  opacity: 0;
+  transform: translate(-50%, 50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transition: opacity 0.5s linear 0.5s, transform 0.5s linear 0.5s;
+}
+
+.contentPrize.active {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.doamin0 {
+  transform: translate(0%, 0%);
+}
+.domain1 {
+  transform: translate(63.8%, 32%);
+}
+.domain2 {
+  transform: translate(146.8%, 32%);
+}
+.domain3 {
+  transform: translate(4%, 68%);
+}
+.domain4 {
+  transform: translate(87%, 68%);
+}
+.domain5 {
+  transform: translate(150.8%, 100%);
+}
+
+.domainBgImg0,
+.domainBgImg1,
+.domainBgImg2 {
+  transform: rotate(0deg) scale(1, 1);
+}
+.domainBgImg3,
+.domainBgImg4,
+.domainBgImg5 {
+  transform: rotate(180deg) scale(1, 1);
+}
+
+.domainImg0,
+.domainImg1,
+.domainImg2 {
+  top: 15%;
+  left: 21%;
+}
+
+.domainImg3,
+.domainImg4,
+.domainImg5 {
+  top: 18%;
+  left: 39%;
+}
+
+/* .domainImg {
+  z-index: 39;
+} */
+
+/* .domainImg.active {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 41;
+  transition: transform 1s cubic-bezier(1, 0, 0.7, 1);
+} */
+
+.title0,
+.title1,
+.title2 {
+  top: 4px;
+  left: 20%;
+  text-align: left;
+  padding-left: 8px;
+  /* transform: translate(-50%, 0%); */
+}
+
+.title3,
+.title4,
+.title5 {
+  bottom: 4px;
+  right: 20%;
+  text-align: right;
+  padding-right: 8px;
+  /* transform: translate(-50%, 0%); */
+}

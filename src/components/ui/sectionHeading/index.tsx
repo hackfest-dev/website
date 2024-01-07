@@ -5,7 +5,7 @@ export const SectionHeading: React.FC<{
   return (
     <h2
       className={
-        'text-5xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent w-fit ' +
+        "text-6xl font-bold bg-gradient-to-r from-primary-300 to-secondary-500 bg-clip-text text-transparent w-fit font-jumper " +
         classname
       }
     >

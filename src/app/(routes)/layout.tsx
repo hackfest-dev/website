@@ -1,32 +1,38 @@
-import { Inter } from 'next/font/google';
-import '../globals.css';
-import { siteMetadata } from '@/src/constants';
-import { headers } from 'next/headers';
-import Navbar from '@/src/components/navbar';
-import Footer from '@/src/components/footer';
+import { Inter } from "next/font/google";
+import "../globals.css";
+import { siteMetadata } from "@/src/constants";
+import { headers } from "next/headers";
+import Navbar from "@/src/components/navbar";
+import Footer from "@/src/components/footer";
+import localFont from "next/font/local";
 
-const inter = Inter({ subsets: ['latin'] });
+const jumper = localFont({
+  src: "../../../public/fonts/jumper/JumpersLaser.otf",
+  display: "swap",
+  variable: "--font-jumper",
+});
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   const { children, ...customMeta } = props;
   const headersList = headers();
-  const pathname = headersList.get('x-url') || '';
+  const pathname = headersList.get("x-url") || "";
 
   const meta = {
     title: `${
-      pathname === ''
-        ? ''
-        : pathname.charAt(1).toUpperCase() + pathname.slice(2) + ' | '
+      pathname === ""
+        ? ""
+        : pathname.charAt(1).toUpperCase() + pathname.slice(2) + " | "
     }${siteMetadata.title}`,
     description: siteMetadata.description,
-    type: 'Website',
+    type: "Website",
     canonicalUrl: `${siteMetadata.siteUrl}${pathname}`,
     isArticle: false,
     ...customMeta,
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${jumper.variable}`}>
       <head>
         <title>{meta.title}</title>
         <meta content={meta.description} name="description" />
@@ -60,7 +66,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <meta property="og:site_name" content={meta.title} />
         <meta property="og:description" content={meta.description} />
         <meta property="og:title" content={meta.title} />
-        <meta property="og:image" content={'/logos/logo.png'} />
+        <meta property="og:image" content={"/logos/logo.png"} />
         {/* TODO: OG Image API */}
       </head>
       <body className={`bg-black text-white ${inter.className}`}>
