@@ -13,7 +13,6 @@ type DomainProps = {
 };
 
 const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
-  // const domains = useRef<Array<HTMLDivElement | null>>([]);
   const [contents, setContents] = useState<DomainProps>({
     name: "",
     image: "",
@@ -38,7 +37,6 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
     const target =
       e.target &&
       e.target instanceof SVGPathElement &&
-      // e.target.parentElement?.parentElement?.parentElement?.children[1];
       e.target.parentElement?.parentElement?.parentElement;
     console.log(target);
     if (target && target instanceof HTMLDivElement) {
@@ -58,12 +56,6 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         : 0;
 
       // Enter animation
-      // target.style.zIndex = "41";
-      // target.style.left = currentPos.left + "px";
-      // target.style.top = currentPos.top + "px";
-      // target.style.position = "fixed";
-      // target.classList.add(`${styles.active}`);
-
       if (targetParent) {
         targetParent.style.zIndex = "41";
       }
@@ -132,12 +124,6 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           "0";
       }
 
-      // (activeDomain.current as HTMLDivElement).classList.remove(
-      //   `${styles.active}`
-      // );
-      // (activeDomain.current as HTMLDivElement).style.position = "relative";
-      // (activeDomain.current as HTMLDivElement).style.top = "0";
-      // (activeDomain.current as HTMLDivElement).style.left = "0";
       document.body.style.overflow = "visible";
     }, 1000);
 
@@ -218,42 +204,6 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         {/* Grids */}
         <div className="flex flex-col gap-20 w-full">
           <SectionHeading title="Domains" />
-          {/* <div className="flex flex-wrap gap-5 justify-center items-center">
-            {domainList.map((domain, index) => {
-              return (
-                <div key={index} className="relative">
-                  <div className="flex justify-center items-end w-52 h-40 rounded-xl relative z-[39] cursor-pointer group mb-5">
-                    <div
-                      id="imgBorder"
-                      className="h-full w-full flex justify-center relative lg:group-hover:scale-95 border-[6px] border-secondary-500 border-double rounded-2xl transition-scale duration-300 ease-in-out"
-                    >
-                      <div
-                        className="h-full w-full rounded-xl bg-primary-500"
-                        style={{
-                          transformOrigin: "center center",
-                          transition:
-                            "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
-                        }}
-                        ref={(ref) => (domains.current[index] = ref)}
-                        onClick={(e) => enterAnimation(e)}
-                        data-id={index}
-                      >
-                        <p>Domain Image</p>
-                      </div>
-                      <div
-                        id="domainName"
-                        className="absolute top-full -translate-y-1/2 bg-secondary-950 border-2 border-secondary-500 p-3 rounded-3xl z-[39] flex justify-center items-center max-w-[85%] text-center pointer-events-none"
-                      >
-                        <p className="text-xl font-bold bg-gradient-to-r from-base-300 to-supporting-500 bg-clip-text text-transparent pointer-events-none">
-                          {domain.name}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div> */}
           <div className="relative w-full aspect-[209/100]">
             {domainList.map((domain, idx) => {
               return (
@@ -262,7 +212,6 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   className={`${
                     styles[`domain${idx}`]
                   } h-1/2 w-[39.872408293%] absolute aspect-[5/3] z-0 pointer-events-none`}
-                  // onClick={(e) => enterAnimation(e)}
                 >
                   <div
                     className="h-full w-full relative z-0 pointer-events-none"
@@ -276,12 +225,6 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                         styles[`domainBgImg${idx}`]
                       }`}
                     >
-                      {/* <Image
-                        src="/images/domainQuad.png"
-                        alt="bg"
-                        fill
-                        className={`object-contain object-center`}
-                      /> */}
                       <svg
                         viewBox="0 0 482 296"
                         fill="none"
@@ -317,12 +260,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                     <div
                       className={`aspect-square w-[40%] rounded-full absolute pointer-events-none ${
                         styles[`domainImg${idx}`]
-                        // } ${styles["domainImg"]}`}
                       }`}
-                      // style={{
-                      //   transition: "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
-                      // }}
-                      // data-id={idx}
                     >
                       <Image
                         src={domain.image}
