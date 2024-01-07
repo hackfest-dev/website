@@ -1,13 +1,22 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
-const config: Config = {
+const config = {
+  darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  prefix: "",
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       fontFamily: {
         jumper: ["var(--font-jumper)", "Inter", "sans-serif"],
@@ -17,21 +26,41 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      animation: {
-        "meteor-effect": "meteor 5s linear infinite",
-      },
-      keyframes: {
-        meteor: {
-          "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
-          "70%": { opacity: "1" },
-          "100%": {
-            transform: "rotate(215deg) translateX(-500px)",
-            opacity: "0",
-          },
-        },
-      },
       colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        base: {
           50: "#DFE4F6",
           100: "#BFC8ED",
           200: "#8092DB",
@@ -44,7 +73,7 @@ const config: Config = {
           900: "#040710",
           950: "#020308",
         },
-        secondary: {
+        supporting: {
           50: "#E5E5FF",
           100: "#CCCCFF",
           200: "#9E9EFF",
@@ -70,7 +99,7 @@ const config: Config = {
           900: "#00332B",
           950: "#001915",
         },
-        accent1: {
+        highlight1: {
           50: "#FFF2EB",
           100: "#FFE8DB",
           200: "#FFCDB3",
@@ -83,7 +112,7 @@ const config: Config = {
           900: "#421700",
           950: "#1F0B00",
         },
-        accent2: {
+        highlight2: {
           50: "#FFFEF5",
           100: "#FFFDEB",
           200: "#FFFAD1",
@@ -97,13 +126,71 @@ const config: Config = {
           950: "#292400",
         },
       },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        meteor: {
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": {
+            transform: "rotate(215deg) translateX(-500px)",
+            opacity: "0",
+          },
+        },
+        flicker: {
+          "0%": { opacity: "0.1" },
+          "1%": { opacity: "1" },
+          "4%": { opacity: "0.1" },
+          "4.5%": { opacity: "1" },
+          "6%": { opacity: "0.1" },
+          "10%": { opacity: "1" },
+          "12.5%": { opacity: "0.3" },
+          "15%": { opacity: "1" },
+          "35%": { opacity: "0.7" },
+          "36%": { opacity: "0.2" },
+          "38.5%": { opacity: "0.9" },
+          "50%": { opacity: "0.9" },
+          "100%": { opacity: "1" },
+        },
+        move: {
+          "0%": {
+            "background-position-y": "0%",
+          },
+
+          "100%": {
+            "background-position-y": "100%",
+          },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "meteor-effect": "meteor 5s linear infinite",
+        flicker: "flicker 20s linear infinite",
+        move: "move 5s linear infinite",
+      },
     },
   },
   plugins: [
+    require("tailwindcss-animate"),
     plugin(function ({ addUtilities }) {
       addUtilities({
         ".rotate-x-20": {
           transform: "rotateX(20deg)",
+        },
+        ".rotate-x-45": {
+          transform: "rotateX(45deg)",
         },
       });
     }),
@@ -129,6 +216,6 @@ const config: Config = {
       );
     }),
   ],
-};
+} satisfies Config;
 
 export default config;

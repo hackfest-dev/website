@@ -207,7 +207,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               </div>
             </div>
             <div
-              className=" cursor-pointer hover:text-secondary-500 transition-all duration-300 ease-in-out ml-4"
+              className=" cursor-pointer hover:text-supporting-500 transition-all duration-300 ease-in-out ml-4"
               onClick={() => exitAnimaiton()}
             >
               <GiTronArrow className="text-3xl -scale-x-[2] rotate-12" />
