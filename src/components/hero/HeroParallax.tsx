@@ -1,24 +1,16 @@
-"use client";
-import Image from "next/image";
-import HeroForeground from "@/public/images/hero-foreground2.svg";
-import HeroBackground from "@/public/images/hero-background.svg";
-import HackfestFont from "@/public/images/hackfest-text.png";
-import Reflection from "@/public/images/reflection_without_gap.svg";
-// import HoverBoard from "@/public/images/hoverboard.svg"
-import { MouseEvent, useEffect, useRef, useState } from "react";
-import { useScroll, useTransform, motion, useSpring } from "framer-motion";
-import { Alignment, Fit, Layout, useRive } from "@rive-app/react-canvas";
+'use client';
+import Image from 'next/image';
+import HeroForeground from '@/public/images/hero-foreground2.svg';
+import HeroBackground from '@/public/images/hero-background.svg';
+import HackfestFont from '@/public/images/hackfest-text.png';
+import Reflection from '@/public/images/reflection_without_gap.svg';
+import HoverBoard from '@/public/images/hoverboard.svg';
+import { MouseEvent, useRef, useState } from 'react';
+import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
+import { useRive, Alignment, Fit, Layout } from '@rive-app/react-canvas';
 
 const HeroParallax = () => {
   const ref = useRef(null);
-  // const { RiveComponent: Synthwave } = useRive({
-  //     src: `/rive/synthwave.riv/`,
-  //     autoplay: true,
-  //     layout: new Layout({
-  //         fit: Fit.Cover,
-  //         alignment: Alignment.BottomCenter,
-  //     }),
-  // });
 
   const { RiveComponent: Hoverboard } = useRive({
     src: `/rive/hoverboard.riv/`,
@@ -31,7 +23,7 @@ const HeroParallax = () => {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ['start end', 'end start'],
   });
 
   const smoothScroll = useSpring(scrollYProgress, {
@@ -82,14 +74,11 @@ const HeroParallax = () => {
                             /> */}
       </motion.div>
 
-      {/* <div className="z-20 absolute h-1/3 w-screen">
-        <Synthwave className="w-full h-full" />
-    </div> */}
       <motion.div
         className="absolute bottom-[0%] w-screen h-[46%] overflow-hidden"
         style={{
-          transformStyle: "preserve-3d",
-          perspective: "200px",
+          transformStyle: 'preserve-3d',
+          perspective: '200px',
           y: fgSpeed,
         }}
       >
@@ -109,11 +98,6 @@ const HeroParallax = () => {
         style={{ left: x }}
       >
         <Hoverboard className="w-full h-full" />
-        {/* <Image src={HoverBoard}
-                alt="HoverBoard"
-                > */}
-
-        {/* </Image> */}
       </div>
     </div>
   );
