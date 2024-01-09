@@ -43,6 +43,68 @@
   transform: translate(-50%, -50%);
 }
 
+.doamin0 {
+  transform: translate(0%, 0%);
+}
+.domain1 {
+  transform: translate(65.8031%, 31.4337%);
+}
+.domain2 {
+  transform: translate(65.4031%, 171.9788%);
+}
+.domain3 {
+  transform: translate(4.9626%, 68.7229%);
+}
+.domain4 {
+  transform: translate(4.5626%, 209.2679%);
+}
+.domain5 {
+  transform: translate(70.3658%, 240.7017%);
+}
+
+.domainBgImg0,
+.domainBgImg1,
+.domainBgImg2 {
+  transform: rotate(0deg) scale(1, 1);
+}
+.domainBgImg3,
+.domainBgImg4,
+.domainBgImg5 {
+  transform: rotate(180deg) scale(1, 1);
+}
+
+.domainImg0,
+.domainImg1,
+.domainImg2 {
+  top: 15%;
+  left: 21%;
+}
+
+.domainImg3,
+.domainImg4,
+.domainImg5 {
+  top: 18%;
+  left: 39%;
+}
+
+.title0,
+.title1,
+.title2 {
+  top: 4px;
+  left: 50%;
+  text-align: left;
+  transform: translate(-50%, 0%);
+}
+
+.title3,
+.title4,
+.title5 {
+  bottom: 4px;
+  left: 50%;
+  text-align: left;
+  transform: translate(-50%, 0%);
+}
+
 @media (min-width: 1024px) {
   .doamin0 {
     transform: translate(0%, 0%);
@@ -63,7 +125,7 @@
     transform: translate(150.8%, 100%);
   }
 
-  .domainBgImg0,
+  /* .domainBgImg0,
   .domainBgImg1,
   .domainBgImg2 {
     transform: rotate(0deg) scale(1, 1);
@@ -94,7 +156,6 @@
     top: 4px;
     left: 20%;
     text-align: left;
-    /* padding-left: 8px; */
   }
 
   .title3,
@@ -103,6 +164,5 @@
     bottom: 4px;
     right: 20%;
     text-align: right;
-    /* padding-right: 8px; */
-  }
+  } */
 }
