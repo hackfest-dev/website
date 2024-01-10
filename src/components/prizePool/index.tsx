@@ -4,7 +4,7 @@ import Confetti from 'react-dom-confetti';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { useInView } from 'framer-motion';
-import { Lamp,LampContainer } from './lamp';
+import { Lamp,LampContainer } from './lamp2';
 import {motion} from 'framer-motion';
 const PrizePool = () => {
   const ref = useRef(null);
@@ -50,9 +50,10 @@ const PrizePool = () => {
   };
 
   return (
-    <LampContainer>
-      <motion.div className="min-h-screen relative w-full  flex flex-col items-center justify-center rounded-md py-20  "
-      initial={{ opacity: 0.5, y: 20 }}
+    // <LampContainer>
+    <>
+      <motion.div className=" relative w-full z-15 flex flex-col items-center justify-center rounded-md py-20 bg-slate-950 "
+      initial={{ opacity: 1, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
         delay: 0.3,
@@ -60,31 +61,31 @@ const PrizePool = () => {
         ease: "easeInOut",
       }}
       >
-        <div className="w-full absolute inset-0 ">
-        </div>
-        <div className="flex flex-col  items-center p-12 space-y-16">
-          <div>
+        <div className="flex flex-col items-center justify-center py-4 ">
+          
             <h1 className="text-5xl font-bold">Prize Pool</h1>
             <Image
               src="/images/airship.png"
-              width={250}
-              height={200}
+              width={180}
+              height={180}
               alt="UFO"
-              className="fly-up-down ease-in-out drop-shadow-xl z-50"
+              className="flex justify-center items-center fly-up-down ease-in-out drop-shadow-xl z-50"
               onClick={() => ConfettiExplosion()}
             />
-          </div>
+         
           <Confetti active={show} config={config} />
         </div>
 
+        {/* Card Components */}
+
         <div
-          className="flex flex-row justify-between items-center space-x-16 max-w-5xl"
+          className="flex md:flex-row flex-col justify-between items-center space-x-16 max-w-5xl"
           ref={ref}
         >
           {/* Iterate cards */}
           <div className="relative">
             {/* <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" /> */}
-            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
+            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center z-50">
               <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
                 Runner Up
               </h1>
@@ -98,7 +99,7 @@ const PrizePool = () => {
           </div>
           <div className="relative">
             {/* <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" /> */}
-            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-12 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
+            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-12 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center z-50">
               <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
                 Winner
               </h1>
@@ -112,7 +113,7 @@ const PrizePool = () => {
           </div>
           <div className="relative">
             {/* <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" /> */}
-            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center">
+            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center z-50">
               <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
                 2nd Runner Up
               </h1>
@@ -125,9 +126,29 @@ const PrizePool = () => {
             </div>
           </div>
         </div>
+
+
+
+
         {/* <Lamp /> */}
       </motion.div>
-    </LampContainer>
+        <LampContainer>
+          {/* <motion.h1
+        initial={{ opacity: 0.5, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.8,
+          ease: "easeInOut",
+        }}
+        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+      >
+        Build lamps <br /> the right way
+      </motion.h1> */}
+      <></>
+      </LampContainer>
+        </>
+    // </LampContainer>
   );
 };
 
