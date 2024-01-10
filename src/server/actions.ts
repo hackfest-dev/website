@@ -172,10 +172,22 @@ const joinTeam = async (data: FormData) => {
 		const team  = await prisma.team.findFirst({
 			where:{
 				id: data.get("teamid") as string,
+			},
+			include:{
+				members:{
+					where:{
+						isLeader:true
+					},
+					include:{college:true}
+				}
 			}
 		})
 		if(!team){
 			return { status: "error", message: "Team not found" };
+		}
+		const leader = team.members.find(member=>member.isLeader === true)
+		if(user.college !== leader?.college?.name){
+			return { status: "error", message: "Team members should be from same college only" };
 		}
 		await prisma.team.update({
 			where: {

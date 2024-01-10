@@ -17,6 +17,7 @@ declare module "next-auth" {
 				  }
 				| null
 				| undefined;
+			college:string; 
 			isLeader: boolean;
 			phone: string;
 			role: Role;
@@ -36,6 +37,7 @@ export interface Session extends DefaultSession {
 			  }
 			| null
 			| undefined;
+		college:string; 
 		isLeader: boolean;
 		phone: string;
 		role: Role;
@@ -67,6 +69,7 @@ export const authOptions: NextAuthOptions = {
 				},
 				include: {
 					team: true,
+					college:true
 				},
 			});
 			if (!dbUser) {
@@ -81,6 +84,7 @@ export const authOptions: NextAuthOptions = {
 				};
 				session.user.team = team;
 			} else session.user.team = null;
+			session.user.college = dbUser.college?.name || ""
 			session.user.isLeader = dbUser?.isLeader;
 			session.user.phone = dbUser?.phone || "";
 			session.user.profileProgress = dbUser?.profileProgress;
