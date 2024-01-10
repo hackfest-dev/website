@@ -16,7 +16,7 @@ export function Lamp() {
         }}
         className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
       >
-        Build lamps <br /> the right way
+        ₹50k
       </motion.h1>
     </LampContainer>
   );
@@ -92,7 +92,7 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="absolute inset-auto z-50 h-0.5 w-[30rem] translate-y-[0rem] bg-cyan-400 "
+          className="absolute inset-auto z-50 h-0.5 md:w-[30rem] translate-y-[0rem] bg-cyan-400 "
         ></motion.div>
             
             {/* Slate Filter */}   
