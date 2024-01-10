@@ -52,7 +52,7 @@ const PrizePool = () => {
   return (
     // <LampContainer>
     <>
-      <motion.div className=" relative w-full z-15 flex flex-col items-center justify-center rounded-md py-20 bg-slate-950 "
+      <motion.div className="  w-full z-15 flex flex-col items-center justify-center rounded-md py-20 bg-slate-950 "
       initial={{ opacity: 1, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
@@ -61,7 +61,7 @@ const PrizePool = () => {
         ease: "easeInOut",
       }}
       >
-        <div className="flex flex-col items-center justify-center py-4 ">
+        <div className="flex flex-col items-center justify-center py-4 z-50">
           
             <h1 className="text-5xl font-bold">Prize Pool</h1>
             <Image
@@ -78,55 +78,42 @@ const PrizePool = () => {
 
         {/* Card Components */}
 
-        <div
-          className="flex md:flex-row flex-col justify-between items-center space-x-16 max-w-5xl"
-          ref={ref}
-        >
-          {/* Iterate cards */}
-          <div className="relative">
-            {/* <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" /> */}
-            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center z-50">
-              <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
+        <div className="flex justify-center items-center space-x-4" ref={ref}>
+      <div className="w-72 h-72 shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800 rounded-lg z-10 translate-x-5 flex flex-col justify-center items-center">
+        <h1 className="font-bold text-xl text-white mb-4 relative z-50">
                 Runner Up
               </h1>
               <p className="font-normal text-base text-slate-500 mb-4  z-50 text-center ">
                 <span className="text-white font-bold text-4xl">₹30000</span>
               </p>
-              <p className="font-normal text-base text-slate-500 mb-4 z-50 text-center ">
+              <p className="font-normal text-sm text-slate-500 mb-4 z-50 text-center ">
                 Goodies + Swags + Certificates + Internship Opportunities
               </p>
-            </div>
-          </div>
-          <div className="relative">
-            {/* <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" /> */}
-            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-12 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center z-50">
-              <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
+        
+      </div>
+      <div className="w-80 h-80 shadow-xl  bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800 rounded-lg z-20 relative flex flex-col justify-center items-center">
+        <h1 className="font-bold text-3xl text-white mb-4 relative z-50 text-center ">
                 Winner
               </h1>
-              <p className="font-normal text-base text-slate-500 mb-4  z-50 text-center ">
-                <span className="text-white font-bold text-4xl">₹50000</span>
+              <p className="font-normal text-base text-slate-500 mb-4  z-50 text-center  ">
+                <span className="text-white font-bold text-5xl">₹50000</span>
               </p>
-              <p className="font-normal text-base text-slate-500 mb-4 z-50 text-center ">
+              <p className="font-normal text-base text-slate-500 mb-4 z-50 text-center  ">
                 Goodies + Swags + Certificates + Internship Opportunities
               </p>
-            </div>
-          </div>
-          <div className="relative">
-            {/* <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-90 bg-red-500 rounded-full blur-3xl" /> */}
-            <div className="relative shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800  px-4 py-8 h-full overflow-hidden rounded-2xl flex flex-col justify-center items-center z-50">
-              <h1 className="font-bold text-2xl text-white mb-4 relative z-50">
-                2nd Runner Up
+      </div>
+      <div className="w-72 h-72 shadow-xl bg-gradient-to-r from-base-800 via-base-700 to-base-800 border border-gray-800 rounded-lg z-10 -translate-x-5 flex flex-col justify-center items-center">
+        <h1 className="font-bold text-xl text-white mb-4 relative z-50">
+                Second Runner Up
               </h1>
               <p className="font-normal text-base text-slate-500 mb-4  z-50 text-center ">
                 <span className="text-white font-bold text-4xl">₹20000</span>
               </p>
-              <p className="font-normal text-base text-slate-500 mb-4 z-50 text-center ">
+              <p className="font-normal text-sm text-slate-500 mb-4 z-50 text-center ">
                 Goodies + Swags + Certificates + Internship Opportunities
               </p>
-            </div>
-          </div>
-        </div>
-
+      </div>
+    </div>
 
 
 
