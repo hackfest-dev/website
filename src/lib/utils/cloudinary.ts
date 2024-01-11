@@ -45,4 +45,5 @@ async function uploadFile(file: File) {
 	return data.url + ";" + data.public_id;
 }
 
-export { cloudinaryConfig, getSignature, uploadFile };
+
+export {  getSignature, uploadFile };

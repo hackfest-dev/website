@@ -55,7 +55,7 @@ export const Profile: React.FC<{ user: User }> = ({ user }) => {
                 </div>
                 <div>
                     <span className="w-20 md:w-24 inline-block">Aadhar Card</span>
-                    <span className="px-1 md:pr-3">:</span> <b>{user.adhaar ?? "N/A"}</b>
+                    <span className="px-1 md:pr-3">:</span> <b>{user.aadhaar ?? "N/A"}</b>
                 </div>
                 <div>
                     <span className="w-20 md:w-24 inline-block">College ID</span>

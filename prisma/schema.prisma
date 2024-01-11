@@ -49,10 +49,12 @@ model User {
   state         String?
   collegeId     String?
   college       College?  @relation(fields: [collegeId], references: [id])
+  //Tshirt size
+  tShirtSize     TshirtSize @default(S)
   //payment and registration
   image         String?
   course        Courses?
-  adhaar        String?
+  aadhaar        String?
   college_id    String?
   isVerified    Boolean   @default(false)
   paymentStatus String?   @default("PENDING")
@@ -146,4 +148,12 @@ enum Progress {
   PAYMENT
   FORM_TEAM
   COMPLETE
+}
+
+enum TshirtSize {
+    S
+    M
+    L
+    XL
+    XX
 }
