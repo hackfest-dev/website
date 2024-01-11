@@ -35,7 +35,7 @@ export default function CreateTeam() {
 
 	return (
 		<>
-			<div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto">
+			<div className="flex bg-black text-white p-6 rounded-lg flex-col justify-evenly m-auto my-4 sm:my-auto">
 				<h1 className="text-xl text-center">Team management</h1>
 				{(Error || Message) && (
 					<p

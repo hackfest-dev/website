@@ -56,12 +56,12 @@ const EditProfileForm = ({
 				e.preventDefault();
 				const formData = new FormData(e.target as HTMLFormElement);
 				formData.append("collegeId", collegeId?.file || "");
-				formData.append("adhaar", aadhaar?.file || "");
 				const res = await updateProfile(formData);
+				formData.append("adhaar", aadhaar?.file || "");
 				setError(res.message);
 				setLoading(false);
 			}}
-			className="border sm:p-4 rounded grid sm:max-w-xl m-auto"
+			className="border sm:p-4 text-black rounded grid sm:max-w-xl m-auto"
 		>
 			<h1 className="text-center text-xl">Update Profile</h1>
 			<p

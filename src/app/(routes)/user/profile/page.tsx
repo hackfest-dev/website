@@ -11,7 +11,8 @@ export default async function ProfilePage() {
     const userInfo=user?await prisma.user.findUniqueOrThrow({
         where:{
             email:user?.email??undefined
-        }
+        },
+		include:{college:true}
     }).catch(()=>{
         return null
     }):null
@@ -35,17 +36,15 @@ export default async function ProfilePage() {
                     <div className="bg-black border-base-300 shadow-[0_0px_60px_-15px_rgba(0,0,0,0.3)] shadow-base-200 w-32 h-32 md:w-72 md:h-72 border animate-[flicker_6s_ease_infinite_5s]"></div> 
                 </div>
             </div>
-        <div className="pb-20 pt-32 text-black h-full flex self-center">
-            
+        <div className="w-full lg:w-3/4 m-auto text-black h-full md:flex justify-between self-center">
             {userInfo && <Profile user={userInfo}></Profile>}
-            {/* <EditProfile /> */}
-        </div>
-				<EditProfile />
 				{!user.team?.id ? (
 					<CreateTeam />
 				) : (
 					<TeamDetails teamid={user.team?.id} />
 				)}
+            {/* <EditProfile /> */}
+        </div>
 			</div>
 		</>
 	);
