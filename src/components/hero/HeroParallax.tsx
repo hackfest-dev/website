@@ -36,6 +36,7 @@ const HeroParallax = () => {
   const boxRef = useRef(null);
 
   const handleMouseMove = (e: MouseEvent) => {
+    // @ts-ignore
     const relativeCoordinates = getRelativeCoordinates(e, boxRef.current);
 
     const limitedX = Math.max(-200, Math.min(200, relativeCoordinates.x - 600));

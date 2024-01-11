@@ -1,11 +1,29 @@
-"use client"
-import { User } from "@prisma/client";
+import { College, Courses, User } from "@prisma/client";
 import Image from "next/image";
 import { LogoutButton } from "./logout";
 import { Modal } from "../ui/modal";
-// import { ButtonModalComponent } from "../ui/modal/button";
+import EditProfileForm from "../forms/editProfile/editProfileForm";
+import { getServerSession } from "next-auth";
+import { prisma } from "@/src/lib/db";
+import { authOptions } from "@/src/lib/auth";
 
-export const Profile: React.FC<{ user: User }> = ({ user }) => {
+export const Profile: React.FC<{ user: User & {
+		college: College| null;
+	}
+}> = async ({ user }) => {
+
+  const session = await getServerSession(authOptions);
+
+  const colleges = await prisma.college.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  //TODO:get states
+  const states: string[] = ['karnataka', 'kerala'];
+  const courses: string[] = Object.entries(Courses).map(([, value]) => value);
     return (
         <>
             <div className="flex flex-col gap-4 justify-center items-left text-white bg-black shadow-md shadow-tertiary-700 rounded-lg p-5">
@@ -24,8 +42,13 @@ export const Profile: React.FC<{ user: User }> = ({ user }) => {
                             sjdfk
                         </div>
                     </ButtonModalComponent> */}
-                    <Modal title="Hello" description="Hello" buttonContent={"Edit Profile"} footer={<></>}>
-
+                    <Modal title="Edit Profile" description="Edit Profile" buttonContent={"Edit Profile"} footer={<></>}>
+      <EditProfileForm
+        user={user!}
+        colleges={colleges}
+        states={states}
+        courses={courses}
+      />
                     </Modal>
                     <LogoutButton/>
                 </div>
