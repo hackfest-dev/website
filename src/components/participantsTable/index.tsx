@@ -52,8 +52,8 @@ export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
                     </TableCell>
                     <TableCell className={'text-center border p-4'}>
                       <Image
-                        src={member.adhaar ? member.adhaar : ''}
-                        alt="Adhaar"
+                        src={member.aadhaar ? member.aadhaar : ''}
+                        alt="Aadhaar"
                         width="100"
                         height="100"
                         unoptimized

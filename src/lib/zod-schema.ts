@@ -6,17 +6,16 @@ const updateUserZ = z.object({
 });
 
 const updateProfileZ = z.object({
-  name: z.string().optional(),
+  name: z.string().min(1, { message: 'Name cannot be empty' }),
   phone: z
     .string()
     .min(10, { message: 'Phone number should be at least 10 characters long' })
-    .max(10, { message: 'Phone number should be at most 10 characters long' })
-    .optional(),
-  college: z.string().optional(),
-  state: z.string().optional(),
-  course: z.custom<Courses>().optional(),
-  aadharFile: z.custom<File>().optional(),
-  collegeIdFile: z.custom<File>().optional(),
+    .max(10, { message: 'Phone number should be at most 10 characters long' }),
+  college: z.string(),
+//   state: z.string().optional(),
+  course: z.custom<Courses>(),
+  aadhaarFile: z.custom<File>(),
+  collegeIdFile: z.custom<File>(),
 });
 
 const submitIdeaZ = z.object(

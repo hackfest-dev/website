@@ -49,10 +49,12 @@ model User {
   state         String?
   collegeId     String?
   college       College?  @relation(fields: [collegeId], references: [id])
+  //Tshirt size
+  tShirtSize     TshirtSize @default(S)
   //payment and registration
   image         String?
   course        Courses?
-  adhaar        String?
+  aadhaar        String?
   college_id    String?
   isVerified    Boolean   @default(false)
   paymentStatus String?   @default("PENDING")
@@ -84,7 +86,7 @@ model VerificationToken {
 model College {
   id    String @id @default(cuid())
   name  String
-  state String
+  state States
   users User[]
 }
 
@@ -94,6 +96,8 @@ model Team {
   members         User[]
   referralCode	  String?
   isComplete      Boolean           @default(false)
+  referral        Referral?         @relation(references:[id],fields: [referralId])
+  referralId      Int?
   //TODO: Add score details
   videoSubmission VideoSubmissions?
   ideaSubmission  IdeaSubmission?
@@ -135,6 +139,13 @@ model AppSettings {
   isProfileEditOpen     Boolean @default(true)
 }
 
+model Referral {
+    id Int @id @default(autoincrement())
+    code String @unique
+    referrer String
+    teams Team[]
+}
+
 enum Role {
   PARTICIPANT
   ADMIN
@@ -164,4 +175,51 @@ enum Tracks{
   TRACK2
   TRACK3
   TRACK4
+}
+
+enum TshirtSize {
+    S
+    M
+    L
+    XL
+    XX
+}
+
+enum States {
+  ANDHRA_PRADESH
+  ARUNACHAL_PRADESH
+  ASSAM
+  BIHAR
+  CHHATTISGARH
+  GOA
+  GUJARAT
+  HARYANA
+  HIMACHAL_PRADESH
+  JHARKHAND
+  KARNATAKA
+  KERALA
+  MADHYA_PRADESH
+  MAHARASHTRA
+  MANIPUR
+  MEGHALAYA
+  MIZORAM
+  NAGALAND
+  ODISHA
+  PUNJAB
+  RAJASTHAN
+  SIKKIM
+  TAMIL_NADU
+  TELANGANA
+  TRIPURA
+  UTTARAKHAND
+  UTTAR_PRADESH
+  WEST_BENGAL
+  ANDAMAN_NICOBAR
+  CHANDIGARH
+  DADRA_NAGAR_HAVELI_DAMAN_DIU
+  DELHI
+  JAMMU_KASHMIR
+  LADAKH
+  LAKSHADWEEP
+  PUDUCHERRY
 }

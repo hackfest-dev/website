@@ -5,7 +5,6 @@ import { protectedAction } from "./serverConfig";
 import { updateUserZ, updateProfileZ, submitIdeaZ } from "../lib/zod-schema";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "../lib/session";
-import { v2 } from "cloudinary";
 
 // -----------------User functions-----------------
 // Set user as verified on successful verification
@@ -24,6 +23,7 @@ const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
 // Update User Profile -- zod validation cannot be made using protectedAction utility
 // For file uploads, we need to pass them as FormData
 // Error: Only plain objects, and a few built-ins, can be passed to Server Actions. Classes or null prototypes are not supported.
+
 const updateProfile = async (formData: FormData) => {
   const obj = Object.fromEntries(formData.entries());
   const result = updateProfileZ.safeParse({
@@ -75,7 +75,6 @@ const updateProfile = async (formData: FormData) => {
     adhaarUrl === user?.adhaar &&
     collegeIdUrl === user?.college_id &&
     user?.college?.id === data.college &&
-    user?.state === data.state &&
     user?.course === data.course;
 
   if (hasNoChanges) {
@@ -90,7 +89,6 @@ const updateProfile = async (formData: FormData) => {
       adhaar: adhaarUrl,
       college_id: collegeIdUrl,
       college: { connect: { id: data.college } },
-      state: data.state,
       course: data.course,
     },
   });

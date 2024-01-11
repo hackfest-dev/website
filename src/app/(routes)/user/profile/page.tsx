@@ -1,5 +1,4 @@
 import CreateTeam from "@/src/components/forms/createTeam";
-import EditProfile from "@/src/components/forms/editProfile";
 import TeamDetails from "@/src/components/forms/teamInfo";
 import { prisma } from "@/src/lib/db";
 import { getCurrentUser } from "@/src/lib/session";
