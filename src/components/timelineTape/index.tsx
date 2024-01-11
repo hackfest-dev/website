@@ -254,7 +254,6 @@ export default function TimelineTape() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              //Card 1
               {progress > 0.09 && (
                 <motion.g id="card1">
                   <path
@@ -274,7 +273,7 @@ export default function TimelineTape() {
                   />
                 </motion.g>
               )}
-              //Card 2
+
               {progress > 0.294 && (
                 <motion.g id="card2">
                   <path
@@ -298,7 +297,7 @@ export default function TimelineTape() {
                   />
                 </motion.g>
               )}
-              //Card 3
+
               {progress > 0.45 && (
                 <motion.g id="card3">
                   <path
@@ -318,7 +317,7 @@ export default function TimelineTape() {
                   />
                 </motion.g>
               )}
-              //Card 4
+
               {progress > 0.55 && (
                 <motion.g id="card4">
                   <path
@@ -338,7 +337,7 @@ export default function TimelineTape() {
                   />
                 </motion.g>
               )}
-              //Card 5
+
               {progress > 0.7 && (
                 <motion.g id="card5">
                   <path
@@ -366,7 +365,7 @@ export default function TimelineTape() {
                   />
                 </motion.g>
               )}
-              //Card 6
+
               {progress > 0.86 && (
                 <motion.g id="card6">
                   <path

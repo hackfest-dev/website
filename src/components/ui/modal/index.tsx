@@ -136,7 +136,9 @@ export function Modal({children=<></>,footer=<></>,buttonContent,title,descripti
             {description}
           </DialogDescription>
         </DialogHeader>
+		<div className="max-h-screen overflow-scroll">
         {children}
+		</div>
         <DialogFooter>
         {footer}
         </DialogFooter>
