@@ -94,7 +94,6 @@ model Team {
   id              String            @id @default(cuid())
   name            String            @unique
   members         User[]
-  referralCode	  String?
   isComplete      Boolean           @default(false)
   referral        Referral?         @relation(references:[id],fields: [referralId])
   referralId      Int?
@@ -123,12 +122,12 @@ model VideoSubmissions {
 }
 
 model IdeaSubmission{
-  id     Int    @id @default(autoincrement())
-  teamId String @unique
-  Team   Team   @relation(fields: [teamId], references: [id])
-  track		Tracks
-  problemStatement String @db.Text
-  pptUrl    String
+  id				Int    @id @default(autoincrement())
+  teamId			String @unique
+  Team				Team   @relation(fields: [teamId], references: [id])
+  track				Tracks
+  problemStatement	String @db.Text
+  pptUrl			String
 }
 
 model AppSettings {
@@ -140,10 +139,10 @@ model AppSettings {
 }
 
 model Referral {
-    id Int @id @default(autoincrement())
-    code String @unique
+    id		 Int @id @default(autoincrement())
+    code	 String @unique
     referrer String
-    teams Team[]
+    teams	 Team[]
 }
 
 enum Role {

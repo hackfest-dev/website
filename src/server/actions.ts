@@ -53,8 +53,8 @@ const updateProfile = async (formData: FormData) => {
   });
 
   //If ID is already there remove the existing one from cloudinary
-  if (user?.adhaar) {
-    await deleteFile(user.adhaar.split(";")[1]);
+  if (user?.aadhaar) {
+    await deleteFile(user.aadhaar.split(";")[1]);
   }
   if (user?.college_id) {
     await deleteFile(user.college_id.split(";")[1]);
@@ -63,7 +63,7 @@ const updateProfile = async (formData: FormData) => {
   // upload files only if they exist otherwise set to existing url
   const adhaarUrl = obj.adhaar
     ? await uploadFile({ file: obj.adhaar as File, folder: "ids" })
-    : user?.adhaar;
+    : user?.aadhaar;
   const collegeIdUrl = obj.collegeId
     ? await uploadFile({ file: obj.collegeId as File, folder: "ids" })
     : user?.college_id;
@@ -72,7 +72,7 @@ const updateProfile = async (formData: FormData) => {
   const hasNoChanges =
     user?.name === data.name &&
     user?.phone === data.phone &&
-    adhaarUrl === user?.adhaar &&
+    adhaarUrl === user?.aadhaar &&
     collegeIdUrl === user?.college_id &&
     user?.college?.id === data.college &&
     user?.course === data.course;
@@ -86,7 +86,7 @@ const updateProfile = async (formData: FormData) => {
     data: {
       name: data.name,
       phone: data.phone,
-      adhaar: adhaarUrl,
+      aadhaar: adhaarUrl,
       college_id: collegeIdUrl,
       college: { connect: { id: data.college } },
       course: data.course,
@@ -295,6 +295,11 @@ const submitIdea = async (formdata: FormData) => {
             problemStatement: data.problemStatement,
             pptUrl,
             track: data.track,
+          },
+        },
+        referral: {
+          connect: {
+            code: data.referralCode,
           },
         },
       },

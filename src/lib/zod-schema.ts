@@ -23,7 +23,7 @@ const submitIdeaZ = z.object(
 		problemStatement: z.string(),
 		track: z.nativeEnum(Tracks),
 		referralCode: z.string(),
-		ppt:z.custom<File>().refine((file)=>file.size < 5000000, "Max file size is 5MB")
+		ppt:z.custom<File>()
 	}
 )
 
