@@ -16,7 +16,6 @@
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
-    "@rive-app/react-canvas": "^4.7.0",
     "@setu/upi-deep-links": "^3.0.0",
     "@tsparticles/engine": "^3.0.3",
     "@tsparticles/react": "^3.0.0",

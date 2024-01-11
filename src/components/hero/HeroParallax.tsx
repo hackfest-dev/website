@@ -7,19 +7,10 @@ import Reflection from '@/public/images/reflection_without_gap.svg';
 import HoverBoard from '@/public/images/hoverboard.svg';
 import { MouseEvent, useRef, useState } from 'react';
 import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
-import { useRive, Alignment, Fit, Layout } from '@rive-app/react-canvas';
+import { getRelativeCoordinates } from '../../lib/utils/getRelativeCoordinates';
 
 const HeroParallax = () => {
   const ref = useRef(null);
-
-  const { RiveComponent: Hoverboard } = useRive({
-    src: `/rive/hoverboard.riv/`,
-    autoplay: true,
-    layout: new Layout({
-      fit: Fit.FitHeight,
-      alignment: Alignment.BottomCenter,
-    }),
-  });
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -37,19 +28,26 @@ const HeroParallax = () => {
 
   const textScale = useTransform(smoothScroll, [0, 1], [1.5, 0.5]);
 
-  const [x, setX] = useState(0);
+  const [mousePosition, setMousePosition] = useState({
+    x: 0,
+    centerX: 0,
+  });
+
+  const boxRef = useRef(null);
 
   const handleMouseMove = (e: MouseEvent) => {
-    const x = e.clientX;
-    setX(x);
+    const relativeCoordinates = getRelativeCoordinates(e, boxRef.current);
+
+    const limitedX = Math.max(-200, Math.min(200, relativeCoordinates.x - 600));
+
+    setMousePosition({
+      x: limitedX,
+      centerX: relativeCoordinates.centerX,
+    });
   };
 
   return (
-    <div
-      onMouseMove={handleMouseMove}
-      className="relative h-screen w-screen"
-      ref={ref}
-    >
+    <div className="relative h-screen w-screen" ref={ref}>
       <motion.div
         style={{ y: textSpeed, scale: textScale }}
         className="absolute inset-0 z-10 flex justify-center items-center"
@@ -79,7 +77,7 @@ const HeroParallax = () => {
         style={{
           transformStyle: 'preserve-3d',
           perspective: '200px',
-          y: fgSpeed,
+          // y: fgSpeed,
         }}
       >
         <div className='border-tertiary-400 bg-[url("/images/grid-sm.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] md:bg-[url("/images/grid1.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] border-t-2 motion-safe:animate-move flex justify-center items-start rotate-x-45 w-[200%] h-[100%] left-[-50%] relative bg-repeat bg-center'></div>
@@ -93,11 +91,45 @@ const HeroParallax = () => {
         />
       </div>
 
-      <div
-        className={`z-40 absolute h-[30rem] w-[30rem] bottom-0`}
-        style={{ left: x }}
+      <motion.div
+        ref={boxRef}
+        style={{ perspective: 600 }}
+        onMouseMove={(e) => handleMouseMove(e)}
+        animate={{
+          rotateX: mousePosition.centerX * 20,
+        }}
+        className={`z-40 absolute inset-0 flex justify-center items-end`}
       >
-        <Hoverboard className="w-full h-full" />
+        <motion.div
+          animate={{
+            x: mousePosition.x,
+          }}
+          transition={{ type: 'tween' }}
+        >
+          <Image
+            width={200}
+            height={200}
+            src={HoverBoard}
+            alt="Hover Board"
+            className="fly-up-down ease-in-out"
+          />
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden rotate-180 z-50">
+        <svg
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+          className="relative block h-[150px] w-[calc(100% + 1.3px)]"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="fill-slate-900"
+            fill-opacity="1"
+          ></path>
+        </svg>
       </div>
     </div>
   );
