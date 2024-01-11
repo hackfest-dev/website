@@ -86,7 +86,7 @@ model VerificationToken {
 model College {
   id    String @id @default(cuid())
   name  String
-  state String
+  state States
   users User[]
 }
 
@@ -95,6 +95,8 @@ model Team {
   name            String            @unique
   members         User[]
   isComplete      Boolean           @default(false)
+  referral        Referral?         @relation(references:[id],fields: [referralId])
+  referralId      Int?
   //TODO: Add score details
   videoSubmission VideoSubmissions?
 
@@ -124,6 +126,13 @@ model AppSettings {
   isPaymentOpen         Boolean @default(true)
   isVideoSubmissionOpen Boolean @default(true)
   isProfileEditOpen     Boolean @default(true)
+}
+
+model Referral {
+    id Int @id @default(autoincrement())
+    code String @unique
+    referrer String
+    teams Team[]
 }
 
 enum Role {
@@ -156,4 +165,43 @@ enum TshirtSize {
     L
     XL
     XX
+}
+
+enum States {
+  ANDHRA_PRADESH
+  ARUNACHAL_PRADESH
+  ASSAM
+  BIHAR
+  CHHATTISGARH
+  GOA
+  GUJARAT
+  HARYANA
+  HIMACHAL_PRADESH
+  JHARKHAND
+  KARNATAKA
+  KERALA
+  MADHYA_PRADESH
+  MAHARASHTRA
+  MANIPUR
+  MEGHALAYA
+  MIZORAM
+  NAGALAND
+  ODISHA
+  PUNJAB
+  RAJASTHAN
+  SIKKIM
+  TAMIL_NADU
+  TELANGANA
+  TRIPURA
+  UTTARAKHAND
+  UTTAR_PRADESH
+  WEST_BENGAL
+  ANDAMAN_NICOBAR
+  CHANDIGARH
+  DADRA_NAGAR_HAVELI_DAMAN_DIU
+  DELHI
+  JAMMU_KASHMIR
+  LADAKH
+  LAKSHADWEEP
+  PUDUCHERRY
 }
