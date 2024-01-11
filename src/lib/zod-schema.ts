@@ -1,4 +1,4 @@
-import { Courses } from '@prisma/client';
+import { Courses, Tracks } from '@prisma/client';
 import { z } from 'zod';
 
 const updateUserZ = z.object({
@@ -19,4 +19,13 @@ const updateProfileZ = z.object({
   collegeIdFile: z.custom<File>().optional(),
 });
 
-export { updateUserZ, updateProfileZ };
+const submitIdeaZ = z.object(
+	{
+		problemStatement: z.string(),
+		track: z.nativeEnum(Tracks),
+		referralCode: z.string(),
+		ppt:z.custom<File>().refine((file)=>file.size < 5000000, "Max file size is 5MB")
+	}
+)
+
+export { updateUserZ, updateProfileZ, submitIdeaZ};
