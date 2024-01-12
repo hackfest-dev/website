@@ -7,6 +7,7 @@ import PrizePool from "@/src/components/prizePool";
 import { FAQ } from "@/src/components/faq";
 import TimelineTape from "@/src/components/timelineTape";
 import { domains } from "@/src/constants";
+import Speakers from "@/src/components/speakers";
 
 export default async function Home() {
   return (
@@ -19,6 +20,7 @@ export default async function Home() {
         <TimelineTape />
       </div> */}
       <Sponsors />
+      <Speakers />
       <FAQ />
       <About />
     </main>

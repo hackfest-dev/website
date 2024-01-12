@@ -7,10 +7,11 @@ import Link from 'next/link';
 const Footer = () => {
   return (
     <>
-      <footer className="flex flex-col fixed bottom-0 w-full px-4 h-80 border-t border-gray-700 bg-gradient-to-b from-slate-900 to-slate-950  backdrop-blur-md">
+      <footer className="flex flex-col bottom-0 w-full px-4 h-80 border-t border-gray-700 bg-gradient-to-b from-slate-900 to-slate-950  backdrop-blur-md">
       <div className='flex flex-row h-full items-center justify-evenly'>
           <div className='flex flex-col  items-center gap-8'>
             <div className="flex flex-row justify-center items-center gap-4">
+             
          <Image
                 className=" border-[0.5px] border-gray-600 rounded-2xl"
                 src="/logos/logo.png"
@@ -20,6 +21,7 @@ const Footer = () => {
                 height={50}
               />
               <div className='flex flex-col justify-center items-center gap-2'>
+              <Link href="https://www.finiteloop.co.in/" target='_blank'>
               <Image
                 className=" border-[0.5px] border-gray-600 rounded-2xl p-1"
                 src="/logos/flcLogo.png"
@@ -27,7 +29,8 @@ const Footer = () => {
                 alt="Logo - Finite Loop Club"
                 width={120}
                 height={60}
-              />
+              /></Link>
+              <Link href="https://nmamit.nitte.edu.in/" target='_blank'>
               <Image
                 className=" border-[0.5px] border-gray-600 rounded-xl p-2"
                 src="/logos/NMAMITLogo.png"
@@ -35,7 +38,7 @@ const Footer = () => {
                 alt="Logo - NMAMIT"
                 width={120}
                 height={60}
-              />
+              /></Link>
               </div>
           </div>
           <div className="flex flex-row items-center  gap-4 md:gap-4">
