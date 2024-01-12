@@ -31,12 +31,12 @@ export const social: Array<{
 }> = [
   {
     link: "https://www.instagram.com/hackfest.dev",
-    icon: <AiOutlineInstagram className="h-7 w-7 hover:text-yellow-500" />,
+    icon: <AiOutlineInstagram className=" hover:text-yellow-500" />,
     name: "Instagram",
   },
   {
     link: "mailto:admin@hackfest.dev",
-    icon: <AiOutlineMail className="h-7 w-7 hover:text-yellow-500" />,
+    icon: <AiOutlineMail className=" hover:text-yellow-500" />,
     name: "E-mail",
   },
 ];
