@@ -315,6 +315,30 @@ const submitIdea = async (formdata: FormData) => {
   }
 };
 
+const getTeamDetailsById = async (teamId: string) => {
+	try{
+		if(!teamId) return null
+		const team = await prisma.team.findUnique({
+			where: {
+				id: teamId
+			},
+			include: {
+				members: {
+					include: {
+						college: true
+					}
+				},
+				ideaSubmission: true
+			}
+		})
+		return team
+	}
+	catch(error){
+		console.log(error)
+		return null
+	}
+}
+
 export {
   verifyUser,
   updateProfile,
@@ -324,4 +348,5 @@ export {
   leaveTeam,
   deleteTeam,
   submitIdea,
+  getTeamDetailsById
 };
