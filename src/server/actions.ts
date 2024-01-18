@@ -26,6 +26,7 @@ const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
 
 const updateProfile = async (formData: FormData) => {
   const obj = Object.fromEntries(formData.entries());
+  console.log(obj);
   const result = updateProfileZ.safeParse({
     ...obj,
   });
@@ -84,6 +85,7 @@ const updateProfile = async (formData: FormData) => {
   await prisma.user.update({
     where: { id: session?.id },
     data: {
+      profileProgress: "FORM_TEAM",
       name: data.name,
       phone: data.phone,
       aadhaar: adhaarUrl,
@@ -146,6 +148,7 @@ const createTeam = async (data: FormData) => {
             name: data.get("teamname") as string,
           },
         },
+        profileProgress: "COMPLETE",
       },
     });
 
@@ -203,6 +206,10 @@ const joinTeam = async (data: FormData) => {
         members: {
           connect: {
             id: user?.id,
+          },
+          update: {
+            data: { profileProgress: "COMPLETE" },
+            where: { id: user?.id },
           },
         },
       },
@@ -316,28 +323,27 @@ const submitIdea = async (formdata: FormData) => {
 };
 
 const getTeamDetailsById = async (teamId: string) => {
-	try{
-		if(!teamId) return null
-		const team = await prisma.team.findUnique({
-			where: {
-				id: teamId
-			},
-			include: {
-				members: {
-					include: {
-						college: true
-					}
-				},
-				ideaSubmission: true
-			}
-		})
-		return team
-	}
-	catch(error){
-		console.log(error)
-		return null
-	}
-}
+  try {
+    if (!teamId) return null;
+    const team = await prisma.team.findUnique({
+      where: {
+        id: teamId,
+      },
+      include: {
+        members: {
+          include: {
+            college: true,
+          },
+        },
+        ideaSubmission: true,
+      },
+    });
+    return team;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 
 export {
   verifyUser,
@@ -348,5 +354,5 @@ export {
   leaveTeam,
   deleteTeam,
   submitIdea,
-  getTeamDetailsById
+  getTeamDetailsById,
 };
