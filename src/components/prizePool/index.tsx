@@ -16,7 +16,7 @@ const PrizePool = () => {
   }, [isInView]);
   const config = {
     angle: 290,
-    spread: 360,
+    spread: 300,
     startVelocity: 40,
     elementCount: 50,
     dragFriction: 0.11,
@@ -52,7 +52,7 @@ const PrizePool = () => {
   return (
     // <LampContainer>
     <>
-      <motion.div className="  w-full z-15 flex flex-col items-center justify-center rounded-md py-20 bg-slate-950 "
+      <motion.div className="  w-full z-15 flex flex-col items-center justify-center rounded-md py-20 bg-slate-950 overflow-clip"
       initial={{ opacity: 1, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
@@ -73,7 +73,9 @@ const PrizePool = () => {
               onClick={() => ConfettiExplosion()}
             />
          
+
           <Confetti active={show} config={config} />
+
         </div>
 
         {/* Card Components */}

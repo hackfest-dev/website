@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <>
       <footer className="flex flex-col bottom-0 w-full px-4 h-80 border-t border-gray-700 bg-gradient-to-b from-slate-900 to-slate-950  backdrop-blur-md">
-      <div className='flex flex-row h-full items-center justify-evenly'>
+      <div className='flex flex-col md:flex-row h-full items-center justify-evenly p-4'>
           <div className='flex flex-col  items-center gap-8'>
             <div className="flex flex-row justify-center items-center gap-4">
              
