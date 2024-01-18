@@ -16,9 +16,9 @@ export default async function Home() {
       <AboutHackfest />
       <PrizePool />
       <Domains domainList={domains} />
-      {/* <div className="flex flex-col items-center justify-center h-screen">
+      <div className="md:pb-80 pb-16 scale-75 -translate-y-48">
         <TimelineTape />
-      </div> */}
+      </div>
       <Sponsors />
       <Speakers />
       <FAQ />
