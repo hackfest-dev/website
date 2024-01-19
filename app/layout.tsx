@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { headers } from "next/headers";
+import { siteMetadata } from "@/components/constants/page";
 import localFont from "next/font/local";
 
 const font = localFont({
@@ -16,26 +18,26 @@ const metadata: Metadata = {
     "Hackfest is a 36h long National level Hackathon at NMAMIT, Nitte coupled with a lot of Interactive Activities & Tech Conference talks!",
 };
 
-const meta = {
-  title: `${
-    pathname === ""
-      ? ""
-      : pathname.charAt(1).toUpperCase() + pathname.slice(2) + " | "
-  }${siteMetadata.title}`,
-  description: siteMetadata.description,
-  type: "Website",
-  canonicalUrl: `${siteMetadata.siteUrl}${pathname}`,
-  isArticle: false,
-  ...customMeta,
-};
-
 export { metadata };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout(props: { children: React.ReactNode }) {
+  const { children, ...customMeta } = props;
+  const headersList = headers();
+  const pathname = headersList.get("x-url") || "";
+
+  const meta = {
+    title: `${
+      pathname === ""
+        ? ""
+        : pathname.charAt(1).toUpperCase() + pathname.slice(2) + " | "
+    }${siteMetadata.title}`,
+    description: siteMetadata.description,
+    type: "Website",
+    canonicalUrl: `${siteMetadata.siteUrl}${pathname}`,
+    isArticle: false,
+    ...customMeta,
+  };
+
   return (
     <html lang="en">
       <head>
