@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Account {
@@ -13,15 +13,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -38,38 +37,33 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  phone         String?
-  accounts      Account[]
-  sessions      Session[]
-  //Place and college
-  state         String?
-  collegeId     String?
-  college       College?  @relation(fields: [collegeId], references: [id])
-  //Tshirt size
-  tShirtSize     TshirtSize @default(S)
-  //payment and registration
-  image         String?
-  course        Courses?
-  aadhaar        String?
-  college_id    String?
-  isVerified    Boolean   @default(false)
-  paymentStatus String?   @default("PENDING")
-  profileProgress Progress @default(FILL_DETAILS)
-  paymentId     String?
-  payment       Payments?
-  //team and role
-  teamId        String?
-  team          Team?     @relation(fields: [teamId], references: [id])
-  isLeader      Boolean   @default(false)
-  role          Role      @default(PARTICIPANT)
-  //Other info
-  destination   String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id              String     @id @default(cuid())
+  name            String?
+  email           String?    @unique
+  emailVerified   DateTime?
+  phone           String?
+  state           String?
+  collegeId       String?
+  image           String?
+  course          Courses?
+  college_id      String?
+  isVerified      Boolean    @default(false)
+  paymentStatus   String?    @default("PENDING")
+  paymentId       String?
+  teamId          String?
+  isLeader        Boolean    @default(false)
+  role            Role       @default(PARTICIPANT)
+  destination     String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  profileProgress Progress   @default(FILL_DETAILS)
+  aadhaar         String?
+  tShirtSize      TshirtSize @default(S)
+  accounts        Account[]
+  payment         Payments?
+  sessions        Session[]
+  college         College?   @relation(fields: [collegeId], references: [id])
+  team            Team?      @relation(fields: [teamId], references: [id])
 
   @@index([collegeId])
   @@index([teamId])
@@ -93,41 +87,39 @@ model College {
 model Team {
   id              String            @id @default(cuid())
   name            String            @unique
-  members         User[]
   isComplete      Boolean           @default(false)
-  referral        Referral?         @relation(references:[id],fields: [referralId])
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
   referralId      Int?
-  //TODO: Add score details
-  videoSubmission VideoSubmissions?
   ideaSubmission  IdeaSubmission?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  referral        Referral?         @relation(fields: [referralId], references: [id])
+  members         User[]
+  videoSubmission VideoSubmissions?
 }
 
 model Payments {
   id            String   @id @default(cuid())
   userId        String   @unique
-  user          User     @relation(fields: [userId], references: [id])
   amount        Float
   transactionId String
   createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
 }
 
 model VideoSubmissions {
   id     Int    @id @default(autoincrement())
   teamId String @unique
-  Team   Team   @relation(fields: [teamId], references: [id])
   url    String
+  Team   Team   @relation(fields: [teamId], references: [id])
 }
 
-model IdeaSubmission{
-  id				Int    @id @default(autoincrement())
-  teamId			String @unique
-  Team				Team   @relation(fields: [teamId], references: [id])
-  track				Tracks
-  problemStatement	String @db.Text
-  pptUrl			String
+model IdeaSubmission {
+  id               Int    @id @default(autoincrement())
+  teamId           String @unique
+  track            Tracks
+  problemStatement String
+  pptUrl           String
+  Team             Team   @relation(fields: [teamId], references: [id])
 }
 
 model AppSettings {
@@ -139,10 +131,10 @@ model AppSettings {
 }
 
 model Referral {
-    id		 Int @id @default(autoincrement())
-    code	 String @unique
-    referrer String
-    teams	 Team[]
+  id       Int    @id @default(autoincrement())
+  code     String @unique
+  referrer String
+  teams    Team[]
 }
 
 enum Role {
@@ -154,7 +146,6 @@ enum Courses {
   course_1
   course_2
   course_3
-  //TODO: Add other courses
 }
 
 enum PaymentStatus {
@@ -162,6 +153,7 @@ enum PaymentStatus {
   PAID
   FAILED
 }
+
 enum Progress {
   FILL_DETAILS
   PAYMENT
@@ -169,7 +161,7 @@ enum Progress {
   COMPLETE
 }
 
-enum Tracks{
+enum Tracks {
   TRACK1
   TRACK2
   TRACK3
@@ -177,11 +169,11 @@ enum Tracks{
 }
 
 enum TshirtSize {
-    S
-    M
-    L
-    XL
-    XX
+  S
+  M
+  L
+  XL
+  XX
 }
 
 enum States {

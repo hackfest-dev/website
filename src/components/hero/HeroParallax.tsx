@@ -8,6 +8,7 @@ import HoverBoard from '@/public/images/hoverboard.svg';
 import { MouseEvent, useRef, useState } from 'react';
 import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
 import { getRelativeCoordinates } from '../../lib/utils/getRelativeCoordinates';
+import { useParallax } from '@/src/app/hooks/useParallax';
 
 const HeroParallax = () => {
   const ref = useRef(null);
@@ -23,8 +24,8 @@ const HeroParallax = () => {
     stiffness: 150,
   });
 
-  const textSpeed = useTransform(smoothScroll, [0, 1], [-300, 300]);
-  const fgSpeed = useTransform(smoothScroll, [0, 1], [-150, 150]);
+  const textSpeed = useParallax(smoothScroll, 300);
+  const fgSpeed = useParallax(smoothScroll, 150);
 
   const textScale = useTransform(smoothScroll, [0, 1], [1.5, 0.5]);
 
@@ -50,6 +51,8 @@ const HeroParallax = () => {
   return (
     <div className="relative h-screen w-screen" ref={ref}>
       <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         style={{ y: textSpeed, scale: textScale }}
         className="absolute inset-0 z-10 flex justify-center items-center"
       >
@@ -57,6 +60,8 @@ const HeroParallax = () => {
       </motion.div>
 
       <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         style={{ y: fgSpeed }}
         className="-z-20 h-2/3 -mb-2 mt-2 w-screen relative"
       >
@@ -128,7 +133,7 @@ const HeroParallax = () => {
           <path
             d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
             className="fill-slate-900"
-            fill-opacity="1"
+            fillOpacity="1"
           ></path>
         </svg>
       </div>
