@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body::before {
+/* body::before {
   content: "";
   position: fixed;
   width: 100%;
@@ -14,4 +14,4 @@ body::before {
   background-size: cover;
   opacity: 0.2;
   z-index: -1;
-}
+} */

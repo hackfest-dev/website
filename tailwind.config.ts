@@ -17,6 +17,7 @@ const config: Config = {
         anton: ["Anton", "sans-serif"],
         nunito: ["Nunito Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
+        spaceRave: ["var(--font-spaceRave)", "sans-serif"],
       },
     },
   },

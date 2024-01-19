@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
 
+const font = localFont({
+  src: "../public/fonts/SpaceRaveItalic-z8GoG.ttf",
+  variable: "--font-spaceRave",
+  display: "swap",
+});
 const inter = Inter({ subsets: ["latin"] });
 
 const metadata: Metadata = {
@@ -19,7 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-black text-white`}>
+      <body
+        className={`${inter.className} ${font.variable} bg-black text-white`}
+      >
         {children}
       </body>
     </html>
