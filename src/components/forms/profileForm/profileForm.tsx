@@ -115,13 +115,13 @@ const ProfileForm = ({
   };
 
   return (
-    <div className="max-h-max">
+    <div className="max-h-max w-full">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="border sm:p-4 rounded grid sm:max-w-xl m-auto"
+          className="flex flex-col gap-2 md:gap-4"
         >
-          <h1 className="text-center text-xl text-white">Update Profile</h1>
+          <h1 className="text-center lg:text-2xl text-xl ">Update Profile</h1>
           <p
             className={`text-center ${
               error.includes("updated") ? "text-green-500" : "text-red-500"
@@ -129,214 +129,219 @@ const ProfileForm = ({
           >
             {error}
           </p>
-          {/* Name */}
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field, formState, fieldState }) => {
-              return (
-                <FormItem>
-                  <FormLabel className="text-white">Name</FormLabel>
+          <div className="flex flex-wrap flex-col md:flex-row justify-center items-center mx-auto gap-4">
+            {/* Name */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field, formState, fieldState }) => {
+                return (
+                  <FormItem className="md:w-[45%] w-full">
+                    <FormLabel className="">Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
+
+            {/* Phone */}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field, formState, fieldState }) => (
+                <FormItem className="md:w-[45%] w-full">
+                  <FormLabel className="">Phone</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input type="text" placeholder="8939269292" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              );
-            }}
-          ></FormField>
-          {/* Phone */}
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field, formState, fieldState }) => (
-              <FormItem>
-                <FormLabel className="text-white">Phone</FormLabel>
-                <FormControl>
-                  <Input type="text" placeholder="8939269292" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          ></FormField>
+              )}
+            ></FormField>
 
-          {/* list of colleges*/}
-          <FormField
-            control={form.control}
-            name="college"
-            render={({ field, formState, fieldState }) => (
-              <FormItem>
-                <FormLabel className="text-white">College</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-[180px] text-black">
-                      <SelectValue placeholder="Select your college" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {colleges.map(({ id, name }, key) => (
-                          <SelectItem value={id} key={key}>
-                            {name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          ></FormField>
+            {/* list of colleges*/}
+            <FormField
+              control={form.control}
+              name="college"
+              render={({ field, formState, fieldState }) => (
+                <FormItem className="md:w-[45%] w-full">
+                  <FormLabel className="">College</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select your college" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {colleges.map(({ id, name }, key) => (
+                            <SelectItem value={id} key={key}>
+                              {name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            ></FormField>
 
-          {/* Course */}
-          <FormField
-            control={form.control}
-            name="course"
-            render={({ field, formState, fieldState }) => (
-              <FormItem>
-                <FormLabel className="text-white">Degree</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-[180px] text-black">
-                      <SelectValue placeholder="Select your Degree" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {courses.map((course, key) => (
-                          <SelectItem value={course} key={key}>
-                            {course}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          ></FormField>
+            {/* Course */}
+            <FormField
+              control={form.control}
+              name="course"
+              render={({ field, formState, fieldState }) => (
+                <FormItem className="md:w-[45%] w-full">
+                  <FormLabel className="">Degree</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select your Degree" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {courses.map((course, key) => (
+                            <SelectItem value={course} key={key}>
+                              {course}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            ></FormField>
 
-          <FormField
-            control={form.control}
-            name="collegeIdFile"
-            render={({ field, formState, fieldState }) => {
-              // console.log(field)
-              return (
-                <FormItem>
-                  <FormLabel className="text-white">College ID Card</FormLabel>
+            {/* College ID */}
+            <FormField
+              control={form.control}
+              name="collegeIdFile"
+              render={({ field, formState, fieldState }) => {
+                // console.log(field)
+                return (
+                  <FormItem className="md:w-[calc(90%+1.5rem)] w-full">
+                    <FormLabel className="">College ID Card</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="w-full"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          if (e.target.files?.[0])
+                            field.value = e.target.files?.[0];
+
+                          console.log(e.target.files?.[0], field.value);
+                          previewCollegeId(e);
+                        }}
+                      />
+                    </FormControl>
+                    {(collegeId?.url || user?.college_id) && (
+                      <span>
+                        <Image
+                          src={
+                            collegeId?.url ||
+                            getUrlAndId(user?.college_id ?? "").url ||
+                            ""
+                          }
+                          alt="collegeID"
+                          width={100}
+                          height={100}
+                          unoptimized
+                        />
+                        {user.college_id && !collegeId?.url && "Uploaded File"}
+                        {collegeId?.url && (
+                          <Button
+                            onClick={() => {
+                              setCollegeId({
+                                url: "",
+                                file: undefined,
+                              });
+                              (
+                                document.getElementById(
+                                  "collegeId"
+                                ) as HTMLInputElement
+                              ).value = "";
+                            }}
+                            className="bg-red-500  text-center w-fit p-1 rounded cursor-pointer"
+                            type="button"
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </span>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
+
+            {/* Aadhaar */}
+            <FormField
+              control={form.control}
+              name="aadhaarFile"
+              render={({ field, formState, fieldState }) => (
+                <FormItem className="md:w-[calc(90%+1.5rem)] w-full">
+                  <FormLabel className="">Aadhar Card</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files?.[0])
-                          field.value = e.target.files?.[0];
-
-                        console.log(e.target.files?.[0], field.value);
-                        previewCollegeId(e);
-                      }}
+                      onChange={previewAdhaar}
                     />
                   </FormControl>
-                  {(collegeId?.url || user?.college_id) && (
+                  {(aadhaar?.url || user?.aadhaar) && (
                     <span>
                       <Image
                         src={
-                          collegeId?.url ||
-                          getUrlAndId(user?.college_id ?? "").url ||
+                          aadhaar?.url ||
+                          getUrlAndId(user?.aadhaar ?? "").url ||
                           ""
                         }
-                        alt="collegeID"
+                        alt="Adhaar"
                         width={100}
                         height={100}
                         unoptimized
-                      />
-                      {user.college_id && !collegeId?.url && "Uploaded File"}
-                      {collegeId?.url && (
-                        <Button
+                      />{" "}
+                      {user?.aadhaar && !aadhaar?.url && "Uploaded File"}
+                      {aadhaar?.url && (
+                        <button
                           onClick={() => {
-                            setCollegeId({
+                            setAadhaar({
                               url: "",
                               file: undefined,
                             });
                             (
                               document.getElementById(
-                                "collegeId"
+                                "aadhaar"
                               ) as HTMLInputElement
                             ).value = "";
                           }}
-                          className="bg-red-500 text-white text-center w-fit p-1 rounded cursor-pointer"
+                          className="bg-red-500  text-center w-fit p-1 rounded cursor-pointer"
                           type="button"
                         >
-                          Close Preview
-                        </Button>
+                          Remove
+                        </button>
                       )}
                     </span>
                   )}
                   <FormMessage />
                 </FormItem>
-              );
-            }}
-          ></FormField>
-
-          <FormField
-            control={form.control}
-            name="aadhaarFile"
-            render={({ field, formState, fieldState }) => (
-              <FormItem>
-                <FormLabel className="text-white">Aadhar Card</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={previewAdhaar}
-                  />
-                </FormControl>
-                {(aadhaar?.url || user?.aadhaar) && (
-                  <span>
-                    <Image
-                      src={
-                        aadhaar?.url ||
-                        getUrlAndId(user?.aadhaar ?? "").url ||
-                        ""
-                      }
-                      alt="Adhaar"
-                      width={100}
-                      height={100}
-                      unoptimized
-                    />{" "}
-                    {user?.aadhaar && !aadhaar?.url && "Uploaded File"}
-                    {aadhaar?.url && (
-                      <button
-                        onClick={() => {
-                          setAadhaar({
-                            url: "",
-                            file: undefined,
-                          });
-                          (
-                            document.getElementById(
-                              "aadhaar"
-                            ) as HTMLInputElement
-                          ).value = "";
-                        }}
-                        className="bg-red-500 text-white text-center w-fit p-1 rounded cursor-pointer"
-                        type="button"
-                      >
-                        Close Preview
-                      </button>
-                    )}
-                  </span>
-                )}
-                <FormMessage />
-              </FormItem>
-            )}
-          ></FormField>
-
-          <Button
-            type="submit"
-            className=" border rounded p-2 mt-6 hover:bg-blue-700 hover:text-white font-semibold"
-          >
-            {loading ? "Updating..." : "Update"}
-          </Button>
+              )}
+            ></FormField>
+            <Button
+              type="submit"
+              className=" md:w-[calc(90%+1.5rem)] w-full border rounded-md p-2 mt-6 hover:bg-blue-700 font-semibold"
+            >
+              {loading ? "Updating..." : "Update"}
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

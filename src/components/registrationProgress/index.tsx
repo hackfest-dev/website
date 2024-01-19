@@ -23,7 +23,11 @@ const Progress = () => {
 
   const progrss = registrationProgress(currentState, maxState);
   return (
-    <div className="w-full md:min-w-[500px] min-w-[250px] max-w-[85vw] mx-auto h-3 rounded-sm relative border border-white font-dashHorizon text-lg">
+    <div
+      className="w-[calc(90%-1rem)] mx-auto h-3 rounded-sm relative border border-white font-dashHorizon text-lg mb-6"
+      // style={{ width: "calc(90% + 1.5rem)" }}
+    >
+      {/* md:min-w-[500px] min-w-[250px] max-w-[85vw]" */}
       {progrss.map((section, index) => {
         // console.log(index);
         return (
@@ -39,7 +43,7 @@ const Progress = () => {
               ></div>
             )}
             <div
-              className="w-10 h-10 rounded-full border-white absolute -translate-x-1/2 -translate-y-1/2 top-1/2 flex justify-center items-center z-[1] transition-all duration-300"
+              className="w-8 md:w-10 h-8 md:h-10 rounded-full border-white absolute -translate-x-1/2 -translate-y-1/2 top-1/2 flex justify-center items-center z-[1] transition-all duration-300"
               style={{
                 left: `${index * 50}%`,
                 backgroundColor: colors[`${section}`],

@@ -15,7 +15,7 @@ export default function TeamInfo({
   if (currentState !== 1) return <></>;
   return (
     <>
-      <div className="p-6 md:p-auto m-auto bg-white text-black min-h-screen md:flex self-center justify-evenly">
+      <div className="p-6 md:p-auto m-auto min-h-screen md:flex self-center justify-evenly">
         <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto p-4 border rounded">
           <h1 className="text-xl text-center font-bold border-b-2">
             Team Details

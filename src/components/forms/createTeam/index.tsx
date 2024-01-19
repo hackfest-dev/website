@@ -18,7 +18,7 @@ export default function CreateTeam() {
   }, [isWaiting]);
 
   const nameHandler = async (name: string) => {
-    if (!isWaiting) {
+    if (!isWaiting && name.length > 3) {
       const res = await checkName(name);
       if (
         res.status === "success" &&
@@ -29,7 +29,7 @@ export default function CreateTeam() {
       } else {
         setError(res.message as string);
       }
-    }
+    } else setIsNameAvailable(false);
   };
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function CreateTeam() {
             onChange={(e) => nameHandler(e.target.value)}
             type="text"
             placeholder="Team Name"
-            className={`text-center bg-white border rounded m-2 p-2 ${
+            className={`text-center border rounded m-2 p-2 ${
               isNameAvailable ? "bg-green-500" : "bg-red-700"
             }`}
             name="teamname"
@@ -83,7 +83,7 @@ export default function CreateTeam() {
           />
           <button
             type="submit"
-            className={`border rounded p-2 mt-6 hover:bg-blue-700 hover:text-white font-semibold ${
+            className={`border rounded p-2 mt-6 hover:bg-blue-700 font-semibold ${
               !isNameAvailable && "cursor-not-allowed"
             }`}
             disabled={!isNameAvailable}
@@ -108,14 +108,14 @@ export default function CreateTeam() {
           <input
             onChange={(e) => nameHandler(e.target.value)}
             type="text"
-            className=" bg-white border rounded m-2 p-2" /* Todo: change border according to name availability*/
+            className=" border rounded m-2 p-2" /* Todo: change border according to name availability*/
             placeholder="Team Id"
             name="teamid"
             required
           />
           <button
             type="submit"
-            className=" border rounded p-2 mt-6 hover:bg-blue-700 hover:text-white font-semibold"
+            className=" border rounded p-2 mt-6 hover:bg-blue-700 font-semibold"
             value=""
           >
             Join Team

@@ -45,19 +45,29 @@ export default async function RegisterPage() {
     }
   }
   return (
-    <main className="p-6 md:p-auto m-auto mt-20 text-black min-h-screen flex justify-center items-center flex-col">
-      <ProgressProvider initialStep={currentStep}>
-        {currentStep < 3 ? (
-          <>
-            <Progress />
-            <RegisterProfile />
-            {user.team ? <TeamDetails teamid={user.team.id} /> : <CreateTeam />}
-            <IdeaSubmitForm />
-          </>
-        ) : (
-          <div>Successfully registered... Hope to see your team in top 60!</div>
-        )}
-      </ProgressProvider>
+    <main className="max-w-screen-2xl min-h-screen mx-auto flex justify-center items-center">
+      <div className="p-4 md:px-16 lg:px-24 mt-24 mb-12 pt-12 pb-8 md:py-12 flex justify-center items-center flex-col border md:max-w-screen-sm lg:max-w-3xl rounded-3xl">
+        <ProgressProvider initialStep={currentStep}>
+          {currentStep < 3 ? (
+            <>
+              <div className="w-full flex flex-col gap-5 md:gap-8">
+                <Progress />
+                <RegisterProfile />
+                {user.team ? (
+                  <TeamDetails teamid={user.team.id} />
+                ) : (
+                  <CreateTeam />
+                )}
+                <IdeaSubmitForm />
+              </div>
+            </>
+          ) : (
+            <div>
+              Successfully registered... Hope to see your team in top 60!
+            </div>
+          )}
+        </ProgressProvider>
+      </div>
     </main>
   );
 }
