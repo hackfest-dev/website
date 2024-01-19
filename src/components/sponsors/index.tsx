@@ -1,7 +1,7 @@
-'use client';
-import { motion } from 'framer-motion';
-import { SectionHeading } from '../ui/sectionHeading';
-import { SponsorsTile } from './sponsorTile';
+"use client";
+import { motion } from "framer-motion";
+import { SectionHeading } from "../ui/sectionHeading";
+import { SponsorsTile } from "./sponsorTile";
 
 const Sponsors = () => {
   return (

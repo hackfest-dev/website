@@ -7,6 +7,7 @@ import PrizePool from "@/src/components/prizePool";
 import { FAQ } from "@/src/components/faq";
 import TimelineTape from "@/src/components/timelineTape";
 import { domains } from "@/src/constants";
+import Speakers from "@/src/components/speakers";
 
 export default async function Home() {
   return (
@@ -15,10 +16,11 @@ export default async function Home() {
       <AboutHackfest />
       <PrizePool />
       <Domains domainList={domains} />
-      {/* <div className="flex flex-col items-center justify-center h-screen">
+      <div className="md:pb-80 pb-16 scale-75 -translate-y-48">
         <TimelineTape />
-      </div> */}
+      </div>
       <Sponsors />
+      <Speakers />
       <FAQ />
       <About />
     </main>
