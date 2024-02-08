@@ -21,7 +21,9 @@
 .contentElements {
   opacity: 0;
   transform: translate(0, 100%);
-  transition: opacity 0.5s linear 0.5s, transform 0.5s linear 0.5s;
+  transition:
+    opacity 0.5s linear 0.5s,
+    transform 0.5s linear 0.5s;
 }
 
 .contentElements.active {
@@ -30,18 +32,20 @@
 }
 
 .contentPrize {
-  opacity: 0;
-  transform: translate(-50%, 50%);
+  /* opacity: 0; */
+  transform: translate(-50%, -50%);
   position: absolute;
   left: 50%;
   top: 50%;
-  transition: opacity 0.5s linear 0.5s, transform 0.5s linear 0.5s;
+  transition:
+    opacity 0.5s linear 0.5s,
+    transform 0.5s linear 0.5s;
 }
 
-.contentPrize.active {
+/* .contentPrize.active {
   opacity: 1;
   transform: translate(-50%, -50%);
-}
+} */
 
 .doamin0 {
   transform: translate(0%, 0%);
