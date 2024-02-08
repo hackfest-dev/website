@@ -16,11 +16,11 @@ export function getRelativeCoordinates(
 
   let reference = referenceElement.offsetParent as HTMLElement;
 
-  while (reference) {
-    offset.left += reference.offsetLeft;
-    offset.top += reference.offsetTop;
-    reference = reference.offsetParent as HTMLElement;
-  }
+  // while (reference) {
+  //   offset.left += reference.offsetLeft;
+  //   offset.top += reference.offsetTop;
+  //   reference = reference.offsetParent as HTMLElement;
+  // }
 
   return {
     x: position.x - offset.left,

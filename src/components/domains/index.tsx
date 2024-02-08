@@ -74,6 +74,11 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         };
       }
 
+      contentRef.current &&
+        (contentRef.current as HTMLDivElement).classList.add(
+          `${styles.active}`
+        );
+
       setTimeout(() => {
         const domainPos =
           domainPosRef.current &&
@@ -107,27 +112,19 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
         if (titleAnimationRef.current) {
           (titleAnimationRef.current as HTMLDivElement).style.opacity = `1`;
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.top = `${currentTitlePos.top}px`;
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.left = `${currentTitlePos.left}px`;
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.width = `${currentTitlePos.width}px`;
+          (titleAnimationRef.current as HTMLDivElement).style.top =
+            `${currentTitlePos.top}px`;
+          (titleAnimationRef.current as HTMLDivElement).style.left =
+            `${currentTitlePos.left}px`;
+          (titleAnimationRef.current as HTMLDivElement).style.width =
+            `${currentTitlePos.width}px`;
 
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.transform = `translate(${xTitle}px, ${yTitle}px) scale(1)`;
+          (titleAnimationRef.current as HTMLDivElement).style.transform =
+            `translate(${xTitle}px, ${yTitle}px) scale(1)`;
         }
 
         bgBlockRef.current &&
           (bgBlockRef.current as HTMLDivElement).classList.add(
-            `${styles.active}`
-          );
-        contentRef.current &&
-          (contentRef.current as HTMLDivElement).classList.add(
             `${styles.active}`
           );
         contentDescriptionRef1.current &&
@@ -190,18 +187,15 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       document.body.style.overflow = "visible";
     }, 1000);
 
-    (
-      activeDomain.current?.target as HTMLDivElement
-    ).style.transform = `translate(0, 0) scale(1)`;
+    (activeDomain.current?.target as HTMLDivElement).style.transform =
+      `translate(0, 0) scale(1)`;
     if (titleAnimationRef.current) {
-      (
-        titleAnimationRef.current as HTMLDivElement
-      ).style.transform = `translate(0, 0) scale(1)`;
+      (titleAnimationRef.current as HTMLDivElement).style.transform =
+        `translate(0, 0) scale(1)`;
     }
     if (activeDomain.current) {
-      (
-        activeDomain.current?.img as HTMLDivElement
-      ).style.transform = `scale(1)`;
+      (activeDomain.current?.img as HTMLDivElement).style.transform =
+        `scale(1)`;
     }
   };
 
@@ -363,7 +357,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                     </div>
 
                     <div
-                      className={`absolute font-jumper text-xl md:text-2xl leading-none lg:text-3xl max-w-[70%] w-fit pointer-events-none ${
+                      className={`absolute font-jumper text-lg md:text-2xl leading-none lg:text-3xl max-w-[70%] w-fit pointer-events-none ${
                         styles[`title${idx}`]
                       }`}
                     >
