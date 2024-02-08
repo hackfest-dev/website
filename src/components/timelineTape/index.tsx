@@ -1,13 +1,13 @@
-"use client";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+'use client';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 export default function TimelineTape() {
   const ref = useRef(null);
   const [progress, setProgress] = useState(0);
   const [selectedDay, setSelectedDay] = useState(1);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["0.5 end", "end end"],
+    offset: ['0.5 end', 'end end'],
   });
 
   // <div style="height: 500vh; position: relative;">
@@ -21,7 +21,7 @@ export default function TimelineTape() {
   }, [scrollYProgress]);
 
   // const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-  const rotate = useTransform(scrollYProgress, [0, 1], ["0deg", "360deg"]);
+  const rotate = useTransform(scrollYProgress, [0, 1], ['0deg', '360deg']);
 
   return (
     <>
@@ -248,8 +248,8 @@ export default function TimelineTape() {
               <motion.path
                 d="M82 635.918C151.835 494.635 220.608 387.91 269.513 391.068C390.185 398.864 307.054 1070.53 396.416 1074.65C471.914 1078.13 601.128 601.839 669.163 605.937C722.974 609.185 680.205 909.411 750.608 914.747C832.868 920.983 975.795 517.401 1065.02 522.987C1169.92 529.553 1062.62 1062.87 1199.5 1074.65C1323.41 1085.31 1306 641.5 1308 632.5"
                 stroke="url(#paint0_linear_66_97)"
-                stroke-width="10"
-                stroke-miterlimit="10"
+                strokeWidth="10"
+                strokeMiterlimit="10"
                 style={{ pathLength: scrollYProgress }}
               />
               <defs>
@@ -261,9 +261,9 @@ export default function TimelineTape() {
                   y2="748.909"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#006363" />
-                  <stop offset="0.715" stop-color="#5FA6A5" />
-                  <stop offset="1" stop-color="#DEFFFD" />
+                  <stop stopColor="#006363" />
+                  <stop offset="0.715" stopColor="#5FA6A5" />
+                  <stop offset="1" stopColor="#DEFFFD" />
                 </linearGradient>
               </defs>
             </svg>
@@ -287,7 +287,7 @@ export default function TimelineTape() {
                       <path
                         d="M67.4238 168.144C64.1809 150.475 71.8805 132.588 86.9436 122.799L190.74 55.3421C203.216 47.2343 218.918 45.8979 232.584 51.7809L370.079 110.968C383.745 116.851 393.567 129.175 396.253 143.809L418.599 265.566C421.842 283.236 414.142 301.122 399.079 310.911L295.282 378.368C282.807 386.476 267.105 387.812 253.438 381.929L115.944 322.742C102.277 316.859 92.4554 304.535 89.7696 289.901L67.4238 168.144Z"
                         stroke="url(#paint1_linear_72_11)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -312,7 +312,7 @@ export default function TimelineTape() {
                       <path
                         d="M263.944 1158.8L367.74 1091.34C380.216 1083.23 395.918 1081.9 409.584 1087.78L547.079 1146.97C560.745 1152.85 570.567 1165.17 573.253 1179.81L595.599 1301.57C598.842 1319.24 591.142 1337.12 576.079 1346.91L472.282 1414.37C459.807 1422.48 444.105 1423.81 430.438 1417.93L292.944 1358.74C279.277 1352.86 269.455 1340.54 266.77 1325.9L244.424 1204.14C241.181 1186.47 248.88 1168.59 263.944 1158.8Z"
                         stroke="url(#paint3_linear_72_11)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <g opacity="0.1">
@@ -342,7 +342,7 @@ export default function TimelineTape() {
                       <path
                         d="M812.187 621.861L689.298 606.946C674.528 605.154 661.631 596.098 654.929 582.814L587.506 449.165C580.805 435.881 581.186 420.126 588.521 407.182L649.554 299.482C658.411 283.853 675.797 275.082 693.631 277.246L816.52 292.161C831.29 293.954 844.187 303.01 850.889 316.294L918.312 449.943C925.013 463.227 924.632 478.981 917.297 491.926L856.264 599.625C847.407 615.255 830.021 624.026 812.187 621.861Z"
                         stroke="url(#paint5_linear_72_11)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -367,7 +367,7 @@ export default function TimelineTape() {
                       <path
                         d="M772.334 917.902L895.945 924.558C910.803 925.358 924.277 933.531 931.852 946.336L1008.07 1075.17C1015.64 1087.98 1016.32 1103.72 1009.87 1117.13L956.179 1228.67C948.388 1244.86 931.628 1254.77 913.689 1253.81L790.078 1247.15C775.22 1246.35 761.746 1238.18 754.17 1225.37L677.953 1096.54C670.378 1083.73 669.704 1067.99 676.156 1054.58L729.844 943.038C737.635 926.851 754.395 916.936 772.334 917.902Z"
                         stroke="url(#paint7_linear_72_11)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -392,7 +392,7 @@ export default function TimelineTape() {
                       <path
                         d="M1111.01 189.538L1232.41 213.757C1247 216.668 1259.17 226.679 1264.84 240.434L1321.91 378.824C1327.58 392.58 1326 408.26 1317.7 420.609L1248.65 523.353C1238.63 538.264 1220.63 545.687 1203.01 542.172L1081.61 517.953C1067.02 515.042 1054.85 505.031 1049.18 491.276L992.117 352.886C986.446 339.13 988.024 323.451 996.323 311.102L1065.37 208.357C1075.39 193.446 1093.39 186.023 1111.01 189.538Z"
                         stroke="url(#paint9_linear_72_11)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <g opacity="0.1">
@@ -426,7 +426,7 @@ export default function TimelineTape() {
                       <path
                         d="M1075.41 1158.78L1178.04 1089.57C1190.38 1081.25 1206.06 1079.64 1219.82 1085.29L1358.3 1142.13C1372.07 1147.78 1382.1 1159.94 1385.03 1174.52L1409.45 1295.88C1412.99 1313.49 1405.6 1331.51 1390.7 1341.55L1288.07 1410.77C1275.73 1419.09 1260.06 1420.69 1246.29 1415.04L1107.81 1358.2C1094.05 1352.55 1084.02 1340.4 1081.08 1325.81L1056.67 1204.45C1053.12 1186.84 1060.52 1168.82 1075.41 1158.78Z"
                         stroke="url(#paint11_linear_72_11)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -448,9 +448,9 @@ export default function TimelineTape() {
                     width="365.641"
                     height="350.401"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -471,9 +471,9 @@ export default function TimelineTape() {
                     width="365.641"
                     height="350.401"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -494,9 +494,9 @@ export default function TimelineTape() {
                     width="353.344"
                     height="358.266"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -517,9 +517,9 @@ export default function TimelineTape() {
                     width="355.516"
                     height="349.037"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -540,9 +540,9 @@ export default function TimelineTape() {
                     width="349.508"
                     height="367.358"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -563,9 +563,9 @@ export default function TimelineTape() {
                     width="367.535"
                     height="349.411"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -589,20 +589,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint1_linear_72_11"
@@ -612,8 +612,8 @@ export default function TimelineTape() {
                     y2="472.456"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint2_linear_72_11"
@@ -625,20 +625,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint3_linear_72_11"
@@ -648,8 +648,8 @@ export default function TimelineTape() {
                     y2="1508.46"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint4_linear_72_11"
@@ -661,20 +661,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint5_linear_72_11"
@@ -684,8 +684,8 @@ export default function TimelineTape() {
                     y2="170.207"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint6_linear_72_11"
@@ -697,20 +697,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint7_linear_72_11"
@@ -720,8 +720,8 @@ export default function TimelineTape() {
                     y2="1368.89"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint8_linear_72_11"
@@ -733,20 +733,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint9_linear_72_11"
@@ -756,8 +756,8 @@ export default function TimelineTape() {
                     y2="639.485"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint10_linear_72_11"
@@ -769,20 +769,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint11_linear_72_11"
@@ -792,8 +792,8 @@ export default function TimelineTape() {
                     y2="1503.52"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -817,7 +817,7 @@ export default function TimelineTape() {
                       <path
                         d="M67.4238 168.144C64.1809 150.475 71.8805 132.588 86.9436 122.799L190.74 55.3421C203.216 47.2343 218.918 45.8979 232.584 51.7809L370.079 110.968C383.745 116.851 393.567 129.175 396.253 143.809L418.599 265.566C421.842 283.236 414.142 301.122 399.079 310.911L295.282 378.368C282.807 386.476 267.105 387.812 253.438 381.929L115.944 322.742C102.277 316.859 92.4554 304.535 89.7696 289.901L67.4238 168.144Z"
                         stroke="url(#paint1_linear_79_2)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -828,8 +828,8 @@ export default function TimelineTape() {
                       d="M154 303.938H310.25"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="10"
-                      stroke-miterlimit="10"
+                      strokeWidth="10"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -837,8 +837,8 @@ export default function TimelineTape() {
                       d="M325.875 241.438C312.594 241.438 302.438 231.281 302.438 218V194.562C302.438 182.062 312.594 171.125 325.875 171.125C338.375 171.125 349.312 181.281 349.312 194.562V218C349.312 231.281 339.156 241.438 325.875 241.438Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="10"
-                      stroke-miterlimit="10"
+                      strokeWidth="10"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -846,8 +846,8 @@ export default function TimelineTape() {
                       d="M161.812 163.312V211.75C161.812 249.25 193.062 280.5 232.125 280.5C271.188 280.5 302.438 249.25 302.438 211.75V163.312H161.812Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="10"
-                      stroke-miterlimit="10"
+                      strokeWidth="10"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -855,8 +855,8 @@ export default function TimelineTape() {
                       d="M232.125 93C222.75 107.062 222.75 125.813 232.125 139.875"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="2"
-                      stroke-miterlimit="10"
+                      strokeWidth="2"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -864,8 +864,8 @@ export default function TimelineTape() {
                       d="M200.875 93C191.5 107.062 191.5 125.813 200.875 139.875"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="2"
-                      stroke-miterlimit="10"
+                      strokeWidth="2"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -873,8 +873,8 @@ export default function TimelineTape() {
                       d="M263.375 93C254 107.062 254 125.813 263.375 139.875"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="2"
-                      stroke-miterlimit="10"
+                      strokeWidth="2"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -891,14 +891,14 @@ export default function TimelineTape() {
                       <path
                         d="M244.424 1204.14C241.181 1186.47 248.88 1168.59 263.944 1158.8L367.74 1091.34C380.216 1083.23 395.918 1081.9 409.584 1087.78L547.079 1146.97C560.745 1152.85 570.567 1165.17 573.253 1179.81L595.599 1301.57C598.842 1319.24 591.142 1337.12 576.079 1346.91L472.282 1414.37C459.807 1422.48 444.105 1423.81 430.438 1417.93L292.944 1358.74C279.277 1352.86 269.455 1340.54 266.77 1325.9L244.424 1204.14Z"
                         stroke="url(#paint3_linear_79_2)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
                       d="M480.897 1188H359.103C323.7 1188 295 1215.98 295 1250.5C295 1285.02 323.7 1313 359.103 1313H480.897C516.3 1313 545 1285.02 545 1250.5C545 1215.98 516.3 1188 480.897 1188Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="16.6667"
+                      strokeWidth="16.6667"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -906,7 +906,7 @@ export default function TimelineTape() {
                       d="M372.949 1240.69H364.679V1232.62C364.679 1231.34 364.419 1230.06 363.913 1228.87C363.407 1227.68 362.666 1226.6 361.732 1225.69C360.797 1224.78 359.688 1224.05 358.467 1223.56C357.246 1223.07 355.937 1222.81 354.615 1222.81C353.294 1222.81 351.985 1223.07 350.764 1223.56C349.543 1224.05 348.433 1224.78 347.499 1225.69C346.564 1226.6 345.823 1227.68 345.317 1228.87C344.811 1230.06 344.551 1231.34 344.551 1232.62V1240.69H336.282C334.96 1240.69 333.652 1240.94 332.431 1241.43C331.209 1241.93 330.1 1242.65 329.165 1243.56C328.231 1244.47 327.49 1245.55 326.984 1246.74C326.478 1247.94 326.218 1249.21 326.218 1250.5C326.218 1251.79 326.478 1253.06 326.984 1254.26C327.49 1255.45 328.231 1256.53 329.165 1257.44C330.1 1258.35 331.209 1259.07 332.431 1259.57C333.652 1260.06 334.96 1260.31 336.282 1260.31H344.551V1268.38C344.551 1270.98 345.611 1273.47 347.499 1275.31C349.386 1277.15 351.946 1278.19 354.615 1278.19C357.284 1278.19 359.844 1277.15 361.732 1275.31C363.619 1273.47 364.679 1270.98 364.679 1268.38V1260.31H372.949C375.618 1260.31 378.178 1259.28 380.065 1257.44C381.952 1255.6 383.013 1253.1 383.013 1250.5C383.013 1247.9 381.952 1245.4 380.065 1243.56C378.178 1241.72 375.618 1240.69 372.949 1240.69Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="16.6667"
+                      strokeWidth="16.6667"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -914,7 +914,7 @@ export default function TimelineTape() {
                       d="M475.192 1267C475.192 1258.68 468.276 1251.94 459.744 1251.94C451.212 1251.94 444.295 1258.68 444.295 1267C444.295 1275.32 451.212 1282.06 459.744 1282.06C468.276 1282.06 475.192 1275.32 475.192 1267Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="16.6667"
+                      strokeWidth="16.6667"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -922,7 +922,7 @@ export default function TimelineTape() {
                       d="M509.039 1234C509.039 1225.68 502.122 1218.94 493.59 1218.94C485.058 1218.94 478.141 1225.68 478.141 1234C478.141 1242.32 485.058 1249.06 493.59 1249.06C502.122 1249.06 509.039 1242.32 509.039 1234Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="16.6667"
+                      strokeWidth="16.6667"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -943,7 +943,7 @@ export default function TimelineTape() {
                       <path
                         d="M856.265 599.625C847.407 615.255 830.021 624.026 812.187 621.861L689.299 606.946C674.528 605.154 661.631 596.098 654.93 582.814L587.506 449.165C580.805 435.881 581.186 420.126 588.522 407.182L649.554 299.482C658.411 283.853 675.797 275.082 693.631 277.246L816.52 292.161C831.29 293.954 844.187 303.01 850.889 316.294L918.312 449.943C925.014 463.227 924.633 478.981 917.297 491.926L856.265 599.625Z"
                         stroke="url(#paint5_linear_79_2)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -968,7 +968,7 @@ export default function TimelineTape() {
                       <path
                         d="M729.844 943.038C737.635 926.851 754.395 916.936 772.334 917.902L895.945 924.558C910.803 925.358 924.277 933.531 931.852 946.336L1008.07 1075.17C1015.64 1087.98 1016.32 1103.72 1009.87 1117.13L956.179 1228.67C948.388 1244.86 931.628 1254.77 913.689 1253.81L790.078 1247.15C775.22 1246.35 761.746 1238.18 754.17 1225.37L677.953 1096.54C670.378 1083.73 669.704 1067.99 676.156 1054.58L729.844 943.038Z"
                         stroke="url(#paint7_linear_79_2)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -1008,7 +1008,7 @@ export default function TimelineTape() {
                       <path
                         d="M1065.37 208.357C1075.39 193.446 1093.39 186.023 1111.01 189.538L1232.41 213.757C1247 216.668 1259.17 226.679 1264.84 240.434L1321.91 378.824C1327.58 392.58 1326 408.26 1317.7 420.609L1248.65 523.353C1238.63 538.264 1220.63 545.687 1203.01 542.172L1081.61 517.953C1067.02 515.042 1054.85 505.031 1049.18 491.276L992.117 352.886C986.446 339.13 988.024 323.451 996.323 311.102L1065.37 208.357Z"
                         stroke="url(#paint9_linear_79_2)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <g opacity="0.15">
@@ -1042,7 +1042,7 @@ export default function TimelineTape() {
                       <path
                         d="M1056.67 1204.45C1053.12 1186.84 1060.52 1168.82 1075.41 1158.78L1178.05 1089.57C1190.38 1081.25 1206.06 1079.64 1219.82 1085.29L1358.3 1142.13C1372.07 1147.78 1382.1 1159.94 1385.03 1174.52L1409.45 1295.88C1412.99 1313.49 1405.6 1331.51 1390.7 1341.55L1288.07 1410.77C1275.74 1419.09 1260.06 1420.69 1246.29 1415.04L1107.81 1358.2C1094.05 1352.55 1084.02 1340.4 1081.08 1325.81L1056.67 1204.45Z"
                         stroke="url(#paint11_linear_79_2)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -1066,9 +1066,9 @@ export default function TimelineTape() {
                     width="365.641"
                     height="350.401"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1089,9 +1089,9 @@ export default function TimelineTape() {
                     width="365.641"
                     height="350.401"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1112,9 +1112,9 @@ export default function TimelineTape() {
                     width="353.345"
                     height="358.266"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1135,9 +1135,9 @@ export default function TimelineTape() {
                     width="355.516"
                     height="349.037"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1158,9 +1158,9 @@ export default function TimelineTape() {
                     width="349.508"
                     height="367.358"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1181,9 +1181,9 @@ export default function TimelineTape() {
                     width="367.535"
                     height="349.411"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1207,20 +1207,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint1_linear_79_2"
@@ -1230,8 +1230,8 @@ export default function TimelineTape() {
                     y2="472.456"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint2_linear_79_2"
@@ -1243,20 +1243,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint3_linear_79_2"
@@ -1266,8 +1266,8 @@ export default function TimelineTape() {
                     y2="1508.46"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint4_linear_79_2"
@@ -1279,20 +1279,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint5_linear_79_2"
@@ -1302,8 +1302,8 @@ export default function TimelineTape() {
                     y2="170.207"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint6_linear_79_2"
@@ -1315,20 +1315,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint7_linear_79_2"
@@ -1338,8 +1338,8 @@ export default function TimelineTape() {
                     y2="1368.89"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint8_linear_79_2"
@@ -1351,20 +1351,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint9_linear_79_2"
@@ -1374,8 +1374,8 @@ export default function TimelineTape() {
                     y2="639.485"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint10_linear_79_2"
@@ -1387,20 +1387,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint11_linear_79_2"
@@ -1410,8 +1410,8 @@ export default function TimelineTape() {
                     y2="1503.52"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -1435,7 +1435,7 @@ export default function TimelineTape() {
                       <path
                         d="M67.4238 168.144C64.1809 150.475 71.8805 132.588 86.9436 122.799L190.74 55.3421C203.216 47.2343 218.918 45.8979 232.584 51.7809L370.079 110.968C383.745 116.851 393.567 129.175 396.253 143.809L418.599 265.566C421.842 283.236 414.142 301.122 399.079 310.911L295.282 378.368C282.807 386.476 267.105 387.812 253.438 381.929L115.944 322.742C102.277 316.859 92.4554 304.535 89.7696 289.901L67.4238 168.144Z"
                         stroke="url(#paint1_linear_82_79)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -1460,15 +1460,15 @@ export default function TimelineTape() {
                       <path
                         d="M241.424 1204.14C238.181 1186.47 245.88 1168.59 260.944 1158.8L364.74 1091.34C377.216 1083.23 392.918 1081.9 406.584 1087.78L544.079 1146.97C557.745 1152.85 567.567 1165.17 570.253 1179.81L592.599 1301.57C595.842 1319.24 588.142 1337.12 573.079 1346.91L469.282 1414.37C456.807 1422.48 441.105 1423.81 427.438 1417.93L289.944 1358.74C276.277 1352.86 266.455 1340.54 263.77 1325.9L241.424 1204.14Z"
                         stroke="url(#paint3_linear_82_79)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
                       d="M328 1339.94H484.25"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="10"
-                      stroke-miterlimit="10"
+                      strokeWidth="10"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -1476,8 +1476,8 @@ export default function TimelineTape() {
                       d="M499.875 1277.44C486.594 1277.44 476.438 1267.28 476.438 1254V1230.56C476.438 1218.06 486.594 1207.12 499.875 1207.12C512.375 1207.12 523.312 1217.28 523.312 1230.56V1254C523.312 1267.28 513.156 1277.44 499.875 1277.44Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="10"
-                      stroke-miterlimit="10"
+                      strokeWidth="10"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -1485,8 +1485,8 @@ export default function TimelineTape() {
                       d="M335.812 1199.31V1247.75C335.812 1285.25 367.062 1316.5 406.125 1316.5C445.188 1316.5 476.438 1285.25 476.438 1247.75V1199.31H335.812Z"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="10"
-                      stroke-miterlimit="10"
+                      strokeWidth="10"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -1494,8 +1494,8 @@ export default function TimelineTape() {
                       d="M406.125 1129C396.75 1143.06 396.75 1161.81 406.125 1175.88"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="2"
-                      stroke-miterlimit="10"
+                      strokeWidth="2"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -1503,8 +1503,8 @@ export default function TimelineTape() {
                       d="M374.875 1129C365.5 1143.06 365.5 1161.81 374.875 1175.88"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="2"
-                      stroke-miterlimit="10"
+                      strokeWidth="2"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -1512,8 +1512,8 @@ export default function TimelineTape() {
                       d="M437.375 1129C428 1143.06 428 1161.81 437.375 1175.88"
                       stroke="white"
                       stroke-opacity="0.15"
-                      stroke-width="2"
-                      stroke-miterlimit="10"
+                      strokeWidth="2"
+                      strokeMiterlimit="10"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
@@ -1534,7 +1534,7 @@ export default function TimelineTape() {
                       <path
                         d="M807.64 624.548L684.989 607.791C670.248 605.776 657.488 596.528 650.986 583.145L585.576 448.499C579.075 435.116 579.692 419.369 587.221 406.536L649.863 299.765C658.954 284.27 676.47 275.761 694.269 278.193L816.92 294.95C831.662 296.964 844.422 306.213 850.923 319.596L916.333 454.241C922.834 467.624 922.217 483.371 914.688 496.204L852.046 602.976C842.956 618.471 825.44 626.98 807.64 624.548Z"
                         stroke="url(#paint5_linear_82_79)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -1559,7 +1559,7 @@ export default function TimelineTape() {
                       <path
                         d="M726.237 947.609C733.332 931.104 749.654 920.484 767.618 920.685L891.401 922.069C906.278 922.235 920.089 929.826 928.203 942.298L1009.84 1067.77C1017.95 1080.24 1019.3 1095.94 1013.42 1109.61L964.537 1223.34C957.443 1239.85 941.12 1250.47 923.157 1250.26L799.374 1248.88C784.496 1248.71 770.686 1241.12 762.571 1228.65L680.934 1103.18C672.82 1090.71 671.475 1075.01 677.351 1061.34L726.237 947.609Z"
                         stroke="url(#paint7_linear_82_79)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -1619,7 +1619,7 @@ export default function TimelineTape() {
                       <path
                         d="M1065.37 208.357C1075.39 193.446 1093.39 186.023 1111.01 189.538L1232.41 213.757C1247 216.668 1259.17 226.679 1264.84 240.434L1321.91 378.824C1327.58 392.58 1326 408.26 1317.7 420.609L1248.65 523.353C1238.63 538.264 1220.63 545.687 1203.01 542.172L1081.61 517.953C1067.02 515.042 1054.85 505.031 1049.18 491.276L992.117 352.886C986.446 339.13 988.024 323.451 996.323 311.102L1065.37 208.357Z"
                         stroke="url(#paint9_linear_82_79)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -1644,7 +1644,7 @@ export default function TimelineTape() {
                       <path
                         d="M1056.67 1204.45C1053.12 1186.84 1060.52 1168.82 1075.41 1158.78L1178.05 1089.57C1190.38 1081.25 1206.06 1079.64 1219.82 1085.29L1358.3 1142.13C1372.07 1147.78 1382.1 1159.94 1385.03 1174.52L1409.45 1295.88C1412.99 1313.49 1405.6 1331.51 1390.7 1341.55L1288.07 1410.77C1275.74 1419.09 1260.06 1420.69 1246.29 1415.04L1107.81 1358.2C1094.05 1352.55 1084.02 1340.4 1081.08 1325.81L1056.67 1204.45Z"
                         stroke="url(#paint11_linear_82_79)"
-                        stroke-width="5"
+                        strokeWidth="5"
                       />
                     </g>
                     <path
@@ -1666,9 +1666,9 @@ export default function TimelineTape() {
                     width="365.641"
                     height="350.401"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1689,9 +1689,9 @@ export default function TimelineTape() {
                     width="365.641"
                     height="350.401"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1712,9 +1712,9 @@ export default function TimelineTape() {
                     width="352.703"
                     height="360.177"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1735,9 +1735,9 @@ export default function TimelineTape() {
                     width="356.306"
                     height="342.585"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1758,9 +1758,9 @@ export default function TimelineTape() {
                     width="349.508"
                     height="367.358"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1781,9 +1781,9 @@ export default function TimelineTape() {
                     width="367.535"
                     height="349.411"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
                     <feComposite
                       in2="SourceAlpha"
@@ -1807,20 +1807,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint1_linear_82_79"
@@ -1830,8 +1830,8 @@ export default function TimelineTape() {
                     y2="472.456"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint2_linear_82_79"
@@ -1843,20 +1843,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint3_linear_82_79"
@@ -1866,8 +1866,8 @@ export default function TimelineTape() {
                     y2="1508.46"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint4_linear_82_79"
@@ -1879,20 +1879,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint5_linear_82_79"
@@ -1902,8 +1902,8 @@ export default function TimelineTape() {
                     y2="173.023"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint6_linear_82_79"
@@ -1915,20 +1915,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint7_linear_82_79"
@@ -1938,8 +1938,8 @@ export default function TimelineTape() {
                     y2="1370.2"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint8_linear_82_79"
@@ -1951,20 +1951,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint9_linear_82_79"
@@ -1974,8 +1974,8 @@ export default function TimelineTape() {
                     y2="639.485"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint10_linear_82_79"
@@ -1987,20 +1987,20 @@ export default function TimelineTape() {
                   >
                     <stop
                       offset="0.18"
-                      stop-color="#4EE5E5"
-                      stop-opacity="0.7624"
+                      stopColor="#4EE5E5"
+                      stopOpacity="0.7624"
                     />
                     <stop
                       offset="0.485"
-                      stop-color="#49E4E4"
-                      stop-opacity="0.7696"
+                      stopColor="#49E4E4"
+                      stopOpacity="0.7696"
                     />
                     <stop
                       offset="0.815"
-                      stop-color="#E0FEFE"
-                      stop-opacity="0.5536"
+                      stopColor="#E0FEFE"
+                      stopOpacity="0.5536"
                     />
-                    <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </linearGradient>
                   <linearGradient
                     id="paint11_linear_82_79"
@@ -2010,8 +2010,8 @@ export default function TimelineTape() {
                     y2="1503.52"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#006363" />
-                    <stop offset="1" stop-color="#DEFFFD" stop-opacity="0.5" />
+                    <stop stopColor="#006363" />
+                    <stop offset="1" stopColor="#DEFFFD" stopOpacity="0.5" />
                   </linearGradient>
                 </defs>
               </svg>
