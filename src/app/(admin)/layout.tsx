@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "@/src/app/globals.css";
-import { getServerSession } from "next-auth";
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+import '@/src/app/globals.css';
+import { getServerSession } from 'next-auth';
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
 
 const metadata: Metadata = {
-  title: "Hackfest - Admin Dashboard",
-  description: "Admin Dashboard",
+  title: 'Hackfest - Admin Dashboard',
+  description: 'Admin Dashboard',
 };
 
 export { metadata };
@@ -19,10 +19,10 @@ export default async function RootLayout({
 }) {
   const { user } = (await getServerSession()) ?? { user: null };
 
-  if (user !== null && user.role === "ADMIN") {
+  if (user !== null && user.role === 'ADMIN') {
     return (
       <html lang="en">
-        <body className={`${inter.className} bg-black text-white`}>
+        <body className={`${poppins.className} bg-black text-white`}>
           {children}
         </body>
       </html>
@@ -30,7 +30,7 @@ export default async function RootLayout({
   } else {
     return (
       <html lang="en">
-        <body className={`${inter.className} bg-black text-white`}>
+        <body className={`${poppins.className} bg-black text-white`}>
           <h1>Unauthorized</h1>
         </body>
       </html>

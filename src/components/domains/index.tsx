@@ -221,7 +221,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           />
           {/* Contents go here */}
           <div className="max-w-screen-md flex flex-col justify-center gap-2 md:gap-6 px-4 sm:px-8 md:px-12">
-            <div className="flex text-xl md:text-2xl lg:text-3xl font-jumper">
+            <div className="flex text-xl md:text-2xl lg:text-3xl font-obscura">
               <div
                 ref={contentTitleRef}
                 className="relative opacity-0 leading-none"
@@ -356,7 +356,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                     </div>
 
                     <div
-                      className={`absolute font-jumper text-xl md:text-2xl leading-none lg:text-3xl max-w-[70%] w-fit pointer-events-none ${
+                      className={`absolute font-obscura text-xl md:text-2xl leading-none lg:text-3xl max-w-[70%] w-fit pointer-events-none ${
                         styles[`title${idx}`]
                       }`}
                     >
@@ -386,7 +386,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
             <div
               ref={titleAnimationRef}
-              className="fixed z-50 font-jumper text-xl md:text-2xl lg:text-3xl leading-none pointer-events-none text-left"
+              className="fixed z-50 font-obscura text-xl md:text-2xl lg:text-3xl leading-none pointer-events-none text-left"
               style={{
                 transition: 'transform 1s cubic-bezier(1, 0, 0.7, 1) 0s',
                 width:
