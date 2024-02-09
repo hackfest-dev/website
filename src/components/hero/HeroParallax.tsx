@@ -1,70 +1,88 @@
-'use client';
-import Image from 'next/image';
-import HeroForeground from '@/public/images/hero-foreground2.svg';
-import HeroBackground from '@/public/images/hero-background.svg';
-import HackfestFont from '@/public/images/hackfest-text.png';
-import Reflection from '@/public/images/reflection_without_gap.svg';
-import HoverBoard from '@/public/images/hoverboard.svg';
-import { MouseEvent, useRef, useState } from 'react';
-import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
-import { getRelativeCoordinates } from '../../lib/utils/getRelativeCoordinates';
-import { useParallax } from '@/src/app/hooks/useParallax';
+"use client";
+import Image from "next/image";
+import HeroForeground from "@/public/images/hero-foreground2.svg";
+import HeroBackgroundSun from "@/public/images/hero-background-sun.svg";
+import HeroBackgroundNoise from "@/public/images/hero-background-noise2.svg";
+import HeroBackground from "@/public/images/hero-background.svg";
+import HackfestFont from "@/public/images/hackfest-text.png";
+import Reflection from "@/public/images/reflection_without_gap.svg";
+import HoverBoard from "@/public/images/hoverboard.svg";
+import { MouseEvent, useRef } from "react";
+
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Countown from "./countdown";
 
 const HeroParallax = () => {
+  gsap.registerPlugin(ScrollTrigger);
   const ref = useRef(null);
+  const titleText = useRef(null);
+  const fgRef = useRef(null);
+  const gridRef = useRef(null);
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-
-  const smoothScroll = useSpring(scrollYProgress, {
-    mass: 0.5,
-    damping: 25,
-    stiffness: 150,
-  });
-
-  const textSpeed = useParallax(smoothScroll, 300);
-  const fgSpeed = useParallax(smoothScroll, 150);
-
-  const textScale = useTransform(smoothScroll, [0, 1], [1.5, 0.5]);
-
-  const [mousePosition, setMousePosition] = useState({
-    x: 0,
-    centerX: 0,
-  });
+  useGSAP(
+    () => {
+      if (titleText.current) {
+        gsap.to(titleText.current, {
+          y: 200,
+          scale: 0.5,
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      }
+      if (fgRef.current) {
+        gsap.to(fgRef.current, {
+          y: 75,
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      }
+      if (gridRef.current) {
+        gsap.to(gridRef.current, {
+          y: 75,
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      }
+    },
+    { scope: ref }
+  );
 
   const boxRef = useRef(null);
 
   const handleMouseMove = (e: MouseEvent) => {
-    // @ts-ignore
-    const relativeCoordinates = getRelativeCoordinates(e, boxRef.current);
+    const xPercentage = e.clientX / window.innerWidth - 0.5;
 
-    const limitedX = Math.max(-200, Math.min(200, relativeCoordinates.x - 600));
-
-    setMousePosition({
-      x: limitedX,
-      centerX: relativeCoordinates.centerX,
-    });
+    if (boxRef.current) {
+      (boxRef.current as HTMLDivElement).style.transform = ` translateX(${
+        xPercentage * 0.175 * window.innerWidth
+      }px) rotateY(${-xPercentage * 0.175}deg)`;
+    }
   };
 
   return (
     <div className="relative h-screen w-screen" ref={ref}>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        style={{ y: textSpeed, scale: textScale }}
+      <div
+        ref={titleText}
         className="absolute inset-0 z-10 flex justify-center items-center"
       >
         <Image className={`w-[800px]`} src={HackfestFont} alt="Hackfest Font" />
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        style={{ y: fgSpeed }}
-        className="-z-20 h-2/3 -mb-2 mt-2 w-screen relative"
-      >
+      <div className="-z-20 h-2/3 -mb-2 mt-2 w-screen relative" ref={fgRef}>
         <Image
           src={HeroForeground}
           alt="Hero Foreground"
@@ -72,46 +90,58 @@ const HeroParallax = () => {
         />
 
         {/* <Image
-                            src={Reflection}
-                            alt="Reflection"
-                            className="object-cover w-full mx-auto object-bottom"
-                            /> */}
-      </motion.div>
+          src={Reflection}
+          alt="Reflection"
+          className="object-cover w-full mx-auto object-bottom"
+        /> */}
+      </div>
 
-      <motion.div
+      <div
         className="absolute bottom-[0%] w-screen h-[46%] overflow-hidden"
         style={{
-          transformStyle: 'preserve-3d',
-          perspective: '200px',
-          // y: fgSpeed,
+          transformStyle: "preserve-3d",
+          perspective: "200px",
         }}
+        ref={gridRef}
       >
-        <div className='border-tertiary-400 bg-[url("/images/grid-sm.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] md:bg-[url("/images/grid1.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] border-t-2 motion-safe:animate-move flex justify-center items-start rotate-x-45 w-[200%] h-[100%] left-[-50%] relative bg-repeat bg-center'></div>
-      </motion.div>
+        <div className='bg-[url("/images/grid-sm.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] md:bg-[url("/images/grid1.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] border-t-2 motion-safe:animate-move flex justify-center items-start rotate-x-45 w-[200%] h-[100%] left-[-50%] relative bg-repeat bg-center'></div>
+      </div>
 
       <div className="absolute -z-30 inset-0">
         <Image
-          src={HeroBackground}
+          src={HeroBackgroundSun}
           alt="Hero Background"
           className="h-screen w-screen object-cover object-top"
         />
       </div>
+      {/* <div className="absolute -z-30 inset-0">
+        <Image
+          src={HeroBackground} 
+          alt="Hero Background"
+          className="h-screen w-screen object-cover object-top"
+        />
+      </div> */}
+      <div className="absolute mx-3 max-w-6xl w-full left-1/2 md:top-24 top-1/4 -translate-x-1/2 -z-[29]">
+        <div className="absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 text-[#c1f0a8] opacity-60">
+          <Countown eventTime={new Date("2024-4-15")} />
+        </div>
+      </div>
 
-      <motion.div
+      <div className="absolute -z-[28] inset-0">
+        <Image
+          src={HeroBackgroundNoise}
+          alt="Hero Background"
+          className="h-screen w-screen object-cover object-top opacity-50"
+        />
+      </div>
+
+      <div
         ref={boxRef}
         style={{ perspective: 600 }}
         onMouseMove={(e) => handleMouseMove(e)}
-        animate={{
-          rotateX: mousePosition.centerX * 20,
-        }}
         className={`z-40 absolute inset-0 flex justify-center items-end`}
       >
-        <motion.div
-          animate={{
-            x: mousePosition.x,
-          }}
-          transition={{ type: 'tween' }}
-        >
+        <div>
           <Image
             width={200}
             height={200}
@@ -119,10 +149,10 @@ const HeroParallax = () => {
             alt="Hover Board"
             className="fly-up-down ease-in-out"
           />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden rotate-180 z-50">
+      <div className="absolute bottom-0 left-0 w-full overflow-clip rotate-180 z-50 -mb-1">
         <svg
           data-name="Layer 1"
           xmlns="http://www.w3.org/2000/svg"

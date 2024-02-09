@@ -169,7 +169,7 @@ const config = {
           },
 
           "100%": {
-            "background-position-y": "100%",
+            "background-position-y": "110%",
           },
         },
       },

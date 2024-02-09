@@ -1,4 +1,6 @@
-import HeroParallax from './HeroParallax';
+// import HeroParallax from './HeroParallax';
+import dynamic from "next/dynamic";
+const HeroParallax = dynamic(() => import("./HeroParallax"), { ssr: false });
 
 const Hero: React.FC = () => {
   return (
