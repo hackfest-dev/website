@@ -77,6 +77,9 @@
 
 * {
   -webkit-tap-highlight-color: transparent;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
 }
 
 /*UFO*/
