@@ -19,7 +19,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        jumper: ["var(--font-jumper)", "Inter", "sans-serif"],
+        obscura: ["var(--font-obscura)", "Poppins", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
