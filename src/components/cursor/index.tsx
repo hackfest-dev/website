@@ -20,7 +20,7 @@ const Cursor = () => {
   return (
     <div
       ref={spotLightRef}
-      className="fixed pointer-events-none w-20 h-20 bg-white z-50 -translate-x-2/4 -translate-y-2/4 rounded-full"
+      className="fixed pointer-events-none w-32 h-32 bg-white z-50 -translate-x-2/4 -translate-y-2/4 rounded-full"
       style={{ mixBlendMode: "difference", pointerEvents: "none" }}></div>
   );
 };

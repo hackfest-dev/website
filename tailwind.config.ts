@@ -22,9 +22,13 @@ const config = {
         obscura: ["var(--font-obscura)", "Poppins", "sans-serif"],
       },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'rainbow': 'repeating-linear-gradient(45deg, yellow 0%, magenta 8.33%, cyan 16.66%, blue 25%, cyan 33.33%, magenta 41.66%, yellow 50%)',
+        'gold': 'repeating-linear-gradient(45deg, 0%, 50%)',
+        'silver': 'repeating-linear-gradient(45deg, 0%, 50%)',
+        'bronze': 'repeating-linear-gradient(45deg, 0%, 50%)',
       },
       colors: {
         border: "hsl(var(--border))",
@@ -168,17 +172,27 @@ const config = {
             "background-position-y": "0%",
           },
 
-          "100%": {
-            "background-position-y": "110%",
+          '100%': {
+            'background-position-y': '110%',
           },
         },
+        'hue-rotate': {
+          '0%': { filter: 'hue-rotate(0deg)' },
+          '100%': { filter: 'hue-rotate(360deg)' }
+        },
+        marquee: {
+          '0%': { 'background-position-x': '0vw' },
+          '100%': { 'background-position-x': '600vw' }
+        }
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "meteor-effect": "meteor 5s linear infinite",
-        flicker: "flicker 20s linear infinite",
-        move: "move 5s linear infinite",
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        'meteor-effect': 'meteor 5s linear infinite',
+        flicker: 'flicker 20s linear infinite',
+        move: 'move 5s linear infinite',
+        'hue-rotate': 'hue-rotate 10s linear infinite',
+        marquee: 'marquee 10s linear infinite'
       },
     },
   },

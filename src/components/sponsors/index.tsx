@@ -2,96 +2,128 @@
 import { motion } from "framer-motion";
 import { SectionHeading } from "../ui/sectionHeading";
 import { SponsorsTile } from "./sponsorTile";
-import styles from "./style.module.css";
 import SponsorTile from "./sponsorsTile";
+
+// rainbow: 'repeating-linear-gradient(45deg, red 0%, yellow 8.33%, rgb(0,255,0) 16.66%, cyan 25%, blue 33.33%, magenta 41.66%, red 50%)',
 
 const Sponsors = () => {
   if (1 === 1)
     return (
-      <>
-        <section className="flex flex-col justify-center items-center transition-all bg-black">
-          <div className={`w-full py-28 px-0 ${styles.sponsorgrid}`}>
-            <SponsorTile noBlur tileNumber={1} cellType="alone">
-              1
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={2}
-              cellType="alone"
-              src="/logos/mockcompany.png">
-              2
-            </SponsorTile>
-            <SponsorTile noBlur tileNumber={3} cellType="alone">
-              3
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={4}
-              cellType="alone"
-              src="/logos/mockcompany.png">
-              4
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={5}
-              cellType="alone"
-              src="/logos/mockcompany.png">
-              5
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={6}
-              cellType="alone"
-              src="/logos/mockcompany.png">
-              6
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={7}
-              cellType="alone"
-              src="/logos/mockcompany.png">
-              7
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={8}
-              cellType="alone"
-              src="/logos/mockcompany.png">
-              8
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={1}
-              cellType="horizontalRectangle"
-              src="/logos/mockcompany.png">
-              1
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={2}
-              cellType="horizontalRectangle"
-              src="/logos/mockcompany.png">
-              2
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={3}
-              cellType="horizontalRectangle"
-              src="/logos/mockcompany.png">
-              3
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={1}
-              cellType="verticalRectangle"
-              src="/logos/mockcompany.png">
-              1
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={1}
-              cellType="square"
-              src="/logos/mockcompany.png">
-              1
-            </SponsorTile>
-            <SponsorTile
-              tileNumber={2}
-              cellType="square"
-              src="/logos/mockcompany.png">
-              2
-            </SponsorTile>
-          </div>
-        </section>
-      </>
+      <section
+        id="sponsor"
+        className="flex flex-col justify-center items-center transition-all bg-black">
+        <style jsx>{`
+          #sponsor-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-rows: repeat(8, minmax(0, 1fr));
+            grid-template-areas:
+              "al-1 hr-1 hr-1"
+              "sq-1 sq-1 al-2"
+              "sq-1 sq-1 al-3"
+              "al-4 al-5 vr-1"
+              "hr-2 hr-2 vr-1"
+              "al-6 sq-2 sq-2"
+              "vr-2 sq-2 sq-2"
+              "vr-2 al-7 al-8";
+          }
+
+          @media (min-width: 768px) {
+            #sponsor-grid {
+              grid-template-columns: repeat(6, minmax(0, 1fr));
+              grid-template-rows: repeat(4, minmax(0, 1fr));
+              grid-template-areas:
+                "al-1 sq-1 sq-1 hr-1 hr-1 vr-1"
+                "al-2 sq-1 sq-1 al-3 al-4 vr-1"
+                "vr-2 al-5 al-6 sq-2 sq-2 al-7"
+                "vr-2 hr-2 hr-2 sq-2 sq-2 al-8";
+            }
+          }
+        `}</style>
+        <div
+          id="sponsor-grid"
+          className="grid gap-2 w-full md:w-5/6 py-28 px-0">
+          <SponsorTile noHoverEffect tileNumber={1} cellType="alone">
+            1
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={2}
+            cellType="alone"
+            src="/images/images (1).jpeg">
+            2
+          </SponsorTile>
+          <SponsorTile noHoverEffect tileNumber={3} cellType="alone">
+            <div className="w-full h-full pointer-events-none"></div>
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={4}
+            cellType="alone"
+            src="/images/images (1).jpeg">
+            4
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={5}
+            cellType="alone"
+            src="/images/images (1).jpeg">
+            5
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={6}
+            cellType="alone"
+            src="/images/images (1).jpeg">
+            6
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={7}
+            cellType="alone"
+            src="/images/images (1).jpeg">
+            7
+          </SponsorTile>
+          <SponsorTile
+            noHoverEffect
+            tileNumber={8}
+            cellType="alone"
+            src="/logos/flc_logo_crop.png"
+            className="object-contain">
+            8
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={1}
+            cellType="horizontalRectangle"
+            src="/images/images (1).jpeg">
+            1
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={2}
+            cellType="horizontalRectangle"
+            src="/images/images (1).jpeg">
+            2
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={1}
+            cellType="verticalRectangle"
+            src="/images/images (1).jpeg">
+            1
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={2}
+            cellType="verticalRectangle"
+            src="/images/images (1).jpeg">
+            2
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={1}
+            cellType="square"
+            src="/images/images (1).jpeg">
+            1
+          </SponsorTile>
+          <SponsorTile
+            tileNumber={2}
+            cellType="square"
+            src="/images/images (1).jpeg">
+            2
+          </SponsorTile>
+        </div>
+      </section>
     );
   else
     return (
