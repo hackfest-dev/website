@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { SectionHeading } from "../ui/sectionHeading";
 import { SponsorsTile } from "./sponsorTile";
 import SponsorTile from "./sponsorsTile";
-
-// rainbow: 'repeating-linear-gradient(45deg, red 0%, yellow 8.33%, rgb(0,255,0) 16.66%, cyan 25%, blue 33.33%, magenta 41.66%, red 50%)',
+import Cursor from "../cursor";
+import { useRef } from "react";
+import Image from "next/image";
 
 const Sponsors = () => {
+  const parentRef = useRef<HTMLDivElement>(null);
   if (1 === 1)
     return (
       <section
@@ -42,83 +44,87 @@ const Sponsors = () => {
         <div
           id="sponsor-grid"
           className="grid gap-2 w-full md:w-5/6 py-28 px-0">
-          <SponsorTile noHoverEffect tileNumber={1} cellType="alone">
-            1
+          <SponsorTile noHoverEffect tileNumber={1} cellType="bronze">
+            <div className="relative h-full w-full">
+              <Image
+                src="/logos/logo.png"
+                alt="HF"
+                fill={true}
+                className="object-contain"
+              />
+            </div>
           </SponsorTile>
           <SponsorTile
             tileNumber={2}
-            cellType="alone"
+            cellType="bronze"
             src="/images/images (1).jpeg">
             2
           </SponsorTile>
-          <SponsorTile noHoverEffect tileNumber={3} cellType="alone">
-            <div className="w-full h-full pointer-events-none"></div>
+          <SponsorTile noHoverEffect tileNumber={3} cellType="bronze">
+            <Cursor />
           </SponsorTile>
           <SponsorTile
             tileNumber={4}
-            cellType="alone"
+            cellType="bronze"
             src="/images/images (1).jpeg">
             4
           </SponsorTile>
-          <SponsorTile
-            tileNumber={5}
-            cellType="alone"
-            src="/images/images (1).jpeg">
-            5
+          <SponsorTile noHoverEffect tileNumber={5} cellType="bronze">
+            <Cursor />
           </SponsorTile>
           <SponsorTile
             tileNumber={6}
-            cellType="alone"
+            cellType="bronze"
             src="/images/images (1).jpeg">
             6
           </SponsorTile>
           <SponsorTile
             tileNumber={7}
-            cellType="alone"
+            cellType="bronze"
             src="/images/images (1).jpeg">
             7
           </SponsorTile>
           <SponsorTile
             noHoverEffect
             tileNumber={8}
-            cellType="alone"
+            cellType="bronze"
             src="/logos/flc_logo_crop.png"
-            className="object-contain">
+            srcClassName="object-contain">
             8
           </SponsorTile>
           <SponsorTile
             tileNumber={1}
-            cellType="horizontalRectangle"
+            cellType="silver"
             src="/images/images (1).jpeg">
             1
           </SponsorTile>
           <SponsorTile
             tileNumber={2}
-            cellType="horizontalRectangle"
+            cellType="silver"
             src="/images/images (1).jpeg">
             2
           </SponsorTile>
           <SponsorTile
             tileNumber={1}
-            cellType="verticalRectangle"
+            cellType="gold"
             src="/images/images (1).jpeg">
             1
           </SponsorTile>
           <SponsorTile
             tileNumber={2}
-            cellType="verticalRectangle"
+            cellType="gold"
             src="/images/images (1).jpeg">
             2
           </SponsorTile>
           <SponsorTile
             tileNumber={1}
-            cellType="square"
+            cellType="diamond"
             src="/images/images (1).jpeg">
             1
           </SponsorTile>
           <SponsorTile
             tileNumber={2}
-            cellType="square"
+            cellType="diamond"
             src="/images/images (1).jpeg">
             2
           </SponsorTile>

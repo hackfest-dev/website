@@ -5,7 +5,6 @@ import { cn } from "@/src/lib/utils";
 export function Lamp() {
   return (
     <LampContainer>
-
       <motion.h1
         initial={{ opacity: 0.5, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -14,8 +13,7 @@ export function Lamp() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
-      >
+        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
         ₹50k
       </motion.h1>
     </LampContainer>
@@ -34,8 +32,7 @@ export const LampContainer = ({
       className={cn(
         "relative flex flex-col bg-slate-950 w-full rounded-md z-0",
         className
-      )}
-    >
+      )}>
       <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0 ">
         {/* <motion.div
           initial={{ opacity: 0.5, width: "15rem" }}
@@ -71,7 +68,7 @@ export const LampContainer = ({
         </motion.div> */}
         {/* <div className="absolute top-1/2 h-48 w-full translate-y-0 scale-x-150 bg-slate-950 blur-2xl"></div> */}
         <div className="absolute top-1/2 z-50 h-48 w-full bg-transparent opacity-10 backdrop-blur-md"></div>
-        <div className="absolute inset-auto z-0 h-36 w-[28rem] translate-y-1/2 rounded-full bg-cyan-500 opacity-50 blur-3xl"></div>
+        <div className="absolute inset-auto z-0 h-36 w-[28rem] max-w-[100vw] translate-y-1/2 rounded-full bg-cyan-500 opacity-50 blur-3xl"></div>
         <motion.div
           initial={{ width: "8rem" }}
           whileInView={{ width: "16rem" }}
@@ -80,22 +77,20 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="absolute inset-auto z-1 h-36 w-64 -translate-y-[2rem] rounded-full bg-cyan-400 blur-2xl"
-        ></motion.div>
+          className="absolute inset-auto z-1 h-36 w-64 -translate-y-[2rem] rounded-full bg-cyan-400 blur-2xl"></motion.div>
 
         {/* Blue stick */}
         <motion.div
           initial={{ width: "15rem" }}
-          whileInView={{ width: "30rem" }}
+          whileInView={{ width: "30rem", maxWidth: "100vw" }}
           transition={{
             delay: 0.3,
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="absolute inset-auto z-50 h-0.5 md:w-[30rem] translate-y-[0rem] bg-cyan-400 "
-        ></motion.div>
-            
-            {/* Slate Filter */}   
+          className="absolute inset-auto z-50 h-0.5 md:w-[30rem] translate-y-[0rem] bg-cyan-400 "></motion.div>
+
+        {/* Slate Filter */}
         <div className="absolute inset-auto h-44 w-full -translate-y-[5.5rem] bg-slate-950 "></div>
       </div>
 
