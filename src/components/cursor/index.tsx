@@ -10,62 +10,50 @@ const Cursor: FunctionComponent = () => {
       parentRef.current?.getBoundingClientRect() || new DOMRect(0, 0, 0, 0);
 
     if (cursorRef.current) {
-      cursorRef.current.style.left = `${e.clientX}px`;
-      cursorRef.current.style.top = `${e.clientY}px`;
       const cursorRect = cursorRef.current.getBoundingClientRect();
-      const xPercentage =
-        ((cursorRect.left - parentRect.left) / parentRect.width) * 100;
-      const yPercentage =
-        ((cursorRect.top - parentRect.top) / parentRect.height) * 100;
-      cursorRef.current.style.translate = `-${xPercentage}% -${yPercentage}%`;
-      const deg =
-        (Math.atan((yPercentage - 50) / (xPercentage - 50)) * 180) / Math.PI +
-        (xPercentage < 50 ? 315 : 135);
-      cursorRef.current.style.rotate = `${deg}deg`;
-    }
-  };
 
-  const handleMouseEnter = (e: MouseEvent) => {
-    if (cursorRef.current) {
-      cursorRef.current.style.opacity = "1";
-      cursorRef.current.style.scale = "1";
-    }
-    if (parentRef.current) parentRef.current.style.cursor = "none";
-    window.addEventListener("mousemove", handleMouseMove);
-  };
+      cursorRef.current.style.left = `${e.clientX - parentRect.left}px`;
+      cursorRef.current.style.top = `${e.clientY - parentRect.top}px`;
 
-  const handleMouseLeave = (e: MouseEvent) => {
-    if (cursorRef.current) {
-      cursorRef.current.style.opacity = "0";
-      cursorRef.current.style.scale = "0";
-    }
-    if (parentRef.current) parentRef.current.style.cursor = "initial";
-    window.removeEventListener("mousemove", handleMouseMove);
-  };
+      if (
+        cursorRect.left <= parentRect.left ||
+        cursorRect.right >= parentRect.right ||
+        cursorRect.top <= parentRect.top ||
+        cursorRect.bottom >= parentRect.bottom
+      ) {
+        cursorRef.current.style.opacity = "0";
+        if (parentRef.current) parentRef.current.style.cursor = "initial";
+      } else {
+        cursorRef.current.style.opacity = "1";
+        if (parentRef.current && window.innerWidth >= 768)
+          parentRef.current.style.cursor = "none";
 
-  const handleTouchStart = (e: Event) => {
-    // cursorRef.current?.animate(
-    // { top: [, "100%"], left: ["0%", "100%"] },
-    // { duration: 4, iterations: Infinity }
-    // );
+        const xPercentage =
+          ((cursorRect.left - parentRect.left) / parentRect.width) * 100;
+        const yPercentage =
+          ((cursorRect.top - parentRect.top) / parentRect.height) * 100;
+        const deg =
+          (Math.atan((yPercentage - 50) / (xPercentage - 50)) * 180) / Math.PI +
+          (xPercentage < 50 ? 225 : 45);
+        cursorRef.current.style.translate = `-${xPercentage}% -${yPercentage}%`;
+        cursorRef.current.style.rotate = `${deg}deg`;
+      }
+    }
   };
 
   useEffect(() => {
-    window.addEventListener("touchstart", handleTouchStart);
-    parentRef.current?.addEventListener("mouseenter", handleMouseEnter);
-    parentRef.current?.addEventListener("mouseleave", handleMouseLeave);
+    parentRef.current?.addEventListener("mousemove", handleMouseMove);
     return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-      parentRef.current?.removeEventListener("mouseenter", handleMouseEnter);
-      parentRef.current?.removeEventListener("mouseleave", handleMouseLeave);
+      parentRef.current?.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
   return (
-    <div ref={parentRef} className="w-full h-full">
-      <div ref={cursorRef} className="fixed w-[30px] h-[30px]">
+    <div ref={parentRef} className="hidden md:block relative w-full h-full">
+      <div
+        ref={cursorRef}
+        className="absolute w-[30px] h-[30px] transition-opacity top-1/4 left-1/4">
         <svg
-          className="-scale-x-100"
           version="1.1"
           id="Layer_1"
           xmlns="http://www.w3.org/2000/svg"

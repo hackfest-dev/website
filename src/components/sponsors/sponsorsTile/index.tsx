@@ -57,16 +57,17 @@ const SponsorTile: FunctionComponent<Props> = ({
       gridArea: `${sponsorMap[cellType].abbreviation + "-" + tileNumber}`,
     }}>
     {noHoverEffect ? (
-      src ? (
-        <Image src={src} fill={true} alt="sponsor" className={srcClassName} />
-      ) : (
-        children
-      )
+      <>
+        {src && (
+          <Image src={src} fill={true} alt="sponsor" className={srcClassName} />
+        )}
+        {children}
+      </>
     ) : (
       <Link href={webURL || "#"} target="_blank">
         <div className="absolute w-full h-full opacity-0 group-hover:opacity-100">
           <div
-            className={`absolute w-full h-full transition-all duration-200 ease-in z-40 group-hover:backdrop-blur-md group-hover:animate-hue-rotate`}></div>
+            className={`absolute w-full h-full bg-slate-800/75 transition-all duration-100 ease-in z-40 group-hover:backdrop-blur-md group-hover:animate-hue-rotate`}></div>
           <div
             className={`absolute bg-transparent w-full h-full transition-all duration-200 ease-in z-50 flex flex-col justify-center items-center `}>
             <h3
