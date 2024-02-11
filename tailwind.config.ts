@@ -25,10 +25,10 @@ const config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'rainbow': 'repeating-linear-gradient(45deg, yellow 0%, magenta 8.33%, cyan 16.66%, blue 25%, cyan 33.33%, magenta 41.66%, yellow 50%)',
-        'gold': 'repeating-linear-gradient(45deg, 0%, 50%)',
-        'silver': 'repeating-linear-gradient(45deg, 0%, 50%)',
-        'bronze': 'repeating-linear-gradient(45deg, 0%, 50%)',
+        'rainbow': 'repeating-linear-gradient(45deg, yellow 0%, magenta 8.33%, cyan 16.66%, dodgerblue 25%, cyan 33.33%, magenta 41.66%, yellow 50%)',
+        'gold': 'repeating-linear-gradient(45deg, #dea500 0%, #f6f278 25%, #dea500 50%)',
+        'silver': 'repeating-linear-gradient(45deg, #ffffff 0%, #ababab 25%, #ffffff 50%)',
+        'bronze': 'repeating-linear-gradient(45deg, #8d5c2d 0%, #dda785 25%, #8d5c2d 50%)',
       },
       colors: {
         border: "hsl(var(--border))",
@@ -168,13 +168,8 @@ const config = {
           "100%": { opacity: "1" },
         },
         move: {
-          "0%": {
-            "background-position-y": "0%",
-          },
-
-          '100%': {
-            'background-position-y': '110%',
-          },
+          "0%": { "background-position-y": "0%" },
+          '100%': { 'background-position-y': '110%' },
         },
         'hue-rotate': {
           '0%': { filter: 'hue-rotate(0deg)' },
@@ -182,7 +177,38 @@ const config = {
         },
         marquee: {
           '0%': { 'background-position-x': '0vw' },
-          '100%': { 'background-position-x': '600vw' }
+          '100%': { 'background-position-x': '100vw' }
+        },
+        "click-me": {
+          "0%": { transform: "translateY(0)" },
+          "40%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+          "60%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(0)" }
+        },
+        jump: {
+          "0%": { transform: "translateY(-10%)" },
+          "40%": { transform: "translateY(30%)" },
+          "90%": { transform: "translateY(-10%)" },
+          "100%": { transform: "translateY(-10%)" }
+        },
+        scale: {
+          "0%": { transform: "scaleY(1)" },
+          "10%": { transform: "scaleY(1)" },
+          "70%": { transform: "scaleY(1)" },
+          "50%": { transform: "scaleY(0.4)" },
+          "100%": { transform: "scaleY(1)" }
+        },
+        rotate: {
+          "0%": { transform: "rotateX(70deg) rotateZ(45deg)" },
+          "10%": { transform: "rotateX(70deg) rotateZ(45deg)" },
+          "25%": { transform: "rotateX(70deg) rotateZ(135deg)" },
+          "35%": { transform: "rotateX(70deg) rotateZ(135deg)" },
+          "50%": { transform: "rotateX(70deg) rotateZ(225deg)" },
+          "65%": { transform: "rotateX(70deg) rotateZ(225deg)" },
+          "75%": { transform: "rotateX(70deg) rotateZ(315deg)" },
+          "85%": { transform: "rotateX(70deg) rotateZ(315deg)" },
+          "100%": { transform: "rotateX(70deg) rotateZ(405deg)" }
         }
       },
       animation: {
@@ -192,7 +218,11 @@ const config = {
         flicker: 'flicker 20s linear infinite',
         move: 'move 5s linear infinite',
         'hue-rotate': 'hue-rotate 10s linear infinite',
-        marquee: 'marquee 10s linear infinite'
+        marquee: 'marquee 7.5s linear infinite',
+        'click-me': "click-me 2s linear infinite",
+        jump: "jump 1s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite",
+        scale: "scale 1s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite",
+        rotate: "rotate 4s 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite reverse"
       },
     },
   },
