@@ -105,6 +105,9 @@ const ProfileForm = ({
     formData.append("phone", data.phone);
     formData.append("course", data.course || "");
     formData.append("college", data.college || "");
+    formData.append("otherCollege", data.otherCollege || "");
+    formData.append("otherCollegeState", data.otherCollegeState || "");
+    formData.append("tshirtSize", data.tshirtSize || "");
     formData.append("collegeIdFile", collegeId?.file || "");
     formData.append("aadhaarFile", aadhaar?.file || "");
     const res = await updateProfile(formData);
@@ -176,6 +179,7 @@ const ProfileForm = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
+                          <SelectItem value={"other"}>Other</SelectItem>
                           {colleges.map(({ id, name }, key) => (
                             <SelectItem value={id} key={key}>
                               {name}
@@ -189,6 +193,55 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
+
+            {form.watch("college") === "other" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="otherCollege"
+                  render={({ field, formState, fieldState }) => {
+                    return (
+                      <FormItem className="md:w-[45%] w-full">
+                        <FormLabel className="">Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="My College" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                ></FormField>
+                <FormField
+                  control={form.control}
+                  name="otherCollegeState"
+                  render={({ field, formState, fieldState }) => (
+                    <FormItem className="md:w-[45%] w-full">
+                      <FormLabel className="">State</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select state" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {states.map((state, key) => (
+                                <SelectItem value={state} key={key}>
+                                  {state}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+              </>
+            )}
 
             {/* Course */}
             <FormField
@@ -218,6 +271,32 @@ const ProfileForm = ({
               )}
             ></FormField>
 
+            <FormField
+              control={form.control}
+              name="tshirtSize"
+              render={({ field, formState, fieldState }) => (
+                <FormItem className="md:w-[45%] w-full">
+                  <FormLabel className="">T-shirt Size</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select your Degree" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {["S", "M", "L", "XL", "XXL"].map((size, key) => (
+                            <SelectItem value={size} key={key}>
+                              {size}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            ></FormField>
             {/* College ID */}
             <FormField
               control={form.control}

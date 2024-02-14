@@ -5,6 +5,7 @@ import { protectedAction } from "./serverConfig";
 import { updateUserZ, updateProfileZ, submitIdeaZ } from "../lib/zod-schema";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "../lib/session";
+import { States } from "@prisma/client";
 
 // -----------------User functions-----------------
 // Set user as verified on successful verification
@@ -82,18 +83,38 @@ const updateProfile = async (formData: FormData) => {
     return { message: "No changes made" };
   }
 
-  await prisma.user.update({
-    where: { id: session?.id },
-    data: {
-      profileProgress: "FORM_TEAM",
-      name: data.name,
-      phone: data.phone,
-      aadhaar: adhaarUrl,
-      college_id: collegeIdUrl,
-      college: { connect: { id: data.college } },
-      course: data.course,
-    },
-  });
+  if (data.college === "other" && data.otherCollege && data.otherCollegeState) {
+    await prisma.user.update({
+      where: { id: session?.id },
+      data: {
+        profileProgress: "FORM_TEAM",
+        name: data.name,
+        phone: data.phone,
+        aadhaar: adhaarUrl,
+        college_id: collegeIdUrl,
+        college: {
+          create: {
+            name: data.otherCollege,
+            state: data.otherCollegeState.toUpperCase() as States,
+          },
+        },
+        tShirtSize: data.tshirtSize,
+        course: data.course,
+      },
+    });
+  } else
+    await prisma.user.update({
+      where: { id: session?.id },
+      data: {
+        profileProgress: "FORM_TEAM",
+        name: data.name,
+        phone: data.phone,
+        aadhaar: adhaarUrl,
+        college_id: collegeIdUrl,
+        college: { connect: { id: data.college } },
+        course: data.course,
+      },
+    });
 
   revalidatePath("/");
 
@@ -126,17 +147,17 @@ const createTeam = async (data: FormData) => {
   try {
     console.log("Attempting to create team");
     const user = await getCurrentUser();
-    if (user?.profileProgress !== "COMPLETE") {
+    if (user?.team) {
+      return { status: "error", message: "You are already in a team" };
+    }
+    if (user?.profileProgress !== "FORM_TEAM") {
       console.log("Incomplete user profile");
       return {
         status: "error",
         message: "Please complete your profile first",
       };
     }
-    if (user?.team) {
-      console.log("User already in a team");
-      return { status: "error", message: "You are already in a team" };
-    }
+
     await prisma.user.update({
       where: {
         id: user.id,
@@ -165,14 +186,15 @@ const createTeam = async (data: FormData) => {
 const joinTeam = async (data: FormData) => {
   try {
     const user = await getCurrentUser();
-    if (user?.profileProgress !== "COMPLETE") {
+    if (user?.team) {
+      return { status: "error", message: "You are already in a team" };
+    }
+
+    if (user?.profileProgress !== "FORM_TEAM") {
       return {
         status: "error",
         message: "Please complete your profile first",
       };
-    }
-    if (user?.team) {
-      return { status: "error", message: "You are already in a team" };
     }
 
     const team = await prisma.team.findFirst({

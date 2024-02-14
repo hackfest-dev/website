@@ -1,4 +1,4 @@
-import { Courses, Tracks } from "@prisma/client";
+import { Courses, States, Tracks, TshirtSize } from "@prisma/client";
 import { z } from "zod";
 
 const updateUserZ = z.object({
@@ -17,7 +17,16 @@ const updateProfileZ = z.object({
       invalid_type_error: "Something went wrong",
     })
     .min(1, { message: "College cannot be empty" }),
+  otherCollege: z.string({
+    invalid_type_error: "Something went wrong",
+  }),
+  otherCollegeState: z.string({
+    invalid_type_error: "Something went wrong",
+  }),
   //   state: z.string().optional(),
+  tshirtSize: z.custom<TshirtSize>((val) => {
+    return Object.values(TshirtSize).includes(val as TshirtSize);
+  }),
   course: z.custom<Courses>((val) => {
     return Object.values(Courses).includes(val as Courses);
   }),
