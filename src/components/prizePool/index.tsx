@@ -41,14 +41,16 @@ const PrizePool = () => {
       <div className="z-0  w-full flex flex-col items-center justify-center rounded-md py-10 md:py-16 xl:py-20 gap-6 md:gap-10 bg-slate-950 overflow-clip">
         <div className="flex flex-col items-center justify-center">
           <SectionHeading title="Prize Pool" />
-          <Image
-            src="/images/airship.png"
-            width={180}
-            height={180}
-            alt="UFO"
-            className="object-contain object-center fly-up-down ease-in-out"
-            onClick={() => ConfettiExplosion()}
-          />
+          <FadeIn delay={0.3}>
+            <Image
+              src="/images/airship.png"
+              width={180}
+              height={180}
+              alt="UFO"
+              className="object-contain object-center fly-up-down ease-in-out"
+              onClick={() => ConfettiExplosion()}
+            />
+          </FadeIn>
 
           <Confetti active={show} config={config} />
         </div>
