@@ -1,5 +1,11 @@
 import { AiOutlineInstagram, AiOutlineMail } from "react-icons/ai";
 
+export const dates: [Date, Date, Date] = [
+  new Date("2024-4-5"),
+  new Date("2024-4-6"),
+  new Date("2024-4-7"),
+];
+
 export const cardContent: Array<{
   img: string;
   header: string;
@@ -115,10 +121,10 @@ export const siteMetadata = {
 };
 
 export const navLinks = [
-  { url: '#', label: 'Home' },
-  { url: '#about', label: 'About' },
-  { url: '#tracks', label: 'Tracks' },
-  { url: '#timeline', label: 'Timeline' },
-  { url: '#sponsors', label: 'Sponsors' },
-  { url: '#prizes', label: 'Prizes' },
+  { url: "#", label: "Home" },
+  { url: "#about", label: "About" },
+  { url: "#tracks", label: "Tracks" },
+  { url: "#timeline", label: "Timeline" },
+  { url: "#sponsors", label: "Sponsors" },
+  { url: "#prizes", label: "Prizes" },
 ];

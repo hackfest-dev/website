@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 
 type Props = {
   word: string;
@@ -8,19 +8,22 @@ const LetterByLetterAnimator: FunctionComponent<Props> = ({ word }) => {
   const [currIndex, setCurrIndex] = useState<number>(0);
 
   useEffect(() => {
-    const intervalID = setInterval(() => {
-      console.log("im called");
-      setCurrIndex((prev) => (prev + 1) % word.length);
-    }, 1000);
+    const nextIndex = currIndex + 1;
 
-    return () => {
-      clearInterval(intervalID);
-    };
-  }, []);
+    if (nextIndex >= word.length) {
+      setTimeout(() => {
+        setCurrIndex((prev) => -1);
+      }, 4000);
+    } else {
+      setTimeout(() => {
+        setCurrIndex((prev) => prev + 1);
+      }, 300);
+    }
+  }, [currIndex]);
 
   return (
-    <div className="absolute flex justify-center items-center w-full h-full text-5xl md:text-7xl text-white">
-      {word[currIndex]}
+    <div className="absolute flex justify-center items-center w-full h-full text-white">
+      {currIndex < 0 ? word[currIndex] : word}
     </div>
   );
 };
