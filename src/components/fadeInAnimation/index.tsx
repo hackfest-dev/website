@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { PrimitiveDivProps } from "@radix-ui/react-tabs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,9 +12,11 @@ export default function FadeIn({
   children,
   className,
   delay = 0,
+  div,
 }: {
   children: JSX.Element;
   className?: string;
+  div?: PrimitiveDivProps;
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -31,13 +34,13 @@ export default function FadeIn({
         duration: 0.5,
         scrollTrigger: {
           trigger: ref.current,
-          toggleActions: "restart none none reset",
+          toggleActions: "restart none none reverse",
         },
       }
     );
   }, [ref]);
   return (
-    <div className={className} ref={ref}>
+    <div className={className} ref={ref} {...div}>
       {children}
     </div>
   );

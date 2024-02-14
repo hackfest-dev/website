@@ -69,7 +69,7 @@ const HeroParallax = () => {
     if (boxRef.current) {
       (boxRef.current as HTMLDivElement).style.transform = ` translateX(${
         xPercentage * 0.175 * window.innerWidth
-      }px) rotateY(${-xPercentage * 0.175}deg)`;
+      }px) rotateY(${xPercentage * 15}deg) rotateZ(${-xPercentage * 10}deg)`;
     }
   };
 
@@ -97,14 +97,24 @@ const HeroParallax = () => {
       </div>
 
       <div
-        className="absolute bottom-[0%] w-screen h-[46%] overflow-hidden"
+        className="absolute bottom-[0%] w-screen h-[50%] overflow-hidden"
         style={{
           transformStyle: "preserve-3d",
           perspective: "200px",
         }}
         ref={gridRef}
       >
-        <div className='bg-[url("/images/grid-sm.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] md:bg-[url("/images/grid1.svg"),linear-gradient(0deg,#060e3c_30%,#00c6af)] border-t-2 motion-safe:animate-move flex justify-center items-start rotate-x-45 w-[200%] h-[100%] left-[-50%] relative bg-repeat bg-center'></div>
+        <div
+          className="absolute top-0 w-[200%] h-full left-[-50%] bg-gradient-to-t from-[#060e3c] from-30% to-[#00c6af]"
+          style={{ transform: "rotateX(53deg)" }}
+        ></div>
+        <div
+          className='bg-[url("/images/grid-sm.svg")] md:bg-[url("/images/grid1.svg")] motion-safe:animate-move w-[200%] h-[100%] left-[-50%] relative'
+          style={{
+            backgroundRepeat: "repeat round",
+            transform: "rotateX(53deg)",
+          }}
+        ></div>
       </div>
 
       <div className="absolute -z-30 inset-0">
@@ -121,7 +131,7 @@ const HeroParallax = () => {
           className="h-screen w-screen object-cover object-top"
         />
       </div> */}
-      <div className="absolute mx-3 max-w-6xl w-full left-1/2 md:top-24 top-1/4 -translate-x-1/2 -z-[29]">
+      <div className="absolute mx-3 max-w-6xl w-full left-1/2 md:top-24 md:mt-5 top-1/4 -translate-x-1/2 -z-[29]">
         <div className="absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 text-[#c1f0a8] opacity-60">
           <Countown eventTime={new Date("2024-4-15")} />
         </div>
@@ -136,12 +146,11 @@ const HeroParallax = () => {
       </div>
 
       <div
-        ref={boxRef}
         style={{ perspective: 600 }}
         onMouseMove={(e) => handleMouseMove(e)}
         className={`z-40 absolute inset-0 flex justify-center items-end`}
       >
-        <div>
+        <div ref={boxRef} style={{ transformStyle: "preserve-3d" }}>
           <Image
             width={200}
             height={200}
@@ -150,22 +159,6 @@ const HeroParallax = () => {
             className="fly-up-down ease-in-out"
           />
         </div>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full overflow-clip rotate-180 z-50 -mb-1">
-        <svg
-          data-name="Layer 1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-          className="relative block md:h-auto h-[150px] w-[calc(100% + 1.3px)]"
-        >
-          <path
-            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-            className="fill-slate-900"
-            fillOpacity="1"
-          ></path>
-        </svg>
       </div>
     </div>
   );
