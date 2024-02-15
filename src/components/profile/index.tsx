@@ -14,12 +14,7 @@ export const Profile: React.FC<{
 }> = async ({ user }) => {
   const session = await getServerSession(authOptions);
 
-  const colleges = await prisma.college.findMany({
-    select: {
-      id: true,
-      name: true,
-    },
-  });
+  const colleges = await prisma.college.findMany();
 
   //TODO:get states
   const states: string[] = ["karnataka", "kerala"];
