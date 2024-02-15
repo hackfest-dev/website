@@ -176,7 +176,7 @@ export const EditProfileForm: React.FC<{
               >
                   {collegevalue
                     ? collegevalue
-                  : (formData.collegeName?(formData.collegeName+", "+formData.state):"Select college")}
+                  : (formData.collegeName?(formData.collegeName+", "+formData.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')):"Select college")}
                 <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -190,7 +190,7 @@ export const EditProfileForm: React.FC<{
                       key={college.id}
                       value={college.name}
                       onSelect={(currentValue) => {
-                        setCollegevalue(currentValue === collegevalue ? "" : college.name + ", " + college.state)
+                        setCollegevalue(currentValue === collegevalue ? "" : college.name + ", " + college.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '))
                         setFormData({
                           ...formData,
                           collegeId: college.id
@@ -198,7 +198,7 @@ export const EditProfileForm: React.FC<{
                         setOpenCollegeList(false)
                       }}
                     >
-                      {college.name}, {college.state}
+                      {college.name}, {college.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                     </CommandItem>
                   ))}
                 </CommandGroup>
