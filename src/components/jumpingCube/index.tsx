@@ -20,7 +20,7 @@ const JumpingCube: FunctionComponent = () => {
         }
       `}</style>
       <div
-        className="flex justify-center items-end md:items-center bg-[#c5bcb1] pb-1 md:pb-0 pt-0 md:pt-10 gap-4 w-full h-full min-h-full"
+        className="flex justify-center items-end md:items-center pb-1 md:pb-0 pt-0 md:pt-10 gap-4 w-full h-full min-h-full"
         style={{
           perspective: "20em",
           transform: "translateZ(0)",

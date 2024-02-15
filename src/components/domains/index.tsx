@@ -213,15 +213,16 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
   return (
     <>
-      <section className="max-w-screen-xl p-2 md:p-12 mx-auto w-full">
+      <section
+        id="tracks"
+        className="max-w-screen-xl p-2 md:p-12 mx-auto w-full">
         <div
           id="contents"
           ref={contentRef}
           className={
             styles.contents +
             " fixed inset-0 z-50 bg-transparent max-w-screen-xl mx-auto flex lg:flex-row flex-col justify-center items-center gap-10 lg:gap-16"
-          }
-        >
+          }>
           {/* Position of domain image when viewing contents */}
           <div
             ref={domainPosRef}
@@ -241,8 +242,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                 style={{
                   width:
                     activeDomain.current.title?.getBoundingClientRect().width,
-                }}
-              >
+                }}>
                 {contents.name}
               </div>
             </div>
@@ -251,24 +251,21 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                 <div className="text-sm md:text-base lg:text-xl flex overflow-clip">
                   <div
                     ref={contentDescriptionRef1}
-                    className={styles.contentElements}
-                  >
+                    className={styles.contentElements}>
                     {contents.description.p1}
                   </div>
                 </div>
                 <div className="text-sm md:text-base lg:text-xl flex overflow-clip">
                   <div
                     ref={contentDescriptionRef2}
-                    className={styles.contentElements}
-                  >
+                    className={styles.contentElements}>
                     {contents.description.p2}
                   </div>
                 </div>
               </div>
               <div
                 ref={contentPrizeRef}
-                className={`${styles.contentElements} text-xl flex overflow-clip relative w-fit mb-2`}
-              >
+                className={`${styles.contentElements} text-xl flex overflow-clip relative w-fit mb-2`}>
                 {contents.prize && (
                   <Image
                     src={"/images/rupee.png"}
@@ -282,8 +279,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   className={
                     styles.contentPrize +
                     " text-black font-extrabold text-sm md:text-base lg:text-xl"
-                  }
-                >
+                  }>
                   {contents.prize}
                 </div>
               </div>
@@ -291,8 +287,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             <div
               ref={contentExitRef}
               className={`${styles.contentElements} cursor-pointer hover:text-supporting-500 transition-all duration-300 ease-in-out`}
-              onClick={() => exitAnimaiton()}
-            >
+              onClick={() => exitAnimaiton()}>
               <GiTronArrow className="text-xl md:text-2xl lg:text-3xl -scale-x-[2] rotate-12" />
             </div>
           </div>
@@ -308,26 +303,22 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   key={domain.name}
                   className={`${
                     styles[`domain${idx}`]
-                  } w-[58.6972%] lg:h-1/2 lg:w-[39.872408293%] absolute aspect-[5/3] z-0 pointer-events-none`}
-                >
+                  } w-[58.6972%] lg:h-1/2 lg:w-[39.872408293%] absolute aspect-[5/3] z-0 pointer-events-none`}>
                   <div
                     className="h-full w-full relative z-0 pointer-events-none"
                     style={{
                       transition: "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
                     }}
-                    data-id={idx}
-                  >
+                    data-id={idx}>
                     <div
                       className={`inset-0 absolute pointer-events-none ${
                         styles[`domainBgImg${idx}`]
-                      }`}
-                    >
+                      }`}>
                       <svg
                         viewBox="0 0 482 296"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-full w-full pointer-events-none"
-                      >
+                        className="h-full w-full pointer-events-none">
                         <path
                           style={{
                             pointerEvents: "visible",
@@ -345,8 +336,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                             y1="0"
                             x2="246"
                             y2="300"
-                            gradientUnits="userSpaceOnUse"
-                          >
+                            gradientUnits="userSpaceOnUse">
                             <stop stopColor="#02394B" />
                             <stop offset="1" stopColor="#029792" />
                           </linearGradient>
@@ -361,8 +351,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                       style={{
                         transition:
                           "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
-                      }}
-                    >
+                      }}>
                       <Image
                         src={domain.image}
                         alt={domain.name}
@@ -374,8 +363,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                     <div
                       className={`absolute font-obscura text-xl md:text-2xl leading-none lg:text-3xl max-w-[70%] w-fit pointer-events-none ${
                         styles[`title${idx}`]
-                      }`}
-                    >
+                      }`}>
                       {domain.name}
                     </div>
                   </div>
@@ -389,8 +377,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               id="bgBlock"
               className={
                 styles.bgBlock + ` inset-0 z-40 fixed pointer-events-none`
-              }
-            >
+              }>
               <Image
                 src={"/images/domains-bg.jpg"}
                 alt="background"
@@ -407,8 +394,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                 transition: "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
                 width:
                   activeDomain.current?.title?.getBoundingClientRect().width,
-              }}
-            >
+              }}>
               {contents.name}
             </div>
           </div>

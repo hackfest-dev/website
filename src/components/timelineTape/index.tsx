@@ -26,6 +26,7 @@ export default function TimelineTape() {
   return (
     <>
       <div
+      id="timeline"
         className="xl:h-[120dvh] h-[50dvh] flex "
         onClick={() => {
           console.log(progress);
