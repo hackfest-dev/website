@@ -34,7 +34,7 @@ const updateProfile = async (formData: FormData) => {
 
   if (!result.success) {
     return {
-      type:"error",
+      type: "error",
       message: result.error.errors[0].message,
     };
   }
@@ -78,10 +78,11 @@ const updateProfile = async (formData: FormData) => {
     adhaarUrl === user?.aadhaar &&
     collegeIdUrl === user?.college_id &&
     user?.college?.id === data.college &&
+    user?.tShirtSize === data.tshirtSize &&
     user?.course === data.course;
 
   if (hasNoChanges) {
-    return {type:"info", message: "No changes made" };
+    return { type: "info", message: "No changes made" };
   }
 
   if (data.college === "other" && data.otherCollege && data.otherCollegeState) {
@@ -119,7 +120,7 @@ const updateProfile = async (formData: FormData) => {
 
   revalidatePath("/");
 
-  return { type:"success",message: "Profile updated successfully" };
+  return { type: "success", message: "Profile updated successfully" };
 };
 
 // -------------Admin functions----------------
@@ -170,7 +171,7 @@ const createTeam = async (data: FormData) => {
             name: data.get("teamname") as string,
           },
         },
-        profileProgress: "COMPLETE",
+        profileProgress: "SUBMIT_IDEA",
       },
     });
 
@@ -231,7 +232,7 @@ const joinTeam = async (data: FormData) => {
             id: user?.id,
           },
           update: {
-            data: { profileProgress: "COMPLETE" },
+            data: { profileProgress: "SUBMIT_IDEA" },
             where: { id: user?.id },
           },
         },
@@ -256,6 +257,7 @@ const leaveTeam = async () => {
         team: {
           disconnect: true,
         },
+        profileProgress: "FORM_TEAM",
       },
     });
     return { status: "success", message: "Left team successfully" };
@@ -277,6 +279,14 @@ const deleteTeam = async () => {
     await prisma.team.delete({
       where: {
         id: user.team?.id,
+      },
+    });
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        profileProgress: "FORM_TEAM",
       },
     });
     return { status: "success", message: "Team deleted successfully" };
@@ -318,25 +328,61 @@ const submitIdea = async (formdata: FormData) => {
 
     const pptUrl = await uploadFile({ file: data.ppt as File, folder: "ppts" });
     console.log(pptUrl);
-    await prisma.team.update({
-      data: {
-        ideaSubmission: {
-          create: {
-            problemStatement: data.problemStatement,
-            pptUrl,
-            track: data.track,
+    if (data.referralCode === "")
+      await prisma.team.update({
+        data: {
+          ideaSubmission: {
+            create: {
+              problemStatement: data.problemStatement,
+              pptUrl,
+              track: data.track,
+            },
+          },
+          members: {
+            updateMany: {
+              where: {
+                teamId: user.team?.id,
+              },
+              data: {
+                profileProgress: "COMPLETE",
+              },
+            },
           },
         },
-        referral: {
-          connect: {
-            code: data.referralCode,
+        where: {
+          id: user.team?.id,
+        },
+      });
+    else
+      await prisma.team.update({
+        data: {
+          ideaSubmission: {
+            create: {
+              problemStatement: data.problemStatement,
+              pptUrl,
+              track: data.track,
+            },
+          },
+          members: {
+            updateMany: {
+              where: {
+                teamId: user.team?.id,
+              },
+              data: {
+                profileProgress: "COMPLETE",
+              },
+            },
+          },
+          referral: {
+            connect: {
+              code: data.referralCode,
+            },
           },
         },
-      },
-      where: {
-        id: user.team?.id,
-      },
-    });
+        where: {
+          id: user.team?.id,
+        },
+      });
     revalidatePath("/");
     return { status: "success", message: "Idea has been submitted" };
   } catch (error) {
