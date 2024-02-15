@@ -32,11 +32,7 @@ const Cursor: FunctionComponent = () => {
           ((cursorRect.left - parentRect.left) / parentRect.width) * 100;
         const yPercentage =
           ((cursorRect.top - parentRect.top) / parentRect.height) * 100;
-        const deg =
-          (Math.atan((yPercentage - 50) / (xPercentage - 50)) * 180) / Math.PI +
-          (xPercentage < 50 ? 225 : 45);
         cursorRef.current.style.translate = `-${xPercentage}% -${yPercentage}%`;
-        cursorRef.current.style.rotate = `${deg}deg`;
       }
     }
   };
@@ -52,7 +48,7 @@ const Cursor: FunctionComponent = () => {
     <div ref={parentRef} className="hidden md:block relative w-full h-full">
       <div
         ref={cursorRef}
-        className="absolute w-[30px] h-[30px] transition-opacity top-1/4 left-1/4">
+        className="absolute w-[30px] h-[30px] transition-opacity top-1/4 left-1/4 -rotate-90">
         <svg
           version="1.1"
           id="Layer_1"
