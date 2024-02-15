@@ -43,7 +43,11 @@ export const EditProfileForm: React.FC<{
     collegeName: user.college?.name ?? '',
     aadhaarImg: user.aadhaar ?? '',
     collegeIdImg:user.college_id??'',
-    collegeId: user.college?.id ?? ''
+    collegeId: user.college?.id ?? '',
+    tshirtSize: user.tShirtSize,
+    // as of now kept the actual college values
+    otherCollege: user.college?.name ?? '',
+    otherCollegeState: user.college?.state ?? ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,18 +80,20 @@ export const EditProfileForm: React.FC<{
         form.append("phone", formData.phone || "0");
         form.append("course", formData.course || "");
         form.append("college", formData.collegeId || "");
+        form.append("tshirtSize", formData.tshirtSize || "");
+      // corressponding changes for above changes in formData
+        form.append("otherCollege", formData.otherCollege || "");
+        form.append("otherCollegeState", formData.otherCollegeState || "");
         if(clgFile)
         form.append("collegeId", clgFile);
         if(aadhaarFile)
         form.append("adhaar", aadhaarFile);
         console.log(formData)
       const res = await updateProfile(form);
-      if (res.type == "info")
-          toast(res.message)
-      if (res.type == "success")
-          toast.success(res.message)
       if (res.type == "error")
-          toast.error(res.message)
+        throw new Error(res.message);
+      if (res.type == "info" || res.type == "success")
+        return res.message;
     };
     
   useEffect(() => {
@@ -239,7 +245,20 @@ export const EditProfileForm: React.FC<{
         </CardContent>
       </Card>
       <div className="w-full flex gap-2 items-center justify-center">
-        <Button onClick={(e) => onSubmit(e)} variant="outline" className="bg-green-500 flex items-center">
+        <Button onClick={(e) => {
+    toast.promise(
+      () => onSubmit(e),
+      {
+        loading: "Saving profile info...",
+        success: (message) => {
+          return message+"";
+        },
+        error: (error) => {
+          return error + "";
+        },
+      }
+    );
+  }} variant="outline" className="bg-green-500 flex items-center">
           <Save className="h-5"/>Save profile
         </Button>
         <LogoutButton />

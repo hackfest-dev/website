@@ -72,7 +72,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         {/* TODO: OG Image API */}
       </head>
       <body className={`dark bg-black text-white ${poppins.className}`}>
-      <Toaster richColors position="top-center" />
+      <Toaster richColors expand={true} position="top-center" />
         <Navbar />
         {children}
         <Footer />
