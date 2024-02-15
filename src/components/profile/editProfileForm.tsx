@@ -4,7 +4,7 @@ import { signOut } from "next-auth/react"
 import { Button } from "../ui/button"
 import { College, Courses, User } from "@prisma/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { BookText, Building2, CheckIcon, ChevronDown, Globe, Mail, Phone, Save, SortAscIcon } from "lucide-react";
+import { BookText, Building2, CheckIcon, ChevronDown, Globe, Loader2Icon, Mail, Phone, Save, SortAscIcon } from "lucide-react";
 import { LogoutButton } from "./logout"
 import { Dropzone } from "../ui/dropZone";
 import { prisma } from "@/src/lib/db"
@@ -42,7 +42,7 @@ export const EditProfileForm: React.FC<{
     course: user.course ?? '',
     collegeName: user.college?.name ?? '',
     aadhaarImg: user.aadhaar ?? '',
-    collegeIdImg:user.college_id??'',
+    collegeIdImg: user.college_id ?? '',
     collegeId: user.college?.id ?? '',
     tshirtSize: user.tShirtSize,
     // as of now kept the actual college values
@@ -50,18 +50,10 @@ export const EditProfileForm: React.FC<{
     otherCollegeState: user.college?.state ?? ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
-
   const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
   const [clgFile, setClgFile] = useState<File | null>(null);
 
-  const [isSaving,setIsSaving] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const [openCollegeList, setOpenCollegeList] = useState(false)
   const [openCourseList, setOpenCourseList] = useState(false)
   const [collegevalue, setCollegevalue] = useState("")
@@ -70,35 +62,29 @@ export const EditProfileForm: React.FC<{
   const courses: string[] = Object.entries(Courses).map(([, value]) => value);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    // setLoading(true);
+    setIsSaving(true);
     e.preventDefault();
-    // console.log("Hereeee")
-    // console.log(aadhaarFile)
-    // console.log(clgFile)
-        const form = new FormData();
-        form.append("name", "Keerthan NS");
-        form.append("phone", formData.phone || "0");
-        form.append("course", formData.course || "");
-        form.append("college", formData.collegeId || "");
-        form.append("tshirtSize", formData.tshirtSize || "");
-      // corressponding changes for above changes in formData
-        form.append("otherCollege", formData.otherCollege || "");
-        form.append("otherCollegeState", formData.otherCollegeState || "");
-        if(clgFile)
-        form.append("collegeId", clgFile);
-        if(aadhaarFile)
-        form.append("adhaar", aadhaarFile);
-        console.log(formData)
-      const res = await updateProfile(form);
-      if (res.type == "error")
-        throw new Error(res.message);
-      if (res.type == "info" || res.type == "success")
-        return res.message;
-    };
-    
-  useEffect(() => {
-    console.log(user)
-  },)
+    const form = new FormData();
+    form.append("name", "Keerthan NS");
+    form.append("phone", formData.phone || "0");
+    form.append("course", formData.course || "");
+    form.append("college", formData.collegeId || "");
+    form.append("tshirtSize", formData.tshirtSize || "");
+    // corresponding changes for above changes in formData
+    form.append("otherCollege", formData.otherCollege || "");
+    form.append("otherCollegeState", formData.otherCollegeState || "");
+    if (clgFile)
+      form.append("collegeId", clgFile);
+    if (aadhaarFile)
+      form.append("adhaar", aadhaarFile);
+    console.log(formData)
+    const res = await updateProfile(form);
+    setIsSaving(false);
+    if (res.type == "error")
+      throw new Error(res.message);
+    if (res.type == "info" || res.type == "success")
+      return res.message;
+  };
 
   return (
     <>
@@ -121,15 +107,15 @@ export const EditProfileForm: React.FC<{
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
               <Phone size={20} />
-                      </span>
-                      <Input type="number" id="phone" value={formData.phone}
+            </span>
+            <Input type="number" id="phone" value={formData.phone}
               onChange={(e) =>
                 setFormData({
                   ...formData,
                   phone: e.target.value,
                 })
-              } maxLength={10} className="rounded-none rounded-r-lg"/>
-        </div>
+              } maxLength={10} className="rounded-none rounded-r-lg" />
+          </div>
 
           <p className="block mt-3 text-sm font-medium text-gray-900 dark:text-white">Course :</p>
           <div className="flex">
@@ -137,43 +123,43 @@ export const EditProfileForm: React.FC<{
               <BookText size={20} />
             </span>
             <Popover open={openCourseList} onOpenChange={setOpenCourseList}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={openCourseList}
-                className="w-full justify-between rounded-none rounded-r-lg"
-              >
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openCourseList}
+                  className="w-full justify-between rounded-none rounded-r-lg"
+                >
                   {coursevalue ? coursevalue
-                  : (formData.course?(formData.course):"Select course")}
-                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full px-3">
-              <Command>
-                <CommandInput placeholder="Search course here..." className="h-9" />
-                <CommandEmpty>No course found.</CommandEmpty>
-                <CommandGroup>
-                  {courses.map((course) => (
-                    <CommandItem
-                      key={course}
-                      value={course}
-                      onSelect={(currentValue) => {
-                        setCoursevalue(currentValue === coursevalue ? "" : course)
-                        setFormData({
-                          ...formData,
-                          course: course
-                        })
-                        setOpenCourseList(false)
-                      }}
-                    >
-                      {course}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </Command>
-            </PopoverContent>
-          </Popover>
+                    : (formData.course ? (formData.course) : "Select course")}
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full px-3">
+                <Command>
+                  <CommandInput placeholder="Search course here..." className="h-9" />
+                  <CommandEmpty>No course found.</CommandEmpty>
+                  <CommandGroup>
+                    {courses.map((course) => (
+                      <CommandItem
+                        key={course}
+                        value={course}
+                        onSelect={(currentValue) => {
+                          setCoursevalue(currentValue === coursevalue ? "" : course)
+                          setFormData({
+                            ...formData,
+                            course: course
+                          })
+                          setOpenCourseList(false)
+                        }}
+                      >
+                        {course}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
           <p className="block mt-3 text-sm font-medium text-gray-900 dark:text-white">College :</p>
           <div className="flex">
@@ -181,44 +167,44 @@ export const EditProfileForm: React.FC<{
               <Building2 size={20} />
             </span>
             <Popover open={openCollegeList} onOpenChange={setOpenCollegeList}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={openCollegeList}
-                className="w-full justify-between rounded-none rounded-r-lg"
-              >
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openCollegeList}
+                  className="w-full justify-between rounded-none rounded-r-lg"
+                >
                   {collegevalue
                     ? collegevalue
-                  : (formData.collegeName?(formData.collegeName+", "+formData.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')):"Select college")}
-                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full px-3">
-              <Command>
-                <CommandInput placeholder="Search college here..." className="h-9" />
-                <CommandEmpty>No college found. Add new college below</CommandEmpty>
-                <CommandGroup>
-                  {colleges.map((college) => (
-                    <CommandItem
-                      key={college.id}
-                      value={college.name}
-                      onSelect={(currentValue) => {
-                        setCollegevalue(currentValue === collegevalue ? "" : college.name + ", " + college.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '))
-                        setFormData({
-                          ...formData,
-                          collegeId: college.id
-                        })
-                        setOpenCollegeList(false)
-                      }}
-                    >
-                      {college.name}, {college.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </Command>
-            </PopoverContent>
-          </Popover>
+                    : (formData.collegeName ? (formData.collegeName + ", " + formData.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')) : "Select college")}
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full px-3">
+                <Command>
+                  <CommandInput placeholder="Search college here..." className="h-9" />
+                  <CommandEmpty>No college found. Add new college below</CommandEmpty>
+                  <CommandGroup>
+                    {colleges.map((college) => (
+                      <CommandItem
+                        key={college.id}
+                        value={college.name}
+                        onSelect={(currentValue) => {
+                          setCollegevalue(currentValue === collegevalue ? "" : college.name + ", " + college.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '))
+                          setFormData({
+                            ...formData,
+                            collegeId: college.id
+                          })
+                          setOpenCollegeList(false)
+                        }}
+                      >
+                        {college.name}, {college.state.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
         </CardContent>
       </Card>
@@ -246,20 +232,21 @@ export const EditProfileForm: React.FC<{
       </Card>
       <div className="w-full flex gap-2 items-center justify-center">
         <Button onClick={(e) => {
-    toast.promise(
-      () => onSubmit(e),
-      {
-        loading: "Saving profile info...",
-        success: (message) => {
-          return message+"";
-        },
-        error: (error) => {
-          return error + "";
-        },
-      }
-    );
-  }} variant="outline" className="bg-green-500 flex items-center">
-          <Save className="h-5"/>Save profile
+          toast.promise(
+            () => onSubmit(e),
+            {
+              loading: "Saving profile info...",
+              success: (message) => {
+                return message + "";
+              },
+              error: (error) => {
+                return error + "";
+              },
+            }
+          );
+        }} variant="outline" disabled={isSaving} className={`${isSaving ? "cursor-not-allowed" : ""} bg-green-500 flex items-center`}>
+          {isSaving ? <Loader2Icon className="animate-spin h-5" /> : <Save className="h-5" />}
+          Save profile
         </Button>
         <LogoutButton />
       </div>
