@@ -2,6 +2,7 @@
 import { checkName, createTeam, joinTeam } from "@/src/server/actions";
 import { useContext, useEffect, useState } from "react";
 import { ProgressContext } from "../../progrssProvider";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 
 export default function CreateTeam() {
   const { currentState, maxState, setCurrentState, setMaxState } =
@@ -41,20 +42,26 @@ export default function CreateTeam() {
 
   return (
     <>
-      <div className="flex p-6 rounded-lg flex-col justify-evenly m-auto my-4 sm:my-auto">
-        <h1 className="text-xl text-center">Team management</h1>
-        {(Error || Message) && (
-          <p
-            className={`text-center ${
-              !Error ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            {Error || Message}
-          </p>
-        )}
+    <Card>
+      <CardHeader>
+      <CardTitle>Team management</CardTitle>
 
+      </CardHeader>
+      <CardContent className="px-2">
+
+    <div className="flex rounded-lg flex-col justify-evenly m-auto">
+      {(Error || Message) && (
+        <p
+          className={`text-center ${
+            !Error ? "text-green-500" : "text-red-500"
+          }`}
+        >
+          {Error || Message}
+        </p>
+      )}
+      <div className="flex flex-col justify-center items-center gap-3 my-4">
         <form
-          className="grid text-center border my-4 p-4 rounded"
+          className="grid text-center border p-4 rounded"
           onSubmit={async (e) => {
             setLoading(true);
             e.preventDefault();
@@ -75,7 +82,7 @@ export default function CreateTeam() {
             onChange={(e) => nameHandler(e.target.value)}
             type="text"
             placeholder="Team Name"
-            className={`text-center border rounded m-2 p-2 ${
+            className={`text-center border rounded m-2 p-2  ${
               isNameAvailable ? "bg-green-500" : "bg-red-700"
             }`}
             name="teamname"
@@ -122,6 +129,9 @@ export default function CreateTeam() {
           </button>
         </form>
       </div>
+    </div>
+      </CardContent>
+    </Card>
     </>
   );
 }

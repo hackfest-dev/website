@@ -34,6 +34,7 @@ const updateProfile = async (formData: FormData) => {
 
   if (!result.success) {
     return {
+      type:"error",
       message: result.error.errors[0].message,
     };
   }
@@ -80,7 +81,7 @@ const updateProfile = async (formData: FormData) => {
     user?.course === data.course;
 
   if (hasNoChanges) {
-    return { message: "No changes made" };
+    return {type:"info", message: "No changes made" };
   }
 
   if (data.college === "other" && data.otherCollege && data.otherCollegeState) {
@@ -118,7 +119,7 @@ const updateProfile = async (formData: FormData) => {
 
   revalidatePath("/");
 
-  return { message: "Profile updated successfully" };
+  return { type:"success",message: "Profile updated successfully" };
 };
 
 // -------------Admin functions----------------
