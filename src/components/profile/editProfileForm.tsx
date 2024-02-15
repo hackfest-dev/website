@@ -4,7 +4,7 @@ import { signOut } from "next-auth/react"
 import { Button } from "../ui/button"
 import { College, Courses, User } from "@prisma/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { BookText, Building2, CheckIcon, ChevronDown, Globe, Mail, Phone, SortAscIcon } from "lucide-react";
+import { BookText, Building2, CheckIcon, ChevronDown, Globe, Mail, Phone, Save, SortAscIcon } from "lucide-react";
 import { LogoutButton } from "./logout"
 import { Dropzone } from "../ui/dropZone";
 import { prisma } from "@/src/lib/db"
@@ -24,6 +24,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../ui/popover"
+import { Input } from "../ui/input";
+import { toast } from "sonner";
 
 
 export const EditProfileForm: React.FC<{
@@ -55,6 +57,7 @@ export const EditProfileForm: React.FC<{
   const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
   const [clgFile, setClgFile] = useState<File | null>(null);
 
+  const [isSaving,setIsSaving] = useState(false)
   const [openCollegeList, setOpenCollegeList] = useState(false)
   const [openCourseList, setOpenCourseList] = useState(false)
   const [collegevalue, setCollegevalue] = useState("")
@@ -65,23 +68,28 @@ export const EditProfileForm: React.FC<{
   const onSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     // setLoading(true);
     e.preventDefault();
-
-    console.log("Hereeee")
-    console.log(aadhaarFile)
-    console.log(clgFile)
-    const form = new FormData();
-    form.append("name", "Keerthan NS");
-    form.append("phone", formData.phone || "0");
-    form.append("course", formData.course || "");
-    form.append("college", formData.collegeId || "");
-    if(clgFile)
-      form.append("collegeId", clgFile);
-    if(aadhaarFile)
-      form.append("adhaar", aadhaarFile);
-    console.log(formData)
-    const res = await updateProfile(form);
-    console.log(res.message)
-  };
+    // console.log("Hereeee")
+    // console.log(aadhaarFile)
+    // console.log(clgFile)
+        const form = new FormData();
+        form.append("name", "Keerthan NS");
+        form.append("phone", formData.phone || "0");
+        form.append("course", formData.course || "");
+        form.append("college", formData.collegeId || "");
+        if(clgFile)
+        form.append("collegeId", clgFile);
+        if(aadhaarFile)
+        form.append("adhaar", aadhaarFile);
+        console.log(formData)
+      const res = await updateProfile(form);
+      if (res.type == "info")
+          toast(res.message)
+      if (res.type == "success")
+          toast.success(res.message)
+      if (res.type == "error")
+          toast.error(res.message)
+    };
+    
   useEffect(() => {
     console.log(user)
   },)
@@ -90,7 +98,7 @@ export const EditProfileForm: React.FC<{
     <>
       <Card className="w-full" suppressHydrationWarning >
         <CardContent className="p-4">
-          <p className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">Personal Email :</p>
+          <p className="block mt-3 text-sm font-medium text-gray-900 dark:text-white">Personal Email :</p>
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
               <Mail size={20} />
@@ -101,23 +109,23 @@ export const EditProfileForm: React.FC<{
                   ...formData,
                   email: e.target.value,
                 })
-              } type="text" className="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email not found" />
+              } type="text" className="cursor-default rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email not found" />
           </div>
-          <p className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">Phone number :</p>
+          <p className="block mt-3 text-sm font-medium text-gray-900 dark:text-white">Phone number :</p>
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
               <Phone size={20} />
-            </span>
-            <input id="phone" value={formData.phone}
+                      </span>
+                      <Input type="number" id="phone" value={formData.phone}
               onChange={(e) =>
                 setFormData({
                   ...formData,
                   phone: e.target.value,
                 })
-              } type="number" className="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phone number not provided" />
-          </div>
+              } maxLength={10} className="rounded-none rounded-r-lg"/>
+        </div>
 
-          <p className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">Course :</p>
+          <p className="block mt-3 text-sm font-medium text-gray-900 dark:text-white">Course :</p>
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
               <BookText size={20} />
@@ -161,7 +169,7 @@ export const EditProfileForm: React.FC<{
             </PopoverContent>
           </Popover>
           </div>
-          <p className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">College :</p>
+          <p className="block mt-3 text-sm font-medium text-gray-900 dark:text-white">College :</p>
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
               <Building2 size={20} />
@@ -231,8 +239,8 @@ export const EditProfileForm: React.FC<{
         </CardContent>
       </Card>
       <div className="w-full flex gap-2 items-center justify-center">
-        <Button onClick={(e) => onSubmit(e)} variant="outline" className="bg-green-500">
-          Save profile
+        <Button onClick={(e) => onSubmit(e)} variant="outline" className="bg-green-500 flex items-center">
+          <Save className="h-5"/>Save profile
         </Button>
         <LogoutButton />
       </div>

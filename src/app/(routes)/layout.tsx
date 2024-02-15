@@ -5,6 +5,7 @@ import { headers } from 'next/headers';
 import Navbar from '@/src/components/navbar';
 import Footer from '@/src/components/footer';
 import localFont from 'next/font/local';
+import {Toaster} from "sonner"
 
 const obscura = localFont({
   src: '../../../public/fonts/camera-obscura.otf',
@@ -71,6 +72,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         {/* TODO: OG Image API */}
       </head>
       <body className={`dark bg-black text-white ${poppins.className}`}>
+      <Toaster richColors position="top-center" />
         <Navbar />
         {children}
         <Footer />

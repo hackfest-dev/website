@@ -26,6 +26,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.0.3",
     "@types/typescript": "^2.0.0",
+    "add": "^2.0.6",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^1.41.1",
     "clsx": "^2.1.0",
@@ -47,8 +48,10 @@
     "react-parallax-tilt": "^1.7.179",
     "react-popover": "^0.5.10",
     "shadcn-ui": "^0.8.0",
+    "sonner": "^1.4.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
+    "toast": "^0.5.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
