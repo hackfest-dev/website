@@ -1,12 +1,12 @@
-'use client';
-import { College, User } from '@prisma/client';
-import { updateProfile } from '@/src/server/actions';
-import { Dispatch, useContext, useState } from 'react';
-import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { updateProfileZ } from '@/src/lib/zod-schema';
-import { zodResolver } from '@hookform/resolvers/zod';
+"use client";
+import { College, User } from "@prisma/client";
+import { updateProfile } from "@/src/server/actions";
+import { Dispatch, useContext, useState } from "react";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { updateProfileZ } from "@/src/lib/zod-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -14,8 +14,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../../ui/form';
-import { Input } from '../../ui/input';
+} from "../../ui/form";
+import { Input } from "../../ui/input";
 import {
   Select,
   SelectContent,
@@ -23,14 +23,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../ui/select';
-import { Button } from '../../ui/button';
-import { getUrlAndId } from '@/src/lib/utils/helper';
-import { ProgressContext } from '../../progressProvider';
-import { toast } from 'sonner';
-import { Loader2Icon, Save } from 'lucide-react';
-import { Card, CardContent } from '../../ui/card';
-import { Dropzone } from '../../ui/dropZone';
+} from "../../ui/select";
+import { Button } from "../../ui/button";
+import { getUrlAndId } from "@/src/lib/utils/helper";
+import { ProgressContext } from "../../progressProvider";
+import { toast } from "sonner";
+import { Loader2Icon, Save } from "lucide-react";
+import { Card, CardContent } from "../../ui/card";
+import { Dropzone } from "../../ui/dropZone";
 
 const ProfileForm = ({
   user,
@@ -68,9 +68,9 @@ const ProfileForm = ({
   const form = useForm<z.infer<typeof updateProfileZ>>({
     resolver: zodResolver(updateProfileZ),
     defaultValues: {
-      name: user.name ?? '',
-      phone: user.phone ?? '',
-      college: user.collegeId ?? '',
+      name: user.name ?? "",
+      phone: user.phone ?? "",
+      college: user.collegeId ?? "",
       course: user.course ?? undefined,
     },
   });
@@ -79,7 +79,7 @@ const ProfileForm = ({
 
   const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   // const previewCollegeId = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const files = e.target.files;
@@ -105,21 +105,21 @@ const ProfileForm = ({
     setLoading(true);
     // e.preventDefault();
     const formData = new FormData();
-    formData.append('name', data.name);
-    formData.append('phone', data.phone);
-    formData.append('course', data.course || '');
-    formData.append('college', data.college || '');
-    formData.append('otherCollege', data.otherCollege || '');
-    formData.append('otherCollegeState', data.otherCollegeState || '');
-    formData.append('tshirtSize', data.tshirtSize || '');
-    formData.append('collegeIdFile', clgFile || '');
-    formData.append('aadhaarFile', aadhaarFile || '');
-    toast.loading('Saving Details...', {
-      id: 'loadingToast',
+    formData.append("name", data.name);
+    formData.append("phone", data.phone);
+    formData.append("course", data.course || "");
+    formData.append("college", data.college || "");
+    formData.append("otherCollege", data.otherCollege || "");
+    formData.append("otherCollegeState", data.otherCollegeState || "");
+    formData.append("tshirtSize", data.tshirtSize || "");
+    formData.append("collegeIdFile", clgFile || "");
+    formData.append("aadhaarFile", aadhaarFile || "");
+    toast.loading("Saving Details...", {
+      id: "loadingToast",
     });
     const res = await updateProfile(formData);
-    toast.dismiss('loadingToast');
-    toast.success('Profile Updated', {
+    toast.dismiss("loadingToast");
+    toast.success("Profile Updated", {
       duration: 2000,
     });
     setError(res.message);
@@ -140,7 +140,7 @@ const ProfileForm = ({
           </h1>
           <p
             className={`text-center ${
-              error.includes('updated') ? 'text-green-500' : 'text-red-500'
+              error.includes("updated") ? "text-green-500" : "text-red-500"
             }`}
           >
             {error}
@@ -190,7 +190,7 @@ const ProfileForm = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value={'other'}>Other</SelectItem>
+                          <SelectItem value={"other"}>Other</SelectItem>
                           {colleges.map(({ id, name }, key) => (
                             <SelectItem value={id} key={key}>
                               {name}
@@ -204,7 +204,7 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
-            {form.watch('college') === 'other' && (
+            {form.watch("college") === "other" && (
               <>
                 <FormField
                   control={form.control}
@@ -288,15 +288,11 @@ const ProfileForm = ({
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="w-full">
-<<<<<<< HEAD
-                        <SelectValue placeholder="Select T-Shirt Size" />
-=======
                         <SelectValue placeholder="Select your T-shirt size" />
->>>>>>> 20545d3f6eca7b6617a21948cae53109de20ca1e
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {['S', 'M', 'L', 'XL', 'XXL'].map((size, key) => (
+                          {["S", "M", "L", "XL", "XXL"].map((size, key) => (
                             <SelectItem value={size} key={key}>
                               {size}
                             </SelectItem>
@@ -309,58 +305,6 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
-<<<<<<< HEAD
-
-            {/* College ID */}
-            <FormField
-              control={form.control}
-              name="collegeIdFile"
-              render={({ field, formState, fieldState }) => {
-                // console.log(field)
-                return (
-                  <FormItem className="md:w-[calc(90%+1.5rem)] w-full">
-                    <FormLabel className="">College ID Card</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="w-full"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          if (e.target.files?.[0])
-                            field.value = e.target.files?.[0];
-
-                          console.log(e.target.files?.[0], field.value);
-                          previewCollegeId(e);
-                        }}
-                      />
-                    </FormControl>
-                    {(collegeId?.url || user?.college_id) && (
-                      <span>
-                        <Image
-                          src={
-                            collegeId?.url ||
-                            getUrlAndId(user?.college_id ?? '').url ||
-                            ''
-                          }
-                          alt="collegeID"
-                          width={100}
-                          height={100}
-                          unoptimized
-                        />
-                        {user.college_id && !collegeId?.url && 'Uploaded File'}
-                        {collegeId?.url && (
-                          <Button
-                            onClick={() => {
-                              setCollegeId({
-                                url: '',
-                                file: undefined,
-                              });
-                              (
-                                document.getElementById(
-                                  'collegeId'
-                                ) as HTMLInputElement
-                              ).value = '';
-=======
             {/* files */}
             <Card className="w-full">
               <CardContent className="p-4 grid md:grid-cols-1 lg:grid-cols-2 gap-2">
@@ -375,11 +319,10 @@ const ProfileForm = ({
                           <Dropzone
                             onChange={() => {
                               setAadhaarFile;
->>>>>>> 20545d3f6eca7b6617a21948cae53109de20ca1e
                             }}
                             className="w-full"
                             fileExtension="images"
-                            image={getUrlAndId(user?.aadhaar ?? '').url || ''}
+                            image={getUrlAndId(user?.aadhaar ?? "").url || ""}
                           />
                         </div>
                       </FormControl>
@@ -402,7 +345,7 @@ const ProfileForm = ({
                               className="w-full"
                               fileExtension="images"
                               image={
-                                getUrlAndId(user?.college_id ?? '').url || ''
+                                getUrlAndId(user?.college_id ?? "").url || ""
                               }
                             />
                           </div>
@@ -417,7 +360,7 @@ const ProfileForm = ({
               type="submit"
               disabled={loading}
               className={`mt-5 ${
-                loading ? 'cursor-not-allowed' : ''
+                loading ? "cursor-not-allowed" : ""
               } flex items-center gap-2`}
             >
               {loading ? (
@@ -426,7 +369,7 @@ const ProfileForm = ({
                 <Save size={16} />
               )}
               Save changes
-            </Button>{' '}
+            </Button>{" "}
           </div>
         </form>
       </Form>

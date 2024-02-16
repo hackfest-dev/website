@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { Card, CardContent } from '../card';
-import { Button } from '../button';
+import React, { useRef, useState } from "react";
+import { Card, CardContent } from "../card";
+import { Button } from "../button";
 
 // Define the props expected by the Dropzone component
 interface DropzoneProps {
@@ -50,7 +50,7 @@ export function Dropzone({
   // Function to handle processing of uploaded files
   const handleFiles = (files: FileList) => {
     const uploadedFile = files[0];
-    const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
     // Check file extension
     // if (fileExtension && !uploadedFile.name.endsWith(`.${fileExtension}`)) {
     if (!allowedImageTypes.includes(uploadedFile.type)) {
