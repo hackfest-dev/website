@@ -25,7 +25,7 @@ export default async function RootLayout({
       <html lang="en">
         <body className={`${poppins.className} bg-black text-white`}>
           {children}
-          <div className="sticky bottom-5 left-5">
+          <div className="sticky bottom-5 ml-5">
             <FaqAdmin />
           </div>
         </body>

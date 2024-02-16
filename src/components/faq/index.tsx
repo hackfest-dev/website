@@ -37,7 +37,7 @@ export const FAQ: React.FC<{}> = () => {
             className=" justify-center items-center flex flex-col"
           >
             <TabsList>
-              <TabsTrigger value="GENERAL">Genral</TabsTrigger>
+              <TabsTrigger value="GENERAL">General</TabsTrigger>
               <TabsTrigger value="FOOD">Food</TabsTrigger>
               <TabsTrigger value="STAY">Stay</TabsTrigger>
               <TabsTrigger value="TRAVEL">Travel</TabsTrigger>
@@ -100,6 +100,7 @@ export const FAQ: React.FC<{}> = () => {
                       toast.error("Error submitting question");
                     }
                   }}
+                  className="bg-white px-4 py-2 rounded-xl text-black"
                 >
                   Submit
                 </button>
