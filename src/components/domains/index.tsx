@@ -219,7 +219,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           ref={contentRef}
           className={
             styles.contents +
-            " fixed inset-0 z-50 bg-transparent max-w-screen-xl mx-auto flex lg:flex-row flex-col justify-center items-center gap-10 lg:gap-16"
+            " fixed inset-0 z-50 bg-transparent max-w-screen-2xl mx-auto flex lg:flex-row flex-col justify-center items-center gap-10 lg:gap-16 lg:px-12"
           }
         >
           {/* Position of domain image when viewing contents */}
@@ -233,7 +233,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             }}
           />
           {/* Contents go here */}
-          <div className="max-w-screen-md flex flex-col justify-center gap-2 md:gap-6 px-4 sm:px-8 md:px-12">
+          <div className="max-w-screen-md flex flex-col justify-center gap-2 md:gap-6 px-4 sm:px-8 md:px-12 lg:px-0">
             <div className="flex text-xl md:text-2xl lg:text-3xl font-obscura">
               <div
                 ref={contentTitleRef}
@@ -290,7 +290,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             </div>
             <div
               ref={contentExitRef}
-              className={`${styles.contentElements} cursor-pointer hover:text-supporting-500 transition-all duration-300 ease-in-out`}
+              className={`${styles.contentElements} w-fit cursor-pointer hover:text-supporting-500 transition-all duration-300 ease-in-out`}
               onClick={() => exitAnimaiton()}
             >
               <GiTronArrow className="text-xl md:text-2xl lg:text-3xl -scale-x-[2] rotate-12" />
@@ -392,12 +392,19 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               }
             >
               <Image
-                src={"/images/domains-bg.jpg"}
+                src={"/images/domains-bg.svg"}
                 alt="background"
                 fill
                 className="object-center object-cover"
               />
-              <div className="w-full h-full bg-black/65 absolute top-0 left-0"></div>
+              <div className="w-full h-full bg-black/25 absolute top-0 left-0"></div>
+              {/* <Image
+                src={"/images/domains-bg(1).svg"}
+                alt=""
+                fill
+                className="object-center object-cover "
+              /> */}
+              {/* <div className="w-full h-full bg-black/25 absolute top-0 left-0"></div> */}
             </div>
 
             <div
