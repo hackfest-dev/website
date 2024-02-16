@@ -15,6 +15,7 @@ export default async function RegisterProfile() {
     select: {
       id: true,
       name: true,
+      state: true,
     },
   });
 
