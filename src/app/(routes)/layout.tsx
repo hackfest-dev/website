@@ -5,7 +5,8 @@ import { headers } from 'next/headers';
 import Navbar from '@/src/components/navbar';
 import Footer from '@/src/components/footer';
 import localFont from 'next/font/local';
-import {Toaster} from "sonner"
+import { Toaster } from 'sonner';
+import ProgressBarProvider from '@/src/components/progressBarProvider';
 
 const obscura = localFont({
   src: '../../../public/fonts/camera-obscura.otf',
@@ -72,10 +73,12 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         {/* TODO: OG Image API */}
       </head>
       <body className={`dark bg-black text-white ${poppins.className}`}>
-      <Toaster richColors expand={true} position="top-center" />
-        <Navbar />
-        {children}
-        <Footer />
+        <ProgressBarProvider>
+          <Toaster richColors expand={true} position="top-center" />
+          <Navbar />
+          {children}
+          <Footer />
+        </ProgressBarProvider>
       </body>
     </html>
   );

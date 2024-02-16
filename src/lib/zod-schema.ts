@@ -34,8 +34,14 @@ const updateProfileZ = z.object({
   course: z.custom<Courses>((val) => {
     return Object.values(Courses).includes(val as Courses);
   }),
-  aadhaarFile: z.custom<File>(),
-  collegeIdFile: z.custom<File>(),
+  aadhaarFile: z.custom<File>().refine((file) => file.size < 2 * 1024 * 1024, {
+    message: "File size should be less than 2MB",
+  }),
+  collegeIdFile: z
+    .custom<File>()
+    .refine((file) => file.size < 2 * 1024 * 1024, {
+      message: "File size should be less than 2MB",
+    }),
 });
 
 const submitIdeaZ = z.object({
@@ -49,4 +55,12 @@ const submitIdeaZ = z.object({
   ppt: z.custom<File>(),
 });
 
-export { updateUserZ, updateProfileZ, submitIdeaZ };
+const createTeamZ = z.object({
+  teamName: z.string().min(1, { message: "Team name cannot be empty" }),
+});
+
+const joinTeamZ = z.object({
+  teamId: z.string().min(1, { message: "Team ID cannot be empty" }),
+});
+
+export { updateUserZ, updateProfileZ, submitIdeaZ, createTeamZ, joinTeamZ };

@@ -28,7 +28,7 @@ import {
 } from "../../ui/select";
 import { Button } from "../../ui/button";
 import { getUrlAndId } from "@/src/lib/utils/helper";
-import { ProgressContext } from "../../progrssProvider";
+import { ProgressContext } from "../../progressProvider";
 
 const ProfileForm = ({
   user,

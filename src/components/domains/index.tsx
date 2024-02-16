@@ -1,9 +1,9 @@
-"use client";
-import { MouseEvent, TouchEvent, useRef, useState } from "react";
-import Image from "next/image";
-import { GiTronArrow } from "react-icons/gi";
-import styles from "./style.module.css";
-import { SectionHeading } from "../ui/sectionHeading";
+'use client';
+import { MouseEvent, TouchEvent, useRef, useState } from 'react';
+import Image from 'next/image';
+import { GiTronArrow } from 'react-icons/gi';
+import styles from './style.module.css';
+import { SectionHeading } from '../ui/sectionHeading';
 
 type DomainProps = {
   name: string;
@@ -14,10 +14,10 @@ type DomainProps = {
 
 const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
   const [contents, setContents] = useState<DomainProps & { index: number }>({
-    name: "",
-    image: "",
+    name: '',
+    image: '',
     prize: null,
-    description: { p1: "", p2: "" },
+    description: { p1: '', p2: '' },
     index: 0,
   });
 
@@ -103,13 +103,13 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
         // Enter animation
         if (targetParent) {
-          targetParent.style.zIndex = "41";
+          targetParent.style.zIndex = '41';
         }
 
-        target.style.zIndex = "41";
+        target.style.zIndex = '41';
         target.style.transform = `translate(${x}px, ${y}px) scale(1)`;
-        targetTitle.style.display = "none";
-        targetImg.style.transform = "scale(1.75)";
+        targetTitle.style.display = 'none';
+        targetImg.style.transform = 'scale(1.75)';
 
         if (titleAnimationRef.current) {
           (titleAnimationRef.current as HTMLDivElement).style.opacity = `1`;
@@ -144,17 +144,17 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
           (contentExitRef.current as HTMLDivElement).classList.add(
             `${styles.active}`
           );
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = 'hidden';
       }, 100);
 
       setTimeout(() => {
-        document.body.addEventListener("click", exitAnimaiton);
+        document.body.addEventListener('click', exitAnimaiton);
       }, 1000);
     }
   };
 
   const exitAnimaiton = async () => {
-    document.body.removeEventListener("click", exitAnimaiton);
+    document.body.removeEventListener('click', exitAnimaiton);
     bgBlockRef.current &&
       (bgBlockRef.current as HTMLDivElement).classList.remove(
         `${styles.active}`
@@ -177,19 +177,19 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       );
 
     setTimeout(() => {
-      (activeDomain.current?.target as HTMLDivElement).style.zIndex = "0";
-      (activeDomain.current?.title as HTMLDivElement).style.display = "block";
+      (activeDomain.current?.target as HTMLDivElement).style.zIndex = '0';
+      (activeDomain.current?.title as HTMLDivElement).style.display = 'block';
 
       if (activeDomain.current?.target?.parentElement) {
         (
           activeDomain.current?.target?.parentElement as HTMLDivElement
-        ).style.zIndex = "0";
+        ).style.zIndex = '0';
       }
       if (titleAnimationRef.current) {
         (titleAnimationRef.current as HTMLDivElement).style.opacity = `0`;
       }
 
-      document.body.style.overflow = "visible";
+      document.body.style.overflow = 'visible';
     }, 1000);
 
     setTimeout(() => {
@@ -217,6 +217,8 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         id="tracks"
         className="max-w-screen-xl p-2 md:p-12 mx-auto w-full"
       >
+        className="max-w-screen-xl p-2 md:p-12 mx-auto w-full"
+      >
         <div
           id="contents"
           ref={contentRef}
@@ -231,7 +233,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             style={{
               height:
                 activeDomain.current.target?.getBoundingClientRect().height,
-              aspectRatio: "5/3",
+              aspectRatio: '5/3',
               flexShrink: 0,
             }}
           />
@@ -274,7 +276,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               >
                 {contents.prize && (
                   <Image
-                    src={"/images/rupee.png"}
+                    src={'/images/rupee.png'}
                     alt="Rs"
                     height={50}
                     width={100}
@@ -302,8 +304,8 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         </div>
 
         {/* Grids */}
-        <div className="flex flex-col gap-8 md:gap-20 w-full items-center ">
-          <SectionHeading title="Domains" />
+        <div className="flex flex-col gap-8 md:gap-20 w-full items-center">
+          <SectionHeading title="Tracks" />
           <div className="relative w-full lg:aspect-[209/100] aspect-[820.72/1008]">
             {domainList.map((domain, idx) => {
               return (
@@ -316,7 +318,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   <div
                     className="h-full w-full relative z-0 pointer-events-none"
                     style={{
-                      transition: "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
+                      transition: 'transform 1s cubic-bezier(1, 0, 0.7, 1) 0s',
                     }}
                     data-id={idx}
                   >
@@ -333,8 +335,8 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                       >
                         <path
                           style={{
-                            pointerEvents: "visible",
-                            cursor: "pointer",
+                            pointerEvents: 'visible',
+                            cursor: 'pointer',
                           }}
                           data-id={idx}
                           onClick={(e) => enterAnimation(e)}
@@ -394,6 +396,8 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                 styles.bgBlock + ` inset-0 z-40 fixed pointer-events-none`
               }
             >
+              }
+            >
               <Image
                 src={"/images/domains-bg.svg"}
                 alt="background"
@@ -414,7 +418,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               ref={titleAnimationRef}
               className="fixed z-50 font-obscura text-xl md:text-2xl lg:text-3xl leading-none pointer-events-none text-left"
               style={{
-                transition: "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
+                transition: 'transform 1s cubic-bezier(1, 0, 0.7, 1) 0s',
                 width:
                   activeDomain.current?.title?.getBoundingClientRect().width,
               }}

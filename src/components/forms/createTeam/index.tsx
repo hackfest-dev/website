@@ -1,13 +1,18 @@
-"use client";
-import { checkName, createTeam, joinTeam } from "@/src/server/actions";
-import { useContext, useEffect, useState } from "react";
-import { ProgressContext } from "../../progrssProvider";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+'use client';
+import { checkName, createTeam, joinTeam } from '@/src/server/actions';
+import { useContext, useEffect, useState } from 'react';
+import { ProgressContext } from '../../progressProvider';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Badge } from '../../ui/badge';
+import { Button } from '../../ui/button';
+import { UserRoundPlus, Users } from 'lucide-react';
+import { Input } from '../../ui/input';
 
 export default function CreateTeam() {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
 
+  const [teamId, setTeamId] = useState('');
   const [isNameAvailable, setIsNameAvailable] = useState(false);
   const [Error, setError] = useState("");
   const [Message, setMessage] = useState("");
@@ -19,8 +24,12 @@ export default function CreateTeam() {
   }, [isWaiting]);
 
   const nameHandler = async (name: string) => {
+    if (name.includes(" ")) {
+      setError("Name cannot contain spaces");
+      return;
+    }
     if (!isWaiting && name.length > 3) {
-      const res = await checkName(name);
+      const res = await checkName({ teamName: name });
       if (
         res.status === "success" &&
         (res.message === true || res.message === false)
@@ -41,94 +50,107 @@ export default function CreateTeam() {
   if (currentState !== 1) return <></>;
 
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <CardTitle>Team management</CardTitle>
-
-        </CardHeader>
-        <CardContent className="px-2">
-
-          <div className="flex rounded-lg flex-col justify-evenly m-auto">
+    <Card className="w-full h-fit">
+      <CardHeader>
+        <CardTitle className="text-center">Team management</CardTitle>
+      </CardHeader>
+      <CardContent className="px-2">
+        <div className="flex rounded-lg flex-col justify-evenly m-auto">
+          <div className="flex w-full justify-center">
             {(Error || Message) && (
-              <p
-                className={`text-center ${!Error ? "text-green-500" : "text-red-500"
-                  }`}
+              <Badge
+                className={`text-center w-fit -mt-2 ${
+                  !Error ? 'text-green-500' : 'text-red-500'
+                }`}
               >
                 {Error || Message}
-              </p>
+              </Badge>
             )}
-            <div className="flex flex-col justify-center items-center gap-3 my-4">
-              <form
-                className="grid text-center border p-4 rounded"
-                onSubmit={async (e) => {
-                  setLoading(true);
-                  e.preventDefault();
-                  const formData = new FormData(e.target as HTMLFormElement);
-                  const res = await createTeam(formData);
-                  if (res.status === "error") setError(res.message);
-                  if (res.status === "success") {
-                    setMessage(res.message);
-                    setCurrentState(2);
-                    maxState <= 2 && setMaxState(2);
-                  }
-                  setLoading(false);
-                }}
-              >
-                <h1>Create a Team</h1>
-
-                <input
-                  onChange={(e) => nameHandler(e.target.value)}
-                  type="text"
-                  placeholder="Team Name"
-                  className={`text-center border rounded m-2 p-2 text-white ${isNameAvailable ? "bg-green-500" : "bg-red-600"
-                    }`}
-                  name="teamname"
-                  required
-                />
-                <button
-                  type="submit"
-                  className={`border rounded p-2 mt-6 ${isNameAvailable && "hover:bg-green-500"} font-semibold ${!isNameAvailable && "cursor-not-allowed hover:bg-gray-400"
-                    }`}
-                  disabled={!isNameAvailable}
-                >
-                  Create Team
-                </button>
-              </form>
-
-              <form
-                className="grid text-center border p-4 rounded"
-                onSubmit={async (e) => {
-                  setLoading(true);
-                  e.preventDefault();
-                  const formData = new FormData(e.target as HTMLFormElement);
-                  const res = await joinTeam(formData);
-                  if (res.status === "error") setError(res.message);
-                  if (res.status === "success") setMessage(res.message);
-                  setLoading(false);
-                }}
-              >
-                <h1>Join a Team</h1>
-                <input
-                  onChange={(e) => nameHandler(e.target.value)}
-                  type="text"
-                  className=" border rounded m-2 p-2" /* Todo: change border according to name availability*/
-                  placeholder="Team Id"
-                  name="teamid"
-                  required
-                />
-                <button
-                  type="submit"
-                  className=" border rounded p-2 mt-6 hover:bg-blue-700 font-semibold"
-                  value=""
-                >
-                  Join Team
-                </button>
-              </form>
-            </div>
           </div>
-        </CardContent>
-      </Card>
-    </>
+
+          <div className="flex lg:flex-row flex-col justify-center items-center gap-3 my-4">
+            <Card className="w-full p-5">
+              <CardContent>
+                <form
+                  className="flex flex-col gap-2 text-center"
+                  onSubmit={async (e) => {
+                    setLoading(true);
+                    e.preventDefault();
+                    const formData = new FormData(e.target as HTMLFormElement);
+                    const res = await createTeam({
+                      teamName: formData.get("teamname") as string,
+                    });
+                    if (res.status === "error") setError(res.message);
+                    if (res.status === "success") {
+                      setMessage(res.message);
+                      setCurrentState(2);
+                      maxState <= 2 && setMaxState(2);
+                    }
+                    setLoading(false);
+                  }}
+                >
+                  <h1 className="text-xl font-bold">Create a Team</h1>
+
+                  <Input
+                    onChange={(e) => nameHandler(e.target.value)}
+                    type="text"
+                    placeholder="Team Name"
+                    className={`text-center border rounded p-2 text-white ${
+                      isNameAvailable ? 'border-green-500' : 'border-red-600'
+                    }`}
+                    name="teamname"
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    className={`flex items-center gap-2 ${
+                      !isNameAvailable && 'cursor-not-allowed hover:bg-gray-400'
+                    }`}
+                    disabled={!isNameAvailable}
+                  >
+                    <UserRoundPlus size={16} />
+                    Create Team
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+
+            <Card className="w-full p-5">
+              <CardContent>
+                <form
+                  className="flex flex-col gap-2 text-center"
+                  onSubmit={async (e) => {
+                    setLoading(true);
+                    e.preventDefault();
+                    const formData = new FormData(e.target as HTMLFormElement);
+                    const res = await joinTeam({
+                      teamId: formData.get("teamid") as string,
+                    });
+                    if (res.status === "error") setError(res.message);
+                    if (res.status === "success") setMessage(res.message);
+                    setLoading(false);
+                  }}
+                >
+                  <h1 className="text-xl font-bold">Join a Team</h1>
+                  <Input
+                    onChange={(e) => setTeamId(e.target.value)}
+                    value={teamId}
+                    type="text"
+                    className="border rounded p-2"
+                    placeholder="Team ID"
+                    name="teamid"
+                    required
+                  />
+                  <Button type="submit" className="flex items-center gap-2">
+                    <Users size={16} />
+                    Join Team
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

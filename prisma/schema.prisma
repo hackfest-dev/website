@@ -137,6 +137,14 @@ model Referral {
   teams    Team[]
 }
 
+model Faq{
+  id Int @id @default(autoincrement())
+  question String
+  answer String
+  category Category @default(GENERAL)
+  published Boolean @default(false)
+}
+
 enum Role {
   PARTICIPANT
   ADMIN
@@ -215,3 +223,12 @@ enum States {
   LAKSHADWEEP
   PUDUCHERRY
 }
+
+enum Category {
+  GENERAL
+  FOOD
+  STAY
+  TRAVEL
+}
+
+

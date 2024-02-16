@@ -1,14 +1,18 @@
-"use client"
-import { FC, } from "react"
-import { signOut } from "next-auth/react"
-import { LogOut } from "lucide-react"
-import { Button } from "../ui/button"
+'use client';
+import { FC } from 'react';
+import { signOut } from 'next-auth/react';
+import { LogOut } from 'lucide-react';
+import { Button } from '../ui/button';
 
-
-export const LogoutButton:FC=()=>{
-    return (
-        <Button variant="outline" className="bg-red-600" onClick={() => signOut()}>
-            <LogOut className="h-5" />Logout
-        </Button>
-    )
-}
+export const LogoutButton: FC = () => {
+  return (
+    <Button
+      variant="outline"
+      onClick={() => signOut()}
+      className="flex items-center gap-2 bg-red-600 hover:bg-red-600/90"
+    >
+      <LogOut size={16} />
+      Logout
+    </Button>
+  );
+};
