@@ -1,5 +1,5 @@
 "use client";
-import { College, User } from "@prisma/client";
+import { College, TshirtSize, User } from "@prisma/client";
 import { updateProfile } from "@/src/server/actions";
 import { Dispatch, useContext, useState } from "react";
 import { useForm } from "react-hook-form";

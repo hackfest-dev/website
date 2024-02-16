@@ -28,6 +28,7 @@ import { AiOutlineCopy } from "react-icons/ai";
 import { BsWhatsapp } from "react-icons/bs";
 import Link from "next/link";
 import { Progress } from "@prisma/client";
+import { secrets } from "@/src/lib/secrets";
 
 export default function TeamInfo({
   teamdata,
