@@ -427,6 +427,37 @@ const getTeamDetailsById = async (teamId: string) => {
   }
 };
 
+const addFaq = async (faq: {
+  question: string;
+  category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
+}) => {
+  await prisma.faq.create({
+    data: {
+      question: faq.question,
+      category: faq.category,
+      answer: "",
+      published: false,
+    },
+  });
+};
+
+const getAllFaqs = async () => {
+  const faqs = await prisma.faq.findMany();
+  return faqs;
+};
+
+const answerFaq = async (id: number, answer: string) => {
+  await prisma.faq.update({
+    where: {
+      id: id,
+    },
+    data: {
+      answer: answer,
+      published: true,
+    },
+  });
+};
+
 export {
   verifyUser,
   updateProfile,
@@ -437,4 +468,7 @@ export {
   deleteTeam,
   submitIdea,
   getTeamDetailsById,
+  addFaq,
+  getAllFaqs,
+  answerFaq,
 };

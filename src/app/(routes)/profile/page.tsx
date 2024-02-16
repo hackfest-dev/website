@@ -3,6 +3,7 @@ import TeamDetails from '@/src/components/forms/teamInfo';
 import { prisma } from '@/src/lib/db';
 import { getCurrentUser } from '@/src/lib/session';
 import { Profile } from '@/src/components/profile';
+import NotLoggedIn from '@/src/components/notLoggedIn';
 
 export default async function ProfilePage() {
   const user = await getCurrentUser();
@@ -20,17 +21,16 @@ export default async function ProfilePage() {
         })
     : null;
 
-  if (!user)
-    return (
-      <div className="pb-20 pt-32 bg-white text-black h-full flex self-center">
-        Please login
-      </div>
-    );
+  if (!user) return <NotLoggedIn />;
 
   return (
-    <div className="mb-10 md:mb-20 mt-28 flex flex-col justify-center md:flex-row gap-2 w-full min-h-screen p-3 md:px-auto mx-auto max-w-5xl">
+    <div className="mb-10 md:mb-20 mt-28 flex flex-col justify-center md:flex-row gap-2 w-full min-h-screen p-3 md:px-auto mx-auto max-w-6xl">
       {userInfo && <Profile user={userInfo} />}
-      {!user.team?.id ? <CreateTeam /> : <TeamDetails teamid={user.team?.id} />}
+      {!user.team?.id ? (
+        <CreateTeam />
+      ) : (
+        <TeamDetails userId={user.id} teamid={user.team?.id} />
+      )}
     </div>
   );
 }

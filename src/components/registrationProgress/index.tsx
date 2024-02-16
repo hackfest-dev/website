@@ -29,7 +29,7 @@ const Progress = () => {
     >
       {progress.map((section, index) => {
         return (
-          <>
+          <div key={index}>
             {index > 0 && (
               <div
                 className="h-full absolute top-0 w-1/2 z-[0] transition-all duration-300"
@@ -64,7 +64,7 @@ const Progress = () => {
             >
               {index + 1}
             </div>
-          </>
+          </div>
         );
       })}
     </div>

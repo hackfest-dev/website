@@ -21,7 +21,7 @@ export const Profile: React.FC<{
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Your profile</CardTitle>
+        <CardTitle className="text-center">Your profile</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center gap-2 px-2">
         <Card className="p-6">
