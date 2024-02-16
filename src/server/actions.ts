@@ -2,7 +2,13 @@
 import { prisma } from "@/src/lib/db";
 import { deleteFile, uploadFile } from "@/src/lib/utils/cloudinary";
 import { protectedAction } from "./serverConfig";
-import { updateUserZ, updateProfileZ, submitIdeaZ } from "../lib/zod-schema";
+import {
+  updateUserZ,
+  updateProfileZ,
+  submitIdeaZ,
+  createTeamZ,
+  joinTeamZ,
+} from "../lib/zod-schema";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "../lib/session";
 import { States } from "@prisma/client";
@@ -25,22 +31,7 @@ const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
 // For file uploads, we need to pass them as FormData
 // Error: Only plain objects, and a few built-ins, can be passed to Server Actions. Classes or null prototypes are not supported.
 
-const updateProfile = async (formData: FormData) => {
-  const obj = Object.fromEntries(formData.entries());
-  console.log(obj);
-  const result = updateProfileZ.safeParse({
-    ...obj,
-  });
-
-  if (!result.success) {
-    return {
-      type: "error",
-      message: result.error.errors[0].message,
-    };
-  }
-
-  const { data } = result;
-
+const updateProfile = protectedAction(updateProfileZ, async (value, { db }) => {
   const session = await getCurrentUser();
   if (!session) {
     return {
@@ -48,7 +39,7 @@ const updateProfile = async (formData: FormData) => {
     };
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { id: session?.id },
     include: {
       college: true,
@@ -64,77 +55,80 @@ const updateProfile = async (formData: FormData) => {
   }
 
   // upload files only if they exist otherwise set to existing url
-  const adhaarUrl = obj.adhaar
-    ? await uploadFile({ file: obj.adhaar as File, folder: "ids" })
+  const adhaarUrl = value.aadhaarFile
+    ? await uploadFile({ file: value.aadhaarFile as File, folder: "ids" })
     : user?.aadhaar;
-  const collegeIdUrl = obj.collegeId
-    ? await uploadFile({ file: obj.collegeId as File, folder: "ids" })
+  const collegeIdUrl = value.collegeIdFile
+    ? await uploadFile({ file: value.collegeIdFile as File, folder: "ids" })
     : user?.college_id;
 
   // code can be cleaned but it's ok to be lazy
   const hasNoChanges =
-    user?.name === data.name &&
-    user?.phone === data.phone &&
+    user?.name === value.name &&
+    user?.phone === value.phone &&
     adhaarUrl === user?.aadhaar &&
     collegeIdUrl === user?.college_id &&
-    user?.college?.id === data.college &&
-    user?.tShirtSize === data.tshirtSize &&
-    user?.course === data.course;
+    user?.college?.id === value.college &&
+    user?.tShirtSize === value.tshirtSize &&
+    user?.course === value.course;
 
   if (hasNoChanges) {
     return { type: "info", message: "No changes made" };
   }
 
-  if (data.college === "other" && data.otherCollege && data.otherCollegeState) {
-    await prisma.user.update({
+  if (
+    value.college === "other" &&
+    value.otherCollege &&
+    value.otherCollegeState
+  ) {
+    await db.user.update({
       where: { id: session?.id },
       data: {
         profileProgress: "FORM_TEAM",
-        name: data.name,
-        phone: data.phone,
+        name: value.name,
+        phone: value.phone,
         aadhaar: adhaarUrl,
         college_id: collegeIdUrl,
         college: {
           create: {
-            name: data.otherCollege,
-            state: data.otherCollegeState.toUpperCase() as States,
+            name: value.otherCollege,
+            state: value.otherCollegeState.toUpperCase() as States,
           },
         },
-        tShirtSize: data.tshirtSize,
-        course: data.course,
+        tShirtSize: value.tshirtSize,
+        course: value.course,
       },
     });
   } else
-    await prisma.user.update({
+    await db.user.update({
       where: { id: session?.id },
       data: {
         profileProgress: "FORM_TEAM",
-        name: data.name,
-        phone: data.phone,
+        name: value.name,
+        phone: value.phone,
         aadhaar: adhaarUrl,
         college_id: collegeIdUrl,
-        college: { connect: { id: data.college } },
-        course: data.course,
+        college: { connect: { id: value.college } },
+        course: value.course,
       },
     });
 
   revalidatePath("/");
 
   return { type: "success", message: "Profile updated successfully" };
-};
+});
 
 // -------------Admin functions----------------
 
 // -----------------Team controls-----------------
 // Check name availability
-const checkName = async (teamName: string) => {
+const checkName = protectedAction(createTeamZ, async (value, { db }) => {
   try {
-    const team = await prisma.team.findFirst({
+    const team = await db.team.findFirst({
       where: {
-        name: teamName,
+        name: value.teamName,
       },
     });
-    console.log(teamName, team);
     if (team?.id) {
       return { status: "success", message: false };
     }
@@ -143,9 +137,10 @@ const checkName = async (teamName: string) => {
     console.log(error);
     return { status: "error", message: "Something went wrong" };
   }
-};
+});
+
 // Create a new team
-const createTeam = async (data: FormData) => {
+const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
   try {
     console.log("Attempting to create team");
     const user = await getCurrentUser();
@@ -160,7 +155,7 @@ const createTeam = async (data: FormData) => {
       };
     }
 
-    await prisma.user.update({
+    await db.user.update({
       where: {
         id: user.id,
       },
@@ -168,7 +163,7 @@ const createTeam = async (data: FormData) => {
         isLeader: true,
         team: {
           create: {
-            name: data.get("teamname") as string,
+            name: value.teamName,
           },
         },
         profileProgress: "SUBMIT_IDEA",
@@ -182,10 +177,10 @@ const createTeam = async (data: FormData) => {
     console.log(error);
     return { status: "error", message: "Something went wrong" };
   }
-};
+});
 
 // Join a team by teamId
-const joinTeam = async (data: FormData) => {
+const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
   try {
     const user = await getCurrentUser();
     if (user?.team) {
@@ -199,9 +194,9 @@ const joinTeam = async (data: FormData) => {
       };
     }
 
-    const team = await prisma.team.findFirst({
+    const team = await db.team.findFirst({
       where: {
-        id: data.get("teamid") as string,
+        id: value.teamId,
       },
       include: {
         members: {
@@ -222,9 +217,9 @@ const joinTeam = async (data: FormData) => {
         message: "Team members should be from same college only",
       };
     }
-    await prisma.team.update({
+    await db.team.update({
       where: {
-        id: data.get("teamid") as string,
+        id: value.teamId,
       },
       data: {
         members: {
@@ -243,7 +238,7 @@ const joinTeam = async (data: FormData) => {
     console.log(error);
     return { status: "error", message: "Something went wrong" };
   }
-};
+});
 
 // Leave a team
 const leaveTeam = async () => {
@@ -296,26 +291,12 @@ const deleteTeam = async () => {
   }
 };
 
-const submitIdea = async (formdata: FormData) => {
-  const obj = Object.fromEntries(formdata.entries());
-  console.log(obj);
-  const result = submitIdeaZ.safeParse({
-    ...obj,
-  });
-
-  if (!result.success) {
-    return {
-      message: result.error.errors[0].message,
-    };
-  }
-
-  const { data } = result;
-
+const submitIdea = protectedAction(submitIdeaZ, async (value, { db }) => {
   try {
     const user = await getCurrentUser();
     if (!user?.isLeader)
       return { status: "error", message: "Only leader may submit the idea" };
-    const team = await prisma.team.findUnique({
+    const team = await db.team.findUnique({
       where: {
         id: user.team?.id,
       },
@@ -326,16 +307,19 @@ const submitIdea = async (formdata: FormData) => {
     if (team?.ideaSubmission)
       return { status: "error", message: "Idea already submitted" };
 
-    const pptUrl = await uploadFile({ file: data.ppt as File, folder: "ppts" });
+    const pptUrl = await uploadFile({
+      file: value.ppt as File,
+      folder: "ppts",
+    });
     console.log(pptUrl);
-    if (data.referralCode === "")
-      await prisma.team.update({
+    if (value.referralCode === "")
+      await db.team.update({
         data: {
           ideaSubmission: {
             create: {
-              problemStatement: data.problemStatement,
+              problemStatement: value.problemStatement,
               pptUrl,
-              track: data.track,
+              track: value.track,
             },
           },
           members: {
@@ -354,13 +338,13 @@ const submitIdea = async (formdata: FormData) => {
         },
       });
     else
-      await prisma.team.update({
+      await db.team.update({
         data: {
           ideaSubmission: {
             create: {
-              problemStatement: data.problemStatement,
+              problemStatement: value.problemStatement,
               pptUrl,
-              track: data.track,
+              track: value.track,
             },
           },
           members: {
@@ -375,7 +359,7 @@ const submitIdea = async (formdata: FormData) => {
           },
           referral: {
             connect: {
-              code: data.referralCode,
+              code: value.referralCode,
             },
           },
         },
@@ -389,7 +373,7 @@ const submitIdea = async (formdata: FormData) => {
     console.log(error);
     return { status: "error", message: "An error occurred!" };
   }
-};
+});
 
 const getTeamDetailsById = async (teamId: string) => {
   try {

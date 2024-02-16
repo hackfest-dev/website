@@ -19,8 +19,12 @@ export default function CreateTeam() {
   }, [isWaiting]);
 
   const nameHandler = async (name: string) => {
+    if (name.includes(" ")) {
+      setError("Name cannot contain spaces");
+      return;
+    }
     if (!isWaiting && name.length > 3) {
-      const res = await checkName(name);
+      const res = await checkName({ teamName: name });
       if (
         res.status === "success" &&
         (res.message === true || res.message === false)
@@ -45,15 +49,14 @@ export default function CreateTeam() {
       <Card>
         <CardHeader>
           <CardTitle>Team management</CardTitle>
-
         </CardHeader>
         <CardContent className="px-2">
-
           <div className="flex rounded-lg flex-col justify-evenly m-auto">
             {(Error || Message) && (
               <p
-                className={`text-center ${!Error ? "text-green-500" : "text-red-500"
-                  }`}
+                className={`text-center ${
+                  !Error ? "text-green-500" : "text-red-500"
+                }`}
               >
                 {Error || Message}
               </p>
@@ -65,7 +68,9 @@ export default function CreateTeam() {
                   setLoading(true);
                   e.preventDefault();
                   const formData = new FormData(e.target as HTMLFormElement);
-                  const res = await createTeam(formData);
+                  const res = await createTeam({
+                    teamName: formData.get("teamname") as string,
+                  });
                   if (res.status === "error") setError(res.message);
                   if (res.status === "success") {
                     setMessage(res.message);
@@ -81,15 +86,19 @@ export default function CreateTeam() {
                   onChange={(e) => nameHandler(e.target.value)}
                   type="text"
                   placeholder="Team Name"
-                  className={`text-center border rounded m-2 p-2 text-white ${isNameAvailable ? "bg-green-500" : "bg-red-600"
-                    }`}
+                  className={`text-center border rounded m-2 p-2 text-white ${
+                    isNameAvailable ? "bg-green-500" : "bg-red-600"
+                  }`}
                   name="teamname"
                   required
                 />
                 <button
                   type="submit"
-                  className={`border rounded p-2 mt-6 ${isNameAvailable && "hover:bg-green-500"} font-semibold ${!isNameAvailable && "cursor-not-allowed hover:bg-gray-400"
-                    }`}
+                  className={`border rounded p-2 mt-6 ${
+                    isNameAvailable && "hover:bg-green-500"
+                  } font-semibold ${
+                    !isNameAvailable && "cursor-not-allowed hover:bg-gray-400"
+                  }`}
                   disabled={!isNameAvailable}
                 >
                   Create Team
@@ -102,7 +111,9 @@ export default function CreateTeam() {
                   setLoading(true);
                   e.preventDefault();
                   const formData = new FormData(e.target as HTMLFormElement);
-                  const res = await joinTeam(formData);
+                  const res = await joinTeam({
+                    teamId: formData.get("teamid") as string,
+                  });
                   if (res.status === "error") setError(res.message);
                   if (res.status === "success") setMessage(res.message);
                   setLoading(false);
@@ -110,7 +121,6 @@ export default function CreateTeam() {
               >
                 <h1>Join a Team</h1>
                 <input
-                  onChange={(e) => nameHandler(e.target.value)}
                   type="text"
                   className=" border rounded m-2 p-2" /* Todo: change border according to name availability*/
                   placeholder="Team Id"

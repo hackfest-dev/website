@@ -49,4 +49,12 @@ const submitIdeaZ = z.object({
   ppt: z.custom<File>(),
 });
 
-export { updateUserZ, updateProfileZ, submitIdeaZ };
+const createTeamZ = z.object({
+  teamName: z.string().min(1, { message: "Team name cannot be empty" }),
+});
+
+const joinTeamZ = z.object({
+  teamId: z.string().min(1, { message: "Team ID cannot be empty" }),
+});
+
+export { updateUserZ, updateProfileZ, submitIdeaZ, createTeamZ, joinTeamZ };

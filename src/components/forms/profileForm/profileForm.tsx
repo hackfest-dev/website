@@ -57,11 +57,11 @@ const ProfileForm = ({
     useContext(ProgressContext);
   const [collegeId, setCollegeId] = useState<{
     url: string;
-    file: File | undefined;
+    file: File;
   }>();
   const [aadhaar, setAadhaar] = useState<{
     url: string;
-    file: File | undefined;
+    file: File;
   }>();
   const form = useForm<z.infer<typeof updateProfileZ>>({
     resolver: zodResolver(updateProfileZ),
@@ -101,20 +101,24 @@ const ProfileForm = ({
     setLoading(true);
     // e.preventDefault();
     const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("phone", data.phone);
-    formData.append("course", data.course || "");
-    formData.append("college", data.college || "");
-    formData.append("otherCollege", data.otherCollege || "");
-    formData.append("otherCollegeState", data.otherCollegeState || "");
-    formData.append("tshirtSize", data.tshirtSize || "");
-    formData.append("collegeIdFile", collegeId?.file || "");
-    formData.append("aadhaarFile", aadhaar?.file || "");
-    const res = await updateProfile(formData);
+    let res;
+    if (collegeId?.file) {
+      res = await updateProfile({
+        ...data,
+        collegeIdFile: collegeId?.file,
+      });
+    } else if (aadhaar?.file) {
+      res = await updateProfile({
+        ...data,
+        aadhaarFile: aadhaar?.file,
+      });
+    } else {
+      res = await updateProfile({
+        ...data,
+      });
+    }
     setError(res.message);
     setLoading(false);
-    registerProp && setCurrentState(1);
-    maxState <= 1 && registerProp && setMaxState(1);
   };
 
   return (
