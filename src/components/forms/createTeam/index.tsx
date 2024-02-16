@@ -81,14 +81,14 @@ export default function CreateTeam() {
                   onChange={(e) => nameHandler(e.target.value)}
                   type="text"
                   placeholder="Team Name"
-                  className={`text-center border rounded m-2 p-2  ${isNameAvailable ? "bg-green-500" : "bg-red-700"
+                  className={`text-center border rounded m-2 p-2 text-white ${isNameAvailable ? "bg-green-500" : "bg-red-600"
                     }`}
                   name="teamname"
                   required
                 />
                 <button
                   type="submit"
-                  className={`border rounded p-2 mt-6 hover:bg-blue-700 font-semibold ${!isNameAvailable && "cursor-not-allowed"
+                  className={`border rounded p-2 mt-6 ${isNameAvailable && "hover:bg-green-500"} font-semibold ${!isNameAvailable && "cursor-not-allowed hover:bg-gray-400"
                     }`}
                   disabled={!isNameAvailable}
                 >
