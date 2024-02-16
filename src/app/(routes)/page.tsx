@@ -20,6 +20,7 @@ export default async function Home() {
             "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
         }}
       ></div>
+      <div className="h-40 absolute w-full top-[100vh] -translate-y-1/2 bg-gradient-to-b from-transparent via-[#060e3c] to-transparent z-50"></div>
       <Hero />
       <AboutHackfest />
       <PrizePool />
