@@ -27,6 +27,10 @@ import {
 import { Button } from '../../ui/button';
 import { getUrlAndId } from '@/src/lib/utils/helper';
 import { ProgressContext } from '../../progressProvider';
+import { toast } from 'sonner';
+import { Loader2Icon, Save } from 'lucide-react';
+import { Card, CardContent } from '../../ui/card';
+import { Dropzone } from '../../ui/dropZone';
 
 const ProfileForm = ({
   user,
@@ -53,14 +57,14 @@ const ProfileForm = ({
 }) => {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
-  const [collegeId, setCollegeId] = useState<{
-    url: string;
-    file: File | undefined;
-  }>();
-  const [aadhaar, setAadhaar] = useState<{
-    url: string;
-    file: File | undefined;
-  }>();
+  // const [collegeId, setCollegeId] = useState<{
+  //   url: string;
+  //   file: File | undefined;
+  // }>();
+  // const [aadhaar, setAadhaar] = useState<{
+  //   url: string;
+  //   file: File | undefined;
+  // }>();
   const form = useForm<z.infer<typeof updateProfileZ>>({
     resolver: zodResolver(updateProfileZ),
     defaultValues: {
@@ -70,30 +74,32 @@ const ProfileForm = ({
       course: user.course ?? undefined,
     },
   });
+  const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
+  const [clgFile, setClgFile] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<string>('');
 
-  const previewCollegeId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const url = URL.createObjectURL(files[0]);
-      setCollegeId({ url, file: files[0] });
-    }
-  };
+  // const previewCollegeId = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = e.target.files;
+  //   if (files) {
+  //     const url = URL.createObjectURL(files[0]);
+  //     setCollegeId({ url, file: files[0] });
+  //   }
+  // };
 
   if (currentState !== 0 && registerProp) {
     return <></>;
   }
 
-  const previewAdhaar = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const url = URL.createObjectURL(files[0]);
-      setAadhaar({ url, file: files[0] });
-    }
-  };
+  // const previewAdhaar = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = e.target.files;
+  //   if (files) {
+  //     const url = URL.createObjectURL(files[0]);
+  //     setAadhaar({ url, file: files[0] });
+  //   }
+  // };
   // console.log(user.college_id)
   const onSubmit = async (data: z.infer<typeof updateProfileZ>) => {
     setLoading(true);
@@ -106,9 +112,16 @@ const ProfileForm = ({
     formData.append('otherCollege', data.otherCollege || '');
     formData.append('otherCollegeState', data.otherCollegeState || '');
     formData.append('tshirtSize', data.tshirtSize || '');
-    formData.append('collegeIdFile', collegeId?.file || '');
-    formData.append('aadhaarFile', aadhaar?.file || '');
+    formData.append('collegeIdFile', clgFile || '');
+    formData.append('aadhaarFile', aadhaarFile || '');
+    toast.loading('Saving Details...', {
+      id: 'loadingToast',
+    });
     const res = await updateProfile(formData);
+    toast.dismiss('loadingToast');
+    toast.success('Profile Updated', {
+      duration: 2000,
+    });
     setError(res.message);
     setLoading(false);
     registerProp && setCurrentState(1);
@@ -122,7 +135,9 @@ const ProfileForm = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-2 md:gap-4"
         >
-          <h1 className="text-center lg:text-2xl text-xl ">Update Profile</h1>
+          <h1 className="text-center lg:text-2xl text-xl ">
+            Fill your Details
+          </h1>
           <p
             className={`text-center ${
               error.includes('updated') ? 'text-green-500' : 'text-red-500'
@@ -147,7 +162,6 @@ const ProfileForm = ({
                 );
               }}
             ></FormField>
-
             {/* Phone */}
             <FormField
               control={form.control}
@@ -162,7 +176,6 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
-
             {/* list of colleges*/}
             <FormField
               control={form.control}
@@ -191,7 +204,6 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
-
             {form.watch('college') === 'other' && (
               <>
                 <FormField
@@ -240,7 +252,6 @@ const ProfileForm = ({
                 ></FormField>
               </>
             )}
-
             {/* Course */}
             <FormField
               control={form.control}
@@ -268,7 +279,6 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
-
             <FormField
               control={form.control}
               name="tshirtSize"
@@ -278,7 +288,11 @@ const ProfileForm = ({
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="w-full">
+<<<<<<< HEAD
                         <SelectValue placeholder="Select T-Shirt Size" />
+=======
+                        <SelectValue placeholder="Select your T-shirt size" />
+>>>>>>> 20545d3f6eca7b6617a21948cae53109de20ca1e
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -295,6 +309,7 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
+<<<<<<< HEAD
 
             {/* College ID */}
             <FormField
@@ -345,80 +360,73 @@ const ProfileForm = ({
                                   'collegeId'
                                 ) as HTMLInputElement
                               ).value = '';
+=======
+            {/* files */}
+            <Card className="w-full">
+              <CardContent className="p-4 grid md:grid-cols-1 lg:grid-cols-2 gap-2">
+                <FormField
+                  control={form.control}
+                  name="aadhaarFile"
+                  render={({ field, formState, fieldState }) => (
+                    <FormItem className="md:w-[calc(90%+1.5rem)] w-full">
+                      <FormLabel className="">Aadhar Card</FormLabel>
+                      <FormControl>
+                        <div className="sm:py-2">
+                          <Dropzone
+                            onChange={() => {
+                              setAadhaarFile;
+>>>>>>> 20545d3f6eca7b6617a21948cae53109de20ca1e
                             }}
-                            className="bg-red-500  text-center w-fit p-1 rounded cursor-pointer"
-                            type="button"
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </span>
-                    )}
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            ></FormField>
-
-            {/* Aadhaar */}
-            <FormField
-              control={form.control}
-              name="aadhaarFile"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[calc(90%+1.5rem)] w-full">
-                  <FormLabel className="">Aadhar Card</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={previewAdhaar}
-                    />
-                  </FormControl>
-                  {(aadhaar?.url || user?.aadhaar) && (
-                    <span>
-                      <Image
-                        src={
-                          aadhaar?.url ||
-                          getUrlAndId(user?.aadhaar ?? '').url ||
-                          ''
-                        }
-                        alt="Adhaar"
-                        width={100}
-                        height={100}
-                        unoptimized
-                      />{' '}
-                      {user?.aadhaar && !aadhaar?.url && 'Uploaded File'}
-                      {aadhaar?.url && (
-                        <button
-                          onClick={() => {
-                            setAadhaar({
-                              url: '',
-                              file: undefined,
-                            });
-                            (
-                              document.getElementById(
-                                'aadhaar'
-                              ) as HTMLInputElement
-                            ).value = '';
-                          }}
-                          className="bg-red-500  text-center w-fit p-1 rounded cursor-pointer"
-                          type="button"
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </span>
+                            className="w-full"
+                            fileExtension="images"
+                            image={getUrlAndId(user?.aadhaar ?? '').url || ''}
+                          />
+                        </div>
+                      </FormControl>
+                    </FormItem>
                   )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            ></FormField>
+                ></FormField>
+
+                <FormField
+                  control={form.control}
+                  name="collegeIdFile"
+                  render={({ field, formState, fieldState }) => {
+                    // console.log(field)
+                    return (
+                      <FormItem>
+                        <FormLabel>College ID Card</FormLabel>
+                        <FormControl>
+                          <div className="sm:py-2">
+                            <Dropzone
+                              onChange={setClgFile}
+                              className="w-full"
+                              fileExtension="images"
+                              image={
+                                getUrlAndId(user?.college_id ?? '').url || ''
+                              }
+                            />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                ></FormField>
+              </CardContent>
+            </Card>
             <Button
               type="submit"
-              className=" md:w-[calc(90%+1.5rem)] w-full border rounded-md p-2 mt-6 hover:bg-blue-700 font-semibold"
+              disabled={loading}
+              className={`mt-5 ${
+                loading ? 'cursor-not-allowed' : ''
+              } flex items-center gap-2`}
             >
-              {loading ? 'Updating...' : 'Update'}
-            </Button>
+              {loading ? (
+                <Loader2Icon size={16} className="animate-spin" />
+              ) : (
+                <Save size={16} />
+              )}
+              Save changes
+            </Button>{' '}
           </div>
         </form>
       </Form>

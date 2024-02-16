@@ -10,12 +10,11 @@ import {
   Loader2Icon,
   Mail,
   Phone,
-  Plus,
   Save,
 } from 'lucide-react';
 import { LogoutButton } from './logout';
 import { Dropzone } from '../ui/dropZone';
-import { updateProfile } from '@/src/server/actions';
+import { editProfile } from '@/src/server/actions';
 import {
   Command,
   CommandEmpty,
@@ -45,10 +44,6 @@ export const EditProfileForm: React.FC<{
     aadhaarImg: user.aadhaar ?? '',
     collegeIdImg: user.college_id ?? '',
     collegeId: user.college?.id ?? '',
-    tshirtSize: user.tShirtSize,
-    // as of now kept the actual college values
-    otherCollege: user.college?.name ?? '',
-    otherCollegeState: user.college?.state ?? '',
   });
 
   const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
@@ -74,14 +69,10 @@ export const EditProfileForm: React.FC<{
     form.append('phone', formData.phone || '0');
     form.append('course', formData.course || '');
     form.append('college', formData.collegeId || '');
-    form.append('tshirtSize', formData.tshirtSize || '');
-    // corresponding changes for above changes in formData
-    form.append('otherCollege', formData.otherCollege || '');
-    form.append('otherCollegeState', formData.otherCollegeState || '');
     if (clgFile) form.append('collegeId', clgFile);
     if (aadhaarFile) form.append('adhaar', aadhaarFile);
     console.log(formData);
-    const res = await updateProfile(form);
+    const res = await editProfile(form);
     setIsSaving(false);
     if (res.type == 'error') throw new Error(res.message);
     if (res.type == 'info' || res.type == 'success') return res.message;
