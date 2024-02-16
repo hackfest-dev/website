@@ -30,7 +30,6 @@ const SessionButton = () => {
       ) : (
         <Button
           onClick={() => signIn('google')}
-          variant={'secondary'}
           color="white"
           className="flex items-center gap-2"
         >

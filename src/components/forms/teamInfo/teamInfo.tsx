@@ -14,14 +14,14 @@ export default function TeamInfo({
   if (currentState !== 1) return <></>;
   return (
     <div className="p-6 flex justify-center items-center">
-      <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto p-4 border rounded">
-        <h1 className="text-xl text-center font-bold border-b-2">
+      <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto p-4 border border-white/30 rounded-xl">
+        <h1 className="text-xl text-center font-bold border-b-2 border-white/30">
           Team Details
         </h1>
-        <p className="font-semibold text-center border-b-2 p-4">
+        <p className="font-semibold text-center border-b-2 border-white/30 p-4">
           Team Name: {teamdata?.name || 'Not Available'}
         </p>
-        <p className="text-center border-b-2 p-4">
+        <p className="text-center border-b-2 border-white/30 p-4">
           Team ID: {teamdata?.id || 'Not Available'}
         </p>
         <div className="p-4">
