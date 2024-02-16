@@ -28,7 +28,7 @@ export default async function ProfilePage() {
     );
 
   return (
-    <div className="my-24 flex flex-col justify-center md:flex-row gap-2 w-full min-h-screen p-3 md:px-auto mx-auto max-w-5xl">
+    <div className="mb-10 md:mb-20 mt-28 flex flex-col justify-center md:flex-row gap-2 w-full min-h-screen p-3 md:px-auto mx-auto max-w-5xl">
       {userInfo && <Profile user={userInfo} />}
       {!user.team?.id ? <CreateTeam /> : <TeamDetails teamid={user.team?.id} />}
     </div>

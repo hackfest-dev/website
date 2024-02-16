@@ -5,7 +5,7 @@ import { Tracks } from '@prisma/client';
 import { domains } from '@/src/constants';
 
 import { useContext, useState } from 'react';
-import { ProgressContext } from '../../progrssProvider';
+import { ProgressContext } from '../../progressProvider';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { submitIdeaZ } from '@/src/lib/zod-schema';

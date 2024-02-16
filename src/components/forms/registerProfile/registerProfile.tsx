@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { ProgressContext } from "../../progrssProvider";
+import { ProgressContext } from "../../progressProvider";
 import ProfileForm from "../profileForm/profileForm";
 import { College, User } from "@prisma/client";
 

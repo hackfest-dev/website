@@ -1,7 +1,7 @@
 "use client";
 import { checkName, createTeam, joinTeam } from "@/src/server/actions";
 import { useContext, useEffect, useState } from "react";
-import { ProgressContext } from "../../progrssProvider";
+import { ProgressContext } from "../../progressProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 
 export default function CreateTeam() {
