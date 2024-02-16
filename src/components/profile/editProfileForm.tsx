@@ -27,6 +27,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import CreateCollege from "./createCollege";
+import { ScrollArea } from "../ui/scroll-area";
 
 export const EditProfileForm: React.FC<{
   user: User & {
@@ -248,6 +249,7 @@ export const EditProfileForm: React.FC<{
                     <CreateCollege />
                   </CommandEmpty>
                   <CommandGroup>
+                  <ScrollArea className="h-72">
                     {colleges.map((college) => (
                       <CommandItem
                         key={college.id}
@@ -287,6 +289,7 @@ export const EditProfileForm: React.FC<{
                           .join(" ")}
                       </CommandItem>
                     ))}
+                    </ScrollArea>
                   </CommandGroup>
                 </Command>
               </PopoverContent>

@@ -20,16 +20,6 @@ const updateProfileZ = z.object({
       invalid_type_error: "Something went wrong",
     })
     .min(1, { message: "College cannot be empty" }),
-  otherCollege: z
-    .string({
-      invalid_type_error: "Something went wrong",
-    })
-    .default(""),
-  otherCollegeState: z
-    .string({
-      invalid_type_error: "Something went wrong",
-    })
-    .default(""),
   tshirtSize: z.custom<TshirtSize>((val) => {
     return Object.values(TshirtSize).includes(val as TshirtSize);
   }),
