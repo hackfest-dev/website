@@ -10,6 +10,7 @@ import {
   Loader2Icon,
   Mail,
   Phone,
+  Plus,
   Save,
 } from 'lucide-react';
 import { LogoutButton } from './logout';
@@ -23,8 +24,9 @@ import {
   CommandItem,
 } from '../ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { Input } from '../ui/input';
 import { toast } from 'sonner';
+import { Input } from '../ui/input';
+import CreateCollege from './createCollege';
 
 export const EditProfileForm: React.FC<{
   user: User & {
@@ -156,13 +158,15 @@ export const EditProfileForm: React.FC<{
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-full px-3">
+              <PopoverContent className="w-[100%] max-w-xs md:max-w-md lg:max-w-lg md:w-screen px-3">
                 <Command>
                   <CommandInput
                     placeholder="Search course here..."
                     className="h-9"
                   />
-                  <CommandEmpty>No course found.</CommandEmpty>
+                  <CommandEmpty>
+                    Only Bachelor Degrees in Engineering are allowed.
+                  </CommandEmpty>
                   <CommandGroup>
                     {courses.map((course) => (
                       <CommandItem
@@ -200,7 +204,7 @@ export const EditProfileForm: React.FC<{
                   variant="outline"
                   role="combobox"
                   aria-expanded={openCollegeList}
-                  className="w-full justify-between rounded-none rounded-r-lg"
+                  className="w-full justify-between rounded-none rounded-r-lg overflow-hidden"
                 >
                   {collegevalue
                     ? collegevalue
@@ -220,14 +224,15 @@ export const EditProfileForm: React.FC<{
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-full px-3">
+              <PopoverContent className="w-[100%] max-w-xs md:max-w-md lg:max-w-lg md:w-screen px-3">
                 <Command>
                   <CommandInput
                     placeholder="Search college here..."
                     className="h-9"
                   />
-                  <CommandEmpty>
-                    No college found. Add new college below
+                  <CommandEmpty className="mt-3 flex justify-center items-center flex-col text-center">
+                    No College with that name found.
+                    <CreateCollege />
                   </CommandEmpty>
                   <CommandGroup>
                     {colleges.map((college) => (

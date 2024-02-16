@@ -57,7 +57,7 @@ export default function TeamInfo({
 
   const copyCode = async () => {
     await navigator.clipboard.writeText(teamdata?.id);
-    toast.success('URL copied to clipboard', {
+    toast.success('Team ID copied to clipboard', {
       position: 'bottom-center',
     });
   };
@@ -70,8 +70,8 @@ export default function TeamInfo({
       <CardContent className="flex flex-col items-center justify-center gap-2 px-2">
         <Card className="w-full">
           <CardContent>
-            <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto p-4">
-              <div className="flex justify-between items-center">
+            <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto pt-4 p-0 md:p-4">
+              <div className="flex flex-col lg:flex-row lg:gap-0 gap-3 justify-between items-center">
                 <h1 className="text-2xl text-center font-bold uppercase">
                   {teamdata?.name || 'Not Available'}
                 </h1>
@@ -112,14 +112,14 @@ export default function TeamInfo({
                 </Button>
               </div>
 
-              <div>
+              <div className="w-full">
                 {teamdata?.members?.map((member) => {
                   return (
                     <div
                       key={member.id}
-                      className="flex items-center w-full mt-5 border p-5 rounded-xl"
+                      className="flex items-center mt-5 border p-5 rounded-xl md:mx-0 mx-2"
                     >
-                      <div className="flex items-center justify-between w-full">
+                      <div className="flex lg:flex-row lg:gap-0 gap-3 flex-col items-center justify-between w-full md:text-md text-sm">
                         <div className="relative">
                           <Image
                             src={member.image!}
@@ -132,13 +132,12 @@ export default function TeamInfo({
                             {member?.isLeader && <Crown color="yellow" />}
                           </div>
                         </div>
-                        <div>
-                          <p className="font-bold">{member.name}</p>
-                          <p>{member.email}</p>
+                        <div className="text-center">
+                          <p className="font-bold truncate">{member.name}</p>
+                          <p className="truncate">{member.email}</p>
                         </div>
-                        <div>
+                        <div className="flex flex-col justify-center items-center gap-1">
                           <p className="font-bold">{member.phone}</p>
-
                           <Badge>{member.isLeader ? 'Leader' : 'Member'}</Badge>
                         </div>
                       </div>
@@ -149,8 +148,8 @@ export default function TeamInfo({
             </div>
           </CardContent>
         </Card>
-        <Card className="w-full">
-          <CardContent className="pt-5 flex justify-between md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm text-center">
+        <Card className="w-full mb-2">
+          <CardContent className="pt-5 text-center flex justify-between md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm">
             {userProgress === 'COMPLETE' ? (
               'You have completed Idea Submission'
             ) : 4 - teamdata?.members?.length === 0 ? (
@@ -173,7 +172,7 @@ export default function TeamInfo({
                   <UserRoundPlus size={16} /> Add More
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="max-w-sm md:w-full w-[90%]">
                 <DialogHeader>
                   <DialogTitle>
                     {4 - teamdata?.members?.length === 0 ? (
