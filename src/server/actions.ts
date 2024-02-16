@@ -1,7 +1,7 @@
-'use server';
-import { prisma } from '@/src/lib/db';
-import { deleteFile, uploadFile } from '@/src/lib/utils/cloudinary';
-import { protectedAction } from './serverConfig';
+"use server";
+import { prisma } from "@/src/lib/db";
+import { deleteFile, uploadFile } from "@/src/lib/utils/cloudinary";
+import { protectedAction } from "./serverConfig";
 import {
   updateUserZ,
   updateProfileZ,
@@ -10,10 +10,10 @@ import {
   joinTeamZ,
   createCollegeZ,
   editProfileZ,
-} from '../lib/zod-schema';
-import { revalidatePath } from 'next/cache';
-import { getCurrentUser } from '../lib/session';
-import { States } from '@prisma/client';
+} from "../lib/zod-schema";
+import { revalidatePath } from "next/cache";
+import { getCurrentUser } from "../lib/session";
+import { States, Progress } from "@prisma/client";
 
 // -----------------User functions-----------------
 // Set user as verified on successful verification
@@ -25,7 +25,7 @@ const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
     });
   } catch (error) {
     console.log(error);
-    throw new Error('Error verifying user');
+    throw new Error("Error verifying user");
   }
 });
 
@@ -41,7 +41,7 @@ const updateProfile = async (formData: FormData) => {
 
   if (!result.success) {
     return {
-      type: 'error',
+      type: "error",
       message: result.error.errors[0].message,
     };
   }
@@ -51,7 +51,7 @@ const updateProfile = async (formData: FormData) => {
   const session = await getCurrentUser();
   if (!session) {
     return {
-      message: 'Not Authenticated',
+      message: "Not Authenticated",
     };
   }
 
@@ -64,18 +64,18 @@ const updateProfile = async (formData: FormData) => {
 
   //If ID is already there remove the existing one from cloudinary
   if (user?.aadhaar) {
-    await deleteFile(user.aadhaar.split(';')[1]);
+    await deleteFile(user.aadhaar.split(";")[1]);
   }
   if (user?.college_id) {
-    await deleteFile(user.college_id.split(';')[1]);
+    await deleteFile(user.college_id.split(";")[1]);
   }
 
   // upload files only if they exist otherwise set to existing url
   const adhaarUrl = obj.aadhaarFile
-    ? await uploadFile({ file: obj.aadhaarFile as File, folder: 'ids' })
+    ? await uploadFile({ file: obj.aadhaarFile as File, folder: "ids" })
     : user?.aadhaar;
   const collegeIdUrl = obj.collegeIdFile
-    ? await uploadFile({ file: obj.collegeIdFile as File, folder: 'ids' })
+    ? await uploadFile({ file: obj.collegeIdFile as File, folder: "ids" })
     : user?.college_id;
 
   // code can be cleaned but it's ok to be lazy
@@ -91,8 +91,8 @@ const updateProfile = async (formData: FormData) => {
   const isComplete =
     data.name &&
     data.phone &&
-    (adhaarUrl || !adhaarUrl?.startsWith('undefined')) &&
-    (collegeIdUrl || !collegeIdUrl?.startsWith('undefined')) &&
+    (adhaarUrl || !adhaarUrl?.startsWith("undefined")) &&
+    (collegeIdUrl || !collegeIdUrl?.startsWith("undefined")) &&
     data.college &&
     data.tshirtSize &&
     data.course
@@ -100,19 +100,19 @@ const updateProfile = async (formData: FormData) => {
       : false;
   if (!isComplete) {
     return {
-      type: 'error',
-      message: 'Please fill all the details',
+      type: "error",
+      message: "Please fill all the details",
     };
   }
 
   if (hasNoChanges) {
-    return { type: 'info', message: 'No changes made' };
+    return { type: "info", message: "No changes made" };
   }
 
   await prisma.user.update({
     where: { id: session?.id },
     data: {
-      profileProgress: isComplete ? 'FORM_TEAM' : 'FILL_DETAILS',
+      profileProgress: isComplete ? "FORM_TEAM" : "FILL_DETAILS",
       name: data.name,
       phone: data.phone,
       aadhaar: adhaarUrl,
@@ -123,9 +123,9 @@ const updateProfile = async (formData: FormData) => {
     },
   });
 
-  revalidatePath('/register');
+  revalidatePath("/register");
 
-  return { type: 'success', message: 'Profile updated successfully' };
+  return { type: "success", message: "Profile updated successfully" };
 };
 
 // for /profile page, the above action is for /register page
@@ -137,7 +137,7 @@ const editProfile = async (formData: FormData) => {
 
   if (!result.success) {
     return {
-      type: 'error',
+      type: "error",
       message: result.error.errors[0].message,
     };
   }
@@ -147,7 +147,7 @@ const editProfile = async (formData: FormData) => {
   const session = await getCurrentUser();
   if (!session) {
     return {
-      message: 'Not Authenticated',
+      message: "Not Authenticated",
     };
   }
 
@@ -160,18 +160,18 @@ const editProfile = async (formData: FormData) => {
 
   //If ID is already there remove the existing one from cloudinary
   if (user?.aadhaar) {
-    await deleteFile(user.aadhaar.split(';')[1]);
+    await deleteFile(user.aadhaar.split(";")[1]);
   }
   if (user?.college_id) {
-    await deleteFile(user.college_id.split(';')[1]);
+    await deleteFile(user.college_id.split(";")[1]);
   }
 
   // upload files only if they exist otherwise set to existing url
   const adhaarUrl = obj.adhaar
-    ? await uploadFile({ file: obj.adhaar as File, folder: 'ids' })
+    ? await uploadFile({ file: obj.adhaar as File, folder: "ids" })
     : user?.aadhaar;
   const collegeIdUrl = obj.collegeId
-    ? await uploadFile({ file: obj.collegeId as File, folder: 'ids' })
+    ? await uploadFile({ file: obj.collegeId as File, folder: "ids" })
     : user?.college_id;
 
   // code can be cleaned but it's ok to be lazy
@@ -184,7 +184,7 @@ const editProfile = async (formData: FormData) => {
     user?.course === data.course;
 
   if (hasNoChanges) {
-    return { type: 'info', message: 'No changes made' };
+    return { type: "info", message: "No changes made" };
   }
 
   await prisma.user.update({
@@ -199,9 +199,9 @@ const editProfile = async (formData: FormData) => {
     },
   });
 
-  revalidatePath('/profile');
+  revalidatePath("/profile");
 
-  return { type: 'success', message: 'Profile updated successfully' };
+  return { type: "success", message: "Profile updated successfully" };
 };
 
 // -------------Admin functions----------------
@@ -216,31 +216,31 @@ const checkName = protectedAction(createTeamZ, async (value, { db }) => {
       },
     });
     if (team?.id) {
-      return { status: 'success', message: false };
+      return { status: "success", message: false };
     }
-    return { status: 'success', message: true };
+    return { status: "success", message: true };
   } catch (error) {
     console.log(error);
-    return { status: 'error', message: 'Something went wrong' };
+    return { status: "error", message: "Something went wrong" };
   }
 });
 
 // Create a new team
 const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
   try {
-    console.log('Attempting to create team');
+    console.log("Attempting to create team");
     const user = await getCurrentUser();
     if (user?.team) {
-      return { status: 'error', message: 'You are already in a team' };
+      return { status: "error", message: "You are already in a team" };
     }
     if (
-      user?.profileProgress !== 'FORM_TEAM' &&
-      user?.profileProgress !== 'SUBMIT_IDEA'
+      user?.profileProgress !== "FORM_TEAM" &&
+      user?.profileProgress !== "SUBMIT_IDEA"
     ) {
-      console.log('Incomplete user profile');
+      console.log("Incomplete user profile");
       return {
-        status: 'error',
-        message: 'Please complete your profile first',
+        status: "error",
+        message: "Please complete your profile first",
       };
     }
 
@@ -255,19 +255,39 @@ const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
             name: value.teamName,
           },
         },
-        profileProgress: 'SUBMIT_IDEA',
       },
     });
 
-    console.log('team created');
-    revalidatePath('/profile');
-    revalidatePath('/register');
-    return { status: 'success', message: 'Team created successfully' };
+    console.log("team created");
+    revalidatePath("/profile");
+    revalidatePath("/register");
+    return { status: "success", message: "Team created successfully" };
   } catch (error) {
     console.log(error);
-    return { status: 'error', message: 'Something went wrong' };
+    return { status: "error", message: "Something went wrong" };
   }
 });
+
+const updateProfileProgress = async () => {
+  try {
+    const user = await getCurrentUser();
+
+    if (user?.profileProgress !== "FORM_TEAM")
+      await prisma.user.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          profileProgress: "FORM_TEAM",
+        },
+      });
+    else {
+      return { status: "error", message: "Already updated to FormTeam" };
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const createCollege = protectedAction(createCollegeZ, async (value, { db }) => {
   try {
@@ -277,12 +297,12 @@ const createCollege = protectedAction(createCollegeZ, async (value, { db }) => {
         state: value.state.toUpperCase() as States,
       },
     });
-    revalidatePath('/profile');
-    revalidatePath('/register');
-    return { status: 'success', message: 'College created successfully' };
+    revalidatePath("/profile");
+    revalidatePath("/register");
+    return { status: "success", message: "College created successfully" };
   } catch (error) {
     console.log(error);
-    return { status: 'error', message: 'Something went wrong' };
+    return { status: "error", message: "Something went wrong" };
   }
 });
 
@@ -291,16 +311,16 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
   try {
     const user = await getCurrentUser();
     if (user?.team) {
-      return { status: 'error', message: 'You are already in a team' };
+      return { status: "error", message: "You are already in a team" };
     }
 
     if (
-      user?.profileProgress !== 'FORM_TEAM' &&
-      user?.profileProgress !== 'SUBMIT_IDEA'
+      user?.profileProgress !== "FORM_TEAM" &&
+      user?.profileProgress !== "SUBMIT_IDEA"
     ) {
       return {
-        status: 'error',
-        message: 'Please complete your profile first',
+        status: "error",
+        message: "Please complete your profile first",
       };
     }
 
@@ -318,24 +338,22 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
       },
     });
     if (!team) {
-      return { status: 'error', message: 'Team not found' };
+      return { status: "error", message: "Team not found" };
     }
 
     if (team.members.length >= 4) {
-      return { status: 'error', message: 'Team is already full' };
+      return { status: "error", message: "Team is already full" };
     }
 
     const leader = team.members.find((member) => member.isLeader === true);
     if (user.college !== leader?.college?.name) {
       return {
-        status: 'error',
-        message: 'Team members should be from same college only',
+        status: "error",
+        message: "Team members should be from same college only",
       };
     }
 
-    const isComplete = team.members.length === 3 || team.members.length === 4;
-
-    await db.team.update({
+    const res = await db.team.update({
       where: {
         id: value.teamId,
       },
@@ -345,19 +363,32 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
             id: user?.id,
           },
           update: {
-            data: { profileProgress: 'SUBMIT_IDEA' },
+            data: { profileProgress: "SUBMIT_IDEA" },
             where: { id: user?.id },
           },
         },
+      },
+      include: {
+        members: true,
+      },
+    });
+
+    const isComplete = res.members.length === 3 || res.members.length === 4;
+    await prisma.team.update({
+      where: {
+        id: value.teamId,
+      },
+      data: {
         isComplete,
       },
     });
-    revalidatePath('/profile');
-    revalidatePath('/register');
-    return { status: 'success', message: 'Joined team successfully' };
+
+    revalidatePath("/profile");
+    revalidatePath("/register");
+    return { status: "success", message: "Joined team successfully" };
   } catch (error) {
     console.log(error);
-    return { status: 'error', message: 'Something went wrong' };
+    return { status: "error", message: "Something went wrong" };
   }
 });
 
@@ -373,7 +404,7 @@ const leaveTeam = async () => {
         team: {
           disconnect: true,
         },
-        profileProgress: 'FORM_TEAM',
+        profileProgress: "FORM_TEAM",
       },
     });
 
@@ -397,12 +428,12 @@ const leaveTeam = async () => {
       },
     });
 
-    revalidatePath('/profile');
-    revalidatePath('/register');
-    return { status: 'success', message: 'Left team successfully' };
+    revalidatePath("/profile");
+    revalidatePath("/register");
+    return { status: "success", message: "Left team successfully" };
   } catch (error) {
     console.log(error);
-    return { status: 'error', message: 'Something went wrong' };
+    return { status: "error", message: "Something went wrong" };
   }
 };
 // delete a team by teamId
@@ -411,8 +442,8 @@ const deleteTeam = async () => {
     const user = await getCurrentUser();
     if (!user?.isLeader) {
       return {
-        status: 'error',
-        message: 'You are not the leader of this team',
+        status: "error",
+        message: "You are not the leader of this team",
       };
     }
     await prisma.team.delete({
@@ -425,16 +456,16 @@ const deleteTeam = async () => {
         id: user.id,
       },
       data: {
-        profileProgress: 'FORM_TEAM',
+        profileProgress: "FORM_TEAM",
         isLeader: false,
       },
     });
-    revalidatePath('/profile');
-    revalidatePath('/register');
-    return { status: 'success', message: 'Team deleted successfully' };
+    revalidatePath("/profile");
+    revalidatePath("/register");
+    return { status: "success", message: "Team deleted successfully" };
   } catch (error) {
     console.log(error);
-    return { status: 'error', message: 'Something went wrong' };
+    return { status: "error", message: "Something went wrong" };
   }
 };
 
@@ -454,15 +485,15 @@ const submitIdea = async (formdata: FormData) => {
 
   if (
     !data.ppt ||
-    data.ppt?.type !== 'application/pdf' ||
+    data.ppt?.type !== "application/pdf" ||
     data.ppt?.size > 5 * 1024 * 1024
   ) {
-    return { status: 'error', message: 'Upload only pdf of less than 5MB' };
+    return { status: "error", message: "Upload only pdf of less than 5MB" };
   }
   try {
     const user = await getCurrentUser();
     if (!user?.isLeader)
-      return { status: 'error', message: 'Only leader may submit the idea' };
+      return { status: "error", message: "Only leader may submit the idea" };
     const team = await prisma.team.findUnique({
       where: {
         id: user.team?.id,
@@ -472,10 +503,10 @@ const submitIdea = async (formdata: FormData) => {
       },
     });
     if (team?.ideaSubmission)
-      return { status: 'error', message: 'Idea already submitted' };
+      return { status: "error", message: "Idea already submitted" };
 
-    const pptUrl = await uploadFile({ file: data.ppt as File, folder: 'ppts' });
-    if (data.referralCode === '')
+    const pptUrl = await uploadFile({ file: data.ppt as File, folder: "ppts" });
+    if (data.referralCode === "")
       await prisma.team.update({
         data: {
           ideaSubmission: {
@@ -491,7 +522,7 @@ const submitIdea = async (formdata: FormData) => {
                 teamId: user.team?.id,
               },
               data: {
-                profileProgress: 'COMPLETE',
+                profileProgress: "COMPLETE",
               },
             },
           },
@@ -507,7 +538,7 @@ const submitIdea = async (formdata: FormData) => {
         },
       });
       if (!referral)
-        return { status: 'error', message: 'Invalid referral code' };
+        return { status: "error", message: "Invalid referral code" };
       await prisma.team.update({
         data: {
           ideaSubmission: {
@@ -523,7 +554,7 @@ const submitIdea = async (formdata: FormData) => {
                 teamId: user.team?.id,
               },
               data: {
-                profileProgress: 'COMPLETE',
+                profileProgress: "COMPLETE",
               },
             },
           },
@@ -538,11 +569,11 @@ const submitIdea = async (formdata: FormData) => {
         },
       });
     }
-    revalidatePath('/');
-    return { status: 'success', message: 'Idea has been submitted' };
+    revalidatePath("/");
+    return { status: "success", message: "Idea has been submitted" };
   } catch (error) {
     console.log(error);
-    return { status: 'error', message: 'An error occurred!' };
+    return { status: "error", message: "An error occurred!" };
   }
 };
 
@@ -571,13 +602,13 @@ const getTeamDetailsById = async (teamId: string) => {
 
 const addFaq = async (faq: {
   question: string;
-  category: 'GENERAL' | 'FOOD' | 'STAY' | 'TRAVEL';
+  category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
 }) => {
   await prisma.faq.create({
     data: {
       question: faq.question,
       category: faq.category,
-      answer: '',
+      answer: "",
       published: false,
     },
   });
@@ -624,4 +655,5 @@ export {
   answerFaq,
   createCollege,
   editProfile,
+  updateProfileProgress,
 };

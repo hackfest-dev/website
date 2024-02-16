@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProgressContext } from "../progressProvider";
 import { Progress } from "@prisma/client";
+import { updateProfileProgress } from "@/src/server/actions";
 
 const FormButtons = ({
   profileProgress,
@@ -25,7 +26,7 @@ const FormButtons = ({
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between items-center">
       <Button
         onClick={() => {
           if (currentState === 0) return;
@@ -37,11 +38,24 @@ const FormButtons = ({
         <ChevronLeft size={16} />
         Previous
       </Button>
+      <span className="text-xs ">
+        {currentState === 1 && !isLeader && "Only leader can proceed"}
+      </span>
       <Button
         disabled={buttonStatus}
-        onClick={() => {
-          if (currentState === maxState) return;
-          setCurrentState(currentState + 1);
+        onClick={async () => {
+          if (currentState === 0) {
+            if (profileProgress === "FORM_TEAM")
+              setCurrentState(currentState + 1);
+          } else if (currentState === 1) {
+            if (isLeader && isComplete) {
+              await updateProfileProgress();
+              setCurrentState(currentState + 1);
+            }
+          } else if (currentState === 2) {
+            if (profileProgress === "SUBMIT_IDEA")
+              setCurrentState(currentState + 1);
+          } else return;
         }}
         className="flex items-center gap-2"
       >

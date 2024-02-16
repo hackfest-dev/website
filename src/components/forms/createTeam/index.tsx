@@ -79,8 +79,6 @@ export default function CreateTeam() {
                     if (res.status === "error") setError(res.message);
                     if (res.status === "success") {
                       setMessage(res.message);
-                      setCurrentState(2);
-                      maxState <= 2 && setMaxState(2);
                     }
                     setLoading(false);
                   }}
