@@ -36,6 +36,7 @@ export const EditProfileForm: React.FC<{
 
 
   const [formData, setFormData] = useState({
+    uname: user.name??'',
     email: user.email ?? '',
     phone: user.phone ?? '',
     state: user.college?.state ?? '',
@@ -65,7 +66,7 @@ export const EditProfileForm: React.FC<{
     setIsSaving(true);
     e.preventDefault();
     const form = new FormData();
-    form.append("name", "Keerthan NS");
+    form.append("name", formData.uname);
     form.append("phone", formData.phone || "0");
     form.append("course", formData.course || "");
     form.append("college", formData.collegeId || "");
