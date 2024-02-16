@@ -4,7 +4,7 @@ import HeroForeground from "@/public/images/hero-foreground2.svg";
 import HeroBackgroundSun from "@/public/images/hero-background-sun.svg";
 import HeroBackgroundNoise from "@/public/images/hero-background-noise2.svg";
 import HeroBackground from "@/public/images/hero-background.svg";
-import HackfestFont from "@/public/images/hackfest-text.png";
+import HackfestFont from "@/public/images/hackfest-text2.png";
 import Reflection from "@/public/images/reflection_without_gap.svg";
 import HoverBoard from "@/public/images/hoverboard.svg";
 import { MouseEvent, useRef } from "react";
@@ -74,10 +74,11 @@ const HeroParallax = () => {
   };
 
   return (
-    <div className="relative h-screen w-screen" ref={ref}>
+    <div className="relative h-screen w-screen select-none" ref={ref}>
       <div
         ref={titleText}
-        className="absolute inset-0 z-10 flex justify-center items-center">
+        className="absolute inset-0 z-10 flex justify-center items-center"
+      >
         <Image className={`w-[800px]`} src={HackfestFont} alt="Hackfest Font" />
       </div>
 
@@ -101,16 +102,19 @@ const HeroParallax = () => {
           transformStyle: "preserve-3d",
           perspective: "200px",
         }}
-        ref={gridRef}>
+        ref={gridRef}
+      >
         <div
           className="absolute top-0 w-[200%] h-full left-[-50%] bg-gradient-to-t from-[#060e3c] from-30% to-[#00c6af]"
-          style={{ transform: "rotateX(53deg)" }}></div>
+          style={{ transform: "rotateX(53deg)" }}
+        ></div>
         <div
           className='bg-[url("/images/grid-sm.svg")] md:bg-[url("/images/grid1.svg")] motion-safe:animate-move w-[200%] h-[100%] left-[-50%] relative'
           style={{
             backgroundRepeat: "repeat round",
             transform: "rotateX(53deg)",
-          }}></div>
+          }}
+        ></div>
       </div>
 
       <div className="absolute -z-30 inset-0">
@@ -144,15 +148,18 @@ const HeroParallax = () => {
       <div
         style={{ perspective: 600 }}
         onMouseMove={(e) => handleMouseMove(e)}
-        className={`z-40 absolute inset-0 flex justify-center items-end`}>
+        className={`z-40 absolute inset-0 flex justify-center items-end`}
+      >
         <div ref={boxRef} style={{ transformStyle: "preserve-3d" }}>
-          <Image
-            width={200}
-            height={200}
-            src={HoverBoard}
-            alt="Hover Board"
-            className="fly-up-down ease-in-out"
-          />
+          <div className="h-full w-full scale-75 md:scale-100 sm:scale-90 pointer-events-none">
+            <Image
+              width={200}
+              height={200}
+              src={HoverBoard}
+              alt="Hover Board"
+              className="fly-up-down ease-in-out"
+            />
+          </div>
         </div>
       </div>
     </div>

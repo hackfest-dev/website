@@ -1,26 +1,66 @@
 'use client';
 
 import { Team, User } from '@prisma/client';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ProgressContext } from '../../progressProvider';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../../ui/dialog';
 import { Button } from '../../ui/button';
-import { Crown, LogOut, Trash2 } from 'lucide-react';
+import {
+  Crown,
+  Loader2Icon,
+  LogOut,
+  Trash2,
+  UserRoundPlus,
+} from 'lucide-react';
 import { deleteTeam, leaveTeam } from '@/src/server/actions';
 import Image from 'next/image';
+import { Badge } from '../../ui/badge';
+import { toast } from 'sonner';
+import { AiOutlineCopy } from 'react-icons/ai';
+import { BsWhatsapp } from 'react-icons/bs';
+import Link from 'next/link';
+import { Progress } from '@prisma/client';
 
 export default function TeamInfo({
   teamdata,
   userId,
+  userProgress,
 }: {
   teamdata: Team & { members: User[] };
   userId: string;
+  userProgress: Progress;
 }) {
   const { currentState } = useContext(ProgressContext);
+  const [isLoading, setIsLoading] = useState(false);
+
   if (currentState !== 1) return <></>;
-  const isLeader = teamdata?.members?.find(
-    (member) => member.id === userId && member.isLeader
+  const leader = teamdata?.members?.find(
+    (member) => member.id === userId && member?.isLeader
   );
+
+  const onSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setIsLoading(true);
+    leader?.isLeader ? await deleteTeam() : await leaveTeam();
+    setIsLoading(false);
+  };
+
+  const copyCode = async () => {
+    await navigator.clipboard.writeText(teamdata?.id);
+    toast.success('URL copied to clipboard', {
+      position: 'bottom-center',
+    });
+  };
 
   return (
     <Card className="w-full h-fit">
@@ -36,15 +76,39 @@ export default function TeamInfo({
                   {teamdata?.name || 'Not Available'}
                 </h1>
                 <Button
-                  onClick={async () => {
-                    isLeader ? await deleteTeam() : await leaveTeam();
+                  onClick={(e) => {
+                    toast.promise(() => onSubmit(e), {
+                      position: 'bottom-center',
+                      loading: leader?.isLeader
+                        ? 'Deleting Team...'
+                        : 'Leaving Team...',
+                      success: (message) => {
+                        return leader?.isLeader ? 'Team Deleted' : 'Team Left';
+                      },
+                      error: (error) => {
+                        return 'Something went wrong';
+                      },
+                    });
                   }}
-                  className={`${
-                    isLeader ? 'bg-red-600 text-white hover:bg-red-600/90' : ''
+                  disabled={isLoading || userProgress === 'COMPLETE'}
+                  className={`${isLoading ? 'cursor-not-allowed' : ''} ${
+                    leader?.isLeader
+                      ? 'bg-red-600 text-white hover:bg-red-600/90'
+                      : ''
                   } flex items-center gap-2`}
                 >
-                  {isLeader ? 'Delete Team' : 'Leave Team'}
-                  {isLeader ? <Trash2 size={16} /> : <LogOut size={16} />}
+                  {isLoading
+                    ? 'Loading...'
+                    : leader?.isLeader
+                      ? 'Delete Team'
+                      : 'Leave Team'}
+                  {isLoading ? (
+                    <Loader2Icon size={16} className="animate-spin" />
+                  ) : leader?.isLeader ? (
+                    <Trash2 size={16} />
+                  ) : (
+                    <LogOut size={16} />
+                  )}
                 </Button>
               </div>
 
@@ -65,12 +129,17 @@ export default function TeamInfo({
                             className="rounded-xl"
                           />
                           <div className="absolute -top-3 right-0 rotate-12 w-5 h-5">
-                            {member.isLeader && <Crown color="yellow" />}
+                            {member?.isLeader && <Crown color="yellow" />}
                           </div>
                         </div>
                         <div>
                           <p className="font-bold">{member.name}</p>
                           <p>{member.email}</p>
+                        </div>
+                        <div>
+                          <p className="font-bold">{member.phone}</p>
+
+                          <Badge>{member.isLeader ? 'Leader' : 'Member'}</Badge>
                         </div>
                       </div>
                     </div>
@@ -78,6 +147,85 @@ export default function TeamInfo({
                 }) || 'Not Available'}
               </div>
             </div>
+          </CardContent>
+        </Card>
+        <Card className="w-full">
+          <CardContent className="pt-5 flex justify-between md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm text-center">
+            {userProgress === 'COMPLETE' ? (
+              'You have completed Idea Submission'
+            ) : 4 - teamdata?.members?.length === 0 ? (
+              <>Your Team is full! Proceed to Idea submission.</>
+            ) : (
+              <>
+                There&apos;s still room for {4 - teamdata?.members?.length} more
+                teammate{4 - teamdata?.members?.length > 1 ? 's' : ''}!
+              </>
+            )}
+            <Dialog>
+              <DialogTrigger className="flex items-center gap-2" asChild>
+                <Button
+                  size={'sm'}
+                  disabled={
+                    4 - teamdata?.members?.length === 0 ||
+                    userProgress === 'COMPLETE'
+                  }
+                >
+                  <UserRoundPlus size={16} /> Add More
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>
+                    {4 - teamdata?.members?.length === 0 ? (
+                      'Your Team is full!'
+                    ) : (
+                      <>
+                        There&apos;s still room for{' '}
+                        {4 - teamdata?.members?.length} more teammate
+                        {4 - teamdata?.members?.length > 1 ? 's' : ''}!
+                      </>
+                    )}
+                  </DialogTitle>
+                  <DialogDescription className="mt-2">
+                    <div className="p-5 text-center flex flex-col justify-center">
+                      <p className="text-xs bodyFont">
+                        Share this link with your friends to add them to your
+                        team!
+                      </p>
+                      <div className="flex items-center justify-evenly mt-2">
+                        <input
+                          type="url"
+                          className="bg-white bg-opacity-20 rounded-lg text-sm p-2 bodyFont"
+                          value={teamdata?.id}
+                        />
+                        <AiOutlineCopy
+                          onClick={copyCode}
+                          size={20}
+                          className="cursor-pointer hover:text-gray-400"
+                        />
+                      </div>
+
+                      <div className="flex items-center py-2 bodyFont">
+                        <div className="flex-grow h-px bg-gray-600"></div>
+                        <span className="flex-shrink text-sm px-4 italic font-light">
+                          or
+                        </span>
+                        <div className="flex-grow h-px bg-gray-600"></div>
+                      </div>
+
+                      <Link
+                        href={`https://wa.me/?text=${encodeURIComponent(
+                          `Join my team at Hackfest 2024, 3 Day long Hackathon at NMAMIT, Nitte. Copy this Team ID: ${teamdata?.id}. Register here: ${process.env.NEXT_PUBLIC_BASE_URL}/register`
+                        )}`}
+                        className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-lg p-2 cursor-pointer text-sm bodyFont"
+                      >
+                        <BsWhatsapp /> Share on WhatsApp
+                      </Link>
+                    </div>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </CardContent>
         </Card>
       </CardContent>

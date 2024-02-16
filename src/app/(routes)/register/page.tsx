@@ -45,7 +45,7 @@ export default async function RegisterPage() {
                   <Progress />
                   <RegisterProfile />
                   {user.team ? (
-                    <TeamDetails teamid={user.team.id} userId={user.id} />
+                    <TeamDetails userId={user.id} teamid={user.team.id} userProgress={user.profileProgress} />
                   ) : (
                     <CreateTeam />
                   )}

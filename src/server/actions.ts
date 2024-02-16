@@ -124,7 +124,8 @@ const updateProfile = async (formData: FormData) => {
       },
     });
 
-  revalidatePath("/");
+  revalidatePath("/profile");
+  revalidatePath("/register");
 
   return { type: "success", message: "Profile updated successfully" };
 };
@@ -158,7 +159,10 @@ const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
     if (user?.team) {
       return { status: "error", message: "You are already in a team" };
     }
-    if (user?.profileProgress !== "FORM_TEAM") {
+    if (
+      user?.profileProgress !== "FORM_TEAM" &&
+      user?.profileProgress !== "SUBMIT_IDEA"
+    ) {
       console.log("Incomplete user profile");
       return {
         status: "error",
@@ -182,7 +186,8 @@ const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
     });
 
     console.log("team created");
-    revalidatePath("/");
+    revalidatePath("/profile");
+    revalidatePath("/register");
     return { status: "success", message: "Team created successfully" };
   } catch (error) {
     console.log(error);
@@ -198,7 +203,10 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
       return { status: "error", message: "You are already in a team" };
     }
 
-    if (user?.profileProgress !== "FORM_TEAM") {
+    if (
+      user?.profileProgress !== "FORM_TEAM" &&
+      user?.profileProgress !== "SUBMIT_IDEA"
+    ) {
       return {
         status: "error",
         message: "Please complete your profile first",
@@ -244,6 +252,8 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
         },
       },
     });
+    revalidatePath("/profile");
+    revalidatePath("/register");
     return { status: "success", message: "Joined team successfully" };
   } catch (error) {
     console.log(error);
@@ -266,6 +276,8 @@ const leaveTeam = async () => {
         profileProgress: "FORM_TEAM",
       },
     });
+    revalidatePath("/profile");
+    revalidatePath("/register");
     return { status: "success", message: "Left team successfully" };
   } catch (error) {
     console.log(error);
@@ -293,8 +305,11 @@ const deleteTeam = async () => {
       },
       data: {
         profileProgress: "FORM_TEAM",
+        isLeader: false,
       },
     });
+    revalidatePath("/profile");
+    revalidatePath("/register");
     return { status: "success", message: "Team deleted successfully" };
   } catch (error) {
     console.log(error);
@@ -458,6 +473,14 @@ const answerFaq = async (id: number, answer: string) => {
   });
 };
 
+const deleteFaq = async (id: number) => {
+  await prisma.faq.delete({
+    where: {
+      id: id,
+    },
+  });
+};
+
 export {
   verifyUser,
   updateProfile,
@@ -470,5 +493,6 @@ export {
   getTeamDetailsById,
   addFaq,
   getAllFaqs,
+  deleteFaq,
   answerFaq,
 };
