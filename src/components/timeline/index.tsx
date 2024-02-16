@@ -164,7 +164,7 @@ const Event = ({
     <>
       {/* Event title - in the direction Normal to the boundary of wheel */}
       <div
-        className="absolute origin-center max-w-[20%] text-white md:text-2xl text-xl font-bold flex flex-col"
+        className="absolute origin-center max-w-[20%] text-white md:text-3xl text-lg font-bold flex flex-col"
         style={{
           top: `${50 + 25 * Math.sin(position.index * position.angle)}%`,
           left: `${50 + 25 * Math.cos(position.index * position.angle)}%`,
