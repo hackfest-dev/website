@@ -143,9 +143,11 @@ const AboutHackfest = () => {
     <>
       <section
         id="about"
-        className={`relative flex flex-col justify-center items-center md:py-10 xl:py-20`}>
+        className={`relative flex flex-col justify-center items-center md:py-10 xl:py-20 px-2 md:px-6 xl:px-16`}
+      >
         <div
-          className={`${styles.bentoGrid} grid gap-2 w-screen 2xl:max-w-screen-2xl px-2 py-2`}>
+          className={`${styles.bentoGrid} grid gap-2 w-full 2xl:max-w-screen-2xl`}
+        >
           {/* Cell 1x1 */}
           <GridTile cellType="c11" cellNo={1}>
             <FadeIn direction="right" className="w-full h-full">
@@ -188,7 +190,8 @@ const AboutHackfest = () => {
               <span className="text-3xl md:text-4xl font-bold pr-1">
                 <div
                   ref={childRef50}
-                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
+                >
                   50
                 </div>
                 <span className="font-obscura tracking-wider">Hrs</span>
@@ -204,7 +207,8 @@ const AboutHackfest = () => {
               <span className="text-3xl md:text-4xl font-bold pr-1">
                 <div
                   ref={childRef36}
-                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
+                >
                   36
                 </div>
                 <span className="font-obscura tracking-wider">Hrs</span>
@@ -279,25 +283,30 @@ const AboutHackfest = () => {
             <div className="relative w-full h-full">
               <div
                 ref={behindRef}
-                className="absolute w-full h-full flex flex-col justify-center items-center text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold">
+                className="absolute w-full h-full flex flex-col justify-center items-center text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold"
+              >
                 <div
                   ref={tagelinRef1}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                >
                   Hack
                 </div>
                 <div
                   ref={tagelinRef2}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                >
                   The
                 </div>
                 <div
                   ref={tagelinRef3}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                >
                   Time
                 </div>
                 <div
                   ref={tagelinRef4}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                >
                   Stream
                 </div>
               </div>

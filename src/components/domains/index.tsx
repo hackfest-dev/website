@@ -4,6 +4,7 @@ import Image from "next/image";
 import { GiTronArrow } from "react-icons/gi";
 import styles from "./style.module.css";
 import { SectionHeading } from "../ui/sectionHeading";
+import { IoReturnDownBackOutline } from "react-icons/io5";
 
 type DomainProps = {
   name: string;
@@ -268,35 +269,21 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                   </div>
                 </div>
               </div>
-              <div
-                ref={contentPrizeRef}
-                className={`${styles.contentElements} text-xl flex overflow-clip relative w-fit mb-2`}
-              >
-                {contents.prize && (
-                  <Image
-                    src={"/images/rupee.png"}
-                    alt="Rs"
-                    height={50}
-                    width={100}
-                    className="object-contain object-center h-8 w-16 md:h-10 md:w-20 lg:h-16 lg:w-32"
-                  />
-                )}
+              {contents.prize && (
                 <div
-                  className={
-                    styles.contentPrize +
-                    " text-black font-extrabold text-sm md:text-base lg:text-xl"
-                  }
+                  ref={contentPrizeRef}
+                  className={`${styles.contentElements} text-xl lg:text-2xl flex overflow-clip relative w-fit mb-2`}
                 >
-                  {contents.prize}
+                  ₹{contents.prize}
                 </div>
-              </div>
+              )}
             </div>
             <div
               ref={contentExitRef}
-              className={`${styles.contentElements} w-fit cursor-pointer hover:text-supporting-500 transition-all duration-300 ease-in-out`}
+              className={`${styles.contentElements} w-fit cursor-pointer hover:text-[#89edfa] transition-all duration-300 ease-in-out`}
               onClick={() => exitAnimaiton()}
             >
-              <GiTronArrow className="text-xl md:text-2xl lg:text-3xl -scale-x-[2] rotate-12" />
+              <IoReturnDownBackOutline className="text-3xl md:text-4xl lg:text-6xl" />
             </div>
           </div>
         </div>

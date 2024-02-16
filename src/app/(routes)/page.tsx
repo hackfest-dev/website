@@ -13,7 +13,13 @@ import Speakers from "@/src/components/speakers";
 export default async function Home() {
   return (
     <main className="mx-auto relative overflow-y-clip">
-      <div className="absolute h-full w-full -z-50 mt-[100vh] bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933]"></div>
+      <div
+        className="absolute h-full w-full -z-50 mt-[100vh] bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933]"
+        style={{
+          background:
+            "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
+        }}
+      ></div>
       <Hero />
       <AboutHackfest />
       <PrizePool />
