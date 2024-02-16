@@ -6,16 +6,13 @@ import { FiExternalLink } from "react-icons/fi";
 
 const Sponsors = () => {
   return (
-    <main className="w-full h-full min-h-screen py-20 flex flex-col justify-around items-center gap-20 transition-all bg-gradient-to-b from-[#06123e] to-[#045262]">
-      <SectionHeading
-        title="SPONSORS"
-        classname="text-5xl md:text-7xl xl:text-9xl"
-      />
+    <main className="w-full h-full min-h-screen py-20 flex flex-col justify-around items-center gap-24 transition-all bg-gradient-to-b from-[#06123e] to-[#045262]">
+      <SectionHeading title="SPONSORS" classname="text-5xl md:text-7xl" />
 
-      <div className="flex flex-col aspect-[] w-full xl:w-2/3 xl:justify-around justify-center items-center gap-16 xl:gap-4">
+      <div className="flex flex-col w-full xl:w-2/3 xl:justify-around justify-center items-center gap-16 xl:gap-4 px-4">
         <div
-          className={`w-full md:w-[700px] md:max-w-full p-6 md:p-7 bg-primary-500 border border-primary-200/70 min-h-[300px] mt-3 flex flex-col md:flex-row gap-5 justify-between items-center rounded-2xl text-white`}>
-          <div className="relative aspect-square w-44">
+          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
+          <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
             <Image
               className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
               src="/logos/sponsors/EGHD.jpg"
@@ -28,7 +25,7 @@ const Sponsors = () => {
               <h2 className="text-3xl text-center">EGDK INDIA PVT. LTD</h2>
               <h3 className="text-xl text-center text-white/70">Powered By</h3>
             </div>
-            <p className="text-center text-slate-300">
+            <p className="text-center text-slate-300 text-sm md:text-base">
               EG is a Nordic vertical software company. A product-based company
               where we develop, deliver and service our own software for more
               than 30,000 customers in the private and public sectors. We are
@@ -42,16 +39,17 @@ const Sponsors = () => {
               Business centre.
             </p>
             <a href="global.eg.dk" target="_blank" rel="noreferrer">
-              <Button className="w-max" size={"lg"}>
-                Visit Website <FiExternalLink />
+              <Button className="w-max gap-3" size={"lg"}>
+                <span>Visit Website</span>
+                <FiExternalLink />
               </Button>
             </a>
           </div>
         </div>
 
         <div
-          className={`w-full md:w-[700px] md:max-w-full p-6 md:p-7 bg-primary-500 border border-primary-200/70 opacity-[0.98] min-h-[300px] mt-3 flex flex-col md:flex-row-reverse gap-5 justify-between items-center rounded-2xl text-white`}>
-          <div className="relative aspect-square w-44">
+          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row-reverse gap-16 justify-between items-center text-white`}>
+          <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
             <Image
               className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
               src="/logos/sponsors/Niveus.jpg"
@@ -65,10 +63,10 @@ const Sponsors = () => {
                 Niveus Solutions Pvt. Ltd
               </h2>
               <h3 className="text-xl text-center text-white/70">
-                Gold Sponsors
+                Co-Powered By
               </h3>
             </div>
-            <p className="text-center text-slate-300">
+            <p className="text-center text-slate-300 text-sm md:text-base">
               Niveus Solutions Pvt. Ltd. is a cloud-born engineering services
               organization founded in 2013. The organization progressed rapidly
               over the years, with the company making a strategic decision in
@@ -86,16 +84,17 @@ const Sponsors = () => {
               href="https://niveussolutions.com/"
               target="_blank"
               rel="noreferrer">
-              <Button className="w-max" size={"lg"}>
-                Visit Website <FiExternalLink />
+              <Button className="w-max gap-3" size={"lg"}>
+                <span>Visit Website</span>
+                <FiExternalLink />
               </Button>
             </a>
           </div>
         </div>
 
         <div
-          className={`w-full md:w-[700px] md:max-w-full p-6 md:p-7 bg-primary-500 border border-primary-200/70 opacity-[0.98] min-h-[300px] mt-3 flex flex-col md:flex-row gap-5 justify-between items-center rounded-2xl text-white`}>
-          <div className="relative aspect-square w-44">
+          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
+          <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
             <Image
               className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
               src="/logos/sponsors/The_Global_Point.jpg"
@@ -104,11 +103,13 @@ const Sponsors = () => {
             />
           </div>
           <div className="flex flex-col items-center justify-between gap-7 w-full h-full">
-            <h2 className="text-3xl font-semibold xl:text-5xl">
-              Associate Sponsors
-            </h2>
-
-            <p className="text-center text-slate-300">
+            <div className="flex flex-col justify-between items-center gap-2">
+              <h2 className="text-3xl text-center">The Global Point</h2>
+              <h3 className="text-xl text-center text-white/70">
+                Associate Sponsors
+              </h3>
+            </div>
+            <p className="text-center text-slate-300 text-sm md:text-base">
               The Global Point Overseas Study With Loan, situated at
               Hampankatta, Mangalore, Karnataka is an overseas educational
               consultant organization devoted towards providing good services to
@@ -122,8 +123,9 @@ const Sponsors = () => {
               href="http://www.theglobalpoint.in/"
               target="_blank"
               rel="noreferrer">
-              <Button className="w-max" size={"lg"}>
-                Visit Website <FiExternalLink />
+              <Button className="w-max gap-3" size={"lg"}>
+                <span>Visit Website</span>
+                <FiExternalLink />
               </Button>
             </a>
           </div>
