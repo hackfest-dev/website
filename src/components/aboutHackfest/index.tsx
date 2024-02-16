@@ -50,24 +50,22 @@ const AboutHackfest = () => {
       tagelinRef4.current
     ) {
       const rect1 = tagelinRef1.current.getBoundingClientRect();
-      const rect2 = tagelinRef2.current.getBoundingClientRect();
-      const rect3 = tagelinRef3.current.getBoundingClientRect();
-      const rect4 = tagelinRef4.current.getBoundingClientRect();
-
       checkHover(rect1, e, tagelinRef1);
+      const rect2 = tagelinRef2.current.getBoundingClientRect();
       checkHover(rect2, e, tagelinRef2);
+      const rect3 = tagelinRef3.current.getBoundingClientRect();
       checkHover(rect3, e, tagelinRef3);
+      const rect4 = tagelinRef4.current.getBoundingClientRect();
       checkHover(rect4, e, tagelinRef4);
     }
   };
 
   useEffect(() => {
     window.addEventListener("mousemove", handleSecondMouseMove);
-
     return () => {
       window.removeEventListener("mousemove", handleSecondMouseMove);
     };
-  }, []);
+  });
 
   gsap.registerPlugin(ScrollTrigger);
 

@@ -71,14 +71,14 @@ const Sponsors = () => {
               organization founded in 2013. The organization progressed rapidly
               over the years, with the company making a strategic decision in
               2019 to exclusively partner with Google Cloud India and scaling up
-              to be its 'Premier' partner in less than 2 years. The company
-              empowers enterprises to harness the power of cloud services and
-              build resilient infrastructures that scale. Niveus recently won
-              the 2023 Google Cloud 'Services Partner of the Year - Asia
-              Pacific' and 'Expansion Partner of the Year - Asia Pacific'
-              awards. Niveus specializes in application, infrastructure, data
-              modernization, data management, cloud consulting, security, and
-              managed services.
+              to be its &apos;Premier&apos; partner in less than 2 years. The
+              company empowers enterprises to harness the power of cloud
+              services and build resilient infrastructures that scale. Niveus
+              recently won the 2023 Google Cloud &apos;Services Partner of the
+              Year - Asia Pacific&apos; and &apos;Expansion Partner of the Year
+              - Asia Pacific&apos; awards. Niveus specializes in application,
+              infrastructure, data modernization, data management, cloud
+              consulting, security, and managed services.
             </p>
             <a
               href="https://niveussolutions.com/"
