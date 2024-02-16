@@ -14,8 +14,8 @@ export default function CreateTeam() {
 
   const [teamId, setTeamId] = useState('');
   const [isNameAvailable, setIsNameAvailable] = useState(false);
-  const [Error, setError] = useState('');
-  const [Message, setMessage] = useState('');
+  const [Error, setError] = useState("");
+  const [Message, setMessage] = useState("");
   const [isWaiting, setIsWaiting] = useState(false);
   const [Loading, setLoading] = useState(false);
 
@@ -24,10 +24,14 @@ export default function CreateTeam() {
   }, [isWaiting]);
 
   const nameHandler = async (name: string) => {
+    if (name.includes(" ")) {
+      setError("Name cannot contain spaces");
+      return;
+    }
     if (!isWaiting && name.length > 3) {
-      const res = await checkName(name);
+      const res = await checkName({ teamName: name });
       if (
-        res.status === 'success' &&
+        res.status === "success" &&
         (res.message === true || res.message === false)
       ) {
         console.log(res.message);
@@ -39,8 +43,8 @@ export default function CreateTeam() {
   };
 
   useEffect(() => {
-    if (Error) setTimeout(() => setError(''), 2000);
-    if (Message) setTimeout(() => setMessage(''), 2000);
+    if (Error) setTimeout(() => setError(""), 2000);
+    if (Message) setTimeout(() => setMessage(""), 2000);
   }, [Error, Message]);
 
   if (currentState !== 1) return <></>;
@@ -73,9 +77,11 @@ export default function CreateTeam() {
                     setLoading(true);
                     e.preventDefault();
                     const formData = new FormData(e.target as HTMLFormElement);
-                    const res = await createTeam(formData);
-                    if (res.status === 'error') setError(res.message);
-                    if (res.status === 'success') {
+                    const res = await createTeam({
+                      teamName: formData.get("teamname") as string,
+                    });
+                    if (res.status === "error") setError(res.message);
+                    if (res.status === "success") {
                       setMessage(res.message);
                       setCurrentState(2);
                       maxState <= 2 && setMaxState(2);
@@ -117,9 +123,11 @@ export default function CreateTeam() {
                     setLoading(true);
                     e.preventDefault();
                     const formData = new FormData(e.target as HTMLFormElement);
-                    const res = await joinTeam(formData);
-                    if (res.status === 'error') setError(res.message);
-                    if (res.status === 'success') setMessage(res.message);
+                    const res = await joinTeam({
+                      teamId: formData.get("teamid") as string,
+                    });
+                    if (res.status === "error") setError(res.message);
+                    if (res.status === "success") setMessage(res.message);
                     setLoading(false);
                   }}
                 >

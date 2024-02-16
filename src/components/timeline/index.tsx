@@ -123,9 +123,8 @@ const Timeline = ({ events }: { events: Event[] }) => {
               <span className="flex gap-5 md:flex-row flex-col ">
                 {[1, 2, 3].map((day) => {
                   return (
-                    <Link href="/#timelinetop">
+                    <Link href="/#timelinetop" key={day}>
                       <button
-                        key={day}
                         className="relative w-32 h-32 flex items-center justify-center pointer-events-auto"
                         // className="bg-gradient-to-br from-[#008080] via-black to-[#008080] backdrop-blur-xl border-2 border-[#008080] pointer-events-auto text-2xl rounded-xl w-16 h-16"
                         onClick={() => setSelectedDay(day)}
@@ -165,7 +164,7 @@ const Event = ({
     <>
       {/* Event title - in the direction Normal to the boundary of wheel */}
       <div
-        className="absolute origin-center max-w-[20%] text-white md:text-2xl text-xl font-bold flex flex-col"
+        className="absolute origin-center max-w-[20%] text-white md:text-3xl text-lg font-bold flex flex-col"
         style={{
           top: `${50 + 25 * Math.sin(position.index * position.angle)}%`,
           left: `${50 + 25 * Math.cos(position.index * position.angle)}%`,
