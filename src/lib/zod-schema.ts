@@ -27,10 +27,34 @@ const updateProfileZ = z.object({
       invalid_type_error: 'Something went wrong',
     })
     .default(''),
-  //   state: z.string().optional(),
   tshirtSize: z.custom<TshirtSize>((val) => {
     return Object.values(TshirtSize).includes(val as TshirtSize);
   }),
+  course: z.custom<Courses>((val) => {
+    return Object.values(Courses).includes(val as Courses);
+  }),
+  aadhaarFile: z.custom<File>().refine((file) => file.size < 2 * 1024 * 1024, {
+    message: 'File size should be less than 2MB',
+  }),
+  collegeIdFile: z
+    .custom<File>()
+    .refine((file) => file.size < 2 * 1024 * 1024, {
+      message: 'File size should be less than 2MB',
+    }),
+});
+
+const editProfileZ = z.object({
+  name: z.string().min(1, { message: 'Name cannot be empty' }),
+  phone: z
+    .string()
+    .min(10, { message: 'Phone number should be at least 10 characters long' })
+    .max(10, { message: 'Phone number should be at most 10 characters long' }),
+  college: z
+    .string({
+      required_error: 'College is required',
+      invalid_type_error: 'Something went wrong',
+    })
+    .min(1, { message: 'College cannot be empty' }),
   course: z.custom<Courses>((val) => {
     return Object.values(Courses).includes(val as Courses);
   }),
@@ -75,4 +99,12 @@ const createCollegeZ = z.object({
     .min(1, { message: 'State cannot be empty' }),
 });
 
-export { updateUserZ, updateProfileZ, submitIdeaZ, createTeamZ, joinTeamZ, createCollegeZ };
+export {
+  editProfileZ,
+  updateUserZ,
+  updateProfileZ,
+  submitIdeaZ,
+  createTeamZ,
+  joinTeamZ,
+  createCollegeZ,
+};

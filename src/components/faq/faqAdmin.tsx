@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTrigger,
+  DialogTitle,
 } from "@/src/components/ui/dialog";
 import {
   Table,
@@ -14,9 +15,8 @@ import {
   TableRow,
 } from "@/src/components/ui/table";
 import { FaQuestionCircle } from "react-icons/fa";
-import { getAllFaqs, deleteFaq } from "@/src/server/actions";
+import { getAllFaqs, deleteFaq, answerFaq } from "@/src/server/actions";
 import { useEffect, useState } from "react";
-import AnswerFaq from "./answerFaq";
 import { toast } from "sonner";
 import { IoTrashBin } from "react-icons/io5";
 
@@ -29,6 +29,7 @@ export default function FaqAdmin() {
       published: boolean;
     }[]
   >([]);
+  const [answer, setAnswer] = useState("");
   useEffect(() => {
     getAllFaqs().then((data) => {
       setFaqData(data);
@@ -56,7 +57,45 @@ export default function FaqAdmin() {
                       <TableRow key={index} className="text-black">
                         <TableCell>{faq.question}</TableCell>
                         <TableCell>
-                          <AnswerFaq {...faq} />
+                          <Dialog>
+                            <DialogTrigger>Answer</DialogTrigger>
+                            <DialogContent>
+                              <DialogTitle className="text-black">
+                                {faq.question}
+                              </DialogTitle>
+                              <input
+                                type="text"
+                                className="text-black p-2 rounded-lg"
+                                placeholder="Answer this question"
+                                value={answer}
+                                onChange={(e) => {
+                                  setAnswer(e.target.value);
+                                }}
+                              />
+                              <button
+                                className="bg-[#020817] text-white p-2 rounded-lg"
+                                onClick={async () => {
+                                  try {
+                                    if (answer) {
+                                      await answerFaq(faq.id, answer);
+                                      toast.success("Answered");
+
+                                      setAnswer("");
+                                      getAllFaqs().then((data) => {
+                                        setFaqData(data);
+                                      });
+                                    } else {
+                                      toast.error("Answer cannot be empty");
+                                    }
+                                  } catch (e) {
+                                    toast.error("Failed to answer");
+                                  }
+                                }}
+                              >
+                                Submit
+                              </button>
+                            </DialogContent>
+                          </Dialog>
                         </TableCell>
                         <TableCell>
                           <span
@@ -74,6 +113,7 @@ export default function FaqAdmin() {
                                 toast.error("Error deleting FAQ");
                               }
                             }}
+                            className="cursor-pointer"
                           >
                             <IoTrashBin />
                           </span>

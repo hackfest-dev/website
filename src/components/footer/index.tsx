@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import { social } from '../../constants';
-import NMAMITLogo from '@/public/logos/NMAMITLogo.png';
-import FLCLogo from '@/public/logos/flcLogo.png';
-import Link from 'next/link';
+import Image from "next/image";
+import { social } from "../../constants";
+import NMAMITLogo from "@/public/logos/NMAMITLogo.png";
+import FLCLogo from "@/public/logos/flcLogo.png";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -10,37 +10,34 @@ const Footer = () => {
       <footer className="flex flex-col bottom-0 w-full px-4 h-full border-t border-gray-700 bg-gradient-to-b from-slate-900 to-slate-950  backdrop-blur-md">
         <div className="flex flex-col lg:flex-row h-full items-center justify-evenly space-y-12 p-4 py-8">
           <div className="flex flex-col  items-center gap-8">
-            <div className="flex flex-row justify-center items-center gap-4">
-              <Image
-                className=" border-[0.5px] border-gray-600 rounded-2xl"
-                src="/logos/logo.png"
-                priority
-                alt="Logo - Hackfest"
-                width={95}
-                height={50}
-              />
-              <div className="flex flex-col justify-center items-center gap-2">
+            <div className="flex flex-col justify-center items-center gap-4">
+              <div className="flex flex-row justify-center items-center gap-2">
+                <Image
+                  src="/logos/logo.png"
+                  priority
+                  alt="Logo - Hackfest"
+                  width={95}
+                  height={50}
+                />
                 <Link href="https://www.finiteloop.co.in/" target="_blank">
                   <Image
-                    className=" border-[0.5px] border-gray-600 rounded-2xl p-1"
-                    src="/logos/flcLogo.png"
+                    src="/logos/flc_logo_crop.png"
                     priority
                     alt="Logo - Finite Loop Club"
-                    width={140}
-                    height={60}
-                  />
-                </Link>
-                <Link href="https://nmamit.nitte.edu.in/" target="_blank">
-                  <Image
-                    className=" border-[0.5px] border-gray-600 rounded-xl p-2"
-                    src="/logos/NMAMITLogo.png"
-                    priority
-                    alt="Logo - NMAMIT"
-                    width={140}
-                    height={70}
+                    width={75}
+                    height={50}
                   />
                 </Link>
               </div>
+              <Link href="https://nmamit.nitte.edu.in/" target="_blank">
+                <Image
+                  src="/logos/NMAMITLogo.png"
+                  priority
+                  alt="Logo - NMAMIT"
+                  width={180}
+                  height={100}
+                />
+              </Link>
             </div>
             <div className="flex flex-row items-center  gap-4 md:gap-4">
               <p className="text-base font-normal">Connect with us:</p>
@@ -77,7 +74,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-base font-normal text-center">
-              Interested to sponsor? Let us know{' '}
+              Interested to sponsor? Let us know{" "}
               <Link href="mailto:sponsor@hackfest.dev" className="underline">
                 sponsor@hackfest.dev
               </Link>
@@ -85,7 +82,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="font-normal text-center border-t-[0.5px] border-gray-800 py-5 w-full">
-          <p>2024 &copy; Owned by Hackfest | All rights reserved</p>
+          <p>2024 &copy; Hackfest | All rights reserved</p>
         </div>
       </footer>
     </>

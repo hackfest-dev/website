@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import { SectionHeading } from "../ui/sectionHeading";
 import { toast } from "sonner";
 import { Category } from "@prisma/client";
+import { Button } from "../ui/button";
 
 export const FAQ: React.FC<{}> = () => {
   const [faq, setFaq] = useState<{
@@ -29,9 +30,9 @@ export const FAQ: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="h-[50dvh] flex flex-col justify-center items-center py-12 gap-y-12">
+      <div className="flex flex-col justify-center items-center md:py-12 py-6 gap-y-12 ">
         <SectionHeading title="FAQ" />
-        <div className="flex flex-col w-full justify-center items-center py-8  space-y-6">
+        <div className="flex flex-col w-full justify-center items-center py-8 space-y-6">
           <Tabs
             defaultValue="GENERAL"
             className=" justify-center items-center flex flex-col"
@@ -56,8 +57,8 @@ export const FAQ: React.FC<{}> = () => {
             </TabsContent>
           </Tabs>
           <Dialog>
-            <DialogTrigger className="bg-white text-black font-semibold px-4 py-2 rounded-xl">
-              Drop your question
+            <DialogTrigger asChild>
+              <Button className="font-semibold">Drop your question</Button>
             </DialogTrigger>
 
             <DialogContent>
@@ -87,12 +88,13 @@ export const FAQ: React.FC<{}> = () => {
                   <option value="FOOD">Food</option>
                 </select>
 
-                <button
+                <Button
                   onClick={() => {
                     try {
                       if (faq.question) {
                         addFaq(faq);
                         toast.success("Question submitted successfully!");
+                        setFaq({ ...faq, question: "" });
                       } else {
                         toast.error("Please enter a question");
                       }
@@ -100,10 +102,10 @@ export const FAQ: React.FC<{}> = () => {
                       toast.error("Error submitting question");
                     }
                   }}
-                  className="bg-white px-4 py-2 rounded-xl text-black"
+                  className="font-semibold"
                 >
                   Submit
-                </button>
+                </Button>
               </div>
             </DialogContent>
           </Dialog>

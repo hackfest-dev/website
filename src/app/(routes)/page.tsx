@@ -92,4 +92,35 @@ const events = [
     title: "Dinner & judging",
     time: "",
   },
+
+  {
+    day: 3,
+    title: "Hackathon ends",
+    time: "7AM",
+  },
+  {
+    day: 3,
+    title: "Breakfast + Top 15",
+    time: "From 9:30AM",
+  },
+  {
+    day: 3,
+    title: "Top 3 Selection",
+    time: "From 11:30AM",
+  },
+  {
+    day: 3,
+    title: "Lunch",
+    time: "12-1PM",
+  },
+  {
+    day: 3,
+    title: "Valedictory",
+    time: "1PM",
+  },
+  {
+    day: 3,
+    title: "Checkout",
+    time: "3PM",
+  },
 ];
