@@ -280,7 +280,7 @@ const ProfileForm = ({
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select your Degree" />
+                        <SelectValue placeholder="Select T-Shirt Size" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -297,6 +297,7 @@ const ProfileForm = ({
                 </FormItem>
               )}
             ></FormField>
+
             {/* College ID */}
             <FormField
               control={form.control}

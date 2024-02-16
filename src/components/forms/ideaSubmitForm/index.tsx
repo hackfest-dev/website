@@ -35,7 +35,6 @@ import { Button } from "../../ui/button";
 import { getUrlAndId } from "@/src/lib/utils/helper";
 
 export default function IdeaSubmitForm() {
-  const tracks = domains.map((domain) => domain.name);
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
   const form = useForm<z.infer<typeof submitIdeaZ>>({
@@ -113,7 +112,7 @@ export default function IdeaSubmitForm() {
               )}
             ></FormField>
 
-            {/* list of colleges*/}
+            {/* list of tracks*/}
             <FormField
               control={form.control}
               name="track"
@@ -123,13 +122,17 @@ export default function IdeaSubmitForm() {
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select your college" />
+                        <SelectValue placeholder="Select Track" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           {Object.values(Tracks).map((name, key) => (
-                            <SelectItem value={name} key={key}>
-                              {name}
+                            <SelectItem
+                              value={name}
+                              key={key}
+                              className="capitalize"
+                            >
+                              {name.replaceAll("_", " ").toLowerCase()}
                             </SelectItem>
                           ))}
                         </SelectGroup>
