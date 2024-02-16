@@ -290,7 +290,7 @@ const AboutHackfest = () => {
               <h4 className="my-4 text-sm md:text-base">
                 For More Information
               </h4>
-              <a href="/hackfest_Brochure.pdf" download="Hackfest_Brochure.pdf">
+              <a href="/hackfest_Brochure.pdf" download="brochure.pdf">
                 <Button className=" text-sm md:text-base font-medium">
                   Download Brochure
                 </Button>

@@ -1,31 +1,32 @@
-"use client";
-import { useState } from "react";
-import { Button } from "../ui/button";
-import { College, Courses, User } from "@prisma/client";
-import { Card, CardContent } from "../ui/card";
+'use client';
+import { useState } from 'react';
+import { Button } from '../ui/button';
+import { College, Courses, User } from '@prisma/client';
+import { Card, CardContent } from '../ui/card';
 import {
   BookText,
   Building2,
   ChevronDown,
+  CircleUserRound,
   Loader2Icon,
   Mail,
   Phone,
   Save,
-} from "lucide-react";
-import { LogoutButton } from "./logout";
-import { Dropzone } from "../ui/dropZone";
-import { editProfile } from "@/src/server/actions";
+} from 'lucide-react';
+import { LogoutButton } from './logout';
+import { Dropzone } from '../ui/dropZone';
+import { editProfile } from '@/src/server/actions';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "../ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { toast } from "sonner";
-import { Input } from "../ui/input";
-import CreateCollege from "./createCollege";
+} from '../ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { toast } from 'sonner';
+import { Input } from '../ui/input';
+import CreateCollege from './createCollege';
 
 export const EditProfileForm: React.FC<{
   user: User & {
@@ -35,15 +36,15 @@ export const EditProfileForm: React.FC<{
   states: string[];
 }> = ({ user, colleges, states }) => {
   const [formData, setFormData] = useState({
-    uname: user.name ?? "",
-    email: user.email ?? "",
-    phone: user.phone ?? "",
-    state: user.college?.state ?? "",
-    course: user.course ?? "",
-    collegeName: user.college?.name ?? "",
-    aadhaarImg: user.aadhaar ?? "",
-    collegeIdImg: user.college_id ?? "",
-    collegeId: user.college?.id ?? "",
+    uname: user.name ?? '',
+    email: user.email ?? '',
+    phone: user.phone ?? '',
+    state: user.college?.state ?? '',
+    course: user.course ?? '',
+    collegeName: user.college?.name ?? '',
+    aadhaarImg: user.aadhaar ?? '',
+    collegeIdImg: user.college_id ?? '',
+    collegeId: user.college?.id ?? '',
   });
 
   const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
@@ -52,8 +53,8 @@ export const EditProfileForm: React.FC<{
   const [isSaving, setIsSaving] = useState(false);
   const [openCollegeList, setOpenCollegeList] = useState(false);
   const [openCourseList, setOpenCourseList] = useState(false);
-  const [collegevalue, setCollegevalue] = useState("");
-  const [coursevalue, setCoursevalue] = useState("");
+  const [collegevalue, setCollegevalue] = useState('');
+  const [coursevalue, setCoursevalue] = useState('');
 
   const courses: string[] = Object.entries(Courses).map(([, value]) => value);
 
@@ -65,23 +66,45 @@ export const EditProfileForm: React.FC<{
     setIsSaving(true);
     e.preventDefault();
     const form = new FormData();
-    form.append("name", formData.uname);
-    form.append("phone", formData.phone || "0");
-    form.append("course", formData.course || "");
-    form.append("college", formData.collegeId || "");
-    if (clgFile) form.append("collegeId", clgFile);
-    if (aadhaarFile) form.append("adhaar", aadhaarFile);
+    form.append('name', formData.uname);
+    form.append('phone', formData.phone || '0');
+    form.append('course', formData.course || '');
+    form.append('college', formData.collegeId || '');
+    if (clgFile) form.append('collegeId', clgFile);
+    if (aadhaarFile) form.append('adhaar', aadhaarFile);
     console.log(formData);
     const res = await editProfile(form);
     setIsSaving(false);
-    if (res.type == "error") throw new Error(res.message);
-    if (res.type == "info" || res.type == "success") return res.message;
+    if (res.type == 'error') throw new Error(res.message);
+    if (res.type == 'info' || res.type == 'success') return res.message;
   };
 
   return (
     <>
       <Card className="w-full" suppressHydrationWarning>
         <CardContent className="p-4">
+          <p className="block mt-3 mb-1 text-sm font-medium text-gray-900 dark:text-white">
+            Name :
+          </p>
+          <div className="flex">
+            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+              <CircleUserRound size={20} />
+            </span>
+            <Input
+              id="email"
+              value={formData.uname}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  uname: e.target.value,
+                })
+              }
+              type="text"
+              className="rounded-none rounded-r-lg"
+              placeholder="Name"
+            />
+          </div>
+
           <p className="block mt-3 mb-1 text-sm font-medium text-gray-900 dark:text-white">
             Personal Email :
           </p>
@@ -145,7 +168,7 @@ export const EditProfileForm: React.FC<{
                     ? coursevalue
                     : formData.course
                       ? formData.course
-                      : "Select course"}
+                      : 'Select course'}
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -165,7 +188,7 @@ export const EditProfileForm: React.FC<{
                         value={course}
                         onSelect={(currentValue) => {
                           setCoursevalue(
-                            currentValue === coursevalue ? "" : course
+                            currentValue === coursevalue ? '' : course
                           );
                           setFormData({
                             ...formData,
@@ -201,17 +224,17 @@ export const EditProfileForm: React.FC<{
                     ? collegevalue
                     : formData.collegeName
                       ? formData.collegeName +
-                        ", " +
+                        ', ' +
                         formData.state
-                          .replace(/_/g, " ")
-                          .split(" ")
+                          .replace(/_/g, ' ')
+                          .split(' ')
                           .map(
                             (word) =>
                               word.charAt(0).toUpperCase() +
                               word.slice(1).toLowerCase()
                           )
-                          .join(" ")
-                      : "Select college"}
+                          .join(' ')
+                      : 'Select college'}
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -233,18 +256,18 @@ export const EditProfileForm: React.FC<{
                         onSelect={(currentValue) => {
                           setCollegevalue(
                             currentValue === collegevalue
-                              ? ""
+                              ? ''
                               : college.name +
-                                  ", " +
+                                  ', ' +
                                   college.state
-                                    .replace(/_/g, " ")
-                                    .split(" ")
+                                    .replace(/_/g, ' ')
+                                    .split(' ')
                                     .map(
                                       (word) =>
                                         word.charAt(0).toUpperCase() +
                                         word.slice(1).toLowerCase()
                                     )
-                                    .join(" ")
+                                    .join(' ')
                           );
                           setFormData({
                             ...formData,
@@ -253,16 +276,16 @@ export const EditProfileForm: React.FC<{
                           setOpenCollegeList(false);
                         }}
                       >
-                        {college.name},{" "}
+                        {college.name},{' '}
                         {college.state
-                          .replace(/_/g, " ")
-                          .split(" ")
+                          .replace(/_/g, ' ')
+                          .split(' ')
                           .map(
                             (word) =>
                               word.charAt(0).toUpperCase() +
                               word.slice(1).toLowerCase()
                           )
-                          .join(" ")}
+                          .join(' ')}
                       </CommandItem>
                     ))}
                   </CommandGroup>
@@ -282,7 +305,7 @@ export const EditProfileForm: React.FC<{
               onChange={setAadhaarFile}
               className="w-full"
               fileExtension="images"
-              image={formData.aadhaarImg.split(";")[0]}
+              image={formData.aadhaarImg.split(';')[0]}
             />
           </div>
           <div className="sm:py-2">
@@ -293,7 +316,7 @@ export const EditProfileForm: React.FC<{
               onChange={setClgFile}
               className="w-full"
               fileExtension="images"
-              image={formData.collegeIdImg.split(";")[0]}
+              image={formData.collegeIdImg.split(';')[0]}
             />
           </div>
         </CardContent>
@@ -302,19 +325,19 @@ export const EditProfileForm: React.FC<{
         <Button
           onClick={(e) => {
             toast.promise(() => onSubmit(e), {
-              position: "bottom-center",
-              loading: "Saving profile info...",
+              position: 'bottom-center',
+              loading: 'Saving profile info...',
               success: (message) => {
-                return message + "";
+                return message + '';
               },
               error: (error) => {
-                return error + "";
+                return error + '';
               },
             });
           }}
           disabled={isSaving}
           className={`${
-            isSaving ? "cursor-not-allowed" : ""
+            isSaving ? 'cursor-not-allowed' : ''
           } flex items-center gap-2`}
         >
           {isSaving ? (
