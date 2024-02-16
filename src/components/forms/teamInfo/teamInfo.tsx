@@ -71,7 +71,7 @@ export default function TeamInfo({
         <Card className="w-full">
           <CardContent>
             <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto p-4">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col lg:flex-row justify-between items-center">
                 <h1 className="text-2xl text-center font-bold uppercase">
                   {teamdata?.name || 'Not Available'}
                 </h1>
@@ -119,7 +119,7 @@ export default function TeamInfo({
                       key={member.id}
                       className="flex items-center w-full mt-5 border p-5 rounded-xl"
                     >
-                      <div className="flex items-center justify-between w-full">
+                      <div className="flex lg:flex-row flex-col items-center justify-between w-full">
                         <div className="relative">
                           <Image
                             src={member.image!}

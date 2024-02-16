@@ -1,34 +1,32 @@
-"use client";
-import { College, User } from "@prisma/client";
-import { updateProfile } from "@/src/server/actions";
-import { Dispatch, useContext, useState } from "react";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { updateProfileZ } from "@/src/lib/zod-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+'use client';
+import { College, User } from '@prisma/client';
+import { updateProfile } from '@/src/server/actions';
+import { Dispatch, useContext, useState } from 'react';
+import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { updateProfileZ } from '@/src/lib/zod-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
+} from '../../ui/form';
+import { Input } from '../../ui/input';
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../../ui/select";
-import { Button } from "../../ui/button";
-import { getUrlAndId } from "@/src/lib/utils/helper";
-import { ProgressContext } from "../../progressProvider";
+} from '../../ui/select';
+import { Button } from '../../ui/button';
+import { getUrlAndId } from '@/src/lib/utils/helper';
+import { ProgressContext } from '../../progressProvider';
 
 const ProfileForm = ({
   user,
@@ -66,16 +64,16 @@ const ProfileForm = ({
   const form = useForm<z.infer<typeof updateProfileZ>>({
     resolver: zodResolver(updateProfileZ),
     defaultValues: {
-      name: user.name ?? "",
-      phone: user.phone ?? "",
-      college: user.collegeId ?? "",
+      name: user.name ?? '',
+      phone: user.phone ?? '',
+      college: user.collegeId ?? '',
       course: user.course ?? undefined,
     },
   });
 
   const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
 
   const previewCollegeId = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -101,15 +99,15 @@ const ProfileForm = ({
     setLoading(true);
     // e.preventDefault();
     const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("phone", data.phone);
-    formData.append("course", data.course || "");
-    formData.append("college", data.college || "");
-    formData.append("otherCollege", data.otherCollege || "");
-    formData.append("otherCollegeState", data.otherCollegeState || "");
-    formData.append("tshirtSize", data.tshirtSize || "");
-    formData.append("collegeIdFile", collegeId?.file || "");
-    formData.append("aadhaarFile", aadhaar?.file || "");
+    formData.append('name', data.name);
+    formData.append('phone', data.phone);
+    formData.append('course', data.course || '');
+    formData.append('college', data.college || '');
+    formData.append('otherCollege', data.otherCollege || '');
+    formData.append('otherCollegeState', data.otherCollegeState || '');
+    formData.append('tshirtSize', data.tshirtSize || '');
+    formData.append('collegeIdFile', collegeId?.file || '');
+    formData.append('aadhaarFile', aadhaar?.file || '');
     const res = await updateProfile(formData);
     setError(res.message);
     setLoading(false);
@@ -127,7 +125,7 @@ const ProfileForm = ({
           <h1 className="text-center lg:text-2xl text-xl ">Update Profile</h1>
           <p
             className={`text-center ${
-              error.includes("updated") ? "text-green-500" : "text-red-500"
+              error.includes('updated') ? 'text-green-500' : 'text-red-500'
             }`}
           >
             {error}
@@ -179,7 +177,7 @@ const ProfileForm = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value={"other"}>Other</SelectItem>
+                          <SelectItem value={'other'}>Other</SelectItem>
                           {colleges.map(({ id, name }, key) => (
                             <SelectItem value={id} key={key}>
                               {name}
@@ -194,7 +192,7 @@ const ProfileForm = ({
               )}
             ></FormField>
 
-            {form.watch("college") === "other" && (
+            {form.watch('college') === 'other' && (
               <>
                 <FormField
                   control={form.control}
@@ -284,7 +282,7 @@ const ProfileForm = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {["S", "M", "L", "XL", "XXL"].map((size, key) => (
+                          {['S', 'M', 'L', 'XL', 'XXL'].map((size, key) => (
                             <SelectItem value={size} key={key}>
                               {size}
                             </SelectItem>
@@ -325,27 +323,27 @@ const ProfileForm = ({
                         <Image
                           src={
                             collegeId?.url ||
-                            getUrlAndId(user?.college_id ?? "").url ||
-                            ""
+                            getUrlAndId(user?.college_id ?? '').url ||
+                            ''
                           }
                           alt="collegeID"
                           width={100}
                           height={100}
                           unoptimized
                         />
-                        {user.college_id && !collegeId?.url && "Uploaded File"}
+                        {user.college_id && !collegeId?.url && 'Uploaded File'}
                         {collegeId?.url && (
                           <Button
                             onClick={() => {
                               setCollegeId({
-                                url: "",
+                                url: '',
                                 file: undefined,
                               });
                               (
                                 document.getElementById(
-                                  "collegeId"
+                                  'collegeId'
                                 ) as HTMLInputElement
-                              ).value = "";
+                              ).value = '';
                             }}
                             className="bg-red-500  text-center w-fit p-1 rounded cursor-pointer"
                             type="button"
@@ -380,27 +378,27 @@ const ProfileForm = ({
                       <Image
                         src={
                           aadhaar?.url ||
-                          getUrlAndId(user?.aadhaar ?? "").url ||
-                          ""
+                          getUrlAndId(user?.aadhaar ?? '').url ||
+                          ''
                         }
                         alt="Adhaar"
                         width={100}
                         height={100}
                         unoptimized
-                      />{" "}
-                      {user?.aadhaar && !aadhaar?.url && "Uploaded File"}
+                      />{' '}
+                      {user?.aadhaar && !aadhaar?.url && 'Uploaded File'}
                       {aadhaar?.url && (
                         <button
                           onClick={() => {
                             setAadhaar({
-                              url: "",
+                              url: '',
                               file: undefined,
                             });
                             (
                               document.getElementById(
-                                "aadhaar"
+                                'aadhaar'
                               ) as HTMLInputElement
-                            ).value = "";
+                            ).value = '';
                           }}
                           className="bg-red-500  text-center w-fit p-1 rounded cursor-pointer"
                           type="button"
@@ -418,7 +416,7 @@ const ProfileForm = ({
               type="submit"
               className=" md:w-[calc(90%+1.5rem)] w-full border rounded-md p-2 mt-6 hover:bg-blue-700 font-semibold"
             >
-              {loading ? "Updating..." : "Update"}
+              {loading ? 'Updating...' : 'Update'}
             </Button>
           </div>
         </form>

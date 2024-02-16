@@ -7,7 +7,9 @@ import {
   updateProfileZ,
   submitIdeaZ,
   createTeamZ,
-  joinTeamZ, } from '../lib/zod-schema';
+  joinTeamZ,
+  createCollegeZ,
+} from '../lib/zod-schema';
 import { revalidatePath } from 'next/cache';
 import { getCurrentUser } from '../lib/session';
 import { States } from '@prisma/client';
@@ -194,6 +196,23 @@ const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
   }
 });
 
+const createCollege = protectedAction(createCollegeZ, async (value, { db }) => {
+  try {
+    await db.college.create({
+      data: {
+        name: value.name,
+        state: value.state.toUpperCase() as States,
+      },
+    });
+    revalidatePath('/profile');
+    revalidatePath('/register');
+    return { status: 'success', message: 'College created successfully' };
+  } catch (error) {
+    console.log(error);
+    return { status: 'error', message: 'Something went wrong' };
+  }
+});
+
 // Join a team by teamId
 const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
   try {
@@ -333,10 +352,10 @@ const submitIdea = async (formdata: FormData) => {
 
   if (
     !data.ppt ||
-    data.ppt.type !== "application/pdf" ||
+    data.ppt.type !== 'application/pdf' ||
     data.ppt.size > 10 * 1024 * 1024
   ) {
-    return { status: "error", message: "Upload only pdf of less than 10MB" };
+    return { status: 'error', message: 'Upload only pdf of less than 10MB' };
   }
   try {
     const user = await getCurrentUser();
@@ -451,7 +470,7 @@ const addFaq = async (faq: {
     data: {
       question: faq.question,
       category: faq.category,
-      answer: "",
+      answer: '',
       published: false,
     },
   });
@@ -487,4 +506,5 @@ export {
   addFaq,
   getAllFaqs,
   answerFaq,
+  createCollege,
 };
