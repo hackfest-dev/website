@@ -12,6 +12,7 @@ export default function CreateTeam() {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
 
+  const [teamId, setTeamId] = useState('');
   const [isNameAvailable, setIsNameAvailable] = useState(false);
   const [Error, setError] = useState('');
   const [Message, setMessage] = useState('');
@@ -51,15 +52,17 @@ export default function CreateTeam() {
       </CardHeader>
       <CardContent className="px-2">
         <div className="flex rounded-lg flex-col justify-evenly m-auto">
-          {(Error || Message) && (
-            <Badge
-              className={`text-center ${
-                !Error ? 'text-green-500' : 'text-red-500'
-              }`}
-            >
-              {Error || Message}
-            </Badge>
-          )}
+          <div className="flex w-full justify-center">
+            {(Error || Message) && (
+              <Badge
+                className={`text-center w-fit -mt-2 ${
+                  !Error ? 'text-green-500' : 'text-red-500'
+                }`}
+              >
+                {Error || Message}
+              </Badge>
+            )}
+          </div>
 
           <div className="flex lg:flex-row flex-col justify-center items-center gap-3 my-4">
             <Card className="w-full p-5">
@@ -122,7 +125,8 @@ export default function CreateTeam() {
                 >
                   <h1 className="text-xl font-bold">Join a Team</h1>
                   <Input
-                    onChange={(e) => nameHandler(e.target.value)}
+                    onChange={(e) => setTeamId(e.target.value)}
+                    value={teamId}
                     type="text"
                     className="border rounded p-2"
                     placeholder="Team ID"

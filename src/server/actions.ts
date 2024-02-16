@@ -1,11 +1,11 @@
-"use server";
-import { prisma } from "@/src/lib/db";
-import { deleteFile, uploadFile } from "@/src/lib/utils/cloudinary";
-import { protectedAction } from "./serverConfig";
-import { updateUserZ, updateProfileZ, submitIdeaZ } from "../lib/zod-schema";
-import { revalidatePath } from "next/cache";
-import { getCurrentUser } from "../lib/session";
-import { States } from "@prisma/client";
+'use server';
+import { prisma } from '@/src/lib/db';
+import { deleteFile, uploadFile } from '@/src/lib/utils/cloudinary';
+import { protectedAction } from './serverConfig';
+import { updateUserZ, updateProfileZ, submitIdeaZ } from '../lib/zod-schema';
+import { revalidatePath } from 'next/cache';
+import { getCurrentUser } from '../lib/session';
+import { States } from '@prisma/client';
 
 // -----------------User functions-----------------
 // Set user as verified on successful verification
@@ -17,7 +17,7 @@ const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
     });
   } catch (error) {
     console.log(error);
-    throw new Error("Error verifying user");
+    throw new Error('Error verifying user');
   }
 });
 
@@ -34,7 +34,7 @@ const updateProfile = async (formData: FormData) => {
 
   if (!result.success) {
     return {
-      type: "error",
+      type: 'error',
       message: result.error.errors[0].message,
     };
   }
@@ -44,7 +44,7 @@ const updateProfile = async (formData: FormData) => {
   const session = await getCurrentUser();
   if (!session) {
     return {
-      message: "Not Authenticated",
+      message: 'Not Authenticated',
     };
   }
 
@@ -57,18 +57,18 @@ const updateProfile = async (formData: FormData) => {
 
   //If ID is already there remove the existing one from cloudinary
   if (user?.aadhaar) {
-    await deleteFile(user.aadhaar.split(";")[1]);
+    await deleteFile(user.aadhaar.split(';')[1]);
   }
   if (user?.college_id) {
-    await deleteFile(user.college_id.split(";")[1]);
+    await deleteFile(user.college_id.split(';')[1]);
   }
 
   // upload files only if they exist otherwise set to existing url
   const adhaarUrl = obj.adhaar
-    ? await uploadFile({ file: obj.adhaar as File, folder: "ids" })
+    ? await uploadFile({ file: obj.adhaar as File, folder: 'ids' })
     : user?.aadhaar;
   const collegeIdUrl = obj.collegeId
-    ? await uploadFile({ file: obj.collegeId as File, folder: "ids" })
+    ? await uploadFile({ file: obj.collegeId as File, folder: 'ids' })
     : user?.college_id;
 
   // code can be cleaned but it's ok to be lazy
@@ -82,14 +82,14 @@ const updateProfile = async (formData: FormData) => {
     user?.course === data.course;
 
   if (hasNoChanges) {
-    return { type: "info", message: "No changes made" };
+    return { type: 'info', message: 'No changes made' };
   }
 
-  if (data.college === "other" && data.otherCollege && data.otherCollegeState) {
+  if (data.college === 'other' && data.otherCollege && data.otherCollegeState) {
     await prisma.user.update({
       where: { id: session?.id },
       data: {
-        profileProgress: "FORM_TEAM",
+        profileProgress: 'FORM_TEAM',
         name: data.name,
         phone: data.phone,
         aadhaar: adhaarUrl,
@@ -108,7 +108,7 @@ const updateProfile = async (formData: FormData) => {
     await prisma.user.update({
       where: { id: session?.id },
       data: {
-        profileProgress: "FORM_TEAM",
+        profileProgress: 'FORM_TEAM',
         name: data.name,
         phone: data.phone,
         aadhaar: adhaarUrl,
@@ -118,9 +118,10 @@ const updateProfile = async (formData: FormData) => {
       },
     });
 
-  revalidatePath("/");
+  revalidatePath('/profile');
+  revalidatePath('/register');
 
-  return { type: "success", message: "Profile updated successfully" };
+  return { type: 'success', message: 'Profile updated successfully' };
 };
 
 // -------------Admin functions----------------
@@ -136,27 +137,31 @@ const checkName = async (teamName: string) => {
     });
     console.log(teamName, team);
     if (team?.id) {
-      return { status: "success", message: false };
+      return { status: 'success', message: false };
     }
-    return { status: "success", message: true };
+    return { status: 'success', message: true };
   } catch (error) {
     console.log(error);
-    return { status: "error", message: "Something went wrong" };
+    return { status: 'error', message: 'Something went wrong' };
   }
 };
+
 // Create a new team
 const createTeam = async (data: FormData) => {
   try {
-    console.log("Attempting to create team");
+    console.log('Attempting to create team');
     const user = await getCurrentUser();
     if (user?.team) {
-      return { status: "error", message: "You are already in a team" };
+      return { status: 'error', message: 'You are already in a team' };
     }
-    if (user?.profileProgress !== "FORM_TEAM") {
-      console.log("Incomplete user profile");
+    if (
+      user?.profileProgress !== 'FORM_TEAM' &&
+      user?.profileProgress !== 'SUBMIT_IDEA'
+    ) {
+      console.log('Incomplete user profile');
       return {
-        status: "error",
-        message: "Please complete your profile first",
+        status: 'error',
+        message: 'Please complete your profile first',
       };
     }
 
@@ -168,19 +173,20 @@ const createTeam = async (data: FormData) => {
         isLeader: true,
         team: {
           create: {
-            name: data.get("teamname") as string,
+            name: data.get('teamname') as string,
           },
         },
-        profileProgress: "SUBMIT_IDEA",
+        profileProgress: 'SUBMIT_IDEA',
       },
     });
 
-    console.log("team created");
-    revalidatePath("/");
-    return { status: "success", message: "Team created successfully" };
+    console.log('team created');
+    revalidatePath('/profile');
+    revalidatePath('/register');
+    return { status: 'success', message: 'Team created successfully' };
   } catch (error) {
     console.log(error);
-    return { status: "error", message: "Something went wrong" };
+    return { status: 'error', message: 'Something went wrong' };
   }
 };
 
@@ -189,19 +195,22 @@ const joinTeam = async (data: FormData) => {
   try {
     const user = await getCurrentUser();
     if (user?.team) {
-      return { status: "error", message: "You are already in a team" };
+      return { status: 'error', message: 'You are already in a team' };
     }
 
-    if (user?.profileProgress !== "FORM_TEAM") {
+    if (
+      user?.profileProgress !== 'FORM_TEAM' &&
+      user?.profileProgress !== 'SUBMIT_IDEA'
+    ) {
       return {
-        status: "error",
-        message: "Please complete your profile first",
+        status: 'error',
+        message: 'Please complete your profile first',
       };
     }
 
     const team = await prisma.team.findFirst({
       where: {
-        id: data.get("teamid") as string,
+        id: data.get('teamid') as string,
       },
       include: {
         members: {
@@ -213,18 +222,18 @@ const joinTeam = async (data: FormData) => {
       },
     });
     if (!team) {
-      return { status: "error", message: "Team not found" };
+      return { status: 'error', message: 'Team not found' };
     }
     const leader = team.members.find((member) => member.isLeader === true);
     if (user.college !== leader?.college?.name) {
       return {
-        status: "error",
-        message: "Team members should be from same college only",
+        status: 'error',
+        message: 'Team members should be from same college only',
       };
     }
     await prisma.team.update({
       where: {
-        id: data.get("teamid") as string,
+        id: data.get('teamid') as string,
       },
       data: {
         members: {
@@ -232,16 +241,18 @@ const joinTeam = async (data: FormData) => {
             id: user?.id,
           },
           update: {
-            data: { profileProgress: "SUBMIT_IDEA" },
+            data: { profileProgress: 'SUBMIT_IDEA' },
             where: { id: user?.id },
           },
         },
       },
     });
-    return { status: "success", message: "Joined team successfully" };
+    revalidatePath('/profile');
+    revalidatePath('/register');
+    return { status: 'success', message: 'Joined team successfully' };
   } catch (error) {
     console.log(error);
-    return { status: "error", message: "Something went wrong" };
+    return { status: 'error', message: 'Something went wrong' };
   }
 };
 
@@ -257,13 +268,15 @@ const leaveTeam = async () => {
         team: {
           disconnect: true,
         },
-        profileProgress: "FORM_TEAM",
+        profileProgress: 'FORM_TEAM',
       },
     });
-    return { status: "success", message: "Left team successfully" };
+    revalidatePath('/profile');
+    revalidatePath('/register');
+    return { status: 'success', message: 'Left team successfully' };
   } catch (error) {
     console.log(error);
-    return { status: "error", message: "Something went wrong" };
+    return { status: 'error', message: 'Something went wrong' };
   }
 };
 // delete a team by teamId
@@ -272,8 +285,8 @@ const deleteTeam = async () => {
     const user = await getCurrentUser();
     if (!user?.isLeader) {
       return {
-        status: "error",
-        message: "You are not the leader of this team",
+        status: 'error',
+        message: 'You are not the leader of this team',
       };
     }
     await prisma.team.delete({
@@ -286,13 +299,16 @@ const deleteTeam = async () => {
         id: user.id,
       },
       data: {
-        profileProgress: "FORM_TEAM",
+        profileProgress: 'FORM_TEAM',
+        isLeader: false,
       },
     });
-    return { status: "success", message: "Team deleted successfully" };
+    revalidatePath('/profile');
+    revalidatePath('/register');
+    return { status: 'success', message: 'Team deleted successfully' };
   } catch (error) {
     console.log(error);
-    return { status: "error", message: "Something went wrong" };
+    return { status: 'error', message: 'Something went wrong' };
   }
 };
 
@@ -314,7 +330,7 @@ const submitIdea = async (formdata: FormData) => {
   try {
     const user = await getCurrentUser();
     if (!user?.isLeader)
-      return { status: "error", message: "Only leader may submit the idea" };
+      return { status: 'error', message: 'Only leader may submit the idea' };
     const team = await prisma.team.findUnique({
       where: {
         id: user.team?.id,
@@ -324,11 +340,11 @@ const submitIdea = async (formdata: FormData) => {
       },
     });
     if (team?.ideaSubmission)
-      return { status: "error", message: "Idea already submitted" };
+      return { status: 'error', message: 'Idea already submitted' };
 
-    const pptUrl = await uploadFile({ file: data.ppt as File, folder: "ppts" });
+    const pptUrl = await uploadFile({ file: data.ppt as File, folder: 'ppts' });
     console.log(pptUrl);
-    if (data.referralCode === "")
+    if (data.referralCode === '')
       await prisma.team.update({
         data: {
           ideaSubmission: {
@@ -344,7 +360,7 @@ const submitIdea = async (formdata: FormData) => {
                 teamId: user.team?.id,
               },
               data: {
-                profileProgress: "COMPLETE",
+                profileProgress: 'COMPLETE',
               },
             },
           },
@@ -369,7 +385,7 @@ const submitIdea = async (formdata: FormData) => {
                 teamId: user.team?.id,
               },
               data: {
-                profileProgress: "COMPLETE",
+                profileProgress: 'COMPLETE',
               },
             },
           },
@@ -383,11 +399,11 @@ const submitIdea = async (formdata: FormData) => {
           id: user.team?.id,
         },
       });
-    revalidatePath("/");
-    return { status: "success", message: "Idea has been submitted" };
+    revalidatePath('/');
+    return { status: 'success', message: 'Idea has been submitted' };
   } catch (error) {
     console.log(error);
-    return { status: "error", message: "An error occurred!" };
+    return { status: 'error', message: 'An error occurred!' };
   }
 };
 
@@ -418,7 +434,7 @@ const addFaq = async (faq: {
   question: string;
   answer: string;
   published: boolean;
-  category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
+  category: 'GENERAL' | 'FOOD' | 'STAY' | 'TRAVEL';
 }) => {
   await prisma.faq.create({
     data: faq,

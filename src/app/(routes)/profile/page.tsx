@@ -29,7 +29,7 @@ export default async function ProfilePage() {
       {!user.team?.id ? (
         <CreateTeam />
       ) : (
-        <TeamDetails userId={user.id} teamid={user.team?.id} />
+        <TeamDetails userId={user.id} teamid={user.team?.id} userProgress={user.profileProgress} />
       )}
     </div>
   );
