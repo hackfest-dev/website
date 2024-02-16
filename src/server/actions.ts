@@ -2,7 +2,13 @@
 import { prisma } from "@/src/lib/db";
 import { deleteFile, uploadFile } from "@/src/lib/utils/cloudinary";
 import { protectedAction } from "./serverConfig";
-import { updateUserZ, updateProfileZ, submitIdeaZ } from "../lib/zod-schema";
+import {
+  updateUserZ,
+  updateProfileZ,
+  submitIdeaZ,
+  createTeamZ,
+  joinTeamZ,
+} from "../lib/zod-schema";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "../lib/session";
 import { States } from "@prisma/client";
@@ -127,14 +133,13 @@ const updateProfile = async (formData: FormData) => {
 
 // -----------------Team controls-----------------
 // Check name availability
-const checkName = async (teamName: string) => {
+const checkName = protectedAction(createTeamZ, async (value, { db }) => {
   try {
-    const team = await prisma.team.findFirst({
+    const team = await db.team.findFirst({
       where: {
-        name: teamName,
+        name: value.teamName,
       },
     });
-    console.log(teamName, team);
     if (team?.id) {
       return { status: "success", message: false };
     }
@@ -143,9 +148,10 @@ const checkName = async (teamName: string) => {
     console.log(error);
     return { status: "error", message: "Something went wrong" };
   }
-};
+});
+
 // Create a new team
-const createTeam = async (data: FormData) => {
+const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
   try {
     console.log("Attempting to create team");
     const user = await getCurrentUser();
@@ -160,7 +166,7 @@ const createTeam = async (data: FormData) => {
       };
     }
 
-    await prisma.user.update({
+    await db.user.update({
       where: {
         id: user.id,
       },
@@ -168,7 +174,7 @@ const createTeam = async (data: FormData) => {
         isLeader: true,
         team: {
           create: {
-            name: data.get("teamname") as string,
+            name: value.teamName,
           },
         },
         profileProgress: "SUBMIT_IDEA",
@@ -182,10 +188,10 @@ const createTeam = async (data: FormData) => {
     console.log(error);
     return { status: "error", message: "Something went wrong" };
   }
-};
+});
 
 // Join a team by teamId
-const joinTeam = async (data: FormData) => {
+const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
   try {
     const user = await getCurrentUser();
     if (user?.team) {
@@ -199,9 +205,9 @@ const joinTeam = async (data: FormData) => {
       };
     }
 
-    const team = await prisma.team.findFirst({
+    const team = await db.team.findFirst({
       where: {
-        id: data.get("teamid") as string,
+        id: value.teamId,
       },
       include: {
         members: {
@@ -222,9 +228,9 @@ const joinTeam = async (data: FormData) => {
         message: "Team members should be from same college only",
       };
     }
-    await prisma.team.update({
+    await db.team.update({
       where: {
-        id: data.get("teamid") as string,
+        id: value.teamId,
       },
       data: {
         members: {
@@ -243,7 +249,7 @@ const joinTeam = async (data: FormData) => {
     console.log(error);
     return { status: "error", message: "Something went wrong" };
   }
-};
+});
 
 // Leave a team
 const leaveTeam = async () => {
@@ -311,6 +317,13 @@ const submitIdea = async (formdata: FormData) => {
 
   const { data } = result;
 
+  if (
+    !data.ppt ||
+    data.ppt.type !== "application/pdf" ||
+    data.ppt.size > 10 * 1024 * 1024
+  ) {
+    return { status: "error", message: "Upload only pdf of less than 10MB" };
+  }
   try {
     const user = await getCurrentUser();
     if (!user?.isLeader)
