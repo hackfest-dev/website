@@ -1,10 +1,10 @@
-'use client'
-import { motion } from 'framer-motion';
+"use client";
+import { motion } from "framer-motion";
 
 const About = () => {
   return (
     <>
-      <div className="flex flex-col justify-center items-center space-y-8 bg-slate-950">
+      <div className="flex flex-col justify-center items-center space-y-8">
         <div className="flex justify-center w-full">
           <hr className="w-[90vw] mb-16 bg-transparent border-gray-700 border rounded-full   " />
         </div>

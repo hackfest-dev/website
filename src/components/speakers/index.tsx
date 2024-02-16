@@ -16,8 +16,10 @@ const speakerData = [
 
 const Speakers = () => {
   return (
-    <div className="bg-slate-900 h-full p-12 w-full">
-      <SectionHeading title="Talks and Speakers" />
+    <div className="h-full p-12 w-full">
+      <div className="flex justify-center">
+        <SectionHeading title="Talks and Speakers" />
+      </div>
       <div className="mt-16">
         {speakerData.map((data, index) => {
           return (

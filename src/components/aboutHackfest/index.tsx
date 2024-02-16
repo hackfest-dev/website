@@ -111,10 +111,12 @@ const AboutHackfest = () => {
       `}</style>
       <section
         id="about"
-        className={`relative bg-[url("/images/blue-grainy.png")] bg-cover bg-center flex flex-col justify-center items-center xl:py-20`}>
+        className={`relative flex flex-col justify-center items-center xl:py-20`}
+      >
         <div
           id="sponsor-grid"
-          className="grid gap-2 w-screen 2xl:max-w-screen-2xl px-2 py-2">
+          className="grid gap-2 w-screen 2xl:max-w-screen-2xl px-2 py-2"
+        >
           {/* Cell 1x1 */}
           <GridTile cellType="c11" cellNo={1}>
             <div className="w-full h-full flex justify-center items-center gap-4">
@@ -155,7 +157,8 @@ const AboutHackfest = () => {
               <span className="text-3xl md:text-4xl font-bold pr-1">
                 <div
                   ref={childRef50}
-                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
+                >
                   50
                 </div>
                 <span className="font-obscura tracking-wider">Hrs</span>
@@ -171,7 +174,8 @@ const AboutHackfest = () => {
               <span className="text-3xl md:text-4xl font-bold pr-1">
                 <div
                   ref={childRef36}
-                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
+                >
                   36
                 </div>
                 <span className="font-obscura tracking-wider">Hrs</span>

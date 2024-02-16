@@ -302,7 +302,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         </div>
 
         {/* Grids */}
-        <div className="flex flex-col gap-8 md:gap-20 w-full items-center md:items-start">
+        <div className="flex flex-col gap-8 md:gap-20 w-full items-center ">
           <SectionHeading title="Domains" />
           <div className="relative w-full lg:aspect-[209/100] aspect-[820.72/1008]">
             {domainList.map((domain, idx) => {

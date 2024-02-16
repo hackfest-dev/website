@@ -1,12 +1,14 @@
-import { SectionHeading } from '../ui/sectionHeading';
-import { Tabpanel } from './tabPanel';
-import { TabFaq } from './tabs';
-import faq from './faq';
+import { SectionHeading } from "../ui/sectionHeading";
+import { Tabpanel } from "./tabPanel";
+import { TabFaq } from "./tabs";
+import faq from "./faq";
 
 export const FAQ: React.FC<{}> = () => {
   return (
     <section className="flex gap-20 flex-col md:p-12 p-4">
-      <SectionHeading title="Frequently Asked Questions"></SectionHeading>
+      <div className="mx-auto">
+        <SectionHeading title="Frequently Asked Questions"></SectionHeading>
+      </div>
       <TabFaq
         generalTab={<Tabpanel faq={faq.general}></Tabpanel>}
         foodTab={<Tabpanel faq={faq.food}></Tabpanel>}
