@@ -35,8 +35,9 @@ import { Button } from "../../ui/button";
 import { getUrlAndId } from "@/src/lib/utils/helper";
 import { Textarea } from "../../ui/textarea";
 import { Dropzone } from "../../ui/dropZone";
+import { SessionProvider, useSession } from "next-auth/react";
 
-export default function IdeaSubmitForm() {
+export function Component() {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
   const form = useForm<z.infer<typeof submitIdeaZ>>({
@@ -62,6 +63,8 @@ export default function IdeaSubmitForm() {
     setLoading(false);
   };
 
+  const user = useSession();
+
   useEffect(() => {
     if (error) setTimeout(() => setError(""), 2000);
   }, [error]);
@@ -69,7 +72,11 @@ export default function IdeaSubmitForm() {
   if (currentState !== 2) return <></>;
 
   return (
-    <div className="max-h-max w-full">
+    <div
+      className={`max-h-max w-full ${
+        !user.data?.user.isLeader ? "pointer-events-none opacity-50" : ""
+      }`}
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -215,5 +222,13 @@ export default function IdeaSubmitForm() {
         </form>
       </Form>
     </div>
+  );
+}
+
+export default function IdeaSubmitForm() {
+  return (
+    <SessionProvider>
+      <Component />
+    </SessionProvider>
   );
 }

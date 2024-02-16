@@ -272,18 +272,28 @@ const updateProfileProgress = async () => {
   try {
     const user = await getCurrentUser();
 
-    if (user?.profileProgress !== "FORM_TEAM")
-      await prisma.user.update({
-        where: {
-          id: user?.id,
-        },
+    if (user?.profileProgress !== "SUBMIT_IDEA")
+      await prisma.team.update({
         data: {
-          profileProgress: "FORM_TEAM",
+          members: {
+            updateMany: {
+              where: {
+                teamId: user?.team?.id,
+              },
+              data: {
+                profileProgress: "COMPLETE",
+              },
+            },
+          },
+        },
+        where: {
+          id: user?.team?.id,
         },
       });
     else {
-      return { status: "error", message: "Already updated to FormTeam" };
+      return { status: "error", message: "Already updated to SubmitIdea" };
     }
+    return revalidatePath("/register");
   } catch (error) {
     console.log(error);
   }

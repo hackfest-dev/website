@@ -17,13 +17,16 @@ const FormButtons = ({
 }) => {
   const { currentState, maxState, setCurrentState } =
     useContext(ProgressContext);
-  let buttonStatus = true;
+  let isDisabled = true;
   if (currentState === 0) {
-    if (profileProgress === "FORM_TEAM") buttonStatus = false;
+    if (profileProgress === "FORM_TEAM") isDisabled = false;
   } else if (currentState === 1) {
-    if ((isComplete && isLeader) || profileProgress === "SUBMIT_IDEA")
-      buttonStatus = false;
-  }
+    if (isLeader && isComplete) {
+      isDisabled = false;
+    }
+  } else if (currentState === 2) {
+    if (profileProgress === "SUBMIT_IDEA") isDisabled = true;
+  } else isDisabled = true;
 
   return (
     <div className="flex justify-between items-center">
@@ -42,7 +45,7 @@ const FormButtons = ({
         {currentState === 1 && !isLeader && "Only leader can proceed"}
       </span>
       <Button
-        disabled={buttonStatus}
+        disabled={isDisabled}
         onClick={async () => {
           if (currentState === 0) {
             if (profileProgress === "FORM_TEAM")
@@ -53,8 +56,7 @@ const FormButtons = ({
               setCurrentState(currentState + 1);
             }
           } else if (currentState === 2) {
-            if (profileProgress === "SUBMIT_IDEA")
-              setCurrentState(currentState + 1);
+            if (profileProgress === "SUBMIT_IDEA") return;
           } else return;
         }}
         className="flex items-center gap-2"
