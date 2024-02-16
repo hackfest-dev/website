@@ -1,7 +1,7 @@
 import Image from "next/image";
 export default function About() {
   return (
-    <div className="bg-gradient-to-b from-[#060e3c] to-[#06133f]">
+    <div className="bg-gradient-to-b from-[#06123e] to-[#045262]">
       <div className=" flex flex-col md:gap-16 gap-y-2 w-[80vw] mx-auto pt-[10rem]">
         <span className="text-base md:text-lg xl:text-xl text-secondary-100">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
@@ -27,8 +27,7 @@ export default function About() {
                 href="https://nmamit.nitte.edu.in/"
                 target="_blank"
                 rel="noreferrer"
-                className="underline underline-offset-4"
-              >
+                className="underline underline-offset-4">
                 www.nmamit.nitte.edu.in
               </a>
             </div>

@@ -6,12 +6,12 @@ import { FiExternalLink } from "react-icons/fi";
 
 const Sponsors = () => {
   return (
-    <main className="w-full h-full min-h-screen py-20 flex flex-col justify-around items-center gap-24 transition-all bg-gradient-to-b from-[#06123e] to-[#045262]">
+    <main className="w-full h-full min-h-screen pb-20 pt-32 flex flex-col justify-around items-center gap-24 transition-all bg-gradient-to-b from-[#06123e] to-[#045262]">
       <SectionHeading title="SPONSORS" classname="text-5xl md:text-7xl" />
 
-      <div className="flex flex-col w-full xl:w-2/3 xl:justify-around justify-center items-center gap-16 xl:gap-4 px-4">
+      <div className="flex flex-col w-full md:max-w-[90%] xl:w-2/3 xl:justify-around justify-center items-center gap-20 xl:gap-4 px-4">
         <div
-          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
+          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-[90%] p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
           <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
             <Image
               className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -48,7 +48,7 @@ const Sponsors = () => {
         </div>
 
         <div
-          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row-reverse gap-16 justify-between items-center text-white`}>
+          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-[90%] p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row-reverse gap-16 justify-between items-center text-white`}>
           <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
             <Image
               className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -93,7 +93,7 @@ const Sponsors = () => {
         </div>
 
         <div
-          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
+          className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-[90%] p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
           <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
             <Image
               className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -130,16 +130,24 @@ const Sponsors = () => {
             </a>
           </div>
         </div>
-      </div>
 
-      <div className="p-5 xl:p-7 mx-10 backdrop-blur-xl rounded-xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-col justify-center items-center gap-7 -hue-rotate-15">
-        <p>Any event is incomplete without support and love</p>
-        <h3 className="text-3xl font-semibold">Interested in sponsoring us?</h3>
-        <a href="mailto:sponsor@hackfest.dev" className="self-start">
-          <Button size={"lg"} className="text-xl font-semibold">
-            Email-us
-          </Button>
-        </a>
+        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] md:max-w-[90%] gap-10 xl:gap-20">
+          <div className="relative h-52 aspect-square hidden md:flex">
+            <Image src="/logos/logo.png" alt="Hackfest_Logo" fill />
+          </div>
+          <div className="h-40 w-1 bg-white rounded-full hidden md:flex"></div>
+          <div className="flex flex-col justify-center items-center gap-5 p-6 xl:p-7 ">
+            <p>Any event is incomplete without support and love</p>
+            <h3 className="text-3xl font-semibold">
+              Interested in sponsoring us?
+            </h3>
+            <a href="mailto:sponsor@hackfest.dev">
+              <Button size={"lg"} className="text-xl font-semibold">
+                Reach Out To Us
+              </Button>
+            </a>
+          </div>
+        </div>
       </div>
     </main>
   );

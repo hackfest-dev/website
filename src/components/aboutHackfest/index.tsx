@@ -11,6 +11,7 @@ import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import { Button } from "../ui/button";
 import styles from "./style.module.css";
 import FadeIn from "../fadeInAnimation";
+import { Download } from "lucide-react";
 
 const AboutHackfest = () => {
   const childRef36 = useRef<HTMLDivElement>(null);
@@ -20,6 +21,8 @@ const AboutHackfest = () => {
   const tagelinRef2 = useRef<HTMLDivElement>(null);
   const tagelinRef3 = useRef<HTMLDivElement>(null);
   const tagelinRef4 = useRef<HTMLDivElement>(null);
+  const prizeParentRef = useRef<HTMLDivElement>(null);
+  const prizeChildRef = useRef<HTMLDivElement>(null);
 
   const checkHover = (
     rect: DOMRect,
@@ -72,6 +75,7 @@ const AboutHackfest = () => {
   const counterAnimation = (
     childRef: RefObject<HTMLElement>,
     target: number,
+    padding: number = 2,
     duration: number = 2,
     delay: number = 0.3
   ) => {
@@ -84,7 +88,7 @@ const AboutHackfest = () => {
       onUpdate: () => {
         if (childRef.current)
           childRef.current.innerText = `${counter.value.toFixed(0)}`.padStart(
-            2,
+            padding,
             "0"
           );
       },
@@ -119,6 +123,20 @@ const AboutHackfest = () => {
         },
       },
     });
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: prizeParentRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        onEnter: () => {
+          counterAnimation(prizeChildRef, 200000, 6);
+        },
+        onEnterBack: () => {
+          counterAnimation(prizeChildRef, 200000, 6);
+        },
+      },
+    });
   }, []);
 
   return (
@@ -130,7 +148,7 @@ const AboutHackfest = () => {
           className={`${styles.bentoGrid} grid gap-2 w-screen 2xl:max-w-screen-2xl px-2 py-2`}>
           {/* Cell 1x1 */}
           <GridTile cellType="c11" cellNo={1}>
-            <FadeIn className="w-full h-full">
+            <FadeIn direction="right" className="w-full h-full">
               <div className="w-full h-full flex justify-center items-center gap-4">
                 <div className="flex flex-col justify-center items-cente">
                   <h1 className="text-4xl lg:text-6xl font-bold font-obscura tracking-wider text-center">
@@ -144,7 +162,7 @@ const AboutHackfest = () => {
                     7th
                   </p>
                 </div>
-                <div className="flex flex-col items-center justify-center font-semibold text-xl leading-5 sm:max-xl:hidden">
+                <div className="flex flex-col items-center justify-center font-semibold text-xl leading-5 max-xl:hidden">
                   <div>2</div>
                   <div>0</div>
                   <div>2</div>
@@ -154,8 +172,7 @@ const AboutHackfest = () => {
             </FadeIn>
           </GridTile>
 
-          {/* TODO */}
-          <GridTile cellType="c11" cellNo={2} className="hidden sm:block">
+          <GridTile cellType="c11" cellNo={2}>
             <div className="relative w-full h-full">
               <Image
                 src="/logos/logo.png"
@@ -198,23 +215,34 @@ const AboutHackfest = () => {
             </div>
           </GridTile>
 
-          {/* TODO */}
           <GridTile cellType="c11" cellNo={5}>
-            <div className="w-full h-full flex justify-center items-center">
-              <a href="/about">
-                <Button className="font-medium">Read More</Button>
-              </a>
+            <div className="w-full h-full flex flex-col justify-center items-center gap-6">
+              <div
+                ref={prizeParentRef}
+                className="w-full flex flex-col justify-center items-center text-2xl xl:text-4xl gap-3">
+                <div>
+                  &#8377;<span ref={prizeChildRef}>200000</span>+
+                </div>
+                <div>Prize Money</div>
+              </div>
             </div>
           </GridTile>
 
           <GridTile cellType="c11" cellNo={6}>
-            <div className="relative w-full h-full">
-              <Image
-                src="/logos/flc_logo_crop.png"
-                alt="FLC_Logo"
-                fill
-                className="object-contain"
-              />
+            <div className="w-full h-full flex flex-col justify-center items-center gap-3">
+              <div className="relative h-3/5 aspect-square">
+                <Image
+                  src="/logos/flc_logo_crop.png"
+                  alt="FLC_Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <div>
+                <a href="/about">
+                  <Button className="font-medium">Read More</Button>
+                </a>
+              </div>
             </div>
           </GridTile>
 
@@ -290,23 +318,11 @@ const AboutHackfest = () => {
               <h4 className="my-4 text-sm md:text-base">
                 For More Information
               </h4>
-              <a href="/hackfest_Brochure.pdf" download="brochure.pdf">
-                <Button className=" text-sm md:text-base font-medium">
-                  Download Brochure
+              <a href="/hackfest_Brochure.pdf" download="Hackfest_Brochure.pdf">
+                <Button className=" text-sm md:text-base font-medium gap-2">
+                  <Download /> Brochure
                 </Button>
               </a>
-            </div>
-          </GridTile>
-
-          {/* TODO */}
-          <GridTile cellType="c21" cellNo={3} className="block sm:hidden">
-            <div className="relative w-full h-full">
-              <Image
-                src="/logos/logo.png"
-                alt="Hackfest_Logo"
-                fill
-                className="object-contain"
-              />
             </div>
           </GridTile>
 

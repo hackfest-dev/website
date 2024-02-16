@@ -12,11 +12,13 @@ export default function FadeIn({
   children,
   className,
   delay = 0,
+  direction = "up",
   div,
 }: {
   children: JSX.Element;
   className?: string;
   div?: PrimitiveDivProps;
+  direction?: "up" | "down" | "left" | "right";
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -24,11 +26,13 @@ export default function FadeIn({
     gsap.fromTo(
       ref.current,
       {
-        y: 40,
+        y: direction === "up" ? 40 : direction === "down" ? -40 : 0,
+        x: direction === "left" ? -40 : direction === "right" ? 40 : 0,
         opacity: 0,
       },
       {
         y: 0,
+        x: 0,
         opacity: 1,
         delay: delay,
         duration: 0.5,
