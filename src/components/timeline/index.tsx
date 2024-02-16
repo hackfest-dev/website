@@ -41,7 +41,7 @@ const Timeline = ({ events }: { events: Event[] }) => {
     damping: 25,
     stiffness: 150,
   });
-  const divisions = events.length;
+  const divisions = 12;
   ``;
   const angle = useTransform(
     smoothScroll,
