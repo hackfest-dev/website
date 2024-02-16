@@ -121,10 +121,10 @@ export const siteMetadata = {
 };
 
 export const navLinks = [
-  { url: "#", label: "Home" },
-  { url: "#about", label: "About" },
-  { url: "#tracks", label: "Tracks" },
-  { url: "#timeline", label: "Timeline" },
-  { url: "#sponsors", label: "Sponsors" },
-  { url: "#prizes", label: "Prizes" },
+  { url: "/", label: "Home" },
+  { url: "/#about", label: "About" },
+  { url: "/#tracks", label: "Tracks" },
+  { url: "/#timeline", label: "Timeline" },
+  { url: "/#sponsors", label: "Sponsors" },
+  { url: "/#prizes", label: "Prizes" },
 ];
