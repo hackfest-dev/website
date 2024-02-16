@@ -18,7 +18,7 @@ const SessionButton = () => {
   return (
     <div className="pl-4 flex justify-center">
       {session ? (
-        <Link href={'/user/profile'}>
+        <Link href={'/profile'}>
           <Image
             src={session.user?.image as string}
             width={40}
