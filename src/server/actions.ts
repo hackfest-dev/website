@@ -416,29 +416,21 @@ const getTeamDetailsById = async (teamId: string) => {
 
 const addFaq = async (faq: {
   question: string;
-  answer: string;
-  published: boolean;
   category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
 }) => {
   await prisma.faq.create({
-    data: faq,
+    data: {
+      question: faq.question,
+      category: faq.category,
+      answer: "",
+      published: false,
+    },
   });
 };
 
-const changeFaqStatus = async (id: number) => {
-  const faq = await prisma.faq.findUnique({
-    where: {
-      id: id,
-    },
-  });
-  await prisma.faq.update({
-    where: {
-      id: id,
-    },
-    data: {
-      published: !faq?.published,
-    },
-  });
+const getAllFaqs = async () => {
+  const faqs = await prisma.faq.findMany();
+  return faqs;
 };
 
 const answerFaq = async (id: number, answer: string) => {
@@ -448,6 +440,7 @@ const answerFaq = async (id: number, answer: string) => {
     },
     data: {
       answer: answer,
+      published: true,
     },
   });
 };
@@ -463,6 +456,6 @@ export {
   submitIdea,
   getTeamDetailsById,
   addFaq,
-  changeFaqStatus,
+  getAllFaqs,
   answerFaq,
 };
