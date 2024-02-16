@@ -9,6 +9,7 @@ interface DropzoneProps {
   className?: string;
   fileExtension?: string;
   image?: string;
+  pdf?: boolean;
 }
 
 // Create the Dropzone component receiving props
@@ -17,6 +18,7 @@ export function Dropzone({
   className,
   fileExtension,
   image,
+  pdf,
   ...props
 }: DropzoneProps) {
   // Initialize state variables using the useState hook
@@ -50,7 +52,9 @@ export function Dropzone({
   // Function to handle processing of uploaded files
   const handleFiles = (files: FileList) => {
     const uploadedFile = files[0];
-    const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedImageTypes = pdf
+      ? ['application/pdf']
+      : ['image/jpeg', 'image/png'];
     // Check file extension
     // if (fileExtension && !uploadedFile.name.endsWith(`.${fileExtension}`)) {
     if (!allowedImageTypes.includes(uploadedFile.type)) {
@@ -103,12 +107,16 @@ export function Dropzone({
           <input
             ref={fileInputRef}
             type="file"
-            accept={`image/png, image/jpg, image/jpeg`} // Set accepted file type
+            accept={`
+            ${pdf ? 'application/pdf' : 'image/png, image/jpg, image/jpeg'}
+            `} // Set accepted file type
             onChange={handleFileInputChange}
             className="hidden"
           />
         </div>
-        {previewURL ? (
+        {}
+        {pdf && <>{fileInfo}</>}
+        {!pdf && previewURL ? (
           <img
             src={previewURL}
             alt="Uploaded"
@@ -126,7 +134,9 @@ export function Dropzone({
           </svg>
         )}
         <div className="text-xs text-center text-muted-foreground">
-          Only .png, .jpg, and .jpeg files are allowed less than 2MB.
+          {pdf
+            ? 'Only .pdf is allowed less than 5MB. Convert your .ppt to .pdf before uploading.'
+            : 'Only .png, .jpg, and .jpeg files are allowed less than 2MB.'}
         </div>
 
         {/* {fileInfo && <p className="text-muted-foreground">{fileInfo}</p>} */}
