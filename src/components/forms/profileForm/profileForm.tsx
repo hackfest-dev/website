@@ -67,14 +67,7 @@ const ProfileForm = ({
 }) => {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
-  // const [collegeId, setCollegeId] = useState<{
-  //   url: string;
-  //   file: File | undefined;
-  // }>();
-  // const [aadhaar, setAadhaar] = useState<{
-  //   url: string;
-  //   file: File | undefined;
-  // }>();
+
   const form = useForm<z.infer<typeof updateProfileZ>>({
     resolver: zodResolver(updateProfileZ),
     defaultValues: {
@@ -97,32 +90,17 @@ const ProfileForm = ({
   const [collegevalue, setCollegevalue] = useState('');
   const [collegeId, setCollegeId] = useState('');
 
-  // const previewCollegeId = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = e.target.files;
-  //   if (files) {
-  //     const url = URL.createObjectURL(files[0]);
-  //     setCollegeId({ url, file: files[0] });
-  //   }
-  // };
-
   if (currentState !== 0 && registerProp) {
     return <></>;
   }
 
-  // const previewAdhaar = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = e.target.files;
-  //   if (files) {
-  //     const url = URL.createObjectURL(files[0]);
-  //     setAadhaar({ url, file: files[0] });
-  //   }
-  // };
-  // console.log(user.college_id)
   const onSubmit = async (data: z.infer<typeof updateProfileZ>) => {
     setLoading(true);
     // e.preventDefault();
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('phone', data.phone);
+    console.log(coursevalue, collegeId);
     formData.append('course', coursevalue || '');
     formData.append('college', collegeId || '');
     formData.append('tshirtSize', data.tshirtSize || '');
@@ -130,6 +108,7 @@ const ProfileForm = ({
     formData.append('aadhaarFile', aadhaarFile || '');
     toast.loading('Saving Details...', {
       id: 'loadingToast',
+      position: 'bottom-center',
     });
 
     const res = await updateProfile(formData);
@@ -137,10 +116,12 @@ const ProfileForm = ({
     if (res.type !== 'error')
       toast.success('Profile Updated', {
         duration: 2000,
+        position: 'bottom-center',
       });
     else
       toast.error(res.message, {
         duration: 2000,
+        position: 'bottom-center',
       });
     setError(res.message);
     setLoading(false);
@@ -206,7 +187,7 @@ const ProfileForm = ({
                           variant="outline"
                           role="combobox"
                           aria-expanded={openCollegeList}
-                          className="w-full justify-between overflow-hidden"
+                          className="w-full justify-between overflow-hidden truncate"
                         >
                           {collegevalue
                             ? collegevalue

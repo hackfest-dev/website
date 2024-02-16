@@ -1,11 +1,11 @@
-"use client";
+'use client';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
   DialogTitle,
-} from "@/src/components/ui/dialog";
+} from '@/src/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -13,12 +13,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/src/components/ui/table";
-import { FaQuestionCircle } from "react-icons/fa";
-import { getAllFaqs, deleteFaq, answerFaq } from "@/src/server/actions";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { IoTrashBin } from "react-icons/io5";
+} from '@/src/components/ui/table';
+import { FaQuestionCircle } from 'react-icons/fa';
+import { getAllFaqs, deleteFaq, answerFaq } from '@/src/server/actions';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { IoTrashBin } from 'react-icons/io5';
 
 export default function FaqAdmin() {
   const [faqData, setFaqData] = useState<
@@ -29,7 +29,7 @@ export default function FaqAdmin() {
       published: boolean;
     }[]
   >([]);
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState('');
   useEffect(() => {
     getAllFaqs().then((data) => {
       setFaqData(data);
@@ -78,17 +78,23 @@ export default function FaqAdmin() {
                                   try {
                                     if (answer) {
                                       await answerFaq(faq.id, answer);
-                                      toast.success("Answered");
+                                      toast.success('Answered', {
+                                        position: 'bottom-center',
+                                      });
 
-                                      setAnswer("");
+                                      setAnswer('');
                                       getAllFaqs().then((data) => {
                                         setFaqData(data);
                                       });
                                     } else {
-                                      toast.error("Answer cannot be empty");
+                                      toast.error('Answer cannot be empty', {
+                                        position: 'bottom-center',
+                                      });
                                     }
                                   } catch (e) {
-                                    toast.error("Failed to answer");
+                                    toast.error('Failed to answer', {
+                                      position: 'bottom-center',
+                                    });
                                   }
                                 }}
                               >
@@ -108,9 +114,9 @@ export default function FaqAdmin() {
                                     );
                                   });
                                 });
-                                toast.success("FAQ Deleted");
+                                toast.success('FAQ Deleted');
                               } catch (e) {
-                                toast.error("Error deleting FAQ");
+                                toast.error('Error deleting FAQ');
                               }
                             }}
                             className="cursor-pointer"
