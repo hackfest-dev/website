@@ -31,8 +31,7 @@ const config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        rainbow:
-          'repeating-linear-gradient(45deg, yellow 0%, magenta 8.33%, cyan 16.66%, dodgerblue 25%, cyan 33.33%, magenta 41.66%, yellow 50%)',
+        diamond: 'repeating-linear-gradient(45deg, #00ffff 0%, #1e90ff 25%, #00ffff 50%)',
         gold: 'repeating-linear-gradient(45deg, #dea500 0%, #f6f278 25%, #dea500 50%)',
         silver:
           'repeating-linear-gradient(45deg, #ffffff 0%, #ababab 25%, #ffffff 50%)',

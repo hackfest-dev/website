@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Dialog,
@@ -7,14 +7,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '../ui/dialog';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Loader2Icon, Plus } from 'lucide-react';
-import { createCollege } from '@/src/server/actions';
-import { useState } from 'react';
-import { States } from '@prisma/client';
-import { toast } from 'sonner';
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Loader2Icon, Plus } from "lucide-react";
+import { createCollege } from "@/src/server/actions";
+import { useState } from "react";
+import { States } from "@prisma/client";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -22,12 +22,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
-import { ScrollArea } from '@radix-ui/react-scroll-area';
-import { useForm } from 'react-hook-form';
-import { createCollegeZ } from '@/src/lib/zod-schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+} from "../ui/select";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { useForm } from "react-hook-form";
+import { createCollegeZ } from "@/src/lib/zod-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -35,7 +35,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
+} from "../ui/form";
 
 const CreateCollege = () => {
   const states = Object.entries(States).map(([, value]) => value);
@@ -43,7 +43,7 @@ const CreateCollege = () => {
   const form = useForm<z.infer<typeof createCollegeZ>>({
     resolver: zodResolver(createCollegeZ),
     defaultValues: {
-      name: '',
+      name: "",
       state: States.KARNATAKA,
     },
   });
@@ -54,11 +54,11 @@ const CreateCollege = () => {
   const onSubmit = async () => {
     setLoading(true);
     const res = await createCollege({
-      name: form.getValues('name'),
-      state: form.getValues('state'),
+      name: form.getValues("name"),
+      state: form.getValues("state"),
     });
-    toast.success('College Added', {
-      position: 'bottom-center',
+    toast.success("College Added", {
+      position: "bottom-center",
     });
     setLoading(false);
     setOpen(false);
