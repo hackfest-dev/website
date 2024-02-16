@@ -158,6 +158,7 @@ enum Progress {
   FILL_DETAILS
   PAYMENT
   FORM_TEAM
+  SUBMIT_IDEA
   COMPLETE
 }
 

@@ -37,12 +37,14 @@ export default async function RegisterPage() {
     currentStep = 0;
   } else if (user.profileProgress === "FORM_TEAM") {
     currentStep = 1;
-  } else if (user.profileProgress === "COMPLETE") {
+  } else if (user.profileProgress === "SUBMIT_IDEA") {
     if (user.team?.ideaSubmission) {
       currentStep = 3;
     } else {
       currentStep = 2;
     }
+  } else if (user.profileProgress === "COMPLETE") {
+    currentStep = 3;
   }
   return (
     <main className="max-w-screen-2xl min-h-screen mx-auto flex justify-center items-center">

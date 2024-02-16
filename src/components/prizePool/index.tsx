@@ -53,7 +53,7 @@ const PrizePool = () => {
 
   return (
     <>
-      <div className="z-0  w-full flex flex-col items-center justify-center rounded-md py-10 md:py-16 xl:py-20 gap-6 md:gap-10 bg-slate-950 overflow-clip">
+      <div id="prizes" className="z-0  w-full flex flex-col items-center justify-center rounded-md py-10 md:py-16 xl:py-20 gap-6 md:gap-10 bg-slate-950 overflow-clip">
         <div className="flex flex-col items-center justify-center">
           <SectionHeading title="Prize Pool" />
           <FadeIn delay={0.3}>

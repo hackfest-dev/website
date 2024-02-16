@@ -213,7 +213,10 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
   return (
     <>
-      <section className="max-w-screen-xl p-2 md:p-12 mx-auto w-full">
+      <section
+        id="tracks"
+        className="max-w-screen-xl p-2 md:p-12 mx-auto w-full"
+      >
         <div
           id="contents"
           ref={contentRef}

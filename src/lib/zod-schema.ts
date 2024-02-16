@@ -17,12 +17,16 @@ const updateProfileZ = z.object({
       invalid_type_error: "Something went wrong",
     })
     .min(1, { message: "College cannot be empty" }),
-  otherCollege: z.string({
-    invalid_type_error: "Something went wrong",
-  }),
-  otherCollegeState: z.string({
-    invalid_type_error: "Something went wrong",
-  }),
+  otherCollege: z
+    .string({
+      invalid_type_error: "Something went wrong",
+    })
+    .default(""),
+  otherCollegeState: z
+    .string({
+      invalid_type_error: "Something went wrong",
+    })
+    .default(""),
   //   state: z.string().optional(),
   tshirtSize: z.custom<TshirtSize>((val) => {
     return Object.values(TshirtSize).includes(val as TshirtSize);
@@ -35,9 +39,13 @@ const updateProfileZ = z.object({
 });
 
 const submitIdeaZ = z.object({
-  problemStatement: z.string(),
-  track: z.nativeEnum(Tracks),
-  referralCode: z.string(),
+  problemStatement: z
+    .string()
+    .min(1, { message: "Problem statement cannot be empty" }),
+  track: z.nativeEnum(Tracks, {
+    required_error: "Track is required",
+  }),
+  referralCode: z.string().default(""),
   ppt: z.custom<File>(),
 });
 
