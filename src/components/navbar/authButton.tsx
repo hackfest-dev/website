@@ -15,18 +15,31 @@ const AuthButton = () => {
 
 const SessionButton = () => {
   const { data: session } = useSession();
+
   return (
     <div className="pl-4 flex justify-center">
       {session ? (
-        <Link href={"/profile"}>
-          <Image
-            src={session.user?.image as string}
-            width={40}
-            height={40}
-            alt="profile"
-            className="rounded-full"
-          />
-        </Link>
+        <>
+          {session?.user?.profileProgress !== "COMPLETE" ? (
+            <>
+              <Link href={"/register"}>
+                <Button>Register</Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href={"/profile"}>
+                <Image
+                  src={session.user?.image as string}
+                  width={40}
+                  height={40}
+                  alt="profile"
+                  className="rounded-full"
+                />
+              </Link>
+            </>
+          )}
+        </>
       ) : (
         <Button
           onClick={() => signIn("google")}
