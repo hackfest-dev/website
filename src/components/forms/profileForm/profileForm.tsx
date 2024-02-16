@@ -39,6 +39,7 @@ import {
   CommandItem,
 } from '../../ui/command';
 import CreateCollege from '../../profile/createCollege';
+import { ScrollArea } from '../../ui/scroll-area';
 
 const ProfileForm = ({
   user,
@@ -236,46 +237,48 @@ const ProfileForm = ({
                             <CreateCollege />
                           </CommandEmpty>
                           <CommandGroup>
-                            {colleges.map((college) => (
-                              <CommandItem
-                                key={college.id}
-                                value={college.name}
-                                onSelect={(currentValue) => {
-                                  setCollegeId(college.id);
-                                  setCollegevalue(
-                                    currentValue === collegevalue
-                                      ? ''
-                                      : college.name +
-                                          ', ' +
-                                          college.state
-                                            .replace(/_/g, ' ')
-                                            .split(' ')
-                                            .map(
-                                              (word) =>
-                                                word.charAt(0).toUpperCase() +
-                                                word.slice(1).toLowerCase()
-                                            )
-                                            .join(' ')
-                                  );
-                                  // setFormData({
-                                  //   ...formData,
-                                  //   collegeId: college.id,
-                                  // });
-                                  setOpenCollegeList(false);
-                                }}
-                              >
-                                {college.name},{' '}
-                                {college.state
-                                  .replace(/_/g, ' ')
-                                  .split(' ')
-                                  .map(
-                                    (word) =>
-                                      word.charAt(0).toUpperCase() +
-                                      word.slice(1).toLowerCase()
-                                  )
-                                  .join(' ')}
-                              </CommandItem>
-                            ))}
+                            <ScrollArea className="h-72">
+                              {colleges.map((college) => (
+                                <CommandItem
+                                  key={college.id}
+                                  value={college.name}
+                                  onSelect={(currentValue) => {
+                                    setCollegeId(college.id);
+                                    setCollegevalue(
+                                      currentValue === collegevalue
+                                        ? ''
+                                        : college.name +
+                                            ', ' +
+                                            college.state
+                                              .replace(/_/g, ' ')
+                                              .split(' ')
+                                              .map(
+                                                (word) =>
+                                                  word.charAt(0).toUpperCase() +
+                                                  word.slice(1).toLowerCase()
+                                              )
+                                              .join(' ')
+                                    );
+                                    // setFormData({
+                                    //   ...formData,
+                                    //   collegeId: college.id,
+                                    // });
+                                    setOpenCollegeList(false);
+                                  }}
+                                >
+                                  {college.name},{' '}
+                                  {college.state
+                                    .replace(/_/g, ' ')
+                                    .split(' ')
+                                    .map(
+                                      (word) =>
+                                        word.charAt(0).toUpperCase() +
+                                        word.slice(1).toLowerCase()
+                                    )
+                                    .join(' ')}
+                                </CommandItem>
+                              ))}
+                            </ScrollArea>
                           </CommandGroup>
                         </Command>
                       </PopoverContent>
