@@ -1,8 +1,7 @@
 "use client";
-import { College, TshirtSize, User } from "@prisma/client";
+import { College, User } from "@prisma/client";
 import { updateProfile } from "@/src/server/actions";
 import { Dispatch, useContext, useState } from "react";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { updateProfileZ } from "@/src/lib/zod-schema";
@@ -28,9 +27,18 @@ import { Button } from "../../ui/button";
 import { getUrlAndId } from "@/src/lib/utils/helper";
 import { ProgressContext } from "../../progressProvider";
 import { toast } from "sonner";
-import { Loader2Icon, Save } from "lucide-react";
+import { ChevronDown, Loader2Icon, Save } from "lucide-react";
 import { Card, CardContent } from "../../ui/card";
 import { Dropzone } from "../../ui/dropZone";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "../../ui/command";
+import CreateCollege from "../../profile/createCollege";
 
 const ProfileForm = ({
   user,
@@ -45,6 +53,7 @@ const ProfileForm = ({
   colleges: {
     id: string;
     name: string;
+    state: string;
   }[];
   states: string[];
   courses: string[];
@@ -80,6 +89,11 @@ const ProfileForm = ({
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<string>("");
+  const [openCourseList, setOpenCourseList] = useState(false);
+  const [coursevalue, setCoursevalue] = useState("");
+
+  const [openCollegeList, setOpenCollegeList] = useState(false);
+  const [collegevalue, setCollegevalue] = useState("");
 
   // const previewCollegeId = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const files = e.target.files;
@@ -183,74 +197,94 @@ const ProfileForm = ({
                 <FormItem className="md:w-[45%] w-full">
                   <FormLabel className="">College</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select your college" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value={"other"}>Other</SelectItem>
-                          {colleges.map(({ id, name }, key) => (
-                            <SelectItem value={id} key={key}>
-                              {name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Popover
+                      open={openCollegeList}
+                      onOpenChange={setOpenCollegeList}
+                    >
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={openCollegeList}
+                          className="w-full justify-between overflow-hidden"
+                        >
+                          {collegevalue
+                            ? collegevalue
+                            : user.college?.name
+                              ? user.college?.name +
+                                ", " +
+                                user.college.state
+                                  .replace(/_/g, " ")
+                                  .split(" ")
+                                  .map(
+                                    (word) =>
+                                      word.charAt(0).toUpperCase() +
+                                      word.slice(1).toLowerCase()
+                                  )
+                                  .join(" ")
+                              : "Select college"}
+                          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="px-3">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search college here..."
+                            className="h-9"
+                          />
+                          <CommandEmpty className="mt-3 flex justify-center items-center flex-col text-center">
+                            No College with that name found.
+                            <CreateCollege />
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {colleges.map((college) => (
+                              <CommandItem
+                                key={college.id}
+                                value={college.name}
+                                onSelect={(currentValue) => {
+                                  setCollegevalue(
+                                    currentValue === collegevalue
+                                      ? ""
+                                      : college.name +
+                                          ", " +
+                                          college.state
+                                            .replace(/_/g, " ")
+                                            .split(" ")
+                                            .map(
+                                              (word) =>
+                                                word.charAt(0).toUpperCase() +
+                                                word.slice(1).toLowerCase()
+                                            )
+                                            .join(" ")
+                                  );
+                                  // setFormData({
+                                  //   ...formData,
+                                  //   collegeId: college.id,
+                                  // });
+                                  setOpenCollegeList(false);
+                                }}
+                              >
+                                {college.name},{" "}
+                                {college.state
+                                  .replace(/_/g, " ")
+                                  .split(" ")
+                                  .map(
+                                    (word) =>
+                                      word.charAt(0).toUpperCase() +
+                                      word.slice(1).toLowerCase()
+                                  )
+                                  .join(" ")}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             ></FormField>
-            {form.watch("college") === "other" && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="otherCollege"
-                  render={({ field, formState, fieldState }) => {
-                    return (
-                      <FormItem className="md:w-[45%] w-full">
-                        <FormLabel className="">Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="My College" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                ></FormField>
-                <FormField
-                  control={form.control}
-                  name="otherCollegeState"
-                  render={({ field, formState, fieldState }) => (
-                    <FormItem className="md:w-[45%] w-full">
-                      <FormLabel className="">State</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select state" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {states.map((state, key) => (
-                                <SelectItem value={state} key={key}>
-                                  {state}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                ></FormField>
-              </>
-            )}
             {/* Course */}
             <FormField
               control={form.control}
@@ -259,25 +293,63 @@ const ProfileForm = ({
                 <FormItem className="md:w-[45%] w-full">
                   <FormLabel className="">Degree</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select your Degree" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {courses.map((course, key) => (
-                            <SelectItem value={course} key={key}>
-                              {course}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Popover
+                      open={openCourseList}
+                      onOpenChange={setOpenCourseList}
+                    >
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={openCourseList}
+                          className="w-full justify-between"
+                        >
+                          {coursevalue
+                            ? coursevalue
+                            : form.getValues("course")
+                              ? form.getValues("course")
+                              : "Select course"}
+                          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="px-3">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search course here..."
+                            className="h-9"
+                          />
+                          <CommandEmpty>
+                            Only Bachelor Degrees in Engineering are allowed.
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {courses.map((course) => (
+                              <CommandItem
+                                key={course}
+                                value={course}
+                                onSelect={(currentValue) => {
+                                  setCoursevalue(
+                                    currentValue === coursevalue ? "" : course
+                                  );
+                                  // setFormData({
+                                  //   ...formData,
+                                  //   course: course,
+                                  // });
+                                  setOpenCourseList(false);
+                                }}
+                              >
+                                {course}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             ></FormField>
+            {/* T-Shirt Size */}
             <FormField
               control={form.control}
               name="tshirtSize"

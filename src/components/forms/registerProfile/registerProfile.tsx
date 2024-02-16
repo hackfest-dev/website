@@ -17,6 +17,7 @@ const RegisterProfileForm = ({
   colleges: {
     id: string;
     name: string;
+    state : string
   }[];
   states: string[];
   courses: string[];

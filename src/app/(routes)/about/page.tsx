@@ -1,17 +1,28 @@
 import Image from "next/image";
+import { SectionHeading } from "@/src/components/ui/sectionHeading";
+import FadeIn from "@/src/components/fadeInAnimation";
 export default function About() {
   return (
-    <div className="bg-gradient-to-b from-[#06123e] to-[#045262]">
-      <div className=" flex flex-col md:gap-16 gap-y-2 w-[80vw] mx-auto pt-[10rem]">
-        <span className="text-base md:text-lg xl:text-xl text-secondary-100">
+    <div
+      className="bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933]"
+      style={{
+        background:
+          "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
+      }}
+    >
+      <div className=" flex flex-col md:gap-8 gap-y-6 w-[80vw] mx-auto pt-[10rem]">
+        <div className="flex w-full justify-center items-center">
+          <SectionHeading title="ABOUT US" />
+        </div>
+        <span className="text-base md:text-lg xl:text-xl bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/NMAMITLogo.png`}
               alt="image"
               loading="lazy"
               className="object-contain h-full object-center top-0 md:w-1/3 w-3/4"
-              height={500}
-              width={500}
+              height={600}
+              width={600}
             />
             <div className="max-w-3xl text-justify">
               Nitte Mahalinga Adyantaya Memorial Institute of Technology
@@ -27,20 +38,21 @@ export default function About() {
                 href="https://nmamit.nitte.edu.in/"
                 target="_blank"
                 rel="noreferrer"
-                className="underline underline-offset-4">
+                className="underline underline-offset-4"
+              >
                 www.nmamit.nitte.edu.in
               </a>
             </div>
           </div>
         </span>
 
-        <span className="text-base md:text-lg xl:text-xl text-secondary-100">
+        <span className="text-base md:text-lg xl:text-xl bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/flcLogo.png`}
               alt="image"
               loading="lazy"
-              className="object-contain md:h-[32rem] h-[15rem] object-center top-0 md:w-1/3 w-3/4"
+              className="object-contain h-full object-center top-0 md:w-1/3 w-3/4"
               height={400}
               width={400}
             />
@@ -53,6 +65,30 @@ export default function About() {
               real-time projects. Our coding contests enhance analytical and
               problem-solving skills.
             </div>
+          </div>
+        </span>
+
+        <span className="flex flex-col gap-8 md:pb-24 pb-12">
+          <div className="flex w-full justify-center items-center">
+            <SectionHeading title="SUPPORTING BODIES" />
+          </div>
+
+          <div className=" flex justify-center items-center w-full">
+            <span className="flex md:flex-row flex-col items-center justify-center md:gap-8 gap-4 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6">
+              <Image
+                src="/logos/csi-logo.png"
+                alt="Logo: CSI"
+                width={200}
+                height={300}
+              />
+
+              <h3 className=" xl:text-5xl lg:text-4xl md:text-3xl text-2xl text-center flex flex-col space-y-4">
+                <span>Computer Society of India</span>
+                <span className="xl:text-4xl lg:text-3xl md:text-2xl text-xl text-center flex flex-col">
+                  NMAMIT Chapter
+                </span>
+              </h3>
+            </span>
           </div>
         </span>
       </div>

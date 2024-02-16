@@ -30,14 +30,14 @@ export const FAQ: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center md:py-12 py-6 gap-y-12 ">
+      <div className="flex flex-col justify-center items-center md:py-12 py-6 gap-y-4 ">
         <SectionHeading title="FAQ" />
         <div className="flex flex-col w-full justify-center items-center py-8 space-y-6">
           <Tabs
             defaultValue="GENERAL"
-            className=" justify-center items-center flex flex-col"
+            className=" justify-center items-center flex flex-col "
           >
-            <TabsList>
+            <TabsList className="md:scale-150 scale-125">
               <TabsTrigger value="GENERAL">General</TabsTrigger>
               <TabsTrigger value="FOOD">Food</TabsTrigger>
               <TabsTrigger value="STAY">Stay</TabsTrigger>
