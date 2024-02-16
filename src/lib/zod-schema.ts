@@ -6,7 +6,10 @@ const updateUserZ = z.object({
 });
 
 const updateProfileZ = z.object({
-  name: z.string().min(1, { message: "Name cannot be empty" }),
+  name: z
+    .string()
+    .min(1, { message: "Name cannot be empty" })
+    .max(50, { message: "Name cannot exceed 50 characters" }),
   phone: z
     .string()
     .min(10, { message: "Phone number should be at least 10 characters long" })
@@ -38,7 +41,11 @@ const updateProfileZ = z.object({
 });
 
 const editProfileZ = z.object({
-  name: z.string().min(1, { message: "Name cannot be empty" }),
+  name: z
+    .string()
+    .min(1, { message: "Name cannot be empty" })
+    .min(5, { message: "Name should be at least 5 characters long" })
+    .max(50, { message: "Name cannot exceed 50 characters" }),
   phone: z
     .string()
     .min(10, { message: "Phone number should be at least 10 characters long" })
@@ -59,7 +66,10 @@ const editProfileZ = z.object({
 const submitIdeaZ = z.object({
   problemStatement: z
     .string()
-    .min(1, { message: "Problem statement cannot be empty" }),
+    .min(1, { message: "Problem statement cannot be empty" })
+    .max(100, {
+      message: "Problem statement cannot exceed 100 characters",
+    }),
   track: z.nativeEnum(Tracks, {
     required_error: "Track is required",
   }),
@@ -68,7 +78,13 @@ const submitIdeaZ = z.object({
 });
 
 const createTeamZ = z.object({
-  teamName: z.string().min(1, { message: "Team name cannot be empty" }),
+  teamName: z
+    .string()
+    .min(1, { message: "Team name cannot be empty" })
+    .max(10, { message: "Team name cannot exceed 10 characters" })
+    .refine((value) => !value.startsWith(" ") && !value.endsWith(" "), {
+      message: "Team name cannot start or end with a space",
+    }),
 });
 
 const joinTeamZ = z.object({
@@ -76,10 +92,7 @@ const joinTeamZ = z.object({
 });
 
 const createCollegeZ = z.object({
-  name: z
-    .string()
-    .min(1, { message: "Name cannot be empty" })
-    .max(50, { message: "Name cannot exceed 50 characters" }),
+  name: z.string().min(1, { message: "Name cannot be empty" }),
   state: z
     .string({
       invalid_type_error: "Something went wrong",

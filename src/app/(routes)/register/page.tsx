@@ -1,13 +1,13 @@
-import CreateTeam from '@/src/components/forms/createTeam';
-import RegisterProfile from '@/src/components/forms/registerProfile';
-import TeamDetails from '@/src/components/forms/teamInfo';
-import { getCurrentUser } from '@/src/lib/session';
-import ProgressProvider from '../../../components/progressProvider';
-import Progress from '@/src/components/registrationProgress';
-import IdeaSubmitForm from '@/src/components/forms/ideaSubmitForm';
-import FormButtons from '@/src/components/formButtons';
-import NotLoggedIn from '@/src/components/notLoggedIn';
-import Registered from '@/src/components/registered';
+import CreateTeam from "@/src/components/forms/createTeam";
+import RegisterProfile from "@/src/components/forms/registerProfile";
+import TeamDetails from "@/src/components/forms/teamInfo";
+import { getCurrentUser } from "@/src/lib/session";
+import ProgressProvider from "../../../components/progressProvider";
+import Progress from "@/src/components/registrationProgress";
+import IdeaSubmitForm from "@/src/components/forms/ideaSubmitForm";
+import FormButtons from "@/src/components/formButtons";
+import NotLoggedIn from "@/src/components/notLoggedIn";
+import Registered from "@/src/components/registered";
 
 export default async function RegisterPage() {
   const user = await getCurrentUser();
@@ -16,17 +16,17 @@ export default async function RegisterPage() {
 
   if (!user) {
     return <NotLoggedIn />;
-  } else if (user.profileProgress === 'FILL_DETAILS') {
+  } else if (user.profileProgress === "FILL_DETAILS") {
     currentStep = 0;
-  } else if (user.profileProgress === 'FORM_TEAM') {
+  } else if (user.profileProgress === "FORM_TEAM") {
     currentStep = 1;
-  } else if (user.profileProgress === 'SUBMIT_IDEA') {
+  } else if (user.profileProgress === "SUBMIT_IDEA") {
     if (user.team?.ideaSubmission) {
       currentStep = 3;
     } else {
       currentStep = 2;
     }
-  } else if (user.profileProgress === 'COMPLETE') {
+  } else if (user.profileProgress === "COMPLETE") {
     currentStep = 3;
   }
 
@@ -55,7 +55,9 @@ export default async function RegisterPage() {
                     <CreateTeam />
                   )}
                   <IdeaSubmitForm />
-                  <FormButtons />
+                  <FormButtons
+                    isComplete={user.team?.isComplete ? true : false}
+                  />
                 </div>
               </>
             ) : (

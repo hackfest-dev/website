@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { Card, CardContent } from '../card';
-import { Button } from '../button';
+import React, { useRef, useState } from "react";
+import { Card, CardContent } from "../card";
+import { Button } from "../button";
 
 // Define the props expected by the Dropzone component
 interface DropzoneProps {
@@ -53,8 +53,9 @@ export function Dropzone({
   const handleFiles = (files: FileList) => {
     const uploadedFile = files[0];
     const allowedImageTypes = pdf
-      ? ['application/pdf']
-      : ['image/jpeg', 'image/png'];
+      ? ["application/pdf"]
+      : ["image/jpeg", "image/png", "image/jpg"];
+
     // Check file extension
     // if (fileExtension && !uploadedFile.name.endsWith(`.${fileExtension}`)) {
     if (!allowedImageTypes.includes(uploadedFile.type)) {
@@ -108,7 +109,7 @@ export function Dropzone({
             ref={fileInputRef}
             type="file"
             accept={`
-            ${pdf ? 'application/pdf' : 'image/png, image/jpg, image/jpeg'}
+            ${pdf ? "application/pdf" : "image/png, image/jpg, image/jpeg"}
             `} // Set accepted file type
             onChange={handleFileInputChange}
             className="hidden"
@@ -135,8 +136,8 @@ export function Dropzone({
         )}
         <div className="text-xs text-center text-muted-foreground">
           {pdf
-            ? 'Only .pdf is allowed less than 5MB. Convert your .ppt to .pdf before uploading.'
-            : 'Only .png, .jpg, and .jpeg files are allowed less than 2MB.'}
+            ? "Only .pdf is allowed less than 5MB. Convert your .ppt to .pdf before uploading."
+            : "Only .png, .jpg, and .jpeg files are allowed less than 2MB."}
         </div>
 
         {/* {fileInfo && <p className="text-muted-foreground">{fileInfo}</p>} */}

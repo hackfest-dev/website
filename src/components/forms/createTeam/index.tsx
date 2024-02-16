@@ -1,21 +1,21 @@
-'use client';
-import { checkName, createTeam, joinTeam } from '@/src/server/actions';
-import { useContext, useEffect, useState } from 'react';
-import { ProgressContext } from '../../progressProvider';
-import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
-import { Badge } from '../../ui/badge';
-import { Button } from '../../ui/button';
-import { Loader2Icon, UserRoundPlus, Users } from 'lucide-react';
-import { Input } from '../../ui/input';
+"use client";
+import { checkName, createTeam, joinTeam } from "@/src/server/actions";
+import { useContext, useEffect, useState } from "react";
+import { ProgressContext } from "../../progressProvider";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Badge } from "../../ui/badge";
+import { Button } from "../../ui/button";
+import { Loader2Icon, UserRoundPlus, Users } from "lucide-react";
+import { Input } from "../../ui/input";
 
 export default function CreateTeam() {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
 
-  const [teamId, setTeamId] = useState('');
+  const [teamId, setTeamId] = useState("");
   const [isNameAvailable, setIsNameAvailable] = useState(false);
-  const [Error, setError] = useState('');
-  const [Message, setMessage] = useState('');
+  const [Error, setError] = useState("");
+  const [Message, setMessage] = useState("");
   const [isWaiting, setIsWaiting] = useState(false);
   const [Loading, setLoading] = useState(false);
 
@@ -24,14 +24,10 @@ export default function CreateTeam() {
   }, [isWaiting]);
 
   const nameHandler = async (name: string) => {
-    if (name.includes(' ')) {
-      setError('Name cannot contain spaces');
-      return;
-    }
     if (!isWaiting && name.length > 3) {
       const res = await checkName({ teamName: name });
       if (
-        res.status === 'success' &&
+        res.status === "success" &&
         (res.message === true || res.message === false)
       ) {
         console.log(res.message);
@@ -43,8 +39,8 @@ export default function CreateTeam() {
   };
 
   useEffect(() => {
-    if (Error) setTimeout(() => setError(''), 2000);
-    if (Message) setTimeout(() => setMessage(''), 2000);
+    if (Error) setTimeout(() => setError(""), 2000);
+    if (Message) setTimeout(() => setMessage(""), 2000);
   }, [Error, Message]);
 
   if (currentState !== 1) return <></>;
@@ -60,7 +56,7 @@ export default function CreateTeam() {
             {(Error || Message) && (
               <Badge
                 className={`text-center w-fit -mt-2 ${
-                  !Error ? 'text-green-500' : 'text-red-500'
+                  !Error ? "text-green-500" : "text-red-500"
                 }`}
               >
                 {Error || Message}
@@ -78,10 +74,10 @@ export default function CreateTeam() {
                     e.preventDefault();
                     const formData = new FormData(e.target as HTMLFormElement);
                     const res = await createTeam({
-                      teamName: formData.get('teamname') as string,
+                      teamName: formData.get("teamname") as string,
                     });
-                    if (res.status === 'error') setError(res.message);
-                    if (res.status === 'success') {
+                    if (res.status === "error") setError(res.message);
+                    if (res.status === "success") {
                       setMessage(res.message);
                       setCurrentState(2);
                       maxState <= 2 && setMaxState(2);
@@ -96,7 +92,7 @@ export default function CreateTeam() {
                     type="text"
                     placeholder="Team Name"
                     className={`text-center border rounded p-2 text-white ${
-                      isNameAvailable ? 'border-green-500' : 'border-red-600'
+                      isNameAvailable ? "border-green-500" : "border-red-600"
                     }`}
                     name="teamname"
                     required
@@ -104,7 +100,7 @@ export default function CreateTeam() {
                   <Button
                     type="submit"
                     className={`flex items-center gap-2 ${
-                      !isNameAvailable && 'cursor-not-allowed hover:bg-gray-400'
+                      !isNameAvailable && "cursor-not-allowed hover:bg-gray-400"
                     }`}
                     disabled={!isNameAvailable}
                   >
@@ -132,10 +128,10 @@ export default function CreateTeam() {
                     e.preventDefault();
                     const formData = new FormData(e.target as HTMLFormElement);
                     const res = await joinTeam({
-                      teamId: formData.get('teamid') as string,
+                      teamId: formData.get("teamid") as string,
                     });
-                    if (res.status === 'error') setError(res.message);
-                    if (res.status === 'success') setMessage(res.message);
+                    if (res.status === "error") setError(res.message);
+                    if (res.status === "success") setMessage(res.message);
                     setLoading(false);
                   }}
                 >

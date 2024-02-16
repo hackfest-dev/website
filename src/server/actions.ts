@@ -35,7 +35,6 @@ const verifyUser = protectedAction(updateUserZ, async (value, { db }) => {
 
 const updateProfile = async (formData: FormData) => {
   const obj = Object.fromEntries(formData.entries());
-  console.log(obj);
   const result = updateProfileZ.safeParse({
     ...obj,
   });
@@ -72,11 +71,11 @@ const updateProfile = async (formData: FormData) => {
   }
 
   // upload files only if they exist otherwise set to existing url
-  const adhaarUrl = obj.adhaar
-    ? await uploadFile({ file: obj.adhaar as File, folder: "ids" })
+  const adhaarUrl = obj.aadhaarFile
+    ? await uploadFile({ file: obj.aadhaarFile as File, folder: "ids" })
     : user?.aadhaar;
-  const collegeIdUrl = obj.collegeId
-    ? await uploadFile({ file: obj.collegeId as File, folder: "ids" })
+  const collegeIdUrl = obj.collegeIdFile
+    ? await uploadFile({ file: obj.collegeIdFile as File, folder: "ids" })
     : user?.college_id;
 
   // code can be cleaned but it's ok to be lazy
@@ -88,6 +87,23 @@ const updateProfile = async (formData: FormData) => {
     user?.college?.id === data.college &&
     user?.tShirtSize === data.tshirtSize &&
     user?.course === data.course;
+
+  const isComplete =
+    data.name &&
+    data.phone &&
+    (adhaarUrl || !adhaarUrl?.startsWith("undefined")) &&
+    (collegeIdUrl || !collegeIdUrl?.startsWith("undefined")) &&
+    data.college &&
+    data.tshirtSize &&
+    data.course
+      ? true
+      : false;
+  if (!isComplete) {
+    return {
+      type: "error",
+      message: "Please fill all the details",
+    };
+  }
 
   if (hasNoChanges) {
     return { type: "info", message: "No changes made" };
@@ -116,7 +132,7 @@ const updateProfile = async (formData: FormData) => {
     await prisma.user.update({
       where: { id: session?.id },
       data: {
-        profileProgress: "FORM_TEAM",
+        profileProgress: isComplete ? "FORM_TEAM" : "FILL_DETAILS",
         name: data.name,
         phone: data.phone,
         aadhaar: adhaarUrl,
@@ -134,7 +150,6 @@ const updateProfile = async (formData: FormData) => {
 // for /profile page, the above action is for /register page
 const editProfile = async (formData: FormData) => {
   const obj = Object.fromEntries(formData.entries());
-  console.log(obj);
   const result = editProfileZ.safeParse({
     ...obj,
   });
@@ -191,35 +206,17 @@ const editProfile = async (formData: FormData) => {
     return { type: "info", message: "No changes made" };
   }
 
-  if (
-    user?.profileProgress !== "COMPLETE" &&
-    user?.profileProgress !== "SUBMIT_IDEA"
-  ) {
-    await prisma.user.update({
-      where: { id: session?.id },
-      data: {
-        name: data.name,
-        phone: data.phone,
-        aadhaar: adhaarUrl,
-        college_id: collegeIdUrl,
-        college: { connect: { id: data.college } },
-        course: data.course,
-        profileProgress: "FORM_TEAM",
-      },
-    });
-  } else {
-    await prisma.user.update({
-      where: { id: session?.id },
-      data: {
-        name: data.name,
-        phone: data.phone,
-        aadhaar: adhaarUrl,
-        college_id: collegeIdUrl,
-        college: { connect: { id: data.college } },
-        course: data.course,
-      },
-    });
-  }
+  await prisma.user.update({
+    where: { id: session?.id },
+    data: {
+      name: data.name,
+      phone: data.phone,
+      aadhaar: adhaarUrl,
+      college_id: collegeIdUrl,
+      college: { connect: { id: data.college } },
+      course: data.course,
+    },
+  });
 
   revalidatePath("/profile");
 
@@ -342,6 +339,11 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
     if (!team) {
       return { status: "error", message: "Team not found" };
     }
+
+    if (team.members.length >= 4) {
+      return { status: "error", message: "Team is already full" };
+    }
+
     const leader = team.members.find((member) => member.isLeader === true);
     if (user.college !== leader?.college?.name) {
       return {
@@ -349,6 +351,9 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
         message: "Team members should be from same college only",
       };
     }
+
+    const isComplete = team.members.length === 3 || team.members.length === 4;
+
     await db.team.update({
       where: {
         id: value.teamId,
@@ -363,6 +368,7 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
             where: { id: user?.id },
           },
         },
+        isComplete,
       },
     });
     revalidatePath("/profile");
@@ -389,6 +395,27 @@ const leaveTeam = async () => {
         profileProgress: "FORM_TEAM",
       },
     });
+
+    const team = await prisma.team.findFirst({
+      where: {
+        id: user?.team?.id,
+      },
+      include: {
+        members: true,
+      },
+    });
+
+    const isComplete = team?.members.length === 3 || team?.members.length === 4;
+
+    await prisma.team.update({
+      where: {
+        id: user?.team?.id,
+      },
+      data: {
+        isComplete,
+      },
+    });
+
     revalidatePath("/profile");
     revalidatePath("/register");
     return { status: "success", message: "Left team successfully" };
@@ -432,7 +459,6 @@ const deleteTeam = async () => {
 
 const submitIdea = async (formdata: FormData) => {
   const obj = Object.fromEntries(formdata.entries());
-  console.log(obj);
   const result = submitIdeaZ.safeParse({
     ...obj,
   });
@@ -448,9 +474,9 @@ const submitIdea = async (formdata: FormData) => {
   if (
     !data.ppt ||
     data.ppt?.type !== "application/pdf" ||
-    data.ppt?.size > 10 * 1024 * 1024
+    data.ppt?.size > 5 * 1024 * 1024
   ) {
-    return { status: "error", message: "Upload only pdf of less than 10MB" };
+    return { status: "error", message: "Upload only pdf of less than 5MB" };
   }
   try {
     const user = await getCurrentUser();
@@ -468,7 +494,6 @@ const submitIdea = async (formdata: FormData) => {
       return { status: "error", message: "Idea already submitted" };
 
     const pptUrl = await uploadFile({ file: data.ppt as File, folder: "ppts" });
-    console.log(pptUrl);
     if (data.referralCode === "")
       await prisma.team.update({
         data: {
@@ -494,7 +519,14 @@ const submitIdea = async (formdata: FormData) => {
           id: user.team?.id,
         },
       });
-    else
+    else {
+      const referral = await prisma.referral.findUnique({
+        where: {
+          code: data.referralCode,
+        },
+      });
+      if (!referral)
+        return { status: "error", message: "Invalid referral code" };
       await prisma.team.update({
         data: {
           ideaSubmission: {
@@ -524,6 +556,7 @@ const submitIdea = async (formdata: FormData) => {
           id: user.team?.id,
         },
       });
+    }
     revalidatePath("/");
     return { status: "success", message: "Idea has been submitted" };
   } catch (error) {

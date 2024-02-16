@@ -15,12 +15,13 @@ async function getSignature() {
       timestamp,
       folder: "next",
     },
-    cloudinaryConfig.api_secret as string,
+    cloudinaryConfig.api_secret as string
   );
   return { timestamp, signature };
 }
 
 async function uploadFile(params: { file: File; folder: "ids" | "ppts" }) {
+  console.log(secrets);
   const { signature, timestamp } = await getSignature();
   const formData = new FormData();
   formData.append("file", params.file);
@@ -30,7 +31,7 @@ async function uploadFile(params: { file: File; folder: "ids" | "ppts" }) {
   //todo: fix upload folder issue (cannot upload to folder other than next)
   formData.append("folder", "next");
   console.log(signature, timestamp);
-  console.log(params.file)
+  console.log(params.file);
 
   const endpoint = `https://api.cloudinary.com/v1_1/${secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
 

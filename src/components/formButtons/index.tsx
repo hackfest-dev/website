@@ -1,10 +1,10 @@
-'use client';
-import React, { useContext } from 'react';
-import { Button } from '../ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ProgressContext } from '../progressProvider';
+"use client";
+import React, { useContext } from "react";
+import { Button } from "../ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ProgressContext } from "../progressProvider";
 
-const FormButtons = () => {
+const FormButtons = ({ isComplete }: { isComplete: boolean }) => {
   const { currentState, maxState, setCurrentState } =
     useContext(ProgressContext);
 
@@ -22,14 +22,14 @@ const FormButtons = () => {
         Previous
       </Button>
       <Button
-        disabled={currentState == maxState}
+        disabled={currentState == maxState || !isComplete}
         onClick={() => {
           if (currentState === maxState) return;
           setCurrentState(currentState + 1);
         }}
         className="flex items-center gap-2"
       >
-        {currentState === 2 ? 'Submit' : 'Next'}
+        {currentState === 2 ? "Submit" : "Next"}
         <ChevronRight size={16} />
       </Button>
     </div>

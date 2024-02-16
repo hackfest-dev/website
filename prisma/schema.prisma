@@ -184,7 +184,7 @@ enum TshirtSize {
   M
   L
   XL
-  XX
+  XXL
 }
 
 enum States {
