@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { SectionHeading } from "../ui/sectionHeading";
 import { Button } from "../ui/button";
@@ -10,47 +9,55 @@ const Sponsors = () => {
       <section
         id="sponsors"
         className="min-h-screen py-20 flex flex-col justify-around items-center gap-20 transition-all">
-        <SectionHeading title="Sponsors" classname="text-6xl" />
+        <SectionHeading title="Sponsors" classname="text-6xl xl:text-7xl" />
 
         <div className="flex flex-col w-full xl:flex-row xl:w-2/3 xl:justify-around justify-center items-center gap-16 xl:gap-4">
           <div className="flex flex-col justify-center items-center gap-5 w-full xl:w-1/3">
-            <h2 className="text-3xl font-semibold xl:text-4xl ">Powered By</h2>
-            <div className="relative aspect-square w-3/5 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
-              <Image
-                className="rounded-2xl"
-                src="/logos/sponsors/EGHD.jpg"
-                alt="EGHD"
-                fill={true}
-              />
-            </div>
+            <h2 className="text-3xl font-semibold xl:text-4xl h-24 flex justify-center items-center text-center ">
+              Powered By
+            </h2>
+            <a href="/sponsors">
+              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
+                <Image
+                  className="rounded-2xl"
+                  src="/logos/sponsors/EGHD.jpg"
+                  alt="EGHD"
+                  fill={true}
+                />
+              </div>
+            </a>
           </div>
 
           <div className="flex flex-col justify-center items-center gap-5 w-full xl:w-1/3">
-            <h2 className="text-3xl font-semibold xl:text-4xl">
+            <h2 className="text-3xl font-semibold xl:text-4xl h-24 flex justify-center items-center text-center">
               Co-Powered By
             </h2>
-            <div className="relative aspect-square w-3/5 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
-              <Image
-                className="rounded-2xl p-6"
-                src="/logos/sponsors/The_Global_Point.png"
-                alt="The_Global_Point"
-                fill={true}
-              />
-            </div>
+            <a href="/sponsors">
+              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
+                <Image
+                  className="rounded-2xl"
+                  src="/logos/sponsors/Niveus.jpg"
+                  alt="Niveus"
+                  fill={true}
+                />
+              </div>
+            </a>
           </div>
 
           <div className="flex flex-col justify-center items-center gap-5 w-full xl:w-1/3">
-            <h2 className="text-3xl font-semibold xl:text-4xl bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent bg-silver bg-clip-text animate-marquee">
+            <h2 className="text-3xl font-semibold xl:text-4xl h-24 flex justify-center items-center text-center">
               Associate Sponsors
             </h2>
-            <div className="relative aspect-square w-3/5 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
-              <Image
-                className="rounded-2xl"
-                src="/logos/sponsors/Niveus.jpg"
-                alt="Niveus"
-                fill={true}
-              />
-            </div>
+            <a href="/sponsors">
+              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
+                <Image
+                  className="rounded-2xl p-6"
+                  src="/logos/sponsors/The_Global_Point.png"
+                  alt="The_Global_Point"
+                  fill={true}
+                />
+              </div>
+            </a>
           </div>
         </div>
 
@@ -60,9 +67,7 @@ const Sponsors = () => {
             Interested in sponsoring us?
           </h3>
           <a href="mailto:sponsor@hackfest.dev" target="_blank">
-            <Button className="text-xl hover:hue-rotate-15 hover:scale-105 font-semibold">
-              Reach out to us
-            </Button>
+            <Button className="text-xl font-semibold">Reach out to us</Button>
           </a>
         </div>
       </section>
