@@ -143,11 +143,9 @@ const AboutHackfest = () => {
     <>
       <section
         id="about"
-        className={`relative flex flex-col justify-center items-center md:py-10 xl:py-20 px-2 md:px-6 xl:px-16`}
-      >
+        className={`relative flex flex-col justify-center items-center mt-16 md:py-10 xl:py-20 px-2 md:px-6 xl:px-16`}>
         <div
-          className={`${styles.bentoGrid} grid gap-2 w-full 2xl:max-w-screen-2xl`}
-        >
+          className={`${styles.bentoGrid} grid gap-2 md:gap-4 w-full 2xl:max-w-screen-2xl`}>
           {/* Cell 1x1 */}
           <GridTile cellType="c11" cellNo={1}>
             <FadeIn direction="right" className="w-full h-full">
@@ -175,183 +173,200 @@ const AboutHackfest = () => {
           </GridTile>
 
           <GridTile cellType="c11" cellNo={2}>
-            <div className="relative w-full h-full">
-              <Image
-                src="/logos/logo.png"
-                alt="Hackfest_Logo"
-                fill
-                className="object-contain"
-              />
-            </div>
-          </GridTile>
-
-          <GridTile cellType="c11" cellNo={3}>
-            <div className="w-full h-full flex flex-col justify-center items-center">
-              <span className="text-3xl md:text-4xl font-bold pr-1">
-                <div
-                  ref={childRef50}
-                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
-                >
-                  50
-                </div>
-                <span className="font-obscura tracking-wider">Hrs</span>
-              </span>
-              <span className="flex items-center justify text-base md:text-lg lg:text-xl font-semibold self-center">
-                On-Site Event
-              </span>
-            </div>
-          </GridTile>
-
-          <GridTile cellType="c11" cellNo={4}>
-            <div className="w-full h-full flex flex-col justify-center items-center">
-              <span className="text-3xl md:text-4xl font-bold pr-1">
-                <div
-                  ref={childRef36}
-                  className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
-                >
-                  36
-                </div>
-                <span className="font-obscura tracking-wider">Hrs</span>
-              </span>
-              <span className="flex items-center justify text-base md:text-lg lg:text-xl font-semibold self-center text-center">
-                Intense Hackathon
-              </span>
-            </div>
-          </GridTile>
-
-          <GridTile cellType="c11" cellNo={5}>
-            <div className="w-full h-full flex flex-col justify-center items-center gap-6">
-              <div
-                ref={prizeParentRef}
-                className="w-full flex flex-col justify-center items-center text-2xl xl:text-4xl gap-3">
-                <div>
-                  &#8377;<span ref={prizeChildRef}>200000</span>+
-                </div>
-                <div>Prize Money</div>
-              </div>
-            </div>
-          </GridTile>
-
-          <GridTile cellType="c11" cellNo={6}>
-            <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-              <div className="relative h-3/5 aspect-square">
+            <FadeIn direction="up" delay={0.1} className="w-full h-full">
+              <div className="relative w-full h-full">
                 <Image
-                  src="/logos/flc_logo_crop.png"
-                  alt="FLC_Logo"
+                  src="/logos/logo.png"
+                  alt="Hackfest_Logo"
                   fill
                   className="object-contain"
                 />
               </div>
-              <div>
-                <a href="/about">
-                  <Button className="font-medium">Read More</Button>
-                </a>
+            </FadeIn>
+          </GridTile>
+
+          <GridTile cellType="c11" cellNo={3}>
+            <FadeIn direction="down" delay={0.2} className="w-full h-full">
+              <div className="w-full h-full flex flex-col justify-center items-center">
+                <span className="text-3xl md:text-4xl font-bold pr-1">
+                  <div
+                    ref={childRef50}
+                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                    50
+                  </div>
+                  <span className="font-obscura tracking-wider">Hrs</span>
+                </span>
+                <span className="flex items-center justify text-base md:text-lg lg:text-xl font-semibold self-center">
+                  On-Site Event
+                </span>
               </div>
-            </div>
+            </FadeIn>
+          </GridTile>
+
+          <GridTile cellType="c11" cellNo={4}>
+            <FadeIn direction="down" delay={0.3} className="w-full h-full">
+              <div className="w-full h-full flex flex-col justify-center items-center">
+                <span className="text-3xl md:text-4xl font-bold pr-1">
+                  <div
+                    ref={childRef36}
+                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                    36
+                  </div>
+                  <span className="font-obscura tracking-wider">Hrs</span>
+                </span>
+                <span className="flex items-center justify text-base md:text-lg lg:text-xl font-semibold self-center text-center">
+                  Intense Hackathon
+                </span>
+              </div>
+            </FadeIn>
+          </GridTile>
+
+          <GridTile cellType="c11" cellNo={5}>
+            <FadeIn direction="up" delay={0.4} className="w-full h-full">
+              <div className="w-full h-full flex flex-col justify-center items-center gap-6">
+                <div
+                  ref={prizeParentRef}
+                  className="w-full flex flex-col justify-center items-center text-2xl xl:text-4xl gap-3">
+                  <div>
+                    &#8377;<span ref={prizeChildRef}>200000</span>+
+                  </div>
+                  <div>Prize Money</div>
+                </div>
+              </div>
+            </FadeIn>
+          </GridTile>
+
+          <GridTile cellType="c11" cellNo={6}>
+            <FadeIn direction="up" className="w-full h-full">
+              <div className="w-full h-full flex flex-col justify-center items-center gap-3">
+                <div className="relative h-3/5 aspect-square">
+                  <Image
+                    src="/logos/flc_logo_crop.png"
+                    alt="FLC_Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <div>
+                  <a href="/about">
+                    <Button className="font-medium">Read More</Button>
+                  </a>
+                </div>
+              </div>
+            </FadeIn>
           </GridTile>
 
           {/* Cell 1x2 */}
           <GridTile cellType="c12" cellNo={1}>
-            <div className="w-full h-full flex items-center justify-center text-xl sm:text-2xl lg:text-4xl 2xl:text-5xl font-semibold text-center">
-              <span className="font-extrabold pr-1">3</span>
-              <span className="font-obscura">Day Long Tech-Fest</span>
-            </div>
+            <FadeIn direction="right" delay={0.1} className="w-full h-full">
+              <div className="w-full h-full flex items-center justify-center text-xl sm:text-2xl lg:text-4xl 2xl:text-5xl font-semibold text-center">
+                <span className="font-extrabold pr-1">3</span>
+                <span className="font-obscura">Day Long Tech-Fest</span>
+              </div>
+            </FadeIn>
           </GridTile>
 
           <GridTile cellType="c12" cellNo={2}>
-            <div className="w-full h-full flex flex-col justify-center items-center px-6 gap-2">
-              <h3 className="font-bold text-3xl lg:text-5xl">
-                <span className="font-extrabold pr-1">5</span>
-                <span className="font-obscura tracking-wider">Tracks</span>
-              </h3>
-              <p className="text-base sm:text-lg lg:text-xl text-justify w-auto font-normal md:font-semibold">
-                Five diverse tracks, to craft and code solutions for thier
-                choosen problem statement.
-              </p>
-            </div>
+            <FadeIn direction="right" delay={0.2} className="w-full h-full">
+              <div className="w-full h-full flex flex-col justify-center items-center px-6 gap-2">
+                <h3 className="font-bold text-3xl lg:text-5xl">
+                  <span className="font-extrabold pr-1">5</span>
+                  <span className="font-obscura tracking-wider">Tracks</span>
+                </h3>
+                <p className="text-base sm:text-lg lg:text-xl text-justify w-auto font-normal md:font-semibold">
+                  Five diverse tracks, to craft and code solutions for thier
+                  choosen problem statement.
+                </p>
+              </div>
+            </FadeIn>
           </GridTile>
 
           <GridTile cellType="c12" cellNo={3}>
-            <div className="w-full h-full flex flex-col justify-center items-center text-base md:text-lg xl:text-2xl">
-              <h1>NMAM Institute of Technology, Nitte</h1>
-              <p>Karkala, Udupi District, Karnataka</p>
-            </div>
+            <FadeIn direction="left" delay={0.3} className="w-full h-full">
+              <div className="w-full h-full flex flex-col justify-center items-center text-base md:text-lg xl:text-2xl">
+                <h1>NMAM Institute of Technology, Nitte</h1>
+                <p>Karkala, Udupi District, Karnataka</p>
+              </div>
+            </FadeIn>
           </GridTile>
 
           {/* Cell 2x1 */}
           <GridTile cellType="c21" cellNo={1} className="">
-            <div className="relative w-full h-full">
-              <div
-                ref={behindRef}
-                className="absolute w-full h-full flex flex-col justify-center items-center text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold"
-              >
+            <FadeIn direction="down" delay={0.4} className="w-full h-full">
+              <div className="relative w-full h-full">
                 <div
-                  ref={tagelinRef1}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
-                >
-                  Hack
+                  ref={behindRef}
+                  className="absolute w-full h-full flex flex-col justify-center items-center text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold">
+                  <div
+                    ref={tagelinRef1}
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    Hack
+                  </div>
+                  <div
+                    ref={tagelinRef2}
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    The
+                  </div>
+                  <div
+                    ref={tagelinRef3}
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    Time
+                  </div>
+                  <div
+                    ref={tagelinRef4}
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    Stream
+                  </div>
                 </div>
-                <div
-                  ref={tagelinRef2}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
-                >
-                  The
-                </div>
-                <div
-                  ref={tagelinRef3}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
-                >
-                  Time
-                </div>
-                <div
-                  ref={tagelinRef4}
-                  className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
-                >
-                  Stream
-                </div>
+                <Cursor />
               </div>
-              <Cursor />
-            </div>
+            </FadeIn>
           </GridTile>
 
           <GridTile cellType="c21" cellNo={2} className="">
-            <div className="w-full h-full flex flex-col justify-center items-center">
-              <div className="relative w-2/3 xl:w-2/4 2xl:w-3/5 aspect-[3/4]">
-                <Image
-                  className="object-contain"
-                  src="/images/Brochure_Preview.jpg"
-                  alt="Brochure_Preview"
-                  fill
-                />
+            <FadeIn direction="left" className="w-full h-full">
+              <div className="w-full h-full flex flex-col justify-center items-center">
+                <div className="relative w-2/3 xl:w-2/4 2xl:w-3/5 aspect-[3/4]">
+                  <Image
+                    className="object-contain"
+                    src="/images/Brochure_Preview.jpg"
+                    alt="Brochure_Preview"
+                    fill
+                  />
+                </div>
+                <h4 className="my-4 text-sm md:text-base">
+                  For More Information
+                </h4>
+                <a
+                  href="/hackfest_Brochure.pdf"
+                  download="Hackfest_Brochure.pdf">
+                  <Button className=" text-sm md:text-base font-medium gap-2">
+                    <Download /> Brochure
+                  </Button>
+                </a>
               </div>
-              <h4 className="my-4 text-sm md:text-base">
-                For More Information
-              </h4>
-              <a href="/hackfest_Brochure.pdf" download="Hackfest_Brochure.pdf">
-                <Button className=" text-sm md:text-base font-medium gap-2">
-                  <Download /> Brochure
-                </Button>
-              </a>
-            </div>
+            </FadeIn>
           </GridTile>
 
           {/* Cell 2x2 */}
           <GridTile cellType="c22" cellNo={1}>
-            <div className="w-full h-full p-3 sm:p-4 md:p-5 lg:p-7 xl:p-10 flex flex-col justify-center items-center gap-3">
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold font-obscura">
-                What is HackFest?
+            <FadeIn direction="right" delay={0.1} className="w-full h-full">
+              <div className="w-full h-full p-3 sm:p-4 md:p-5 lg:p-7 xl:p-10 flex flex-col justify-center items-center gap-3">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold font-obscura">
+                  What is HackFest?
+                </div>
+                <div className="flex justify-center items-center text-sm lg:text-lg text-justify">
+                  NMAM Institute of Technology presents a three-day National
+                  Tech Fest featuring a 36-hour hackathon, tech conferences, and
+                  networking. Our vision is to bring together 60 teams from
+                  leading Indian engineering colleges, fostering innovation. The
+                  event spans 50 hours, including a 36-hour hackathon, providing
+                  a platform for participants to showcase their skills. The
+                  proposal outlines dates, goals, budget, format, logistics, and
+                  expected outcomes.
+                </div>
               </div>
-              <div className="flex justify-center items-center text-sm lg:text-lg text-justify">
-                NMAM Institute of Technology presents a three-day National Tech
-                Fest featuring a 36-hour hackathon, tech conferences, and
-                networking. Our vision is to bring together 60 teams from
-                leading Indian engineering colleges, fostering innovation. The
-                event spans 50 hours, including a 36-hour hackathon, providing a
-                platform for participants to showcase their skills. The proposal
-                outlines dates, goals, budget, format, logistics, and expected
-                outcomes.
-              </div>
-            </div>
+            </FadeIn>
           </GridTile>
         </div>
       </section>

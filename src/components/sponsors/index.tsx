@@ -61,7 +61,7 @@ const Sponsors = () => {
           </div>
         </div>
 
-        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] md:max-w-[90%] gap-10 xl:gap-20">
+        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20">
           <div className="relative h-52 aspect-square hidden md:flex">
             <Image src="/logos/logo.png" alt="Hackfest_Logo" fill />
           </div>

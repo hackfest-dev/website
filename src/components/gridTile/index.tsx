@@ -17,7 +17,7 @@ const GridTile: FunctionComponent<Props> = ({
     style={{
       gridArea: `${cellType}-${cellNo}`,
     }}
-    className={`w-full h-full rounded-lg overflow-hidden shadow-[0_0_3px_1px_#b9b7b7ad] ${cellType === "c11" ? "aspect-[4/3]" : ""} ${className} backdrop-blur-sm`}>
+    className={`w-full h-full rounded-lg overflow-hidden shadow-[0_0_3px_1px_#b9b7b7ad] ${cellType === "c11" ? "aspect-[4/3]" : ""} ${className} backdrop-blur-[2px]`}>
     {children}
   </div>
 );
