@@ -24,7 +24,7 @@ export const Profile: React.FC<{
         <CardTitle className="text-center">Your profile</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center gap-2 px-2">
-        <Card className="p-6">
+        <Card className="p-4 mx-2 w-full md:w-fit">
           <CardContent className="flex justify-center items-center">
             <Image
               src={user?.image!}
