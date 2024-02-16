@@ -137,12 +137,12 @@ model Referral {
   teams    Team[]
 }
 
-model Faq{
-  id Int @id @default(autoincrement())
-  question String
-  answer String
-  category Category @default(GENERAL)
-  published Boolean @default(false)
+model Faq {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  category  Category @default(GENERAL)
+  published Boolean  @default(false)
 }
 
 enum Role {
@@ -151,9 +151,9 @@ enum Role {
 }
 
 enum Courses {
-  course_1
-  course_2
-  course_3
+  BE
+  BTech
+  BCA
 }
 
 enum PaymentStatus {
@@ -171,10 +171,12 @@ enum Progress {
 }
 
 enum Tracks {
-  TRACK1
-  TRACK2
-  TRACK3
-  TRACK4
+  FINTECH
+  SUSTAINABLE_DEVELOPMENT
+  HEALTHCARE
+  METAVERSE
+  LOGISTICS
+  OPEN_INNOVATION
 }
 
 enum TshirtSize {
@@ -230,5 +232,3 @@ enum Category {
   STAY
   TRAVEL
 }
-
-
