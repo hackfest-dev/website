@@ -1,9 +1,9 @@
-'use client';
-import { SessionProvider, signIn, useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { Button } from '../ui/button';
-import { FiLogIn } from 'react-icons/fi';
-import Link from 'next/link';
+"use client";
+import { SessionProvider, signIn, useSession } from "next-auth/react";
+import Image from "next/image";
+import { Button } from "../ui/button";
+import { FiLogIn } from "react-icons/fi";
+import Link from "next/link";
 
 const AuthButton = () => {
   return (
@@ -18,7 +18,7 @@ const SessionButton = () => {
   return (
     <div className="pl-4 flex justify-center">
       {session ? (
-        <Link href={'/profile'}>
+        <Link href={"/profile"}>
           <Image
             src={session.user?.image as string}
             width={40}
@@ -29,7 +29,7 @@ const SessionButton = () => {
         </Link>
       ) : (
         <Button
-          onClick={() => signIn('google')}
+          onClick={() => signIn("google")}
           color="white"
           className="flex items-center gap-2"
         >

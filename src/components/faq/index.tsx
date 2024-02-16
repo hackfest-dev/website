@@ -1,18 +1,29 @@
-import { SectionHeading } from '../ui/sectionHeading';
-import { Tabpanel } from './tabPanel';
-import { TabFaq } from './tabs';
-import faq from './faq';
+import { SectionHeading } from "../ui/sectionHeading";
+import { Tabpanel } from "./tabPanel";
+import { TabFaq } from "./tabs";
+import faq from "./faq";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
 
 export const FAQ: React.FC<{}> = () => {
   return (
-    <section className="flex gap-20 flex-col md:p-12 p-4">
-      <SectionHeading title="Frequently Asked Questions"></SectionHeading>
-      <TabFaq
-        generalTab={<Tabpanel faq={faq.general}></Tabpanel>}
-        foodTab={<Tabpanel faq={faq.food}></Tabpanel>}
-        stayTab={<Tabpanel faq={faq.stay}></Tabpanel>}
-        travelTab={<Tabpanel faq={faq.travel}></Tabpanel>}
-      ></TabFaq>
-    </section>
+    <div className="flex w-full justify-center items-center">
+      <Tabs defaultValue="GENERAL" className="w-[400px]">
+        <TabsList>
+          <TabsTrigger value="GENERAL">Genral</TabsTrigger>
+          <TabsTrigger value="FOOD">Food</TabsTrigger>
+          <TabsTrigger value="STAY">Stay</TabsTrigger>
+          <TabsTrigger value="TRAVEL">Travel</TabsTrigger>
+        </TabsList>
+        <TabsContent value="GENERAL">
+          Make changes to your account here.
+        </TabsContent>
+        <TabsContent value="FOOD">Change your password here.</TabsContent>
+      </Tabs>
+    </div>
   );
 };
