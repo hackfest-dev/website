@@ -40,6 +40,7 @@ import {
 } from '../../ui/command';
 import CreateCollege from '../../profile/createCollege';
 import { ScrollArea } from '../../ui/scroll-area';
+import { Courses } from '@prisma/client';
 
 const ProfileForm = ({
   user,
@@ -75,6 +76,7 @@ const ProfileForm = ({
       phone: user.phone ?? '',
       college: user.collegeId ?? '',
       course: user.course ?? undefined,
+      tshirtSize: user.tShirtSize ?? undefined,
     },
   });
   const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
@@ -83,12 +85,10 @@ const ProfileForm = ({
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<string>('');
-  const [openCourseList, setOpenCourseList] = useState(false);
-  const [coursevalue, setCoursevalue] = useState('');
 
   const [openCollegeList, setOpenCollegeList] = useState(false);
   const [collegevalue, setCollegevalue] = useState('');
-  const [collegeId, setCollegeId] = useState('');
+  const [collegeId, setCollegeId] = useState(user.collegeId ?? '');
 
   if (currentState !== 0 && registerProp) {
     return <></>;
@@ -100,8 +100,7 @@ const ProfileForm = ({
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('phone', data.phone);
-    console.log(coursevalue, collegeId);
-    formData.append('course', coursevalue || '');
+    formData.append('course', data.course || '');
     formData.append('college', collegeId || '');
     formData.append('tshirtSize', data.tshirtSize || '');
     formData.append('collegeIdFile', clgFile || '');
@@ -175,7 +174,7 @@ const ProfileForm = ({
               control={form.control}
               name="college"
               render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[45%] w-full">
+                <FormItem className="md:w-[45%] w-[80vw]">
                   <FormLabel className="">College</FormLabel>
                   <FormControl>
                     <Popover
@@ -225,9 +224,10 @@ const ProfileForm = ({
                                   value={college.name}
                                   onSelect={(currentValue) => {
                                     setCollegeId(college.id);
+                                    form.setValue('college', college.id);
                                     setCollegevalue(
                                       currentValue === collegevalue
-                                        ? ''
+                                        ? collegevalue
                                         : college.name +
                                             ', ' +
                                             college.state
@@ -277,57 +277,20 @@ const ProfileForm = ({
                 <FormItem className="md:w-[45%] w-full">
                   <FormLabel className="">Degree</FormLabel>
                   <FormControl>
-                    <Popover
-                      open={openCourseList}
-                      onOpenChange={setOpenCourseList}
-                    >
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={openCourseList}
-                          className="w-full justify-between"
-                        >
-                          {coursevalue
-                            ? coursevalue
-                            : form.getValues('course')
-                              ? form.getValues('course')
-                              : 'Select course'}
-                          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="px-3">
-                        <Command>
-                          <CommandInput
-                            placeholder="Search course here..."
-                            className="h-9"
-                          />
-                          <CommandEmpty>
-                            Only Bachelor Degrees in Engineering are allowed.
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {courses.map((course) => (
-                              <CommandItem
-                                key={course}
-                                value={course}
-                                onSelect={(currentValue) => {
-                                  setCoursevalue(
-                                    currentValue === coursevalue ? '' : course
-                                  );
-                                  // setFormData({
-                                  //   ...formData,
-                                  //   course: course,
-                                  // });
-                                  setOpenCourseList(false);
-                                }}
-                              >
-                                {course}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select your Degree" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {courses.map((course, key) => (
+                            <SelectItem value={course} key={key}>
+                              {course}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
