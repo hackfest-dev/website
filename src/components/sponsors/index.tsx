@@ -40,7 +40,8 @@ const Sponsors = () => {
     <>
       <section
         id="sponsors"
-        className="min-h-screen py-20 flex flex-col justify-around items-center gap-20 transition-all bg-gradient-to-b from-[#06123e] to-[#045262]">
+        className="min-h-screen py-20 flex flex-col justify-around items-center gap-20 transition-all"
+      >
         <SectionHeading title="Sponsors" classname="text-6xl" />
 
         <div className="flex flex-col w-full xl:flex-row xl:w-2/3 xl:justify-around justify-center items-center gap-16 xl:gap-4">

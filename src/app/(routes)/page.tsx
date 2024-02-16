@@ -12,7 +12,8 @@ import Speakers from "@/src/components/speakers";
 
 export default async function Home() {
   return (
-    <main className="mx-auto">
+    <main className="mx-auto relative overflow-y-clip">
+      <div className="absolute h-full w-full -z-50 mt-[100vh] bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933]"></div>
       <Hero />
       <AboutHackfest />
       <PrizePool />

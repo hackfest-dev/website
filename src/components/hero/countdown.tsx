@@ -33,26 +33,26 @@ export default function Countown({ eventTime }: { eventTime: Date }) {
   }, []);
 
   return (
-    <div className="flex gap-4 justify-center items-center text-center">
+    <div className="flex gap-4 justify-even items-center text-center">
       <div className="flex flex-col gap-0 justify-center items-center">
         <span className="text-4xl font-bold justify-center items-center">
           {time.days.toString().padStart(2, "0")}
         </span>
         <span className="text-lg font-semibold">Days</span>
       </div>
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-0 justify-center items-center">
         <span className="text-4xl font-bold justify-center items-center">
           {time.hours.toString().padStart(2, "0")}
         </span>
         <span className="text-lg font-semibold">Hours</span>
       </div>
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-0 justify-center items-center">
         <span className="text-4xl font-bold justify-center items-center">
           {time.minutes.toString().padStart(2, "0")}
         </span>
         <span className="text-lg font-semibold">Minutes</span>
       </div>
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-0 justify-center items-center">
         <span className="text-4xl font-bold justify-center items-center">
           {time.seconds.toString().padStart(2, "0")}
         </span>
