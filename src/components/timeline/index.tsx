@@ -96,9 +96,9 @@ const Timeline = ({ events }: { events: Event[] }) => {
               <span className="flex gap-5 lg:flex-row flex-col ">
                 {[1, 2, 3].map((day) => {
                   return (
-                    <Link href="/#timelinetop" key={day}>
+                    <Link href="/#timeline" key={day}>
                       <button
-                        className="relative w-32 h-32 flex items-center justify-center pointer-events-auto"
+                        className={`relative w-32 h-32 flex items-center justify-center pointer-events-auto ${day === selectedDay ? "scale-125" : "hover:scale-110 "} duration-300`}
                         // className="bg-gradient-to-br from-[#008080] via-black to-[#008080] backdrop-blur-xl border-2 border-[#008080] pointer-events-auto text-2xl rounded-xl w-16 h-16"
                         onClick={() => setSelectedDay(day)}
                       >
