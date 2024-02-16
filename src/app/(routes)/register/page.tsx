@@ -57,6 +57,8 @@ export default async function RegisterPage() {
                   <IdeaSubmitForm />
                   <FormButtons
                     isComplete={user.team?.isComplete ? true : false}
+                    profileProgress={user.profileProgress}
+                    isLeader={user.isLeader}
                   />
                 </div>
               </>
