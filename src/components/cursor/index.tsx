@@ -6,6 +6,8 @@ const Cursor: FunctionComponent = () => {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: MouseEvent) => {
+    window.dispatchEvent(new Event("mousemove", e));
+
     const parentRect =
       parentRef.current?.getBoundingClientRect() || new DOMRect(0, 0, 0, 0);
 
