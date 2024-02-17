@@ -18,7 +18,7 @@ const FormButtons = ({
   isLeader: boolean;
   isInTeam: boolean;
 }) => {
-  const { currentState, maxState, setCurrentState } =
+  const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
   let isDisabled = true;
   if (currentState === 0) {
@@ -71,6 +71,7 @@ const FormButtons = ({
                   },
                 });
                 await updateProfileProgress();
+                setMaxState(2);
                 setCurrentState(currentState + 1);
                 setIsLoading(false);
               }
