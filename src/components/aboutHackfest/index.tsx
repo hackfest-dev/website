@@ -1,17 +1,18 @@
-"use client";
+'use client';
 
-import { RefObject, useEffect, useRef } from "react";
-import { GiDiamonds } from "react-icons/gi";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-import GridTile from "../gridTile";
-import Image from "next/image";
-import Cursor from "../cursor";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
-import { Button } from "../ui/button";
-import styles from "./style.module.css";
-import FadeIn from "../fadeInAnimation";
-import { Download } from "lucide-react";
+import { RefObject, useEffect, useRef } from 'react';
+import { GiDiamonds } from 'react-icons/gi';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import GridTile from '../gridTile';
+import Image from 'next/image';
+import Cursor from '../cursor';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import { Button } from '../ui/button';
+import styles from './style.module.css';
+import FadeIn from '../fadeInAnimation';
+import { Download } from 'lucide-react';
+import { toast } from 'sonner';
 
 const AboutHackfest = () => {
   const childRef36 = useRef<HTMLDivElement>(null);
@@ -36,11 +37,11 @@ const AboutHackfest = () => {
         rect.top < e.clientY &&
         e.clientY < rect.bottom
       ) {
-        ref.current.classList.add("bg-gold");
-        ref.current.classList.remove("bg-white");
+        ref.current.classList.add('bg-gold');
+        ref.current.classList.remove('bg-white');
       } else {
-        ref.current.classList.add("bg-white");
-        ref.current.classList.remove("bg-gold");
+        ref.current.classList.add('bg-white');
+        ref.current.classList.remove('bg-gold');
       }
     }
   };
@@ -64,9 +65,9 @@ const AboutHackfest = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleSecondMouseMove);
+    window.addEventListener('mousemove', handleSecondMouseMove);
     return () => {
-      window.removeEventListener("mousemove", handleSecondMouseMove);
+      window.removeEventListener('mousemove', handleSecondMouseMove);
     };
   });
 
@@ -82,14 +83,14 @@ const AboutHackfest = () => {
     const counter = { value: 0 };
     gsap.to(counter, {
       value: target,
-      ease: "power3.out",
+      ease: 'power3.out',
       duration: duration,
       delay: delay,
       onUpdate: () => {
         if (childRef.current)
           childRef.current.innerText = `${counter.value.toFixed(0)}`.padStart(
             padding,
-            "0"
+            '0'
           );
       },
     });
@@ -99,8 +100,8 @@ const AboutHackfest = () => {
     gsap.timeline({
       scrollTrigger: {
         trigger: childRef36.current,
-        start: "top bottom",
-        end: "bottom top",
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
           counterAnimation(childRef36, 36);
         },
@@ -113,8 +114,8 @@ const AboutHackfest = () => {
     gsap.timeline({
       scrollTrigger: {
         trigger: childRef50.current,
-        start: "top bottom",
-        end: "bottom top",
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
           counterAnimation(childRef50, 50);
         },
@@ -127,8 +128,8 @@ const AboutHackfest = () => {
     gsap.timeline({
       scrollTrigger: {
         trigger: prizeParentRef.current,
-        start: "top bottom",
-        end: "bottom top",
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
           counterAnimation(prizeChildRef, 200000, 6);
         },
@@ -254,7 +255,7 @@ const AboutHackfest = () => {
                 </div>
                 <div>
                   <a href="/about">
-                    <Button className="font-medium" size={"sm"}>
+                    <Button className="font-medium" size={'sm'}>
                       Read More
                     </Button>
                   </a>
@@ -349,11 +350,12 @@ const AboutHackfest = () => {
                 <h4 className="my-4 text-sm md:text-base">
                   For More Information
                 </h4>
-                <a href="/brochure.pdf" download="Brochure.pdf">
+                <p className="text-xs">Brochure will be released soon!</p>
+                {/* <a href="/brochure.pdf" download="Brochure.pdf">
                   <Button className=" text-sm md:text-base font-medium gap-2">
                     <Download /> Brochure
                   </Button>
-                </a>
+                </a> */}
               </div>
             </FadeIn>
           </GridTile>
