@@ -143,9 +143,11 @@ const AboutHackfest = () => {
     <>
       <section
         id="about"
-        className={`relative flex flex-col justify-center items-center mt-16 md:py-10 xl:py-20 px-2 md:px-6 xl:px-16`}>
+        className={`relative flex flex-col justify-center items-center mt-16 md:py-10 xl:py-20 px-2 md:px-6 xl:px-16`}
+      >
         <div
-          className={`${styles.bentoGrid} grid gap-2 md:gap-4 w-full 2xl:max-w-screen-2xl`}>
+          className={`${styles.bentoGrid} grid gap-2 md:gap-4 w-full 2xl:max-w-screen-2xl`}
+        >
           {/* Cell 1x1 */}
           <GridTile cellType="c11" cellNo={1}>
             <FadeIn direction="right" className="w-full h-full">
@@ -191,7 +193,8 @@ const AboutHackfest = () => {
                 <span className="text-3xl md:text-4xl font-bold pr-1">
                   <div
                     ref={childRef50}
-                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
+                  >
                     50
                   </div>
                   <span className="font-obscura tracking-wider">Hrs</span>
@@ -209,7 +212,8 @@ const AboutHackfest = () => {
                 <span className="text-3xl md:text-4xl font-bold pr-1">
                   <div
                     ref={childRef36}
-                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14">
+                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
+                  >
                     36
                   </div>
                   <span className="font-obscura tracking-wider">Hrs</span>
@@ -226,7 +230,8 @@ const AboutHackfest = () => {
               <div className="w-full h-full flex flex-col justify-center items-center gap-6">
                 <div
                   ref={prizeParentRef}
-                  className="w-full flex flex-col justify-center items-center text-2xl xl:text-4xl gap-3">
+                  className="w-full flex flex-col justify-center items-center text-2xl xl:text-4xl gap-3"
+                >
                   <div>
                     &#8377;<span ref={prizeChildRef}>200000</span>+
                   </div>
@@ -298,25 +303,30 @@ const AboutHackfest = () => {
               <div className="relative w-full h-full">
                 <div
                   ref={behindRef}
-                  className="absolute w-full h-full flex flex-col justify-center items-center text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold">
+                  className="absolute w-full h-full flex flex-col justify-center items-center text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold"
+                >
                   <div
                     ref={tagelinRef1}
-                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                  >
                     Hack
                   </div>
                   <div
                     ref={tagelinRef2}
-                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                  >
                     The
                   </div>
                   <div
                     ref={tagelinRef3}
-                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                  >
                     Time
                   </div>
                   <div
                     ref={tagelinRef4}
-                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee">
+                    className="bg-white hover:bg-rainbow bg-[length:100vw_100vw] xl:bg-[length:75vw_75vw] text-transparent  bg-clip-text animate-marquee"
+                  >
                     Stream
                   </div>
                 </div>
@@ -339,9 +349,7 @@ const AboutHackfest = () => {
                 <h4 className="my-4 text-sm md:text-base">
                   For More Information
                 </h4>
-                <a
-                  href="/hackfest_Brochure.pdf"
-                  download="Hackfest_Brochure.pdf">
+                <a href="/brochure.pdf" download="Brochure.pdf">
                   <Button className=" text-sm md:text-base font-medium gap-2">
                     <Download /> Brochure
                   </Button>

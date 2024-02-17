@@ -137,10 +137,10 @@ const PrizePool = () => {
           </FadeIn>
           <FadeIn delay={0.4}>
             <p className="font-normal text-xs text-slate-400 text-center mt-4">
-              * Out of 6 tracks except Open Innovation are eligible for this
+              * Out of 6 tracks except Open Innovation all are eligible for this
               special prize of 10k.
             </p>
-          </FadeIn>
+          </FadeIn>s
         </LampContainer>
       </div>
     </>
