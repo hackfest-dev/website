@@ -1,17 +1,17 @@
-"use client";
-import { submitIdea } from "@/src/server/actions";
-import { Modal } from "../../ui/modal";
-import { Tracks } from "@prisma/client";
-import { domains } from "@/src/constants";
+'use client';
+import { submitIdea } from '@/src/server/actions';
+import { Modal } from '../../ui/modal';
+import { Tracks } from '@prisma/client';
+import { domains } from '@/src/constants';
 
-import { use, useContext, useEffect, useState } from "react";
-import { ProgressContext } from "../../progressProvider";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { submitIdeaZ } from "@/src/lib/zod-schema";
-import { z } from "zod";
+import { use, useContext, useEffect, useState } from 'react';
+import { ProgressContext } from '../../progressProvider';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { submitIdeaZ } from '@/src/lib/zod-schema';
+import { z } from 'zod';
 
-import Image from "next/image";
+import Image from 'next/image';
 import {
   Form,
   FormControl,
@@ -20,8 +20,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
+} from '../../ui/form';
+import { Input } from '../../ui/input';
 import {
   Select,
   SelectContent,
@@ -30,12 +30,12 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../../ui/select";
-import { Button } from "../../ui/button";
-import { getUrlAndId } from "@/src/lib/utils/helper";
-import { Textarea } from "../../ui/textarea";
-import { Dropzone } from "../../ui/dropZone";
-import { SessionProvider, useSession } from "next-auth/react";
+} from '../../ui/select';
+import { Button } from '../../ui/button';
+import { getUrlAndId } from '@/src/lib/utils/helper';
+import { Textarea } from '../../ui/textarea';
+import { Dropzone } from '../../ui/dropZone';
+import { SessionProvider, useSession } from 'next-auth/react';
 
 export function Component() {
   const { currentState, maxState, setCurrentState, setMaxState } =
@@ -45,7 +45,7 @@ export function Component() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [pdf, setPdf] = useState<File | null>(null);
   const [wordLimit, setWordLimit] = useState(0);
 
@@ -53,10 +53,10 @@ export function Component() {
     setLoading(true);
     // e.preventDefault();
     const formData = new FormData();
-    formData.append("ppt", pdf!);
-    formData.append("track", data.track);
-    formData.append("problemStatement", data.problemStatement);
-    formData.append("referralCode", data.referralCode);
+    formData.append('ppt', pdf!);
+    formData.append('track', data.track);
+    formData.append('problemStatement', data.problemStatement);
+    formData.append('referralCode', data.referralCode);
 
     const res = await submitIdea(formData);
     setError(res.message);
@@ -66,26 +66,29 @@ export function Component() {
   const user = useSession();
 
   useEffect(() => {
-    if (error) setTimeout(() => setError(""), 2000);
+    if (error) setTimeout(() => setError(''), 2000);
   }, [error]);
 
   if (currentState !== 2) return <></>;
 
   return (
-    <div
-      className={`max-h-max w-full ${
-        !user.data?.user.isLeader ? "pointer-events-none opacity-50" : ""
-      }`}
-    >
+    <div className={`max-h-max w-full relative `}>
+      {!user.data?.user.isLeader && (
+        <div className="z-50 absolute flex justify-center items-center text-center text-2xl md:text-3xl inset-0 opacity-100 text-white h-full w-full">
+          Waiting for team leader to submit the Idea...
+        </div>
+      )}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-2 md:gap-4"
+          className={`flex flex-col gap-2 md:gap-4 ${
+            !user.data?.user.isLeader ? 'pointer-events-none opacity-30' : ''
+          }`}
         >
           <h1 className="text-center lg:text-2xl text-xl ">Submit Idea</h1>
           <p
             className={`text-center ${
-              error.includes("updated") ? "text-green-500" : "text-red-500"
+              error.includes('updated') ? 'text-green-500' : 'text-red-500'
             }`}
           >
             {error}
@@ -102,7 +105,7 @@ export function Component() {
                       Problem Statement
                       <span
                         className={`${
-                          wordLimit > 100 ? "text-red-500" : "text-green-500"
+                          wordLimit > 100 ? 'text-red-500' : 'text-green-500'
                         }`}
                       >
                         {wordLimit} / 100 characters
@@ -160,7 +163,7 @@ export function Component() {
                               key={key}
                               className="capitalize"
                             >
-                              {name.replaceAll("_", " ").toLowerCase()}
+                              {name.replaceAll('_', ' ').toLowerCase()}
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -219,7 +222,7 @@ export function Component() {
               ></FormField>
 
               <Button type="submit" className="w-fit">
-                {loading ? "Submitting.." : "Submit"}
+                {loading ? 'Submitting..' : 'Submit'}
               </Button>
             </div>
           </div>
