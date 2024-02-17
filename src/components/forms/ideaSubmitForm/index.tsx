@@ -131,7 +131,7 @@ export function Component() {
               name="referralCode"
               render={({ field, formState, fieldState }) => (
                 <FormItem className="md:w-[45%] w-full">
-                  <FormLabel className="">Referral Code</FormLabel>
+                  <FormLabel className="">Referral Code (Optional)</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder="Referral Code" {...field} />
                   </FormControl>
@@ -172,30 +172,31 @@ export function Component() {
               )}
             ></FormField>
 
-            <FormField
-              control={form.control}
-              name="ppt"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[calc(90%+1.5rem)] w-full">
-                  <FormLabel className="flex items-center justify-between">
-                    Idea PPT
-                    <a
-                      href="/idea_template.pptx"
-                      download
-                      className="text-xs underline cursor-pointer"
-                    >
-                      Download PPT Template
-                    </a>
-                  </FormLabel>
-                  <FormControl>
-                    <Dropzone
-                      pdf
-                      onChange={setPdf}
-                      className="w-full"
-                      fileExtension="images"
-                      // image={formData.aadhaarImg.split(';')[0]}
-                    />
-                    {/* <Input
+            <div className="flex flex-col gap-5 w-full justify-center items-center">
+              <FormField
+                control={form.control}
+                name="ppt"
+                render={({ field, formState, fieldState }) => (
+                  <FormItem className="w-[92%] mx-auto">
+                    <FormLabel className="flex items-center justify-between">
+                      Idea PPT
+                      <a
+                        href="/idea_template.pptx"
+                        download
+                        className="text-xs underline cursor-pointer"
+                      >
+                        Download PPT Template
+                      </a>
+                    </FormLabel>
+                    <FormControl>
+                      <Dropzone
+                        pdf
+                        onChange={setPdf}
+                        className="w-full"
+                        fileExtension="images"
+                        // image={formData.aadhaarImg.split(';')[0]}
+                      />
+                      {/* <Input
                       type="file"
                       accept="pdf/*"
                       onChange={(e) => {
@@ -212,12 +213,15 @@ export function Component() {
                         console.log(e.target.files?.[0], field.value);
                       }}
                     /> */}
-                  </FormControl>
-                </FormItem>
-              )}
-            ></FormField>
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
 
-            <Button type="submit">{loading ? "Updating..." : "Update"}</Button>
+              <Button type="submit" className="w-fit">
+                {loading ? "Submitting.." : "Submit"}
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

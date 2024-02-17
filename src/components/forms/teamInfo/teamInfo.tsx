@@ -133,9 +133,13 @@ export default function TeamInfo({
                             {member?.isLeader && <Crown color="yellow" />}
                           </div>
                         </div>
-                        <div className="text-center">
-                          <p className="font-bold truncate">{member.name}</p>
-                          <p className="truncate">{member.email}</p>
+                        <div className="text-center overflow-hidden truncate">
+                          <p className="font-bold truncate overflow-hidden">
+                            {member.name}
+                          </p>
+                          <p className="truncate overflow-hidden text-xs">
+                            {member.email}
+                          </p>
                         </div>
                         <div className="flex flex-col justify-center items-center gap-1">
                           <p className="font-bold">{member.phone}</p>

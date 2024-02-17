@@ -285,7 +285,7 @@ const updateProfileProgress = async () => {
                 teamId: user?.team?.id,
               },
               data: {
-                profileProgress: "COMPLETE",
+                profileProgress: "SUBMIT_IDEA",
               },
             },
           },
@@ -376,10 +376,6 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
           connect: {
             id: user?.id,
           },
-          update: {
-            data: { profileProgress: "SUBMIT_IDEA" },
-            where: { id: user?.id },
-          },
         },
       },
       include: {
@@ -465,13 +461,22 @@ const deleteTeam = async () => {
         id: user.team?.id,
       },
     });
-    await prisma.user.update({
-      where: {
-        id: user.id,
-      },
+    await prisma.team.update({
       data: {
-        profileProgress: "FORM_TEAM",
-        isLeader: false,
+        members: {
+          updateMany: {
+            where: {
+              teamId: user.team?.id,
+            },
+            data: {
+              profileProgress: "FORM_TEAM",
+              isLeader: false,
+            },
+          },
+        },
+      },
+      where: {
+        id: user.team?.id,
       },
     });
     revalidatePath("/profile");
