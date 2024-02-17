@@ -1,32 +1,47 @@
-'use client';
-import QnaAccordion from './qnaAccordion';
+"use client";
+import QnaAccordion from "./qnaAccordion";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/src/components/ui/tabs';
+} from "@/src/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from '@/src/components/ui/dialog';
-import { addFaq } from '@/src/server/actions';
-import { useState, useEffect } from 'react';
-import { SectionHeading } from '../ui/sectionHeading';
-import { toast } from 'sonner';
-import { Category } from '@prisma/client';
-import { Button } from '../ui/button';
+} from "@/src/components/ui/dialog";
+import { addFaq, getAllFaqs } from "@/src/server/actions";
+import { useState, useEffect } from "react";
+import { SectionHeading } from "../ui/sectionHeading";
+import { toast } from "sonner";
+import { Category } from "@prisma/client";
+import { Button } from "../ui/button";
 
-export const FAQ: React.FC<{}> = () => {
+export const FAQ = () => {
   const [faq, setFaq] = useState<{
     question: string;
-    category: 'GENERAL' | 'FOOD' | 'STAY' | 'TRAVEL';
+    category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
   }>({
-    question: '',
-    category: 'GENERAL',
+    question: "",
+    category: "GENERAL",
   });
+
+  const [faqs, setFaqs] = useState<
+    {
+      id: number;
+      question: string;
+      answer: string;
+      category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
+      published: boolean;
+    }[]
+  >([]);
+  useEffect(() => {
+    getAllFaqs().then((res) => {
+      setFaqs(res);
+    });
+  }, []);
 
   return (
     <>
@@ -37,23 +52,39 @@ export const FAQ: React.FC<{}> = () => {
             defaultValue="GENERAL"
             className=" justify-center items-center flex flex-col "
           >
-            <TabsList className="md:scale-150 scale-125">
+            <TabsList className="md:scale-150 scale-[120%]">
               <TabsTrigger value="GENERAL">General</TabsTrigger>
               <TabsTrigger value="FOOD">Food</TabsTrigger>
               <TabsTrigger value="STAY">Stay</TabsTrigger>
               <TabsTrigger value="TRAVEL">Travel</TabsTrigger>
             </TabsList>
             <TabsContent value="GENERAL">
-              <QnaAccordion cat="GENERAL" />
+              <QnaAccordion
+                faqs={faqs.filter(
+                  (faq) => faq.category === "GENERAL" && faq.published
+                )}
+              />
             </TabsContent>
             <TabsContent value="FOOD">
-              <QnaAccordion cat="FOOD" />
+              <QnaAccordion
+                faqs={faqs.filter(
+                  (faq) => faq.category === "FOOD" && faq.published
+                )}
+              />
             </TabsContent>
             <TabsContent value="STAY">
-              <QnaAccordion cat="STAY" />
+              <QnaAccordion
+                faqs={faqs.filter(
+                  (faq) => faq.category === "STAY" && faq.published
+                )}
+              />
             </TabsContent>
             <TabsContent value="TRAVEL">
-              <QnaAccordion cat="TRAVEL" />
+              <QnaAccordion
+                faqs={faqs.filter(
+                  (faq) => faq.category === "TRAVEL" && faq.published
+                )}
+              />
             </TabsContent>
           </Tabs>
           <Dialog>
@@ -76,7 +107,7 @@ export const FAQ: React.FC<{}> = () => {
 
                 <select
                   value={faq.category}
-                  defaultValue={'General'}
+                  defaultValue={"General"}
                   onChange={(e) => {
                     setFaq({ ...faq, category: e.target.value as Category });
                   }}
@@ -93,18 +124,18 @@ export const FAQ: React.FC<{}> = () => {
                     try {
                       if (faq.question) {
                         addFaq(faq);
-                        toast.success('Question submitted successfully!', {
-                          position: 'bottom-center',
+                        toast.success("Question submitted successfully!", {
+                          position: "bottom-center",
                         });
-                        setFaq({ ...faq, question: '' });
+                        setFaq({ ...faq, question: "" });
                       } else {
-                        toast.error('Please enter a question', {
-                          position: 'bottom-center',
+                        toast.error("Please enter a question", {
+                          position: "bottom-center",
                         });
                       }
                     } catch (e) {
-                      toast.error('Error submitting question', {
-                        position: 'bottom-center',
+                      toast.error("Error submitting question", {
+                        position: "bottom-center",
                       });
                     }
                   }}

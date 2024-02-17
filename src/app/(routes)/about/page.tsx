@@ -85,7 +85,7 @@ export default function About() {
               <h3 className=" xl:text-5xl lg:text-4xl md:text-3xl text-2xl text-center flex flex-col space-y-4">
                 <span>Computer Society of India</span>
                 <span className="xl:text-4xl lg:text-3xl md:text-2xl text-xl text-center flex flex-col">
-                  NMAMIT Chapter
+                  NMAMIT Branch
                 </span>
               </h3>
             </span>

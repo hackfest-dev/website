@@ -74,7 +74,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </head>
       <body className={`dark bg-black text-white ${poppins.className}`}>
         <ProgressBarProvider>
-          <Toaster richColors expand={true} position="top-center" />
+          <Toaster richColors expand={true} position="bottom-center" />
           <Navbar />
           {children}
           <Footer />

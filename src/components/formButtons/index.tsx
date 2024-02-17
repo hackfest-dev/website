@@ -44,26 +44,29 @@ const FormButtons = ({
       <span className="text-xs ">
         {currentState === 1 && !isLeader && "Only leader can proceed"}
       </span>
-      <Button
-        disabled={isDisabled}
-        onClick={async () => {
-          if (currentState === 0) {
-            if (profileProgress === "FORM_TEAM")
-              setCurrentState(currentState + 1);
-          } else if (currentState === 1) {
-            if (isLeader && isComplete) {
-              await updateProfileProgress();
-              setCurrentState(currentState + 1);
-            }
-          } else if (currentState === 2) {
-            if (profileProgress === "SUBMIT_IDEA") return;
-          } else return;
-        }}
-        className="flex items-center gap-2"
-      >
-        {currentState === 2 ? "Submit" : "Next"}
-        <ChevronRight size={16} />
-      </Button>
+      {currentState !== 2 && (
+        <Button
+          disabled={isDisabled}
+          onClick={async () => {
+            if (currentState === 0) {
+              if (profileProgress === "FORM_TEAM")
+                setCurrentState(currentState + 1);
+            } else if (currentState === 1) {
+              if (isLeader && isComplete) {
+                await updateProfileProgress();
+                setCurrentState(currentState + 1);
+              }
+            } else if (currentState === 2) {
+              if (profileProgress === "SUBMIT_IDEA") return;
+            } else return;
+          }}
+          className="flex items-center gap-2"
+        >
+          {/* {currentState === 2 ? "Submit" : "Next"} */}
+          Next
+          <ChevronRight size={16} />
+        </Button>
+      )}
     </div>
   );
 };

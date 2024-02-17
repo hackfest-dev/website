@@ -9,6 +9,7 @@ import TimelineTape from "@/src/components/timelineTape";
 import Timeline from "@/src/components/timeline";
 import { domains } from "@/src/constants";
 import Speakers from "@/src/components/speakers";
+import { getAllFaqs } from "@/src/server/actions";
 
 export default async function Home() {
   return (
@@ -68,6 +69,16 @@ const events = [
     title: "Hackathon Starts",
     time: "5PM",
   },
+  {
+    day: 1,
+    title: "Dinner",
+    time: "8PM",
+  },
+  {
+    day: 1,
+    title: "Engagement activities",
+    time: "9PM",
+  },
 
   {
     day: 2,
@@ -76,28 +87,28 @@ const events = [
   },
   {
     day: 2,
-    title: "Engagement Activities",
-    time: "From 9AM",
-  },
-  {
-    day: 2,
     title: "Lunch",
     time: "1-2PM",
   },
   {
     day: 2,
-    title: "Cool Off",
+    title: "Cool Off Time",
     time: "3-4PM",
   },
   {
     day: 2,
-    title: "Snacks",
-    time: "4-4:30PM",
+    title: "Snack Break",
+    time: "4PM",
   },
   {
     day: 2,
-    title: "Dinner & judging",
-    time: "",
+    title: "Dinner",
+    time: "8-9PM",
+  },
+  {
+    day: 2,
+    title: "Engagement Activities",
+    time: "9PM",
   },
 
   {
@@ -107,23 +118,28 @@ const events = [
   },
   {
     day: 3,
-    title: "Breakfast + Top 15",
+    title: "Breakfast",
+    time: "7-8AM",
+  },
+  {
+    day: 3,
+    title: "Top 15 Final Pitch",
     time: "From 9:30AM",
   },
   {
     day: 3,
-    title: "Top 3 Selection",
-    time: "From 11:30AM",
-  },
-  {
-    day: 3,
     title: "Lunch",
-    time: "12-1PM",
+    time: "12-1.30PM",
   },
   {
     day: 3,
-    title: "Valedictory",
-    time: "1PM",
+    title: "Winners Selection",
+    time: "1.30PM",
+  },
+  {
+    day: 3,
+    title: "Closing ceremony",
+    time: "1.30PM",
   },
   {
     day: 3,
