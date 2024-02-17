@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { SectionHeading } from "@/src/components/ui/sectionHeading";
 import FadeIn from "@/src/components/fadeInAnimation";
+import { Button } from "@/src/components/ui/button";
+import { FiExternalLink } from "react-icons/fi";
 export default function About() {
   return (
     <div
@@ -10,60 +12,77 @@ export default function About() {
           "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
       }}
     >
-      <div className=" flex flex-col md:gap-8 gap-y-6 w-[80vw] mx-auto pt-[10rem]">
+      <div className=" flex flex-col md:gap-8 gap-y-6 w-[80vw] mx-auto pt-20 sm:pt-20 md:pt-24 xl:pt-28">
         <div className="flex w-full justify-center items-center">
-          <SectionHeading title="ABOUT US" />
+          <SectionHeading title="ABOUT US" classname="text-5xl md:text-7xl" />
         </div>
-        <span className="text-base md:text-lg xl:text-xl bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
+        <span className="text-xs md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/NMAMITLogo.png`}
               alt="image"
               loading="lazy"
-              className="object-contain h-full object-center top-0 md:w-1/3 w-3/4"
+              className="object-contain h-full object-center top-0 md:w-1/3 w-5/6"
               height={600}
               width={600}
             />
-            <div className="max-w-3xl text-justify">
-              Nitte Mahalinga Adyantaya Memorial Institute of Technology
-              (NMAMIT), Nitte, established in 1986 and recognized by the All
-              India Council for Technical Education, New Delhi, has been a
-              constituent college of Nitte University, Mangaluru, since June
-              2022. Ranked 175 in the National Institutional Ranking Framework
-              (NIRF) 2022 by MHRD, GoI among the engineering colleges in India,
-              the College has been placed under the &apos;Platinum&apos;
-              category for having high industry linkages by the AICTE-CII Survey
-              of Industry-Linked Technical Institutes 2020. For details, visit{" "}
+            <div className="max-w-3xl text-justify flex flex-col items-center justify-between gap-5">
+              <p>
+                Nitte Mahalinga Adyantaya Memorial Institute of Technology
+                (NMAMIT), Nitte, established in 1986 and recognized by the All
+                India Council for Technical Education, New Delhi, has been a
+                constituent college of Nitte University, Mangaluru, since June
+                2022. Ranked 175 in the National Institutional Ranking Framework
+                (NIRF) 2022 by MHRD, GoI among the engineering colleges in
+                India, the College has been placed under the
+                &apos;Platinum&apos; category for having high industry linkages
+                by the AICTE-CII Survey of Industry-Linked Technical Institutes
+                2020.
+              </p>
               <a
                 href="https://nmamit.nitte.edu.in/"
                 target="_blank"
                 rel="noreferrer"
-                className="underline underline-offset-4"
               >
-                www.nmamit.nitte.edu.in
+                <Button className="w-max gap-3" size={"sm"}>
+                  <span>Visit Website</span>
+                  <FiExternalLink />
+                </Button>
               </a>
             </div>
           </div>
         </span>
 
-        <span className="text-base md:text-lg xl:text-xl bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
+        <span className="text-xs md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/flcLogo.png`}
               alt="image"
               loading="lazy"
-              className="object-contain h-full object-center top-0 md:w-1/3 w-3/4"
+              className="object-contain h-full object-center top-0 md:w-1/3 w-5/6"
               height={400}
               width={400}
             />
-            <div className="max-w-3xl text-justify">
-              Finite Loop Club (FLC) is the premier coding club at NMAMIT,
-              dedicated to realising and inspiring ideas. FLC provides
-              opportunities to work with the latest trending tech stacks, access
-              workshops, secure internships, engage in peer-to-peer learning,
-              attend guest lectures by renowned experts, and collaborate on
-              real-time projects. Our coding contests enhance analytical and
-              problem-solving skills.
+            <div className="max-w-3xl text-justify flex flex-col items-center justify-between gap-5">
+              <p>
+                Finite Loop Club (FLC) is the premier coding club at NMAMIT,
+                dedicated to realising and inspiring ideas. FLC provides
+                opportunities to work with the latest trending tech stacks,
+                access workshops, secure internships, engage in peer-to-peer
+                learning, attend guest lectures by renowned experts, and
+                collaborate on real-time projects. Our coding contests enhance
+                analytical and problem-solving skills.
+              </p>
+              <a
+                href="https://www.finiteloop.co.in/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Button className="w-max gap-3" size={"sm"}>
+                  <span>Visit Website</span>
+                  <FiExternalLink />
+                </Button>
+              </a>
             </div>
           </div>
         </span>
