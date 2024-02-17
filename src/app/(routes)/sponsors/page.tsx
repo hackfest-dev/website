@@ -111,7 +111,7 @@ const Sponsors = () => {
             <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
               <Image
                 className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
-                src="/logos/sponsors/The_Global_Point.jpg"
+                src="/logos/sponsors/The_Global_Point.png"
                 alt="The_Global_Point"
                 fill={true}
               />
