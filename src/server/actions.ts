@@ -91,13 +91,17 @@ const updateProfile = async (formData: FormData) => {
   const isComplete =
     data.name &&
     data.phone &&
-    (adhaarUrl || !adhaarUrl?.startsWith("undefined")) &&
-    (collegeIdUrl || !collegeIdUrl?.startsWith("undefined")) &&
+    adhaarUrl &&
+    !adhaarUrl?.startsWith("undefined") &&
+    collegeIdUrl &&
+    !collegeIdUrl?.startsWith("undefined") &&
     data.college &&
     data.tshirtSize &&
     data.course
       ? true
       : false;
+
+  console.log(adhaarUrl, collegeIdUrl);
   if (!isComplete) {
     return {
       type: "error",
