@@ -60,22 +60,30 @@ export const FAQ = () => {
             </TabsList>
             <TabsContent value="GENERAL">
               <QnaAccordion
-                faqs={faqs.filter((faq) => faq.category === "GENERAL")}
+                faqs={faqs.filter(
+                  (faq) => faq.category === "GENERAL" && faq.published
+                )}
               />
             </TabsContent>
             <TabsContent value="FOOD">
               <QnaAccordion
-                faqs={faqs.filter((faq) => faq.category === "FOOD")}
+                faqs={faqs.filter(
+                  (faq) => faq.category === "FOOD" && faq.published
+                )}
               />
             </TabsContent>
             <TabsContent value="STAY">
               <QnaAccordion
-                faqs={faqs.filter((faq) => faq.category === "STAY")}
+                faqs={faqs.filter(
+                  (faq) => faq.category === "STAY" && faq.published
+                )}
               />
             </TabsContent>
             <TabsContent value="TRAVEL">
               <QnaAccordion
-                faqs={faqs.filter((faq) => faq.category === "TRAVEL")}
+                faqs={faqs.filter(
+                  (faq) => faq.category === "TRAVEL" && faq.published
+                )}
               />
             </TabsContent>
           </Tabs>

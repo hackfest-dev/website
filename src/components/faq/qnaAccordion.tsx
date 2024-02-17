@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
 import { useState, useEffect } from "react";
+import { getAllFaqs } from "@/src/server/actions";
 
 export default function QnaAccordion({
   faqs,
@@ -26,10 +27,12 @@ export default function QnaAccordion({
               type="single"
               collapsible
               key={index}
-              // className="md:w-[50vw] w-[80vw]"
+              className="md:w-[50vw] w-[80vw]"
             >
-              <AccordionItem value={`item-${index}`}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="w-full">
+                  {faq.question}
+                </AccordionTrigger>
                 <AccordionContent>{faq.answer}</AccordionContent>
               </AccordionItem>
             </Accordion>
