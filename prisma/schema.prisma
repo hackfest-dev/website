@@ -148,6 +148,10 @@ model Faq {
 enum Role {
   PARTICIPANT
   ADMIN
+  ORGANISER
+  JUDGE
+  VALIDATOR
+  SUPER_VALIDATOR
 }
 
 enum Courses {
