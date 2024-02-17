@@ -31,6 +31,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     type: 'Website',
     canonicalUrl: `${siteMetadata.siteUrl}${pathname}`,
     isArticle: false,
+    metadataBase: new URL(siteMetadata.siteUrl),
+    openGraph: {
+      images: `/opengraph.png`,
+    },
+    twitter: {
+      images: `/opengraph.png`,
+    },
     ...customMeta,
   };
 
@@ -69,7 +76,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <meta property="og:site_name" content={meta.title} />
         <meta property="og:description" content={meta.description} />
         <meta property="og:title" content={meta.title} />
-        <meta property="og:image" content={'/logos/logo.png'} />
+        <meta
+          property="og:image"
+          content={`${siteMetadata.siteUrl}/opengraph.png`}
+        />
         {/* TODO: OG Image API */}
       </head>
       <body className={`dark bg-black text-white ${poppins.className}`}>
