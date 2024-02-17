@@ -58,7 +58,14 @@ const PrizePool = () => {
         className="z-0  w-full flex flex-col items-center justify-center rounded-md py-10 md:py-16 xl:py-20 gap-6 md:gap-10 overflow-clip"
       >
         <div className="flex flex-col items-center justify-center">
-          <SectionHeading title="Prize Pool" />
+          <div className="flex items-center">
+            <FadeIn>
+              <div className="text-4xl md:text-6xl font-black bg-gradient-to-b from-cyan-300 to-cyan-50 py-4 bg-clip-text text-transparent w-fit text-center md:text-left ">
+                2
+              </div>
+            </FadeIn>
+            <SectionHeading title="L + Prize Pool" />
+          </div>
           <FadeIn delay={0.3}>
             <Image
               src="/images/airship.png"
