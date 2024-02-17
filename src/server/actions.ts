@@ -297,7 +297,11 @@ const updateProfileProgress = async () => {
     else {
       return { status: 'error', message: 'Already updated to SubmitIdea' };
     }
-    return revalidatePath('/register');
+    revalidatePath("/", "layout");
+    return {
+      status: "success",
+      message: "Profile progress updated successfully",
+    };
   } catch (error) {
     console.log(error);
   }
@@ -486,6 +490,8 @@ const deleteTeam = async () => {
     revalidatePath('/register');
     return { status: 'success', message: 'Team deleted successfully' };
   } catch (error) {
+    revalidatePath("/profile");
+    revalidatePath("/register");
     console.log(error);
     return { status: 'error', message: 'Something went wrong' };
   }

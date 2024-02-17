@@ -17,7 +17,8 @@ export default function CreateTeam() {
   const [Error, setError] = useState("");
   const [Message, setMessage] = useState("");
   const [isWaiting, setIsWaiting] = useState(false);
-  const [Loading, setLoading] = useState(false);
+  const [Loading1, setLoading1] = useState(false);
+  const [Loading2, setLoading2] = useState(false);
 
   useEffect(() => {
     if (isWaiting) setTimeout(() => setIsWaiting(false), 200);
@@ -70,7 +71,7 @@ export default function CreateTeam() {
                 <form
                   className="flex flex-col gap-2 text-center"
                   onSubmit={async (e) => {
-                    setLoading(true);
+                    setLoading1(true);
                     e.preventDefault();
                     const formData = new FormData(e.target as HTMLFormElement);
                     const res = await createTeam({
@@ -80,7 +81,7 @@ export default function CreateTeam() {
                     if (res.status === "success") {
                       setMessage(res.message);
                     }
-                    setLoading(false);
+                    setLoading1(false);
                   }}
                 >
                   <h1 className="text-xl font-bold">Create a Team</h1>
@@ -102,7 +103,7 @@ export default function CreateTeam() {
                     }`}
                     disabled={!isNameAvailable}
                   >
-                    {Loading ? (
+                    {Loading1 ? (
                       <>
                         <Loader2Icon size={16} className="animate-spin" />
                       </>
@@ -122,7 +123,7 @@ export default function CreateTeam() {
                 <form
                   className="flex flex-col gap-2 text-center"
                   onSubmit={async (e) => {
-                    setLoading(true);
+                    setLoading2(true);
                     e.preventDefault();
                     const formData = new FormData(e.target as HTMLFormElement);
                     const res = await joinTeam({
@@ -130,7 +131,7 @@ export default function CreateTeam() {
                     });
                     if (res.status === "error") setError(res.message);
                     if (res.status === "success") setMessage(res.message);
-                    setLoading(false);
+                    setLoading2(false);
                   }}
                 >
                   <h1 className="text-xl font-bold">Join a Team</h1>
@@ -144,7 +145,7 @@ export default function CreateTeam() {
                     required
                   />
                   <Button type="submit" className="flex items-center gap-2">
-                    {Loading ? (
+                    {Loading2 ? (
                       <>
                         <Loader2Icon size={16} className="animate-spin" />
                       </>
