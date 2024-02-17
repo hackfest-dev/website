@@ -13,7 +13,7 @@ const Sponsors = () => {
           "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
       }}
     >
-      <div className="w-full h-full min-h-screen pt-20 sm:pt-20 md:pt-24 xl:pt-28 sm:pb-6 md:pb-10 xl:pb-20 pb-8 flex flex-col justify-around items-center gap-8 transition-all">
+      <div className="w-full h-full min-h-screen pt-20 sm:pt-20 md:pt-24 xl:pt-28 sm:pb-6 md:pb-10 xl:pb-20 pb-8 flex flex-col justify-around items-center md:gap-8 gap-y-6 transition-all">
         <SectionHeading title="SPONSORS" classname="text-5xl md:text-7xl" />
 
         <div className="flex flex-col w-full xl:w-2/3 xl:justify-around justify-center items-center md:gap-16 gap-4 xl:gap-4 px-4">
@@ -148,12 +148,12 @@ const Sponsors = () => {
           </div>
         </div>
 
-        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20">
+        <div className="relative mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20 mt-4 md:mt-8">
           <div className="relative h-52 aspect-square hidden md:flex">
             <Image src="/logos/logo.png" alt="Hackfest_Logo" fill />
           </div>
           <div className="h-40 w-1 bg-white rounded-full hidden md:flex"></div>
-          <div className="flex flex-col justify-center items-center gap-5 p-6 xl:p-7 ">
+          <div className="flex flex-col justify-center items-center gap-5 p-6 xl:p-7 text-center">
             <p>Any event is incomplete without support and love</p>
             <h3 className="text-3xl font-semibold">
               Interested in sponsoring us?
