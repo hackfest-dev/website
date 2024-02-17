@@ -59,6 +59,7 @@ export default async function RegisterPage() {
                     isComplete={user.team?.isComplete ? true : false}
                     profileProgress={user.profileProgress}
                     isLeader={user.isLeader}
+                    isInTeam={user.team ? true : false}
                   />
                 </div>
               </>
