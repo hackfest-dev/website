@@ -24,7 +24,7 @@ const Timeline = ({ events }: { events: Event[] }) => {
         },
       })
       .to("#disc", {
-        rotation: -360 * 6,
+        rotation: -360 * 7,
         duration: 2,
         ease: "none",
       });
@@ -40,7 +40,7 @@ const Timeline = ({ events }: { events: Event[] }) => {
     damping: 25,
     stiffness: 150,
   });
-  const divisions = 12;
+  const divisions = selectedDay === 1 ? 16 : 14;
   ``;
   const angle = useTransform(
     smoothScroll,

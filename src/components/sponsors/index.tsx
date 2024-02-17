@@ -8,7 +8,8 @@ const Sponsors = () => {
     <>
       <section
         id="sponsors"
-        className="min-h-screen py-20 flex flex-col justify-around items-center gap-20 transition-all">
+        className="min-h-screen py-20 flex flex-col justify-around items-center gap-20 transition-all"
+      >
         <SectionHeading title="Sponsors" classname="text-6xl xl:text-7xl" />
 
         <div className="flex flex-col w-full xl:flex-row xl:w-2/3 xl:justify-around justify-center items-center gap-16 xl:gap-4 max-w-screen-2xl">
@@ -61,7 +62,7 @@ const Sponsors = () => {
           </div>
         </div>
 
-        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20">
+        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20 text-center">
           <div className="relative h-52 aspect-square hidden md:flex">
             <Image src="/logos/logo.png" alt="Hackfest_Logo" fill />
           </div>
