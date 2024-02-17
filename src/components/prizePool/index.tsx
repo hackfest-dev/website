@@ -140,7 +140,7 @@ const PrizePool = () => {
               * Out of 6 tracks except Open Innovation all are eligible for this
               special prize of 10k.
             </p>
-          </FadeIn>s
+          </FadeIn>
         </LampContainer>
       </div>
     </>
