@@ -350,19 +350,12 @@ const AboutHackfest = () => {
                 <h4 className="my-4 text-sm md:text-base">
                   For More Information
                 </h4>
-                <a
-                  href=""
-                  download=""
-                  onClick={() => {
-                    toast.success('Brochure will be released soon!', {
-                      position: 'bottom-center',
-                    });
-                  }}
-                >
+                <p className="text-xs">Brochure will be released soon!</p>
+                {/* <a href="/brochure.pdf" download="Brochure.pdf">
                   <Button className=" text-sm md:text-base font-medium gap-2">
                     <Download /> Brochure
                   </Button>
-                </a>
+                </a> */}
               </div>
             </FadeIn>
           </GridTile>
