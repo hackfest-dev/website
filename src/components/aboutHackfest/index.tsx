@@ -281,7 +281,7 @@ const AboutHackfest = () => {
                   <span className="font-obscura tracking-wider">Tracks</span>
                 </h3>
                 <p className="text-base sm:text-lg lg:text-xl text-justify w-auto font-normal md:font-semibold">
-                  Five diverse tracks, to craft and code solutions for thier
+                  Six diverse tracks, to craft and code solutions for thier
                   choosen problem statement.
                 </p>
               </div>
@@ -371,9 +371,9 @@ const AboutHackfest = () => {
                   networking. Our vision is to bring together 60 teams from
                   leading Indian engineering colleges, fostering innovation. The
                   event spans 50 hours, including a 36-hour hackathon, providing
-                  a platform for participants to showcase their skills. The
-                  proposal outlines dates, goals, budget, format, logistics, and
-                  expected outcomes.
+                  a platform for participants to showcase their skills.
+                  Here&apos;s an overview that outlines dates, goals, budget,
+                  format, logistics, and expected outcomes.
                 </div>
               </div>
             </FadeIn>
