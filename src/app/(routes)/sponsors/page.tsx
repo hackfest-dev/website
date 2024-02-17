@@ -11,15 +11,13 @@ const Sponsors = () => {
       style={{
         background:
           "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
-      }}
-    >
+      }}>
       <div className="w-full h-full min-h-screen py-32 flex flex-col justify-around items-center gap-8 transition-all">
         <SectionHeading title="SPONSORS" classname="text-5xl md:text-7xl" />
 
         <div className="flex flex-col w-full xl:w-2/3 xl:justify-around justify-center items-center gap-16 xl:gap-4 px-4">
           <div
-            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}
-          >
+            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
             <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
               <Image
                 className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -48,7 +46,7 @@ const Sponsors = () => {
                 team of 300+ employees in the coming year. In Mangalore we are
                 in Bejai, Kapikad Ajanta Business centre.
               </p>
-              <a href="global.eg.dk" target="_blank" rel="noreferrer">
+              <a href="https://global.eg.dk/" target="_blank" rel="noreferrer">
                 <Button className="w-max gap-3" size={"lg"}>
                   <span>Visit Website</span>
                   <FiExternalLink />
@@ -58,8 +56,7 @@ const Sponsors = () => {
           </div>
 
           <div
-            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row-reverse gap-16 justify-between items-center text-white`}
-          >
+            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row-reverse gap-16 justify-between items-center text-white`}>
             <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
               <Image
                 className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -95,8 +92,7 @@ const Sponsors = () => {
               <a
                 href="https://niveussolutions.com/"
                 target="_blank"
-                rel="noreferrer"
-              >
+                rel="noreferrer">
                 <Button className="w-max gap-3" size={"lg"}>
                   <span>Visit Website</span>
                   <FiExternalLink />
@@ -106,8 +102,7 @@ const Sponsors = () => {
           </div>
 
           <div
-            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}
-          >
+            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
             <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
               <Image
                 className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -137,8 +132,7 @@ const Sponsors = () => {
               <a
                 href="http://www.theglobalpoint.in/"
                 target="_blank"
-                rel="noreferrer"
-              >
+                rel="noreferrer">
                 <Button className="w-max gap-3" size={"lg"}>
                   <span>Visit Website</span>
                   <FiExternalLink />

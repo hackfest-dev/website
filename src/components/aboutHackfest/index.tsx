@@ -238,7 +238,7 @@ const AboutHackfest = () => {
 
           <GridTile cellType="c11" cellNo={6}>
             <FadeIn direction="up" className="w-full h-full">
-              <div className="w-full h-full flex flex-col justify-center items-center gap-3">
+              <div className="w-full h-full flex flex-col justify-center items-center gap-1">
                 <div className="relative h-3/5 aspect-square">
                   <Image
                     src="/logos/flc_logo_crop.png"
@@ -249,7 +249,9 @@ const AboutHackfest = () => {
                 </div>
                 <div>
                   <a href="/about">
-                    <Button className="font-medium">Read More</Button>
+                    <Button className="font-medium" size={"sm"}>
+                      Read More
+                    </Button>
                   </a>
                 </div>
               </div>
