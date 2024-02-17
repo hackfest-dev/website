@@ -15,7 +15,7 @@ const FormButtons = ({
   isComplete: boolean;
   isLeader: boolean;
 }) => {
-  const { currentState, maxState, setCurrentState } =
+  const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
   let isDisabled = true;
   if (currentState === 0) {
@@ -54,6 +54,7 @@ const FormButtons = ({
             } else if (currentState === 1) {
               if (isLeader && isComplete) {
                 await updateProfileProgress();
+                setMaxState(2);
                 setCurrentState(currentState + 1);
               }
             } else if (currentState === 2) {
