@@ -241,7 +241,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             <div className="flex text-xl md:text-2xl lg:text-3xl font-obscura">
               <div
                 ref={contentTitleRef}
-                className="relative opacity-0 leading-none"
+                className="relative opacity-0 leading-none "
                 style={{
                   width:
                     activeDomain.current.title?.getBoundingClientRect().width,

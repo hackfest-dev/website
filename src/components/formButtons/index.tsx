@@ -1,19 +1,22 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2Icon } from "lucide-react";
 import { ProgressContext } from "../progressProvider";
 import { Progress } from "@prisma/client";
 import { updateProfileProgress } from "@/src/server/actions";
+import { toast } from "sonner";
 
 const FormButtons = ({
   profileProgress,
   isComplete,
   isLeader,
+  isInTeam,
 }: {
   profileProgress: Progress;
   isComplete: boolean;
   isLeader: boolean;
+  isInTeam: boolean;
 }) => {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
@@ -28,6 +31,8 @@ const FormButtons = ({
     if (profileProgress === "SUBMIT_IDEA") isDisabled = true;
   } else isDisabled = true;
 
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <div className="flex justify-between items-center">
       <Button
@@ -41,8 +46,11 @@ const FormButtons = ({
         <ChevronLeft size={16} />
         Previous
       </Button>
-      <span className="text-xs ">
-        {currentState === 1 && !isLeader && "Only leader can proceed"}
+      <span className="text-xs text-center">
+        {currentState === 1 &&
+          !isLeader &&
+          isInTeam &&
+          "Only leader can proceed"}
       </span>
       {currentState !== 2 && (
         <Button
@@ -53,9 +61,19 @@ const FormButtons = ({
                 setCurrentState(currentState + 1);
             } else if (currentState === 1) {
               if (isLeader && isComplete) {
+                setIsLoading(true);
+                toast.promise(async () => await updateProfileProgress(), {
+                  position: "bottom-center",
+                  loading: "Proceeding...",
+                  success: "Done!",
+                  error: (error) => {
+                    return "Something went wrong";
+                  },
+                });
                 await updateProfileProgress();
                 setMaxState(2);
                 setCurrentState(currentState + 1);
+                setIsLoading(false);
               }
             } else if (currentState === 2) {
               if (profileProgress === "SUBMIT_IDEA") return;
@@ -64,7 +82,8 @@ const FormButtons = ({
           className="flex items-center gap-2"
         >
           {/* {currentState === 2 ? "Submit" : "Next"} */}
-          Next
+          {isLoading && <Loader2Icon size={16} className="animate-spin" />}
+          {isLoading ? "Proceeding..." : "Next"}
           <ChevronRight size={16} />
         </Button>
       )}

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Team, User } from "@prisma/client";
-import { useContext, useState } from "react";
-import { ProgressContext } from "../../progressProvider";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Team, User } from '@prisma/client';
+import { useContext, useState } from 'react';
+import { ProgressContext } from '../../progressProvider';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import {
   Dialog,
   DialogContent,
@@ -11,24 +11,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../ui/dialog";
-import { Button } from "../../ui/button";
+} from '../../ui/dialog';
+import { Button } from '../../ui/button';
 import {
   Crown,
   Loader2Icon,
   LogOut,
   Trash2,
   UserRoundPlus,
-} from "lucide-react";
-import { deleteTeam, leaveTeam } from "@/src/server/actions";
-import Image from "next/image";
-import { Badge } from "../../ui/badge";
-import { toast } from "sonner";
-import { AiOutlineCopy } from "react-icons/ai";
-import { BsWhatsapp } from "react-icons/bs";
-import Link from "next/link";
-import { Progress } from "@prisma/client";
-import { secrets } from "@/src/lib/secrets";
+} from 'lucide-react';
+import { deleteTeam, leaveTeam } from '@/src/server/actions';
+import Image from 'next/image';
+import { Badge } from '../../ui/badge';
+import { toast } from 'sonner';
+import { AiOutlineCopy } from 'react-icons/ai';
+import { BsWhatsapp } from 'react-icons/bs';
+import Link from 'next/link';
+import { Progress } from '@prisma/client';
+import { secrets } from '@/src/lib/secrets';
 
 export default function TeamInfo({
   teamdata,
@@ -47,6 +47,12 @@ export default function TeamInfo({
     (member) => member.id === userId && member?.isLeader
   );
 
+  const teamMembers = teamdata?.members || [];
+
+  teamMembers.sort((a, b) =>
+    a.isLeader === b.isLeader ? 0 : a.isLeader ? -1 : 1
+  );
+
   const onSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -58,8 +64,8 @@ export default function TeamInfo({
 
   const copyCode = async () => {
     await navigator.clipboard.writeText(teamdata?.id);
-    toast.success("Team ID copied to clipboard", {
-      position: "bottom-center",
+    toast.success('Team ID copied to clipboard', {
+      position: 'bottom-center',
     });
   };
 
@@ -74,35 +80,46 @@ export default function TeamInfo({
             <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto pt-4 p-0 md:p-4">
               <div className="flex flex-col lg:flex-row lg:gap-0 gap-3 justify-between items-center">
                 <h1 className="text-2xl text-center font-bold uppercase">
-                  {teamdata?.name || "Not Available"}
+                  {teamdata?.name || 'Not Available'}
                 </h1>
+                <div
+                  onClick={copyCode}
+                  className="cursor-pointer flex items-center justify-evenly text-sm gap-2 border rounded-full px-2 py-1 hover:border-white transition-colors duration-300"
+                >
+                  Copy Team ID
+                  <AiOutlineCopy
+                    onClick={copyCode}
+                    size={20}
+                    className="cursor-pointer hover:text-gray-400"
+                  />
+                </div>
                 <Button
                   onClick={(e) => {
                     toast.promise(() => onSubmit(e), {
-                      position: "bottom-center",
+                      position: 'bottom-center',
                       loading: leader?.isLeader
-                        ? "Deleting Team..."
-                        : "Leaving Team...",
+                        ? 'Deleting Team...'
+                        : 'Leaving Team...',
                       success: (message) => {
-                        return leader?.isLeader ? "Team Deleted" : "Team Left";
+                        return leader?.isLeader ? 'Team Deleted' : 'Team Left';
                       },
                       error: (error) => {
-                        return "Something went wrong";
+                        return 'Something went wrong';
                       },
                     });
                   }}
-                  disabled={isLoading || userProgress === "COMPLETE"}
-                  className={`${isLoading ? "cursor-not-allowed" : ""} ${
+                  disabled={isLoading || userProgress === 'COMPLETE'}
+                  className={`${isLoading ? 'cursor-not-allowed' : ''} ${
                     leader?.isLeader
-                      ? "bg-red-600 text-white hover:bg-red-600/90"
-                      : ""
+                      ? 'bg-red-600 text-white hover:bg-red-600/90'
+                      : ''
                   } flex items-center gap-2`}
                 >
                   {isLoading
-                    ? "Loading..."
+                    ? 'Loading...'
                     : leader?.isLeader
-                      ? "Delete Team"
-                      : "Leave Team"}
+                      ? 'Delete Team'
+                      : 'Leave Team'}
                   {isLoading ? (
                     <Loader2Icon size={16} className="animate-spin" />
                   ) : leader?.isLeader ? (
@@ -114,7 +131,7 @@ export default function TeamInfo({
               </div>
 
               <div className="w-full">
-                {teamdata?.members?.map((member) => {
+                {teamMembers.map((member) => {
                   return (
                     <div
                       key={member.id}
@@ -143,35 +160,35 @@ export default function TeamInfo({
                         </div>
                         <div className="flex flex-col justify-center items-center gap-1">
                           <p className="font-bold">{member.phone}</p>
-                          <Badge>{member.isLeader ? "Leader" : "Member"}</Badge>
+                          <Badge>{member.isLeader ? 'Leader' : 'Member'}</Badge>
                         </div>
                       </div>
                     </div>
                   );
-                }) || "Not Available"}
+                }) || 'Not Available'}
               </div>
             </div>
           </CardContent>
         </Card>
         <Card className="w-full mb-2">
           <CardContent className="pt-5 text-center flex justify-between md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm">
-            {userProgress === "COMPLETE" ? (
-              "You have completed Idea Submission"
+            {userProgress === 'COMPLETE' ? (
+              'You have completed Idea Submission'
             ) : 4 - teamdata?.members?.length === 0 ? (
               <>Your Team is full! Proceed to Idea submission.</>
             ) : (
               <>
                 There&apos;s still room for {4 - teamdata?.members?.length} more
-                teammate{4 - teamdata?.members?.length > 1 ? "s" : ""}!
+                teammate{4 - teamdata?.members?.length > 1 ? 's' : ''}!
               </>
             )}
             <Dialog>
               <DialogTrigger className="flex items-center gap-2" asChild>
                 <Button
-                  size={"sm"}
+                  size={'sm'}
                   disabled={
                     4 - teamdata?.members?.length === 0 ||
-                    userProgress === "COMPLETE"
+                    userProgress === 'COMPLETE'
                   }
                 >
                   <UserRoundPlus size={16} /> Add More
@@ -181,12 +198,12 @@ export default function TeamInfo({
                 <DialogHeader>
                   <DialogTitle>
                     {4 - teamdata?.members?.length === 0 ? (
-                      "Your Team is full!"
+                      'Your Team is full!'
                     ) : (
                       <>
-                        There&apos;s still room for{" "}
+                        There&apos;s still room for{' '}
                         {4 - teamdata?.members?.length} more teammate
-                        {4 - teamdata?.members?.length > 1 ? "s" : ""}!
+                        {4 - teamdata?.members?.length > 1 ? 's' : ''}!
                       </>
                     )}
                   </DialogTitle>

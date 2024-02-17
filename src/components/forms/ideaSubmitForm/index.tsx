@@ -1,10 +1,7 @@
 'use client';
 import { submitIdea } from '@/src/server/actions';
-import { Modal } from '../../ui/modal';
 import { Tracks } from '@prisma/client';
-import { domains } from '@/src/constants';
-
-import { use, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ProgressContext } from '../../progressProvider';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,7 +12,6 @@ import Image from 'next/image';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,12 +23,10 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '../../ui/select';
 import { Button } from '../../ui/button';
-import { getUrlAndId } from '@/src/lib/utils/helper';
 import { Textarea } from '../../ui/textarea';
 import { Dropzone } from '../../ui/dropZone';
 import { SessionProvider, useSession } from 'next-auth/react';
