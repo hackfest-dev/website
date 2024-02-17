@@ -195,7 +195,7 @@ export default function TeamInfo({
                       <div className="flex items-center justify-evenly mt-2">
                         <input
                           type="url"
-                          className="bg-white bg-opacity-20 rounded-lg text-sm p-2 bodyFont"
+                          className="bg-white bg-opacity-20 rounded-lg text-sm p-2 bodyFont max-w-full w-full"
                           value={teamdata?.id}
                         />
                         <AiOutlineCopy
