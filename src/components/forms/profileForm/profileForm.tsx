@@ -164,7 +164,8 @@ const ProfileForm = ({
                   <FormLabel className="">Phone</FormLabel>
                   <FormControl>
                     <Input
-                      type="text"
+                      type="number"
+                      inputMode="decimal"
                       placeholder="Enter Phone Number"
                       {...field}
                     />
