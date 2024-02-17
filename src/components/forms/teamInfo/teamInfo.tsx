@@ -234,14 +234,15 @@ export default function TeamInfo({
                         <div className="flex-grow h-px bg-gray-600"></div>
                       </div>
 
-                      <Link
+                      <a
+                        target="_blank"
                         href={`https://wa.me/?text=${encodeURIComponent(
                           `Join my team at Hackfest 2024, 3 Day long Hackathon at NMAMIT, Nitte. Copy this Team ID: ${teamdata?.id}. Register here: ${secrets.NEXT_PUBLIC_BASE_URL}/register`
                         )}`}
                         className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-lg p-2 cursor-pointer text-sm bodyFont"
                       >
                         <BsWhatsapp /> Share on WhatsApp
-                      </Link>
+                      </a>
                     </div>
                   </DialogDescription>
                 </DialogHeader>
