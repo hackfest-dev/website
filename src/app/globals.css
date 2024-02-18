@@ -144,7 +144,3 @@ input[type='number'] {
   background-size: 150% 150%;
   animation: none; /* Disable the initial rotation animation */
 }
-
-.teal-card {
-  @apply hover:scale-[1.01] transition-transform duration-300 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl;
-}

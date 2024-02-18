@@ -22,7 +22,7 @@ const Sponsors = () => {
               Powered By
             </h2>
             <a href="/sponsors">
-              <div className="relative aspect-square w-52 md:w-60 teal-card">
+              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
                 <Image
                   className="rounded-2xl"
                   src="/logos/sponsors/EGHD.jpg"
@@ -38,7 +38,7 @@ const Sponsors = () => {
               Co-Powered By
             </h2>
             <a href="/sponsors">
-              <div className="relative aspect-square w-52 md:w-60 teal-card">
+              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
                 <Image
                   className="rounded-2xl"
                   src="/logos/sponsors/Niveus.jpg"
@@ -54,7 +54,7 @@ const Sponsors = () => {
               Associate Sponsors
             </h2>
             <a href="/sponsors">
-              <div className="relative aspect-square w-52 md:w-60 teal-card">
+              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
                 <Image
                   className="rounded-2xl p-6"
                   src="/logos/sponsors/The_Global_Point.png"
@@ -66,7 +66,7 @@ const Sponsors = () => {
           </div>
         </div>
 
-        <div className="relative mt-16 mx-10 teal-card shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20 text-center">
+        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20 text-center">
           <div className="relative h-52 aspect-square hidden md:flex">
             <Image src="/logos/logo.png" alt="Hackfest_Logo" fill />
           </div>

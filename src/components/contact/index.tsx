@@ -13,7 +13,7 @@ export default function ContactCard({
   ph: string;
 }) {
   return (
-    <div className="text-sm md:text-base xl:text-lg teal-card md:px-10 px-6  py-6 text-white">
+    <div className="text-sm md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
       <div className="text-justify flex flex-col gap-1">
         <div className="text-lg md:text-xl xl:text-2xl font-semibold">
           {name}

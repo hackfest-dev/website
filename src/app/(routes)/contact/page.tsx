@@ -63,19 +63,19 @@ export default function Contact() {
           })}
         </div>
         <div className="items-center justify-center flex flex-col max-w-sm md:max-w-xl w-full gap-2 md:gap-4">
-          <div className=" w-full flex flex-col gap-1 text-sm md:text-base xl:text-lg teal-card text-white px-5 py-2">
+          <div className=" w-full flex flex-col gap-1 text-sm md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl text-white px-5 py-2">
             <p>
               <span className="font-semibold">General queries: </span>
               <a href="mailto:admin@hackfest.dev">admin@hackfest.dev</a>
             </p>
           </div>
-          <div className=" w-full flex flex-col gap-1 text-sm md:text-base xl:text-lg teal-card text-white px-5 py-2">
+          <div className=" w-full flex flex-col gap-1 text-sm md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl text-white px-5 py-2">
             <p>
               <span className="font-semibold">Tech support: </span>
               <a href="mailto:tech@hackfest.dev">tech@hackfest.dev</a>
             </p>
           </div>
-          <div className=" w-full flex flex-col gap-1 text-sm md:text-base xl:text-lg teal-card text-white px-5 py-2">
+          <div className=" w-full flex flex-col gap-1 text-sm md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl text-white px-5 py-2">
             <p>
               <span className="font-semibold">Interested in sponsoring? </span>
               <a href="mailto:sponsor@hackfest.dev">sponsor@hackfest.dev</a>

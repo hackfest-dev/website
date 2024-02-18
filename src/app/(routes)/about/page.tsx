@@ -19,7 +19,7 @@ export default function About() {
             classname="text-5xl md:text-6xl xl:text-7xl mt-3"
           />
         </div>
-        <span className="text-xs md:text-base xl:text-lg teal-card md:px-10 px-6  py-6 text-white">
+        <span className="text-xs md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/NMAMITLogo.png`}
@@ -56,7 +56,7 @@ export default function About() {
           </div>
         </span>
 
-        <span className="text-xs md:text-base xl:text-lg teal-card md:px-10 px-6  py-6 text-white">
+        <span className="text-xs md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/flcLogo.png`}
@@ -92,11 +92,14 @@ export default function About() {
 
         <span className="flex flex-col gap-8 md:pb-24 pb-12">
           <div className="flex w-full justify-center items-center">
-            <SectionHeading title="SUPPORTING BODIES" classname="text-5xl md:text-6xl xl:text-7xl" />
+            <SectionHeading
+              title="SUPPORTING BODIES"
+              classname="text-5xl md:text-6xl xl:text-7xl"
+            />
           </div>
 
           <div className=" flex justify-center items-center w-full">
-            <span className="flex md:flex-row flex-col items-center justify-center md:gap-8 gap-4 teal-card md:px-10 px-6  py-6">
+            <span className="flex md:flex-row flex-col items-center justify-center md:gap-8 gap-4 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6">
               <Image
                 src="/logos/csi-logo.png"
                 alt="Logo: CSI"
