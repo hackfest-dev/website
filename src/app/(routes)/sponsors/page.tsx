@@ -1,8 +1,8 @@
-import { Button } from "@/src/components/ui/button";
-import { SectionHeading } from "@/src/components/ui/sectionHeading";
-import React from "react";
-import Image from "next/image";
-import { FiExternalLink } from "react-icons/fi";
+import { Button } from '@/src/components/ui/button';
+import { SectionHeading } from '@/src/components/ui/sectionHeading';
+import React from 'react';
+import Image from 'next/image';
+import { FiExternalLink } from 'react-icons/fi';
 
 const Sponsors = () => {
   return (
@@ -14,9 +14,12 @@ const Sponsors = () => {
       }}
     >
       <div className="w-full h-full min-h-screen pt-20 sm:pt-20 md:pt-24 xl:pt-28 sm:pb-6 md:pb-10 xl:pb-20 pb-8 flex flex-col justify-around items-center md:gap-8 gap-y-6 transition-all">
-        <SectionHeading title="SPONSORS" classname="text-5xl md:text-7xl" />
+        <SectionHeading
+          title="SPONSORS"
+          classname="text-5xl md:text-6xl xl:text-7xl mt-6"
+        />
 
-        <div className="flex flex-col w-full xl:w-2/3 xl:justify-around justify-center items-center md:gap-16 gap-4 xl:gap-4 px-4">
+        <div className="flex flex-col w-full max-w-6xl xl:justify-around justify-center items-center md:gap-16 gap-4 xl:gap-4 px-4">
           <div
             className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}
           >
@@ -32,7 +35,7 @@ const Sponsors = () => {
               <div className="flex flex-col justify-between items-center gap-2">
                 <h2 className="text-3xl text-center">EGDK INDIA PVT. LTD</h2>
                 <h3 className="text-xl text-center text-white/70">
-                  Powered By
+                  Diamond Sponsor
                 </h3>
               </div>
               <p className=" text-slate-300 text-sm md:text-base text-justify">
@@ -49,7 +52,7 @@ const Sponsors = () => {
                 in Bejai, Kapikad Ajanta Business centre.
               </p>
               <a href="https://global.eg.dk/" target="_blank" rel="noreferrer">
-                <Button className="w-max gap-3" size={"lg"}>
+                <Button className="w-max gap-3" size={'lg'}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
@@ -74,7 +77,7 @@ const Sponsors = () => {
                   Niveus Solutions Pvt. Ltd
                 </h2>
                 <h3 className="text-xl text-center text-white/70">
-                  Co-Powered By
+                  Platinum Sponsor
                 </h3>
               </div>
               <p className="text-justify text-slate-300 text-sm md:text-base">
@@ -97,7 +100,7 @@ const Sponsors = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button className="w-max gap-3" size={"lg"}>
+                <Button className="w-max gap-3" size={'lg'}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
@@ -120,7 +123,7 @@ const Sponsors = () => {
               <div className="flex flex-col justify-between items-center gap-2">
                 <h2 className="text-3xl text-center">The Global Point</h2>
                 <h3 className="text-xl text-center text-white/70">
-                  Associate Sponsors
+                  Gold Sponsor
                 </h3>
               </div>
               <p className="text-justify text-slate-300 text-sm md:text-base">
@@ -139,7 +142,7 @@ const Sponsors = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button className="w-max gap-3" size={"lg"}>
+                <Button className="w-max gap-3" size={'lg'}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
@@ -159,7 +162,7 @@ const Sponsors = () => {
               Interested in sponsoring us?
             </h3>
             <a href="mailto:sponsor@hackfest.dev">
-              <Button size={"lg"} className="text-xl font-semibold">
+              <Button size={'lg'} className="text-xl font-semibold">
                 Reach Out To Us
               </Button>
             </a>

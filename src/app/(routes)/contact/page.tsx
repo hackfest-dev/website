@@ -48,7 +48,7 @@ export default function Contact() {
       }}
       className="max-w-screen-2xl flex justify-start flex-col items-center min-h-screen mx-auto pt-20 sm:pt-20 md:pt-24 xl:pt-28 p-2 sm:p-6 md:p-10 xl:p-20 pb-8"
     >
-      <SectionHeading title="CONTACT US" classname="text-5xl md:text-7xl" />
+      <SectionHeading title="CONTACT US" classname="text-5xl md:text-6xl xl:text-7xl mt-3 mb-5" />
       <div className="flex flex-col md:gap-10 gap-5 justify-center items-center">
         <div className="flex md:gap-8 gap-3 flex-wrap justify-center items-center w-full">
           {contacts.map((contact, idx) => {
