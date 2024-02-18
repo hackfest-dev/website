@@ -184,7 +184,7 @@ const AboutHackfest = () => {
                   fill
                   className="object-contain"
                 />
-                <div className="group-hover:brightness-125 transition-all duration-300 absolute h-full -z-10 w-full bg-gradient-radial from-teal-300 to-transparent blur-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                {/* <div className="group-hover:brightness-125 transition-all duration-300 absolute h-full -z-10 w-full bg-gradient-radial from-teal-300 to-transparent blur-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" /> */}
               </div>
             </FadeIn>
           </GridTile>

@@ -146,5 +146,5 @@ input[type='number'] {
 }
 
 .teal-card {
-  @apply bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl;
+  @apply hover:scale-[1.01] transition-transform duration-300 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl;
 }
