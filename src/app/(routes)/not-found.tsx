@@ -17,7 +17,8 @@ const NotFound = () => {
           </h1>
 
           <p className="mt-4 text-gray-300 mb-5 text-sm md:text-md">
-            You need to be logged in to view this page
+            You have discovered a page that doesn&apos;t exist. Time to head
+            back.
           </p>
 
           <Button variant={'default'} onClick={() => router.back()}>
