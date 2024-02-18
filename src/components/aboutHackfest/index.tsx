@@ -11,7 +11,7 @@ import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { Button } from '../ui/button';
 import styles from './style.module.css';
 import FadeIn from '../fadeInAnimation';
-import { Download } from 'lucide-react';
+import { Download, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AboutHackfest = () => {
@@ -286,12 +286,15 @@ const AboutHackfest = () => {
           <GridTile cellType="c12" cellNo={3}>
             <FadeIn direction="left" delay={0.3} className="w-full h-full">
               <div className="w-full h-full flex flex-col justify-center items-center text-base md:text-lg xl:text-2xl">
-                <Image
+                {/* <Image
                   src="/logos/NMAMITLogo.png"
                   alt="NMAM Logo"
                   width={250}
                   height={250}
-                />
+                /> */}
+                <div className="text-2xl md:text-3xl flex justify-center gap-2 items-center border rounded-full px-2 py-1 border-teal-300/30">
+                  <MapPin /> Venue
+                </div>
                 <h1 className="mt-3">NMAM Institute of Technology, Nitte</h1>
                 <p>Karkala, Udupi District, Karnataka</p>
               </div>
@@ -341,7 +344,7 @@ const AboutHackfest = () => {
               <div className="w-full h-full flex flex-col justify-center items-center">
                 <div className="relative w-2/3 xl:w-2/4 2xl:w-3/5 aspect-[3/4]">
                   <Image
-                    className="object-contain"
+                    className="object-contain rounded-xl"
                     src="/images/Brochure_Preview.jpg"
                     alt="Brochure_Preview"
                     fill
