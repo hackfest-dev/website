@@ -1,34 +1,36 @@
-import { Poppins } from 'next/font/google';
-import '../globals.css';
-import { siteMetadata } from '@/src/constants';
-import { headers } from 'next/headers';
-import Navbar from '@/src/components/navbar';
-import Footer from '@/src/components/footer';
-import localFont from 'next/font/local';
-import { Toaster } from 'sonner';
-import ProgressBarProvider from '@/src/components/progressBarProvider';
+import { Poppins } from "next/font/google";
+import "../globals.css";
+import { siteMetadata } from "@/src/constants";
+import { headers } from "next/headers";
+import Navbar from "@/src/components/navbar";
+import Footer from "@/src/components/footer";
+import localFont from "next/font/local";
+import { Toaster } from "sonner";
+import ProgressBarProvider from "@/src/components/progressBarProvider";
+import Loader from "@/src/components/loader";
+import RouteChangeDetector from "../../components/routerEventsWorkAround/routeChangeDetector";
 
 const obscura = localFont({
-  src: '../../../public/fonts/camera-obscura.otf',
-  display: 'swap',
-  variable: '--font-obscura',
+  src: "../../../public/fonts/camera-obscura.otf",
+  display: "swap",
+  variable: "--font-obscura",
 });
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   const { children, ...customMeta } = props;
   const headersList = headers();
-  const pathname = headersList.get('x-url') || '';
+  const pathname = headersList.get("x-url") || "";
 
   const meta = {
     title: `${
-      pathname === ''
-        ? ''
-        : pathname.charAt(1).toUpperCase() + pathname.slice(2) + ' | '
+      pathname === ""
+        ? ""
+        : pathname.charAt(1).toUpperCase() + pathname.slice(2) + " | "
     }${siteMetadata.title}`,
     description: siteMetadata.description,
-    type: 'Website',
+    type: "Website",
     canonicalUrl: `${siteMetadata.siteUrl}${pathname}`,
     isArticle: false,
     metadataBase: new URL(siteMetadata.siteUrl),
@@ -83,12 +85,14 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         {/* TODO: OG Image API */}
       </head>
       <body className={`dark bg-black text-white ${poppins.className}`}>
-        <ProgressBarProvider>
-          <Toaster richColors expand={true} position="bottom-center" />
-          <Navbar />
-          {children}
-          <Footer />
-        </ProgressBarProvider>
+        <RouteChangeDetector />
+        <Loader />
+        {/* <ProgressBarProvider> */}
+        <Toaster richColors expand={true} position="bottom-center" />
+        <Navbar />
+        {children}
+        <Footer />
+        {/* </ProgressBarProvider> */}
       </body>
     </html>
   );

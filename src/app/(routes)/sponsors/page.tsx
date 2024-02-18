@@ -1,9 +1,12 @@
-import { Button } from '@/src/components/ui/button';
-import { SectionHeading } from '@/src/components/ui/sectionHeading';
-import React from 'react';
-import Image from 'next/image';
-import { FiExternalLink } from 'react-icons/fi';
-import { Send } from 'lucide-react';
+"use client";
+
+import { Button } from "@/src/components/ui/button";
+import { SectionHeading } from "@/src/components/ui/sectionHeading";
+import React from "react";
+import Image from "next/image";
+import { FiExternalLink } from "react-icons/fi";
+import Link from "next/link";
+import { Send } from "lucide-react";
 
 const Sponsors = () => {
   return (
@@ -12,8 +15,7 @@ const Sponsors = () => {
       style={{
         background:
           "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
-      }}
-    >
+      }}>
       <div className="w-full h-full min-h-screen pt-20 sm:pt-20 md:pt-24 xl:pt-28 sm:pb-6 md:pb-10 xl:pb-20 pb-8 flex flex-col justify-around items-center gap-y-4 transition-all">
         <SectionHeading
           title="SPONSORS"
@@ -22,8 +24,7 @@ const Sponsors = () => {
 
         <div className="flex flex-col w-full max-w-6xl xl:justify-around justify-center items-center md:gap-16 gap-4 xl:gap-4 px-4">
           <div
-            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}
-          >
+            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
             <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
               <Image
                 className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -52,18 +53,20 @@ const Sponsors = () => {
                 team of 300+ employees in the coming year. In Mangalore we are
                 in Bejai, Kapikad Ajanta Business centre.
               </p>
-              <a href="https://global.eg.dk/" target="_blank" rel="noreferrer">
-                <Button className="w-max gap-3" size={'lg'}>
+              <Link
+                href="https://global.eg.dk/"
+                target="_blank"
+                rel="noreferrer">
+                <Button className="w-max gap-3" size={"lg"}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
 
           <div
-            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row-reverse gap-16 justify-between items-center text-white`}
-          >
+            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row-reverse gap-16 justify-between items-center text-white`}>
             <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
               <Image
                 className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -96,22 +99,20 @@ const Sponsors = () => {
                 data management, cloud consulting, security, and managed
                 services.
               </p>
-              <a
+              <Link
                 href="https://niveussolutions.com/"
                 target="_blank"
-                rel="noreferrer"
-              >
-                <Button className="w-max gap-3" size={'lg'}>
+                rel="noreferrer">
+                <Button className="w-max gap-3" size={"lg"}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
 
           <div
-            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}
-          >
+            className={`w-full sm:w-[40rem] md:w-[72rem] md:max-w-full p-6 md:p-7 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl mt-3 flex flex-col md:flex-row gap-16 justify-between items-center text-white`}>
             <div className="relative aspect-square w-2/3 mt-8 md:mt-0 md:w-80">
               <Image
                 className="shadow-[0_0_3px_1px_#b9b7b7ad] bg-white rounded-full"
@@ -138,16 +139,15 @@ const Sponsors = () => {
                 profiles of our students to various universities in which he/she
                 wants to study.
               </p>
-              <a
+              <Link
                 href="http://www.theglobalpoint.in/"
                 target="_blank"
-                rel="noreferrer"
-              >
-                <Button className="w-max gap-3" size={'lg'}>
+                rel="noreferrer">
+                <Button className="w-max gap-3" size={"lg"}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -164,10 +164,9 @@ const Sponsors = () => {
             </h3>
             <a href="mailto:sponsor@hackfest.dev">
               <Button
-                size={'lg'}
-                className="text-lg flex items-center gap-2 group"
-              >
-                Reach Out To Us{' '}
+                size={"lg"}
+                className="text-lg flex items-center gap-2 group">
+                Reach Out To Us{" "}
                 <Send
                   size={16}
                   className="group-hover:rotate-12 transition-transform duration-300"
