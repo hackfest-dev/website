@@ -1,8 +1,8 @@
-import Image from "next/image";
-import { SectionHeading } from "@/src/components/ui/sectionHeading";
-import FadeIn from "@/src/components/fadeInAnimation";
-import { Button } from "@/src/components/ui/button";
-import { FiExternalLink } from "react-icons/fi";
+import Image from 'next/image';
+import { SectionHeading } from '@/src/components/ui/sectionHeading';
+import FadeIn from '@/src/components/fadeInAnimation';
+import { Button } from '@/src/components/ui/button';
+import { FiExternalLink } from 'react-icons/fi';
 export default function About() {
   return (
     <div
@@ -14,9 +14,12 @@ export default function About() {
     >
       <div className=" flex flex-col md:gap-8 gap-y-6 w-[80vw] mx-auto pt-20 sm:pt-20 md:pt-24 xl:pt-28">
         <div className="flex w-full justify-center items-center">
-          <SectionHeading title="ABOUT US" classname="text-5xl md:text-7xl" />
+          <SectionHeading
+            title="ABOUT US"
+            classname="text-5xl md:text-6xl xl:text-7xl mt-3"
+          />
         </div>
-        <span className="text-xs md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
+        <span className="text-xs md:text-base xl:text-lg teal-card md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/NMAMITLogo.png`}
@@ -44,7 +47,7 @@ export default function About() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button className="w-max gap-3" size={"sm"}>
+                <Button className="w-max gap-3" size={'sm'}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
@@ -53,7 +56,7 @@ export default function About() {
           </div>
         </span>
 
-        <span className="text-xs md:text-base xl:text-lg bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6 text-white">
+        <span className="text-xs md:text-base xl:text-lg teal-card md:px-10 px-6  py-6 text-white">
           <div className="flex md:flex-row flex-col justify-between items-center gap-8">
             <Image
               src={`/logos/flcLogo.png`}
@@ -78,7 +81,7 @@ export default function About() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button className="w-max gap-3" size={"sm"}>
+                <Button className="w-max gap-3" size={'sm'}>
                   <span>Visit Website</span>
                   <FiExternalLink />
                 </Button>
@@ -89,11 +92,11 @@ export default function About() {
 
         <span className="flex flex-col gap-8 md:pb-24 pb-12">
           <div className="flex w-full justify-center items-center">
-            <SectionHeading title="SUPPORTING BODIES" />
+            <SectionHeading title="SUPPORTING BODIES" classname="text-5xl md:text-6xl xl:text-7xl" />
           </div>
 
           <div className=" flex justify-center items-center w-full">
-            <span className="flex md:flex-row flex-col items-center justify-center md:gap-8 gap-4 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl md:px-10 px-6  py-6">
+            <span className="flex md:flex-row flex-col items-center justify-center md:gap-8 gap-4 teal-card md:px-10 px-6  py-6">
               <Image
                 src="/logos/csi-logo.png"
                 alt="Logo: CSI"

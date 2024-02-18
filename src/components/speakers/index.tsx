@@ -18,7 +18,7 @@ const Speakers = () => {
   return (
     <div className="h-full p-12 w-full">
       <div className="flex justify-center">
-        <SectionHeading title="Talks and Speakers" />
+        <SectionHeading title="Talks and Speakers" classname="text-5xl md:text-6xl xl:text-7xl" />
       </div>
       <div className="mt-16">
         {speakerData.map((data, index) => {

@@ -91,7 +91,7 @@ export const EditProfileForm: React.FC<{
               <CircleUserRound size={20} />
             </span>
             <Input
-              id="email"
+              id="name"
               value={formData.uname}
               onChange={(e) =>
                 setFormData({
