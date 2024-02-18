@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { RefObject, useEffect, useRef } from "react";
-import { GiDiamonds } from "react-icons/gi";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-import GridTile from "../gridTile";
-import Image from "next/image";
-import Cursor from "../cursor";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
-import { Button } from "../ui/button";
-import styles from "./style.module.css";
-import FadeIn from "../fadeInAnimation";
-import { Download } from "lucide-react";
-import { toast } from "sonner";
+import { RefObject, useEffect, useRef } from 'react';
+import { GiDiamonds } from 'react-icons/gi';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import GridTile from '../gridTile';
+import Image from 'next/image';
+import Cursor from '../cursor';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import { Button } from '../ui/button';
+import styles from './style.module.css';
+import FadeIn from '../fadeInAnimation';
+import { Download } from 'lucide-react';
+import { toast } from 'sonner';
 
 const AboutHackfest = () => {
   const childRef36 = useRef<HTMLDivElement>(null);
@@ -37,11 +37,11 @@ const AboutHackfest = () => {
         rect.top < e.clientY &&
         e.clientY < rect.bottom
       ) {
-        ref.current.classList.add("bg-gold");
-        ref.current.classList.remove("bg-white");
+        ref.current.classList.add('bg-gold');
+        ref.current.classList.remove('bg-white');
       } else {
-        ref.current.classList.add("bg-white");
-        ref.current.classList.remove("bg-gold");
+        ref.current.classList.add('bg-white');
+        ref.current.classList.remove('bg-gold');
       }
     }
   };
@@ -65,9 +65,9 @@ const AboutHackfest = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleSecondMouseMove);
+    window.addEventListener('mousemove', handleSecondMouseMove);
     return () => {
-      window.removeEventListener("mousemove", handleSecondMouseMove);
+      window.removeEventListener('mousemove', handleSecondMouseMove);
     };
   });
 
@@ -83,14 +83,14 @@ const AboutHackfest = () => {
     const counter = { value: 0 };
     gsap.to(counter, {
       value: target,
-      ease: "power3.out",
+      ease: 'power3.out',
       duration: duration,
       delay: delay,
       onUpdate: () => {
         if (childRef.current)
           childRef.current.innerText = `${counter.value.toFixed(0)}`.padStart(
             padding,
-            "0"
+            '0'
           );
       },
     });
@@ -100,8 +100,8 @@ const AboutHackfest = () => {
     gsap.timeline({
       scrollTrigger: {
         trigger: childRef36.current,
-        start: "top bottom",
-        end: "bottom top",
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
           counterAnimation(childRef36, 36);
         },
@@ -114,8 +114,8 @@ const AboutHackfest = () => {
     gsap.timeline({
       scrollTrigger: {
         trigger: childRef50.current,
-        start: "top bottom",
-        end: "bottom top",
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
           counterAnimation(childRef50, 50);
         },
@@ -128,8 +128,8 @@ const AboutHackfest = () => {
     gsap.timeline({
       scrollTrigger: {
         trigger: prizeParentRef.current,
-        start: "top bottom",
-        end: "bottom top",
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
           counterAnimation(prizeChildRef, 200000, 6);
         },
@@ -177,13 +177,14 @@ const AboutHackfest = () => {
 
           <GridTile cellType="c11" cellNo={2}>
             <FadeIn direction="up" delay={0.1} className="w-full h-full">
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full group">
                 <Image
                   src="/logos/logo.png"
                   alt="Hackfest_Logo"
                   fill
                   className="object-contain"
                 />
+                <div className="group-hover:brightness-125 transition-all duration-300 absolute h-full -z-10 w-full bg-gradient-radial from-teal-300 to-transparent blur-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
               </div>
             </FadeIn>
           </GridTile>
@@ -191,11 +192,8 @@ const AboutHackfest = () => {
           <GridTile cellType="c11" cellNo={3}>
             <FadeIn direction="down" delay={0.2} className="w-full h-full">
               <div className="w-full h-full flex flex-col justify-center items-center">
-                <span className="text-3xl md:text-4xl font-bold pr-1">
-                  <div
-                    ref={childRef50}
-                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
-                  >
+                <span className="text-3xl md:text-4xl lg:text-5xl font-bold pr-1">
+                  <div ref={childRef50} className="inline-block mr-1">
                     50
                   </div>
                   <span className="font-obscura tracking-wider">Hrs</span>
@@ -210,11 +208,8 @@ const AboutHackfest = () => {
           <GridTile cellType="c11" cellNo={4}>
             <FadeIn direction="down" delay={0.3} className="w-full h-full">
               <div className="w-full h-full flex flex-col justify-center items-center">
-                <span className="text-3xl md:text-4xl font-bold pr-1">
-                  <div
-                    ref={childRef36}
-                    className="inline-block -mr-1 min-w-12 max-w-12 md:min-w-14 md:max-w-14"
-                  >
+                <span className="text-3xl md:text-4xl lg:text-5xl font-bold pr-1">
+                  <div ref={childRef36} className="inline-block mr-1">
                     36
                   </div>
                   <span className="font-obscura tracking-wider">Hrs</span>
@@ -233,7 +228,7 @@ const AboutHackfest = () => {
                   ref={prizeParentRef}
                   className="w-full flex flex-col justify-center items-center text-2xl xl:text-4xl gap-3"
                 >
-                  <div>
+                  <div className="font-semibold">
                     &#8377;<span ref={prizeChildRef}>200000</span>+
                   </div>
                   <div>Prize Money</div>
@@ -247,15 +242,15 @@ const AboutHackfest = () => {
               <div className="w-full h-full flex flex-col justify-center items-center gap-1">
                 <div className="relative h-3/5 aspect-square">
                   <Image
-                    src="/logos/flc_logo_crop.png"
+                    src="/logos/FLC Logo - Full.png"
                     alt="FLC_Logo"
-                    fill
-                    className="object-contain"
+                    width={200}
+                    height={200}
                   />
                 </div>
                 <div>
                   <a href="/about">
-                    <Button className="font-medium" size={"sm"}>
+                    <Button className="font-medium mt-3 md:mt-5" size={'sm'}>
                       Read More
                     </Button>
                   </a>
@@ -278,10 +273,10 @@ const AboutHackfest = () => {
             <FadeIn direction="right" delay={0.2} className="w-full h-full">
               <div className="w-full h-full flex flex-col justify-center items-center px-6 gap-2">
                 <h3 className="font-bold text-3xl lg:text-5xl">
-                  <span className="font-extrabold pr-1">5</span>
+                  <span className="font-extrabold pr-1">6</span>
                   <span className="font-obscura tracking-wider">Tracks</span>
                 </h3>
-                <p className="text-base sm:text-lg lg:text-xl text-justify w-auto font-normal md:font-semibold">
+                <p className="text-base sm:text-lg lg:text-xl text-center w-auto">
                   Six diverse tracks, to craft and code solutions for thier
                   choosen problem statement.
                 </p>
@@ -292,7 +287,13 @@ const AboutHackfest = () => {
           <GridTile cellType="c12" cellNo={3}>
             <FadeIn direction="left" delay={0.3} className="w-full h-full">
               <div className="w-full h-full flex flex-col justify-center items-center text-base md:text-lg xl:text-2xl">
-                <h1>NMAM Institute of Technology, Nitte</h1>
+                <Image
+                  src="/logos/NMAMITLogo.png"
+                  alt="NMAM Logo"
+                  width={250}
+                  height={250}
+                />
+                <h1 className="mt-3">NMAM Institute of Technology, Nitte</h1>
                 <p>Karkala, Udupi District, Karnataka</p>
               </div>
             </FadeIn>
@@ -304,7 +305,7 @@ const AboutHackfest = () => {
               <div className="relative w-full h-full">
                 <div
                   ref={behindRef}
-                  className="absolute w-full h-full flex flex-col justify-center items-center text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold"
+                  className="absolute w-full h-full flex flex-col gap-1 md:gap-3 justify-center items-center text-3xl sm:text-4xl lg:text-5xl font-bold"
                 >
                   <div
                     ref={tagelinRef1}
@@ -365,8 +366,8 @@ const AboutHackfest = () => {
           {/* Cell 2x2 */}
           <GridTile cellType="c22" cellNo={1}>
             <FadeIn direction="right" delay={0.1} className="w-full h-full">
-              <div className="w-full h-full p-3 sm:p-4 md:p-5 lg:p-7 xl:p-10 flex flex-col justify-center items-center gap-3">
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold font-obscura">
+              <div className="w-full h-full p-5 lg:p-7 xl:p-10 flex flex-col justify-center items-center gap-3">
+                <div className="text-3xl sm:text-4xl font-bold font-obscura">
                   What is HackFest?
                 </div>
                 <div className="flex justify-center items-center text-sm lg:text-lg text-justify">
