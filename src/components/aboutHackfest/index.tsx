@@ -345,7 +345,7 @@ const AboutHackfest = () => {
                 <div className="relative w-2/3 xl:w-2/4 2xl:w-3/5 aspect-[3/4]">
                   <Image
                     className="object-contain rounded-xl"
-                    src="/images/Brochure_Preview.jpg"
+                    src="/images/Brochure_Preview.jpeg"
                     alt="Brochure_Preview"
                     fill
                   />
