@@ -353,14 +353,14 @@ const AboutHackfest = () => {
                 <h4 className="my-4 mx-1 text-center text-sm md:text-base">
                   For More Information
                 </h4>
-                <p className="text-xs text-center mx-1">
+                {/* <p className="text-xs text-center mx-1">
                   Brochure will be released soon!
-                </p>
-                {/* <a href="/brochure.pdf" download="Brochure.pdf">
+                </p> */}
+                <a href="/brochure.pdf" download="Brochure.pdf">
                   <Button className=" text-sm md:text-base font-medium gap-2">
                     <Download /> Brochure
                   </Button>
-                </a> */}
+                </a>
               </div>
             </FadeIn>
           </GridTile>
