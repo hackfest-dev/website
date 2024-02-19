@@ -25,7 +25,22 @@ const Brochure = () => {
             get it done.
           </p>
 
-          <Loader2Icon size={24} className="animate-spin w-full" />
+          <div className="flex justify-center items-center gap-2 text-sm w-full">
+            <p> Opening the brochure...</p>
+            <Loader2Icon size={24} className="animate-spin" />
+          </div>
+
+          <p className="text-sm mt-5">
+            Brochure should be opening now, if not, please{' '}
+            <a
+              href="/brochure.pdf"
+              download={'brochure.pdf'}
+              className="underline"
+            >
+              click this
+            </a>
+            .
+          </p>
         </div>
       </div>
     </div>
