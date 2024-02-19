@@ -51,11 +51,22 @@ const PrizePool = () => {
     setTimeout(() => setShow(false), 1000);
   };
 
+  const perks = [
+    'Branded T-Shirts',
+    'Exclusive Sticker Collection',
+    'Mentorship Sessions',
+    'Participation Certificates',
+    'Networking Opportunities',
+    'Interaction with Experts',
+    'Get a chance to secure Internship at EGDK India',
+    'Mini-games with Swags',
+  ];
+
   return (
     <>
       <div
         id="prizes"
-        className="z-0  w-full flex flex-col items-center justify-center rounded-md py-10 md:py-16 xl:py-20 gap-6 md:gap-10 overflow-clip"
+        className="z-0 w-full flex flex-col items-center justify-center rounded-md py-10 gap-6 md:gap-10 overflow-clip"
       >
         <div className="flex flex-col items-center justify-center mt-10 lg:mt-0">
           <div className="flex items-center">
@@ -87,7 +98,7 @@ const PrizePool = () => {
           ref={ref}
         >
           <FadeIn className="order-2 md:order-1 z-[1]" delay={0.3}>
-            <div className="bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl w-72 h-72 shadow-xl bg-gradient-to-r from-base-800/65 via-base-700/65 to-base-800/65 border border-gray-800 rounded-lg z-10 md:translate-x-5 pb-4 flex flex-col gap-4 justify-center items-center  backdrop-blur-sm">
+            <div className="bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl w-72 h-72 shadow-xl z-10 md:-translate-x-5 pb-4 flex flex-col gap-4 justify-center items-center">
               <h1 className="font-bold text-xl text-white  relative">
                 Runner Up
               </h1>
@@ -149,6 +160,23 @@ const PrizePool = () => {
             </p>
           </FadeIn>
         </LampContainer>
+      </div>
+
+      <div className="flex justify-center items-center flex-col pb-10 md:pb-16 xl:pb-20">
+        <SectionHeading
+          title="Perks"
+          classname="text-5xl md:text-6xl xl:text-7x"
+        />
+        <div className="relative mx-10 bg-gradient-to-br p-5 from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-wrap justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-3 md:gap-5 lg:gap-7 mt-4 py-5">
+          {perks.map((perk, index) => (
+            <div
+              key={index}
+              className="border rounded-full border-teal-300 px-5 py-1 text-sm text-center md:text-xl"
+            >
+              {perk}
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
