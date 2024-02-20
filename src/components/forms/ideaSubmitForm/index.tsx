@@ -30,6 +30,7 @@ import { Button } from '../../ui/button';
 import { Textarea } from '../../ui/textarea';
 import { Dropzone } from '../../ui/dropZone';
 import { SessionProvider, useSession } from 'next-auth/react';
+import { Badge } from '../../ui/badge';
 
 export function Component() {
   const { currentState, maxState, setCurrentState, setMaxState } =
@@ -87,6 +88,7 @@ export function Component() {
           >
             {error}
           </p>
+
           <div className="flex flex-wrap flex-col md:flex-row justify-center items-center mx-auto gap-4">
             {/* Name */}
             <FormField
@@ -214,7 +216,18 @@ export function Component() {
                   </FormItem>
                 )}
               ></FormField>
-
+              <p className="text-xs text-center">
+                Please download our provided{' '}
+                <a
+                  href="/idea_template.pptx"
+                  download
+                  className="text-xs underline cursor-pointer"
+                >
+                  PPT Template
+                </a>{' '}
+                for your submission; only submissions using this template will
+                be accepted.
+              </p>
               <Button type="submit" className="w-fit">
                 {loading ? 'Submitting..' : 'Submit'}
               </Button>

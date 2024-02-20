@@ -1,7 +1,8 @@
-import TeamsList from "@/src/components/admin/teamDetails";
-import DownloadDataButton from "@/src/components/downloadData";
-import ParticipantsTable from "@/src/components/participantsTable";
-import { prisma } from "@/src/lib/db";
+import TeamsList from '@/src/components/admin/teamDetails';
+import DownloadDataButton from '@/src/components/downloadData';
+import FaqAdmin from '@/src/components/faq/faqAdmin';
+import ParticipantsTable from '@/src/components/participantsTable';
+import { prisma } from '@/src/lib/db';
 
 export default async function Admin() {
   const res = await prisma.team.findMany({
@@ -30,6 +31,9 @@ export default async function Admin() {
             return { id: team.id, teamName: team.name };
           })}
         />
+      </div>
+      <div className="sticky bottom-5 ml-5">
+        <FaqAdmin />
       </div>
     </>
   );

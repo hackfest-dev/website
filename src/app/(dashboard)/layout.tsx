@@ -5,7 +5,7 @@ import { Toaster } from 'sonner';
 import ProgressBarProvider from '@/src/components/progressBarProvider';
 import { Metadata } from 'next';
 import NotFound from '../(routes)/not-found';
-import FaqAdmin from '@/src/components/faq/faqAdmin';
+import { headers } from 'next/headers';
 import { userInfo } from '@/src/lib/session';
 
 const obscura = localFont({
@@ -34,22 +34,27 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const user = await userInfo();
+  const headersList = headers();
+  const pathname = headersList.get('x-pathname');
 
-  if (user !== null && user.role === 'ADMIN') {
-    return (
-      <html lang="en" className={`${obscura.variable}`}>
-        <body className={`dark bg-black text-white ${poppins.className}`}>
-          <ProgressBarProvider>
-            <Toaster richColors expand={true} position="top-center" />
-
-            {children}
-            <div className="sticky bottom-5 ml-5">
-              <FaqAdmin />
-            </div>
-          </ProgressBarProvider>
-        </body>
-      </html>
-    );
+  if (user !== null) {
+    if (
+      (user.role === 'ADMIN' && pathname === '/admin') ||
+      (user?.role === 'ORGANISER' && pathname === '/organiser')
+    ) {
+      return (
+        <html lang="en" className={`${obscura.variable}`}>
+          <body className={`dark bg-black text-white ${poppins.className}`}>
+            <ProgressBarProvider>
+              <Toaster richColors expand={true} position="top-center" />
+              {children}
+            </ProgressBarProvider>
+          </body>
+        </html>
+      );
+    } else {
+      return <NotFound />;
+    }
   } else {
     return <NotFound />;
   }
