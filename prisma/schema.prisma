@@ -158,6 +158,7 @@ enum Courses {
   BE
   BTech
   BCA
+  BSc
 }
 
 enum PaymentStatus {
