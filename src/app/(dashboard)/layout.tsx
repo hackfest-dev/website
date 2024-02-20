@@ -17,8 +17,8 @@ const obscura = localFont({
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
 
 const metadata: Metadata = {
-  title: 'Hackfest - Admin Dashboard',
-  description: 'Admin Dashboard',
+  title: 'Hackfest - Dashboard',
+  description:  'Dashboard',
   icons: {
     icon: '/favicons/favicon.ico',
     shortcut: '/favicons/favicon.ico',
