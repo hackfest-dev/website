@@ -18,6 +18,8 @@ import { SectionHeading } from '../ui/sectionHeading';
 import { toast } from 'sonner';
 import { Category } from '@prisma/client';
 import { Button } from '../ui/button';
+import Link from 'next/link';
+import { Phone } from 'lucide-react';
 
 export const FAQ = () => {
   const [faq, setFaq] = useState<{
@@ -46,7 +48,10 @@ export const FAQ = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center md:py-12 py-6 gap-y-4 ">
-        <SectionHeading title="FAQ" classname="text-5xl md:text-6xl xl:text-7xl" />
+        <SectionHeading
+          title="FAQ"
+          classname="text-5xl md:text-6xl xl:text-7xl"
+        />
         <div className="flex flex-col w-full justify-center items-center pt-2 pb-6 space-y-6">
           <Tabs
             defaultValue="GENERAL"
@@ -146,6 +151,21 @@ export const FAQ = () => {
               </div>
             </DialogContent>
           </Dialog>
+        </div>
+      </div>
+
+      <div className="flex justify-center items-center flex-col pb-10 md:pb-16 xl:pb-20">
+        <div className="relative mx-10 bg-gradient-to-br p-5 from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-col flex-wrap justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] gap-3 mt-4 py-5">
+          <SectionHeading
+            title="Still have more questions?"
+            classname="text-3xl md:text-4xl xl:text-5xl"
+          />
+          <Link href="/contact">
+            <Button className="flex items-center gap-2" size={'lg'}>
+              <Phone size={16} />
+              Contact us
+            </Button>
+          </Link>
         </div>
       </div>
     </>
