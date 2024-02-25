@@ -45,9 +45,9 @@ export default async function RegisterPage() {
         <CardTitle className="text-center">Registrations will resume shortly</CardTitle>
       </CardHeader>
       <CardContent className="pt-5 text-center flex justify-center italic md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm">
-      note: your progress so far is saved
+      Note: Your progress so far is saved.
       </CardContent>
-      </Card> 
+      </Card>
           {/* <ProgressProvider initialStep={currentStep}>
             {currentStep < 3 ? (
               <>
