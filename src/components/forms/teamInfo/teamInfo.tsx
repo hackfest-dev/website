@@ -187,7 +187,7 @@ export default function TeamInfo({
                 <Button
                   size={'sm'}
                   disabled={
-                    4 - teamdata?.members?.length === 0 ||
+                    4 - teamdata?.members?.length <= 0 ||
                     userProgress === 'COMPLETE'
                   }
                 >
@@ -197,7 +197,7 @@ export default function TeamInfo({
               <DialogContent className="max-w-sm md:w-full w-[90%]">
                 <DialogHeader>
                   <DialogTitle>
-                    {4 - teamdata?.members?.length === 0 ? (
+                    {4 - teamdata?.members?.length <= 0 ? (
                       'Your Team is full!'
                     ) : (
                       <>

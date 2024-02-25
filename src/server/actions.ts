@@ -348,9 +348,6 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
       },
       include: {
         members: {
-          where: {
-            isLeader: true,
-          },
           include: { college: true },
         },
       },
