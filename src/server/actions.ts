@@ -366,7 +366,7 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
         status: 'error',
         message: 'Team members should be from same college only',
       };
-    }
+    } 
 
     const res = await db.team.update({
       where: {
