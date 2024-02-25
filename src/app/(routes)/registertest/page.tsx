@@ -1,24 +1,13 @@
-// import CreateTeam from "@/src/components/forms/createTeam";
-// import RegisterProfile from "@/src/components/forms/registerProfile";
-// import TeamDetails from "@/src/components/forms/teamInfo";
+import CreateTeam from "@/src/components/forms/createTeam";
+import RegisterProfile from "@/src/components/forms/registerProfile";
+import TeamDetails from "@/src/components/forms/teamInfo";
 import { getCurrentUser } from "@/src/lib/session";
-// import ProgressProvider from "../../../components/progressProvider";
-// import Progress from "@/src/components/registrationProgress";
-// import IdeaSubmitForm from "@/src/components/forms/ideaSubmitForm";
-// import FormButtons from "@/src/components/formButtons";
+import ProgressProvider from "../../../components/progressProvider";
+import Progress from "@/src/components/registrationProgress";
+import IdeaSubmitForm from "@/src/components/forms/ideaSubmitForm";
+import FormButtons from "@/src/components/formButtons";
 import NotLoggedIn from "@/src/components/notLoggedIn";
 import Registered from "@/src/components/registered";
-import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
-import dynamic from "next/dynamic";
-
-const ProgressProvider= dynamic(() => import('../../../components/progressProvider'))
-const Progress = dynamic(() => import('@/src/components/registrationProgress'))
-const IdeaSubmitForm = dynamic(() => import('@/src/components/forms/ideaSubmitForm'))
-const TeamDetails = dynamic(() => import('@/src/components/forms/teamInfo'))
-const FormButtons = dynamic(() => import('@/src/components/formButtons'))
-const RegisterProfile = dynamic(() => import('@/src/components/forms/registerProfile'))
-const CreateTeam = dynamic(() => import('@/src/components/forms/createTeam'))
-
 
 export default async function RegisterPage() {
   const user = await getCurrentUser();
