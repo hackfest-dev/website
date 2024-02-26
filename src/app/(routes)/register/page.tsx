@@ -8,12 +8,8 @@ import IdeaSubmitForm from '@/src/components/forms/ideaSubmitForm';
 import FormButtons from '@/src/components/formButtons';
 import NotLoggedIn from '@/src/components/notLoggedIn';
 import Registered from '@/src/components/registered';
-// import {
-//   Card,
-//   CardContent,
-//   CardHeader,
-//   CardTitle,
-// } from '@/src/components/ui/card';
+import { Button } from '@/src/components/ui/button';
+import { FiExternalLink } from 'react-icons/fi';
 
 export default async function RegisterPage() {
   const user = await getCurrentUser();
@@ -40,21 +36,23 @@ export default async function RegisterPage() {
     <main
       className={`bg-[url("/images/blue-grainy.png")] bg-cover bg-center relative overflow-hidden`}
     >
-      {/* <div className="z-0 absolute pointer-events-none inset-0 flex items-center justify-center bg-black/20 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div> */}
       <div className="z-0 absolute pointer-events-none inset-0 flex items-center justify-center bg-black/20"></div>
 
       <div className="max-w-screen-2xl min-h-screen mx-5 md:mx-20 lg:mx-48 flex justify-center items-center">
         <div className="z-10 bg-black/50 p-4 md:px-16 lg:px-24 mt-32 mb-20 pt-12 pb-8 md:py-12 flex justify-center items-center flex-col border border-white/20 w-full rounded-3xl">
-          {/* <Card className="w-full h-fit">
-            <CardHeader>
-              <CardTitle className="text-center">
-                Registrations will resume shortly
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-5 text-center flex justify-center italic md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm">
-              Note: Your progress so far is saved.
-            </CardContent>
-          </Card> */}
+          <div className="mb-10 flex flex-col lg:flex-row gap-3 items-center justify-between w-full">
+            <h1 className="text-xl lg:text-2xl">Register to Hackfest</h1>
+            <a
+              href="https://bit.ly/reg_guidelines"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Button className="w-max gap-3" size={'sm'}>
+                <span>Read Guidelines</span>
+                <FiExternalLink />
+              </Button>
+            </a>
+          </div>
           <ProgressProvider initialStep={currentStep}>
             {currentStep < 3 ? (
               <>
