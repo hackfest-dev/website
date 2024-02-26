@@ -1,14 +1,19 @@
-import CreateTeam from "@/src/components/forms/createTeam";
-import RegisterProfile from "@/src/components/forms/registerProfile";
-import TeamDetails from "@/src/components/forms/teamInfo";
-import { getCurrentUser } from "@/src/lib/session";
-import ProgressProvider from "../../../components/progressProvider";
-import Progress from "@/src/components/registrationProgress";
-import IdeaSubmitForm from "@/src/components/forms/ideaSubmitForm";
-import FormButtons from "@/src/components/formButtons";
-import NotLoggedIn from "@/src/components/notLoggedIn";
-import Registered from "@/src/components/registered";
-import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
+import CreateTeam from '@/src/components/forms/createTeam';
+import RegisterProfile from '@/src/components/forms/registerProfile';
+import TeamDetails from '@/src/components/forms/teamInfo';
+import { getCurrentUser } from '@/src/lib/session';
+import ProgressProvider from '../../../components/progressProvider';
+import Progress from '@/src/components/registrationProgress';
+import IdeaSubmitForm from '@/src/components/forms/ideaSubmitForm';
+import FormButtons from '@/src/components/formButtons';
+import NotLoggedIn from '@/src/components/notLoggedIn';
+import Registered from '@/src/components/registered';
+// import {
+//   Card,
+//   CardContent,
+//   CardHeader,
+//   CardTitle,
+// } from '@/src/components/ui/card';
 
 export default async function RegisterPage() {
   const user = await getCurrentUser();
@@ -17,17 +22,17 @@ export default async function RegisterPage() {
 
   if (!user) {
     return <NotLoggedIn />;
-  } else if (user.profileProgress === "FILL_DETAILS") {
+  } else if (user.profileProgress === 'FILL_DETAILS') {
     currentStep = 0;
-  } else if (user.profileProgress === "FORM_TEAM") {
+  } else if (user.profileProgress === 'FORM_TEAM') {
     currentStep = 1;
-  } else if (user.profileProgress === "SUBMIT_IDEA") {
+  } else if (user.profileProgress === 'SUBMIT_IDEA') {
     if (user.team?.ideaSubmission) {
       currentStep = 3;
     } else {
       currentStep = 2;
     }
-  } else if (user.profileProgress === "COMPLETE") {
+  } else if (user.profileProgress === 'COMPLETE') {
     currentStep = 3;
   }
 
@@ -40,15 +45,17 @@ export default async function RegisterPage() {
 
       <div className="max-w-screen-2xl min-h-screen mx-5 md:mx-20 lg:mx-48 flex justify-center items-center">
         <div className="z-10 bg-black/50 p-4 md:px-16 lg:px-24 mt-32 mb-20 pt-12 pb-8 md:py-12 flex justify-center items-center flex-col border border-white/20 w-full rounded-3xl">
-        <Card className="w-full h-fit">
-      <CardHeader>
-        <CardTitle className="text-center">Registrations will resume shortly</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-5 text-center flex justify-center italic md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm">
-      Note: Your progress so far is saved.
-      </CardContent>
-      </Card>
-          {/* <ProgressProvider initialStep={currentStep}>
+          {/* <Card className="w-full h-fit">
+            <CardHeader>
+              <CardTitle className="text-center">
+                Registrations will resume shortly
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-5 text-center flex justify-center italic md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm">
+              Note: Your progress so far is saved.
+            </CardContent>
+          </Card> */}
+          <ProgressProvider initialStep={currentStep}>
             {currentStep < 3 ? (
               <>
                 <div className="w-full flex flex-col gap-5 md:gap-8">
@@ -75,8 +82,7 @@ export default async function RegisterPage() {
             ) : (
               <Registered />
             )}
-          </ProgressProvider> */}
-          
+          </ProgressProvider>
         </div>
       </div>
     </main>
