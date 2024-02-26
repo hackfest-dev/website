@@ -1,7 +1,7 @@
 'use client';
 
 import { Team, User } from '@prisma/client';
-import { useContext, useState } from 'react';
+import { useContext, useState, useTransition } from 'react';
 import { ProgressContext } from '../../progressProvider';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import {
@@ -26,9 +26,9 @@ import { Badge } from '../../ui/badge';
 import { toast } from 'sonner';
 import { AiOutlineCopy } from 'react-icons/ai';
 import { BsWhatsapp } from 'react-icons/bs';
-import Link from 'next/link';
 import { Progress } from '@prisma/client';
 import { secrets } from '@/src/lib/secrets';
+import { useRouter } from 'next/navigation';
 
 export default function TeamInfo({
   teamdata,
@@ -41,6 +41,9 @@ export default function TeamInfo({
 }) {
   const { currentState } = useContext(ProgressContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   if (currentState !== 1) return <></>;
   const leader = teamdata?.members?.find(
@@ -106,6 +109,9 @@ export default function TeamInfo({
                       error: (error) => {
                         return 'Something went wrong';
                       },
+                    });
+                    startTransition(() => {
+                      router.refresh();
                     });
                   }}
                   disabled={isLoading || userProgress === 'COMPLETE'}

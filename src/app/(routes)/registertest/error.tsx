@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/src/components/ui/button';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function Error({
@@ -13,6 +14,8 @@ export default function Error({
     // Optionally log the error to an error reporting service
     console.error(error);
   }, [error]);
+
+  const router = useRouter()
 
   return (
     <div
@@ -30,7 +33,7 @@ export default function Error({
             Something went wrong. Please try again.
           </p>
 
-          <Button variant={'default'} onClick={() => reset()}>
+          <Button variant={'default'} onClick={() => router.refresh()}>
             Try again
           </Button>
         </div>
