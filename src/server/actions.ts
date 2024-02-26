@@ -13,7 +13,7 @@ import {
 } from '../lib/zod-schema';
 import { revalidatePath } from 'next/cache';
 import { getCurrentUser } from '../lib/session';
-import { States, Progress } from '@prisma/client';
+import { States } from '@prisma/client';
 
 // -----------------User functions-----------------
 // Set user as verified on successful verification
@@ -127,7 +127,7 @@ const updateProfile = async (formData: FormData) => {
     },
   });
 
-  revalidatePath('/register');
+  // revalidatePath('/register');
 
   return { type: 'success', message: 'Profile updated successfully' };
 };
@@ -203,7 +203,7 @@ const editProfile = async (formData: FormData) => {
     },
   });
 
-  revalidatePath('/profile');
+  // revalidatePath('/profile');
 
   return { type: 'success', message: 'Profile updated successfully' };
 };
@@ -263,8 +263,8 @@ const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
     });
 
     console.log('team created');
-    revalidatePath('/profile');
-    revalidatePath('/register');
+    // revalidatePath('/profile');
+    // revalidatePath('/register');
     return { status: 'success', message: 'Team created successfully' };
   } catch (error) {
     console.log(error);
@@ -297,7 +297,7 @@ const updateProfileProgress = async () => {
     else {
       return { status: 'error', message: 'Already updated to SubmitIdea' };
     }
-    revalidatePath('/register');
+    // revalidatePath('/register');
     return {
       status: 'success',
       message: 'Profile progress updated successfully',
@@ -315,8 +315,8 @@ const createCollege = protectedAction(createCollegeZ, async (value, { db }) => {
         state: value.state.toUpperCase() as States,
       },
     });
-    revalidatePath('/profile');
-    revalidatePath('/register');
+    // revalidatePath('/profile');
+    // revalidatePath('/register');
     return { status: 'success', message: 'College created successfully' };
   } catch (error) {
     console.log(error);
@@ -394,8 +394,8 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
       },
     });
 
-    revalidatePath('/profile');
-    revalidatePath('/register');
+    // revalidatePath('/profile');
+    // revalidatePath('/register');
     return { status: 'success', message: 'Joined team successfully' };
   } catch (error) {
     console.log(error);
@@ -592,7 +592,7 @@ const submitIdea = async (formdata: FormData) => {
         },
       });
     }
-    revalidatePath('/');
+    // revalidatePath('/');
     return { status: 'success', message: 'Idea has been submitted' };
   } catch (error) {
     console.log(error);

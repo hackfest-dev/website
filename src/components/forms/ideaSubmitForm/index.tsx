@@ -1,7 +1,7 @@
 'use client';
 import { submitIdea } from '@/src/server/actions';
 import { Tracks } from '@prisma/client';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useTransition } from 'react';
 import { ProgressContext } from '../../progressProvider';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,6 +31,7 @@ import { Textarea } from '../../ui/textarea';
 import { Dropzone } from '../../ui/dropZone';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { Badge } from '../../ui/badge';
+import { useRouter } from 'next/navigation';
 
 export function Component() {
   const { currentState, maxState, setCurrentState, setMaxState } =
@@ -43,6 +44,8 @@ export function Component() {
   const [error, setError] = useState<string>('');
   const [pdf, setPdf] = useState<File | null>(null);
   const [wordLimit, setWordLimit] = useState(0);
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
 
   const onSubmit = async (data: z.infer<typeof submitIdeaZ>) => {
     setLoading(true);
@@ -56,6 +59,9 @@ export function Component() {
     const res = await submitIdea(formData);
     setError(res.message);
     setLoading(false);
+    startTransition(() => {
+      router.refresh();
+    })
   };
 
   const user = useSession();

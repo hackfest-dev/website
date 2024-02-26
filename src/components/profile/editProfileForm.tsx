@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { Button } from '../ui/button';
 import { College, Courses, User } from '@prisma/client';
 import { Card, CardContent } from '../ui/card';
@@ -28,6 +28,7 @@ import { toast } from 'sonner';
 import { Input } from '../ui/input';
 import CreateCollege from './createCollege';
 import { ScrollArea } from '../ui/scroll-area';
+import { useRouter } from 'next/navigation';
 
 export const EditProfileForm: React.FC<{
   user: User & {
@@ -58,6 +59,8 @@ export const EditProfileForm: React.FC<{
   const [coursevalue, setCoursevalue] = useState('');
 
   const courses: string[] = Object.entries(Courses).map(([, value]) => value);
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
 
   const onSubmit = async (
     e:
@@ -75,6 +78,9 @@ export const EditProfileForm: React.FC<{
     if (aadhaarFile) form.append('adhaar', aadhaarFile);
     const res = await editProfile(form);
     setIsSaving(false);
+    startTransition(() => {
+      router.refresh();
+    });
     if (res.type == 'error') throw new Error(res.message);
     if (res.type == 'info' || res.type == 'success') return res.message;
   };

@@ -1,7 +1,7 @@
 'use client';
 import { College, TshirtSize, User } from '@prisma/client';
 import { updateProfile } from '@/src/server/actions';
-import { Dispatch, useContext, useState } from 'react';
+import { Dispatch, useContext, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { updateProfileZ } from '@/src/lib/zod-schema';
@@ -40,7 +40,7 @@ import {
 } from '../../ui/command';
 import CreateCollege from '../../profile/createCollege';
 import { ScrollArea } from '../../ui/scroll-area';
-import { Courses } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 const ProfileForm = ({
   user,
@@ -85,6 +85,8 @@ const ProfileForm = ({
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<string>('');
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
 
   const [openCollegeList, setOpenCollegeList] = useState(false);
   const [collegevalue, setCollegevalue] = useState('');
@@ -124,6 +126,9 @@ const ProfileForm = ({
       });
     setError(res.message);
     setLoading(false);
+    startTransition(() => {
+      router.refresh();
+    });
     res.type !== 'error' && registerProp && setCurrentState(1);
     res.type !== 'error' && maxState <= 1 && registerProp && setMaxState(1);
   };

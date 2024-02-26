@@ -1,11 +1,12 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useTransition } from "react";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight, Loader2Icon } from "lucide-react";
 import { ProgressContext } from "../progressProvider";
 import { Progress } from "@prisma/client";
 import { updateProfileProgress } from "@/src/server/actions";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const FormButtons = ({
   profileProgress,
@@ -30,6 +31,8 @@ const FormButtons = ({
   } else if (currentState === 2) {
     if (profileProgress === "SUBMIT_IDEA") isDisabled = true;
   } else isDisabled = true;
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -74,6 +77,9 @@ const FormButtons = ({
                 setMaxState(2);
                 setCurrentState(currentState + 1);
                 setIsLoading(false);
+                startTransition(() => {
+                  router.refresh();
+                })
               }
             } else if (currentState === 2) {
               if (profileProgress === "SUBMIT_IDEA") return;

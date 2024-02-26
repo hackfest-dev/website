@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Loader2Icon, Plus } from "lucide-react";
 import { createCollege } from "@/src/server/actions";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { States } from "@prisma/client";
 import { toast } from "sonner";
 import {
@@ -36,6 +36,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { useRouter } from "next/navigation";
 
 const CreateCollege = () => {
   const states = Object.entries(States).map(([, value]) => value);
@@ -47,6 +48,8 @@ const CreateCollege = () => {
       state: States.KARNATAKA,
     },
   });
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -61,6 +64,9 @@ const CreateCollege = () => {
       position: "bottom-center",
     });
     setLoading(false);
+    startTransition(() => {
+      router.refresh();
+    })
     setOpen(false);
   };
 
