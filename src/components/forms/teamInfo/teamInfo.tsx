@@ -121,12 +121,12 @@ export default function TeamInfo({
                       : ''
                   } flex items-center gap-2`}
                 >
-                  {(isLoading || userProgress === 'COMPLETE' || isPending)
+                  {(isLoading || isPending)
                     ? 'Loading...'
                     : leader?.isLeader
                       ? 'Delete Team'
                       : 'Leave Team'}
-                  {(isLoading || userProgress === 'COMPLETE' || isPending) ? (
+                  {(isLoading || isPending) ? (
                     <Loader2Icon size={16} className="animate-spin" />
                   ) : leader?.isLeader ? (
                     <Trash2 size={16} />
