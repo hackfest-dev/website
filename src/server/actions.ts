@@ -11,7 +11,10 @@ import {
   createCollegeZ,
   editProfileZ,
 } from '../lib/zod-schema';
-import { revalidatePath } from 'next/cache';
+// import { revalidatePath } from 'next/cache';
+// a note for future developers of hackfest.dev
+// revalidatePath throws Application error: a client-side exception has occurred
+// hence we router.refresh() instead. we do it with the help of 'startTransition' from react's useTransition hook.
 import { getCurrentUser } from '../lib/session';
 import { States } from '@prisma/client';
 

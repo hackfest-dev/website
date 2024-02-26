@@ -114,19 +114,19 @@ export default function TeamInfo({
                       router.refresh();
                     });
                   }}
-                  disabled={isLoading || userProgress === 'COMPLETE'}
-                  className={`${isLoading ? 'cursor-not-allowed' : ''} ${
+                  disabled={isLoading || userProgress === 'COMPLETE' || isPending}
+                  className={`${(isLoading || userProgress === 'COMPLETE' || isPending) ? 'cursor-not-allowed' : ''} ${
                     leader?.isLeader
                       ? 'bg-red-600 text-white hover:bg-red-600/90'
                       : ''
                   } flex items-center gap-2`}
                 >
-                  {isLoading
+                  {(isLoading || userProgress === 'COMPLETE' || isPending)
                     ? 'Loading...'
                     : leader?.isLeader
                       ? 'Delete Team'
                       : 'Leave Team'}
-                  {isLoading ? (
+                  {(isLoading || userProgress === 'COMPLETE' || isPending) ? (
                     <Loader2Icon size={16} className="animate-spin" />
                   ) : leader?.isLeader ? (
                     <Trash2 size={16} />

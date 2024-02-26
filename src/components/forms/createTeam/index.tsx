@@ -21,7 +21,9 @@ export default function CreateTeam() {
   const [Loading1, setLoading1] = useState(false);
   const [Loading2, setLoading2] = useState(false);
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [pending1, startTransition1] = useTransition();
+  const [pending2, startTransition2] = useTransition();
+
 
   useEffect(() => {
     if (isWaiting) setTimeout(() => setIsWaiting(false), 200);
@@ -84,7 +86,7 @@ export default function CreateTeam() {
                     if (res.status === 'success') {
                       setMessage(res.message);
                     }
-                    startTransition(() => {
+                    startTransition1(() => {
                       router.refresh();
                     });
                     setLoading1(false);
@@ -109,7 +111,7 @@ export default function CreateTeam() {
                     }`}
                     disabled={!isNameAvailable}
                   >
-                    {Loading1 ? (
+                    {(Loading1 || pending1) ? (
                       <>
                         <Loader2Icon size={16} className="animate-spin" />
                       </>
@@ -138,7 +140,7 @@ export default function CreateTeam() {
                     if (res.status === 'error') setError(res.message);
                     if (res.status === 'success') setMessage(res.message);
                     setLoading2(false);
-                    startTransition(() => {
+                    startTransition2(() => {
                       router.refresh();
                     });
                   }}
@@ -154,7 +156,7 @@ export default function CreateTeam() {
                     required
                   />
                   <Button type="submit" className="flex items-center gap-2">
-                    {Loading2 ? (
+                    {(Loading2 || pending2) ? (
                       <>
                         <Loader2Icon size={16} className="animate-spin" />
                       </>

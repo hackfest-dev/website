@@ -344,12 +344,12 @@ export const EditProfileForm: React.FC<{
               },
             });
           }}
-          disabled={isSaving}
+          disabled={isSaving || pending}
           className={`${
-            isSaving ? 'cursor-not-allowed' : ''
+            (isSaving || pending) ? 'cursor-not-allowed' : ''
           } flex items-center gap-2`}
         >
-          {isSaving ? (
+          {(isSaving ) ? (
             <Loader2Icon size={16} className="animate-spin" />
           ) : (
             <Save size={16} />

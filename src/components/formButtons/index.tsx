@@ -88,8 +88,8 @@ const FormButtons = ({
           className="flex items-center gap-2"
         >
           {/* {currentState === 2 ? "Submit" : "Next"} */}
-          {isLoading && <Loader2Icon size={16} className="animate-spin" />}
-          {isLoading ? "Proceeding..." : "Next"}
+          {(isLoading || pending) && <Loader2Icon size={16} className="animate-spin" />}
+          {(isLoading || pending) ? "Proceeding..." : "Next"}
           <ChevronRight size={16} />
         </Button>
       )}

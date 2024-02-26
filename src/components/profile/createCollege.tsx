@@ -133,7 +133,7 @@ const CreateCollege = () => {
                   )}
                 ></FormField>
                 <Button type="submit" className="flex items-center gap-2 w-fit">
-                  {loading ? (
+                  {(loading || pending) ? (
                     <Loader2Icon className="animate-spin" />
                   ) : (
                     <>

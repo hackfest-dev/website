@@ -235,7 +235,7 @@ export function Component() {
                 be accepted.
               </p>
               <Button type="submit" className="w-fit">
-                {loading ? 'Submitting..' : 'Submit'}
+                {(loading || pending) ? 'Submitting..' : 'Submit'}
               </Button>
             </div>
           </div>
