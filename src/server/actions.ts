@@ -263,8 +263,8 @@ const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
     });
 
     console.log('team created');
-    revalidatePath('/profile');
-    revalidatePath('/register');
+    // revalidatePath('/profile');
+    // revalidatePath('/register');
     return { status: 'success', message: 'Team created successfully' };
   } catch (error) {
     console.log(error);
@@ -297,10 +297,10 @@ const updateProfileProgress = async () => {
     else {
       return { status: 'error', message: 'Already updated to SubmitIdea' };
     }
-    revalidatePath("/", "layout");
+    revalidatePath('/register');
     return {
-      status: "success",
-      message: "Profile progress updated successfully",
+      status: 'success',
+      message: 'Profile progress updated successfully',
     };
   } catch (error) {
     console.log(error);
@@ -366,7 +366,7 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
         status: 'error',
         message: 'Team members should be from same college only',
       };
-    } 
+    }
 
     const res = await db.team.update({
       where: {
@@ -394,8 +394,8 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
       },
     });
 
-    revalidatePath('/profile');
-    revalidatePath('/register');
+    // revalidatePath('/profile');
+    // revalidatePath('/register');
     return { status: 'success', message: 'Joined team successfully' };
   } catch (error) {
     console.log(error);
@@ -439,8 +439,8 @@ const leaveTeam = async () => {
       },
     });
 
-    revalidatePath('/profile');
-    revalidatePath('/register');
+    // revalidatePath('/profile');
+    // revalidatePath('/register');
     return { status: 'success', message: 'Left team successfully' };
   } catch (error) {
     console.log(error);
@@ -483,12 +483,10 @@ const deleteTeam = async () => {
         id: user.team?.id,
       },
     });
-    revalidatePath('/profile');
-    revalidatePath('/register');
+    // revalidatePath('/profile');
+    // revalidatePath('/register');
     return { status: 'success', message: 'Team deleted successfully' };
   } catch (error) {
-    revalidatePath("/profile");
-    revalidatePath("/register");
     console.log(error);
     return { status: 'error', message: 'Something went wrong' };
   }
