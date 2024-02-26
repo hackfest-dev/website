@@ -263,8 +263,8 @@ const createTeam = protectedAction(createTeamZ, async (value, { db }) => {
     });
 
     console.log('team created');
-    // revalidatePath('/profile');
-    // revalidatePath('/register');
+    revalidatePath('/profile');
+    revalidatePath('/register');
     return { status: 'success', message: 'Team created successfully' };
   } catch (error) {
     console.log(error);
@@ -394,8 +394,8 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
       },
     });
 
-    // revalidatePath('/profile');
-    // revalidatePath('/register');
+    revalidatePath('/profile');
+    revalidatePath('/register');
     return { status: 'success', message: 'Joined team successfully' };
   } catch (error) {
     console.log(error);
@@ -439,8 +439,8 @@ const leaveTeam = async () => {
       },
     });
 
-    // revalidatePath('/profile');
-    // revalidatePath('/register');
+    revalidatePath('/profile');
+    revalidatePath('/register');
     return { status: 'success', message: 'Left team successfully' };
   } catch (error) {
     console.log(error);
@@ -483,8 +483,8 @@ const deleteTeam = async () => {
         id: user.team?.id,
       },
     });
-    // revalidatePath('/profile');
-    // revalidatePath('/register');
+    revalidatePath('/profile');
+    revalidatePath('/register');
     return { status: 'success', message: 'Team deleted successfully' };
   } catch (error) {
     console.log(error);
