@@ -40,20 +40,22 @@ export default async function RegisterPage() {
 
       <div className="max-w-screen-2xl min-h-screen mx-5 md:mx-20 lg:mx-48 flex justify-center items-center">
         <div className="z-10 bg-black/50 p-4 md:px-16 lg:px-24 mt-32 mb-20 pt-12 pb-8 md:py-12 flex justify-center items-center flex-col border border-white/20 w-full rounded-3xl">
-          <div className="mb-10 flex flex-col lg:flex-row gap-3 items-center justify-between w-full">
-            <h1 className="text-xl lg:text-2xl">Register to Hackfest</h1>
-            <a
-              href="https://bit.ly/reg_guidelines"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Button className="w-max gap-3" size={'sm'}>
-                <span>Read Guidelines</span>
-                <FiExternalLink />
-              </Button>
-            </a>
-          </div>
           <ProgressProvider initialStep={currentStep}>
+            {currentStep !== 3 && (
+              <div className="mb-10 flex flex-col lg:flex-row gap-3 items-center justify-between w-full">
+                <h1 className="text-xl lg:text-2xl">Register to Hackfest</h1>
+                <a
+                  href="https://bit.ly/reg_guidelines"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Button className="w-max gap-3" size={'sm'}>
+                    <span>Read Guidelines</span>
+                    <FiExternalLink />
+                  </Button>
+                </a>
+              </div>
+            )}
             {currentStep < 3 ? (
               <>
                 <div className="w-full flex flex-col gap-5 md:gap-8">
