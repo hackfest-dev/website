@@ -562,8 +562,21 @@ const submitIdea = async (formdata: FormData) => {
         where: {
           code: data.referralCode,
         },
+		include:{
+			college:true
+		}
       });
       if (!referral)
+        return { status: 'error', message: 'Invalid referral code' };
+	  const dbUser = await prisma.user.findUnique({
+		  where:{
+			  id:user.id
+		  },
+		  include:{
+			  college:true
+		  }
+	  })
+	  if(referral.college?.id!== dbUser?.college?.id) 
         return { status: 'error', message: 'Invalid referral code' };
       await prisma.team.update({
         data: {
