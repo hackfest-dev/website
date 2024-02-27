@@ -78,10 +78,11 @@ model VerificationToken {
 }
 
 model College {
-  id    String @id @default(cuid())
-  name  String
-  state States
-  users User[]
+  id       String     @id @default(cuid())
+  name     String
+  state    States
+  users    User[]
+  Referral Referral[]
 }
 
 model Team {
@@ -131,10 +132,14 @@ model AppSettings {
 }
 
 model Referral {
-  id       Int    @id @default(autoincrement())
-  code     String @unique
-  referrer String
-  teams    Team[]
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  referrer  String
+  teams     Team[]
+  collegeId String
+  college   College? @relation(fields: [collegeId], references: [id])
+  name      String
+  contact   String
 }
 
 model Faq {
