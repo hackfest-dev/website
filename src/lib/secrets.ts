@@ -12,3 +12,4 @@ export const secrets = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   NODE_ENV: process.env.NODE_ENV,
 };
+ 
