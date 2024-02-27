@@ -1,4 +1,5 @@
 import { AiOutlineInstagram, AiOutlineMail } from "react-icons/ai";
+import { FaDiscord } from "react-icons/fa";
 
 export const dates: [Date, Date, Date] = [
   new Date("2024-4-5"),
@@ -44,6 +45,11 @@ export const social: Array<{
     link: "mailto:admin@hackfest.dev",
     icon: <AiOutlineMail className=" hover:text-yellow-500" />,
     name: "E-mail",
+  },
+  {
+    link: "https://discord.gg/d9hQV8Hcv6",
+    icon: <FaDiscord className=" hover:text-yellow-500" />,
+    name: "Discord",
   },
 ];
 
