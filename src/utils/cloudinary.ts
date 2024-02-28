@@ -1,10 +1,10 @@
-import { secrets } from "@/src/lib/secrets";
 import { v2 as cloudinary } from "cloudinary";
+import { env } from "~/env";
 
 const cloudinaryConfig = cloudinary.config({
-  cloud_name: secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-  api_secret: secrets.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
+  cloud_name: env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  api_secret: env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
   secure: true,
 });
 
@@ -15,7 +15,7 @@ async function getSignature() {
       timestamp,
       folder: "next",
     },
-    cloudinaryConfig.api_secret as string
+    cloudinaryConfig.api_secret as string,
   );
   return { timestamp, signature };
 }

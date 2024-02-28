@@ -7,6 +7,23 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol:"https",
+        hostname:"lh3.googleusercontent.com"
+      },
+      {
+        protocol:"https",
+        hostname:"res.cloudinary.com",
+        // pathname:"/"
+      }
+    ],
+  },
 
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
