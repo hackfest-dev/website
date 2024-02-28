@@ -9,8 +9,17 @@ import {
   TableHeader,
 } from "~/components/ui/table";
 import { api } from "~/utils/api";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type teamRouter } from "~/server/api/routers/team";
 
-export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
+export default function ParticipantsTable({
+  data,
+}: {
+  data:
+    | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
+    | null
+    | undefined;
+}) {
   const verifyUser = api.user.verifyUser.useMutation();
   return (
     <>
@@ -25,7 +34,7 @@ export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
         </TableHeader>
         <TableBody>
           {/*Loop over members and insert TableRows*/}
-          {data.map((element) => {
+          {data?.map((element) => {
             return element.members.map((member, index) => {
               return (
                 <>

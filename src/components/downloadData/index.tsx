@@ -1,6 +1,15 @@
+import { type inferRouterOutputs } from "@trpc/server";
 import { type TeamsData } from "../../types";
+import { type teamRouter } from "~/server/api/routers/team";
 
-const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
+const DownloadDataButton = ({
+  data,
+}: {
+  data:
+    | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
+    | null
+    | undefined;
+}) => {
   const Participants = (teamsData: TeamsData[]): string => {
     let csv = "Team Name,College,Team Leader,Member Count,Members\n";
 
@@ -47,6 +56,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
     <>
       <button
         onClick={async () => {
+          if (!data) return;
           const csvData = Participants(data);
           const url = window.URL.createObjectURL(new Blob([csvData]));
           const link = document.createElement("a");
@@ -62,6 +72,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
       </button>
       <button
         onClick={async () => {
+          if (!data) return;
           const csvData = IdeaSubmissions(data);
           const url = window.URL.createObjectURL(new Blob([csvData]));
           const link = document.createElement("a");
@@ -77,6 +88,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
       </button>
       <button
         onClick={async () => {
+          if (!data) return;
           const csvData = Referrals(data);
           const url = window.URL.createObjectURL(new Blob([csvData]));
           const link = document.createElement("a");

@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function TeamsList({
   teams,
 }: {
-  teams: { teamName: string; id: string }[];
+  teams: { teamName: string; id: string }[] | undefined;
 }) {
   const [teamDetails, setTeamDetails] = useState<
     | (Team & { members: User[] } & { ideaSubmission: IdeaSubmission | null })
@@ -20,7 +20,7 @@ export default function TeamsList({
       <div className="m-auto flex w-3/4 justify-between p-10">
         <div className="w-fit bg-gray-300 p-5">
           <h1 className="border-b text-center">Teams</h1>
-          {teams.map((team) => {
+          {teams?.map((team) => {
             return (
               <button
                 data-teamid={team.id}

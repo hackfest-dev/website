@@ -149,14 +149,14 @@ const PrizePool = () => {
           </FadeIn>
           <FadeIn delay={0.3}>
             <h1 className="py-4 text-center text-base font-medium text-white">
-              For the best project in each of the 5 tracks* will be awarded with
+              The best project in each of the 5 tracks* will be awarded with
               a cash prize of 10K
             </h1>
           </FadeIn>
           <FadeIn delay={0.4}>
             <p className="mt-4 text-center text-xs font-normal text-slate-400">
               * Out of 6 tracks except Open Innovation all are eligible for this
-              special prize of 10k.
+              special prize.
             </p>
           </FadeIn>
         </LampContainer>

@@ -280,4 +280,26 @@ export const teamRouter = createTRPCRouter({
         return null;
       }
     }),
+
+  getTeamsList: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.session.user.role !== "ORGANISER")
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You are not an organiser",
+      });
+    try {
+      return await ctx.db.team.findMany({
+        include: {
+          members: {
+            include: { college: true },
+          },
+          ideaSubmission: true,
+          referral: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }),
 });

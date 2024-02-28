@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import styles from "./style.module.css";
 import FadeIn from "../fadeInAnimation";
 import { Download, MapPin } from "lucide-react";
+import Link from "next/link";
 
 const AboutHackfest = () => {
   const childRef36 = useRef<HTMLDivElement>(null);
@@ -245,11 +246,11 @@ const AboutHackfest = () => {
                 />
 
                 <div>
-                  <a href="/about">
+                  <Link href="/about">
                     <Button className="mt-3 font-medium md:mt-5" size={"sm"}>
                       Read More
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </FadeIn>
@@ -273,7 +274,7 @@ const AboutHackfest = () => {
                   <span className="font-obscura tracking-wider">Tracks</span>
                 </h3>
                 <p className="w-auto text-center text-base sm:text-lg lg:text-xl">
-                  Six diverse tracks, to craft and code solutions for thier
+                  Six diverse tracks, to craft and code solutions for their
                   choosen problem statement.
                 </p>
               </div>
@@ -376,8 +377,6 @@ const AboutHackfest = () => {
                   leading Indian engineering colleges, fostering innovation. The
                   event spans 50 hours, including a 36-hour hackathon, providing
                   a platform for participants to showcase their skills.
-                  Here&apos;s an overview that outlines dates, goals, budget,
-                  format, logistics, and expected outcomes.
                 </div>
               </div>
             </FadeIn>
