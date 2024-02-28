@@ -1,5 +1,11 @@
-import { useWindowSize } from "@/src/app/hooks/useWindowSize";
-import { useEffect, useRef, useState, MouseEvent, TouchEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+  type TouchEvent,
+} from "react";
+import { useWindowSize } from "~/hooks/useWindowSize";
 
 const NeonGrid = () => {
   const boxes = useRef<Array<Array<HTMLDivElement | null>>>([]);
@@ -52,7 +58,7 @@ const NeonGrid = () => {
           ) {
             box.style.transform = "perspective(100px) translateZ(5px)";
             box.style.zIndex = "1";
-            box.style.boxShadow = `0 0 10px 5px ${color[1]}`;
+            box.style.boxShadow = `0 0 10px 5px ${color![1]}`;
           }
           // Giving a 3D effect to boxes second adjacent to the hovered box (diagonal boxes excluded)
           else if (
@@ -64,7 +70,7 @@ const NeonGrid = () => {
           ) {
             box.style.transform = "perspective(100px) translateZ(3px)";
             box.style.zIndex = "0";
-            box.style.boxShadow = `0 0 10px 5px ${color[2]}`;
+            box.style.boxShadow = `0 0 10px 5px ${color![2]}`;
           }
         }
       });
@@ -73,7 +79,7 @@ const NeonGrid = () => {
     if (e.target && e.target instanceof HTMLDivElement) {
       e.target.style.transform = "perspective(100px) translateZ(10px)";
       e.target.style.zIndex = "2";
-      e.target.style.boxShadow = `0 0 15px 10px ${color[0]}`;
+      e.target.style.boxShadow = `0 0 15px 10px ${color![0]}`;
     }
     if (e.target && e.type === "mousedown") {
       (e.target as HTMLDivElement).style.transitionProperty = "all";
@@ -138,7 +144,7 @@ const NeonGrid = () => {
                                 perspective: "100px",
                                 transform: "rotate3d(1.5, -1.5, -0.25, 45deg)",
                               }}
-                              ref={(ref) => (boxes.current[i][j] = ref)}
+                              ref={(ref) => (boxes.current[i]![j] = ref)}
                             >
                               {/* Top face */}
                               <div

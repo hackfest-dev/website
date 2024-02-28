@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import AuthButtons from "./authButton";
-import { navLinks } from "@/src/constants";
 import { IoMdClose } from "react-icons/io";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { navLinks } from "~/constants";
 
 export const MobileNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);

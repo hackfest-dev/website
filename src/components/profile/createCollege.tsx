@@ -9,7 +9,6 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Loader2Icon, Plus } from "lucide-react";
-import { createCollege } from "@/src/server/actions";
 import { useState, useTransition } from "react";
 import { States } from "@prisma/client";
 import { toast } from "sonner";
@@ -23,9 +22,8 @@ import {
 } from "../ui/select";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useForm } from "react-hook-form";
-import { createCollegeZ } from "@/src/lib/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { type z } from "zod";
 import {
   Form,
   FormControl,
@@ -35,6 +33,8 @@ import {
   FormMessage,
 } from "../ui/form";
 import { useRouter } from "next/navigation";
+import { createCollegeZ } from "~/server/schema/zod-schema";
+import { api } from "~/utils/api";
 
 const CreateCollege = () => {
   const states = Object.entries(States).map(([, value]) => value);
@@ -52,9 +52,11 @@ const CreateCollege = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const createCollege = api.college.createCollege.useMutation();
+
   const onSubmit = async () => {
     setLoading(true);
-    const res = await createCollege({
+    const res = await createCollege.mutateAsync({
       name: form.getValues("name"),
       state: form.getValues("state"),
     });

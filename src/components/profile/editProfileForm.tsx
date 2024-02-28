@@ -1,6 +1,6 @@
 import { useState, useTransition } from "react";
 import { Button } from "../ui/button";
-import { College, Courses, User } from "@prisma/client";
+import { Courses, type College, type User } from "@prisma/client";
 import { Card, CardContent } from "../ui/card";
 import {
   BookText,
@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { LogoutButton } from "./logout";
 import { Dropzone } from "../ui/dropZone";
-import { editProfile } from "@/src/server/actions";
 import {
   Command,
   CommandEmpty,
@@ -28,6 +27,7 @@ import { Input } from "../ui/input";
 import CreateCollege from "./createCollege";
 import { ScrollArea } from "../ui/scroll-area";
 import { useRouter } from "next/navigation";
+import { api } from "~/utils/api";
 
 export const EditProfileForm: React.FC<{
   user: User & {
@@ -48,8 +48,8 @@ export const EditProfileForm: React.FC<{
     collegeId: user.college?.id ?? "",
   });
 
-  const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
-  const [clgFile, setClgFile] = useState<File | null>(null);
+  const [aadhaarFile, setAadhaarFile] = useState<File>(new File([], ""));
+  const [clgFile, setClgFile] = useState<File>(new File([], ""));
 
   const [isSaving, setIsSaving] = useState(false);
   const [openCollegeList, setOpenCollegeList] = useState(false);
@@ -60,6 +60,7 @@ export const EditProfileForm: React.FC<{
   const courses: string[] = Object.entries(Courses).map(([, value]) => value);
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const editProfile = api.user.editProfile.useMutation();
 
   const onSubmit = async (
     e:
@@ -75,13 +76,20 @@ export const EditProfileForm: React.FC<{
     form.append("college", formData.collegeId || "");
     if (clgFile) form.append("collegeId", clgFile);
     if (aadhaarFile) form.append("adhaar", aadhaarFile);
-    const res = await editProfile(form);
+    const res = await editProfile.mutateAsync({
+      aadhaarFile: aadhaarFile,
+      collegeIdFile: clgFile,
+      college: formData.collegeId,
+      name: formData.uname,
+      phone: formData.phone,
+      course: formData.course as Courses,
+    });
     setIsSaving(false);
     startTransition(() => {
       router.refresh();
     });
-    if (res.type == "error") throw new Error(res.message);
-    if (res.type == "info" || res.type == "success") return res.message;
+    if (res.status == "error") throw new Error(res.message);
+    if (res.status == "info" || res.status == "success") return res.message;
   };
 
   return (

@@ -1,5 +1,4 @@
-import { verifyUser } from "@/src/server/actions";
-import { TeamsData } from "@/src/types";
+import { type TeamsData } from "~/types";
 import Image from "next/image";
 import {
   TableCell,
@@ -9,8 +8,10 @@ import {
   TableBody,
   TableHeader,
 } from "~/components/ui/table";
+import { api } from "~/utils/api";
 
 export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
+  const verifyUser = api.user.verifyUser.useMutation();
   return (
     <>
       <Table className="m-auto w-full" aria-label="Files">
@@ -65,7 +66,7 @@ export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
                         onClick={(e) => {
                           const id = e.currentTarget.getAttribute("data-uid");
                           console.log(id);
-                          if (id) verifyUser({ userId: id });
+                          if (id) verifyUser.mutate({ userId: id });
                         }}
                         className="rounded bg-white p-4 text-black"
                       >

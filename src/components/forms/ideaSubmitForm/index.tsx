@@ -39,7 +39,7 @@ export function Component() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [pdf, setPdf] = useState<File | null>(null);
+  const [pdf, setPdf] = useState<File>(new File([], ""));
   const [wordLimit, setWordLimit] = useState(0);
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -49,7 +49,7 @@ export function Component() {
     setLoading(true);
     const res = await submitIdea.mutateAsync(
       {
-        ppt: pdf!,
+        ppt: pdf,
         problemStatement: data.problemStatement,
         track: data.problemStatement as Tracks,
         referralCode: data.referralCode,

@@ -80,8 +80,8 @@ const ProfileForm = ({
       tshirtSize: user?.tShirtSize ?? undefined,
     },
   });
-  const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
-  const [clgFile, setClgFile] = useState<File | null>(null);
+  const [aadhaarFile, setAadhaarFile] = useState<File>(new File([], ""));
+  const [clgFile, setClgFile] = useState<File>(new File([], ""));
 
   const [loading, setLoading] = useState(false);
 

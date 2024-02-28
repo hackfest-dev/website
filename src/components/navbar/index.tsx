@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import AuthButtons from './authButton';
-import { navLinks } from '@/src/constants';
-import { MobileNavbar } from './mobileNavbar';
+import Image from "next/image";
+import Link from "next/link";
+import AuthButtons from "./authButton";
+import { MobileNavbar } from "./mobileNavbar";
+import { navLinks } from "~/constants";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-center mx-3">
-      <nav className="border border-white/30 px-5 max-w-6xl w-full fixed rounded-full  mt-3 sm:mt-5 z-[60] bg-white/5 bg-clip-padding backdrop-blur-lg backdrop-filter">
+    <div className="mx-3 flex justify-center">
+      <nav className="fixed z-[60] mt-3 w-full max-w-6xl rounded-full border  border-white/30 bg-white/5 bg-clip-padding px-5 backdrop-blur-lg backdrop-filter sm:mt-5">
         <div className="flex h-16 items-center justify-between px-4">
           <Link
-            href={'/'}
+            href={"/"}
             className="flex items-center gap-3 font-semibold text-white"
           >
             <div className="lg:w-30 lg:h-30">
@@ -27,7 +27,7 @@ const Navbar = () => {
 
           <div className="hidden items-center space-x-8 lg:flex">
             {navLinks.map((link, index) => (
-              <div key={index} className="relative group">
+              <div key={index} className="group relative">
                 <Link
                   href={link.url}
                   className={`text-white hover:text-gray-300`}
