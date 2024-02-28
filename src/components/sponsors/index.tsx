@@ -2,6 +2,7 @@ import Image from "next/image";
 import { SectionHeading } from "../ui/sectionHeading";
 import { Button } from "../ui/button";
 import { Send } from "lucide-react";
+import Link from "next/link";
 
 const Sponsors = () => {
   return (
@@ -20,7 +21,7 @@ const Sponsors = () => {
             <h2 className="flex h-24 items-center justify-center text-center text-3xl font-semibold xl:text-4xl ">
               Powered By
             </h2>
-            <a href="/sponsors">
+            <Link href="/sponsors">
               <div className="relative aspect-square w-52 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl md:w-60">
                 <Image
                   className="rounded-2xl"
@@ -29,14 +30,14 @@ const Sponsors = () => {
                   fill={true}
                 />
               </div>
-            </a>
+            </Link>
           </div>
 
           <div className="flex w-full flex-col items-center justify-center gap-5 xl:w-1/3">
             <h2 className="flex h-24 items-center justify-center text-center text-3xl font-semibold xl:text-4xl">
               Co-Powered By
             </h2>
-            <a href="/sponsors">
+            <Link href="/sponsors">
               <div className="relative aspect-square w-52 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl md:w-60">
                 <Image
                   className="rounded-2xl"
@@ -45,14 +46,14 @@ const Sponsors = () => {
                   fill={true}
                 />
               </div>
-            </a>
+            </Link>
           </div>
 
           <div className="flex w-full flex-col items-center justify-center gap-5 xl:w-1/3">
             <h2 className="flex h-24 items-center justify-center text-center text-3xl font-semibold xl:text-4xl">
               Associate Sponsors
             </h2>
-            <a href="/sponsors">
+            <Link href="/sponsors">
               <div className="relative aspect-square w-52 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl md:w-60">
                 <Image
                   className="rounded-2xl p-6"
@@ -61,7 +62,7 @@ const Sponsors = () => {
                   fill={true}
                 />
               </div>
-            </a>
+            </Link>
           </div>
         </div>
 
