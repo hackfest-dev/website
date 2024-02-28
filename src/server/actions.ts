@@ -353,10 +353,16 @@ const joinTeam = protectedAction(joinTeamZ, async (value, { db }) => {
         members: {
           include: { college: true },
         },
+		ideaSubmission:true
       },
     });
+
     if (!team) {
       return { status: 'error', message: 'Team not found' };
+    }
+
+    if (team.ideaSubmission) {
+      return { status: 'error', message: 'Cannot join team anymore!' };
     }
 
     if (team.members.length >= 4) {
