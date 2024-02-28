@@ -1,11 +1,10 @@
 import { Poppins } from "next/font/google";
-import "../globals.css";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
-import { headers } from "next/headers";
 import NotFound from "../not-found";
 import ProgressBarProvider from "../progressBarProvider";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const obscura = localFont({
   src: "../../../public/fonts/camera-obscura.otf",
@@ -27,14 +26,14 @@ const metadata = {
 
 export { metadata };
 
-export default async function RootLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const user = useSession();
-  const headersList = headers();
-  const pathname = headersList.get("x-pathname");
+  const router = useRouter();
+  const pathname = router.pathname;
 
   if (user !== null) {
     if (user?.data?.user.role === "ORGANISER" && pathname === "/organiser") {
