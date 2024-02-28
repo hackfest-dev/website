@@ -104,10 +104,18 @@ export const teamRouter = createTRPCRouter({
             members: {
               include: { college: true },
             },
+            ideaSubmission: true,
           },
         });
         if (!team) {
           throw new TRPCError({ code: "NOT_FOUND", message: "Team not found" });
+        }
+
+        if (team.ideaSubmission) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Idea already submitted",
+          });
         }
 
         if (team.members.length >= 4) {
