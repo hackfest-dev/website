@@ -1,6 +1,6 @@
 "use client";
 
-import { getTeamDetailsById } from "@/src/server/actions";
+// import { getTeamDetailsById } from "@/src/server/actions";
 import { IdeaSubmission, Team, User } from "@prisma/client";
 import { useState } from "react";
 
@@ -14,7 +14,7 @@ export default function TeamsList({
     | null
   >(null);
   const handleTeamDetails = async (teamId: string) => {
-    setTeamDetails(await getTeamDetailsById(teamId));
+    // setTeamDetails(await getTeamDetailsById(teamId));
   };
   return (
     <>

@@ -4,16 +4,16 @@ import { motion } from "framer-motion";
 const About = () => {
   return (
     <>
-      <div className="flex flex-col justify-center items-center space-y-8">
-        <div className="flex justify-center w-full">
-          <hr className="w-[90vw] mb-16 bg-transparent border-gray-700 border rounded-full   " />
+      <div className="flex flex-col items-center justify-center space-y-8">
+        <div className="flex w-full justify-center">
+          <hr className="mb-16 w-[90vw] rounded-full border border-gray-700 bg-transparent   " />
         </div>
 
         <motion.h1
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1.2 }}
-          className="lg:text-9xl md:text-8xl text-[#f3bc1f] sm:text-7xl text-5xl font-anton inline-block"
+          className="font-anton inline-block text-5xl text-[#f3bc1f] sm:text-7xl md:text-8xl lg:text-9xl"
         >
           ABOUT
         </motion.h1>
@@ -22,9 +22,9 @@ const About = () => {
           initial={{ opacity: 1, x: -150 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-black/60 space-y-6 p-6 rounded-3xl mx-4"
+          className="mx-4 space-y-6 rounded-3xl bg-black/60 p-6"
         >
-          <div className="flex md:flex-row flex-col justify-between gap-10 items-center ">
+          <div className="flex flex-col items-center justify-between gap-10 md:flex-row ">
             <a href="https://nmamit.nitte.edu.in/" target="_blank">
               <motion.img
                 whileTap={{ scale: 0.9 }}
@@ -34,7 +34,7 @@ const About = () => {
               />
             </a>
 
-            <p className=" max-w-2xl font-roboto font-bold md:text-lg text-sm text-justify">
+            <p className=" font-roboto max-w-2xl text-justify text-sm font-bold md:text-lg">
               Nitte Mahalinga Adyantaya Memorial Institute of Technology
               (NMAMIT), Nitte, established in 1986 and recognized by the All
               India Council for Technical Education, New Delhi, has been a
@@ -48,11 +48,11 @@ const About = () => {
             </p>
           </div>
 
-          <div className="flex justify-center w-full">
-            <hr className="w-[50vw] bg-transparent border-gray-700 border rounded-full " />
+          <div className="flex w-full justify-center">
+            <hr className="w-[50vw] rounded-full border border-gray-700 bg-transparent " />
           </div>
 
-          <div className="flex md:flex-row flex-col justify-between gap-10 items-center ">
+          <div className="flex flex-col items-center justify-between gap-10 md:flex-row ">
             <a href="https://finiteloop.co.in" target="_blank">
               <motion.img
                 whileTap={{ scale: 0.9 }}
@@ -62,7 +62,7 @@ const About = () => {
               />
             </a>
 
-            <p className="max-w-2xl font-roboto font-bold md:text-lg text-sm text-justify">
+            <p className="font-roboto max-w-2xl text-justify text-sm font-bold md:text-lg">
               Finite Loop is a Coding Club, which aims to give a good
               perspective of development, and encourages students to realize
               their ideas. We encourage students to participate in competitive
