@@ -42,6 +42,7 @@ const Timeline = ({ events }: { events: Event[] }) => {
   const divisions = selectedDay === 1 ? 16 : 14;
   ``;
   const angle = useTransform(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     smoothScroll,
     [0, 1],
     ["0deg", `-${360 - 360 / divisions}deg`],
