@@ -1,18 +1,15 @@
 import Image from "next/image";
-import HeroForeground from "@/public/images/hero-foreground2.svg";
-import HeroBackgroundSun from "@/public/images/hero-background-sun.svg";
-import HeroBackgroundNoise from "@/public/images/hero-background-noise2.svg";
-import HeroBackground from "@/public/images/hero-background.svg";
-import HackfestFont from "@/public/images/hackfest-text2.png";
-import Reflection from "@/public/images/reflection_without_gap.svg";
-import HoverBoard from "@/public/images/hoverboard.svg";
-import { MouseEvent, useRef } from "react";
-
+import HeroForeground from "~/../public/images/hero-foreground2.svg";
+import HeroBackgroundSun from "~/../public/images/hero-background-sun.svg";
+import HeroBackgroundNoise from "~/../public/images/hero-background-noise2.svg";
+import HackfestFont from "~/../public/images/hackfest-text2.png";
+import HoverBoard from "~/../public/images/hoverboard.svg";
+import { type MouseEvent, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Countown from "./countdown";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 
 const HeroParallax = () => {
   gsap.registerPlugin(ScrollTrigger);

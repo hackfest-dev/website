@@ -7,7 +7,7 @@ import FadeIn from "../fadeInAnimation";
 import { SectionHeading } from "../ui/sectionHeading";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -288,4 +288,18 @@ export const userRouter = createTRPCRouter({
       },
     });
   }),
+
+  getUserWithTeam: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.user.findUnique({
+      where: { id: ctx.session.user.id },
+      include: {
+        team: {
+          include: {
+            ideaSubmission: true,
+          },
+        },
+        college: true,
+      },
+    });
+  }),
 });

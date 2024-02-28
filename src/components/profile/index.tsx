@@ -1,4 +1,4 @@
-import { States, type College, type User } from "@prisma/client";
+import { States } from "@prisma/client";
 import Image from "next/image";
 import {
   Card,
@@ -9,11 +9,11 @@ import {
 } from "../ui/card";
 import { EditProfileForm } from "./editProfileForm";
 import { api } from "~/utils/api";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type userRouter } from "~/server/api/routers/user";
 
 export const Profile: React.FC<{
-  user: User & {
-    college: College | null;
-  };
+  user: inferRouterOutputs<typeof userRouter>["getUserWithTeam"] | null | undefined;
 }> = async ({ user }) => {
   const colleges = api.college.getColleges.useQuery();
   const states: string[] = Object.entries(States).map(([, value]) => value);
@@ -27,7 +27,7 @@ export const Profile: React.FC<{
         <Card className="mx-2 w-full p-4 md:w-fit">
           <CardContent className="flex items-center justify-center">
             <Image
-              src={user.image!}
+              src={user!.image!}
               alt="Profile image"
               width={100}
               height={100}
@@ -40,7 +40,11 @@ export const Profile: React.FC<{
             </h1>
           </CardFooter>
         </Card>
-        <EditProfileForm user={user} colleges={colleges.data} states={states} />
+        <EditProfileForm
+          user={user!}
+          colleges={colleges.data}
+          states={states}
+        />
       </CardContent>
     </Card>
   );

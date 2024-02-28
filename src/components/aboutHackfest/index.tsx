@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import GridTile from "../gridTile";
 import Image from "next/image";
 import Cursor from "../cursor";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { Button } from "../ui/button";
 import styles from "./style.module.css";
 import FadeIn from "../fadeInAnimation";

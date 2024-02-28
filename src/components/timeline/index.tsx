@@ -1,6 +1,6 @@
-import { useScroll, useTransform, motion, useSpring } from "framer-motion";
+import { useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { gsap } from "gsap/gsap-core";
+import { gsap } from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 

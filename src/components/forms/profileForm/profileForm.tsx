@@ -1,4 +1,3 @@
-"use client";
 import { TshirtSize } from "@prisma/client";
 import { type Dispatch, useContext, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";

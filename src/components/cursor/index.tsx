@@ -1,4 +1,3 @@
-"use clinet";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 
 const Cursor: FunctionComponent = () => {

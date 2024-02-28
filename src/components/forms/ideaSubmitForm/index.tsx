@@ -1,4 +1,3 @@
-"use client";
 import { Tracks } from "@prisma/client";
 import { useContext, useEffect, useState, useTransition } from "react";
 import { ProgressContext } from "../../progressProvider";
