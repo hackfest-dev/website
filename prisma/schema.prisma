@@ -1,73 +1,244 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
-// Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+  id              String     @id @default(cuid())
+  name            String?
+  email           String?    @unique
+  emailVerified   DateTime?
+  phone           String?
+  state           String?
+  collegeId       String?
+  image           String?
+  course          Courses?
+  college_id      String?
+  isVerified      Boolean    @default(false)
+  paymentStatus   String?    @default("PENDING")
+  paymentId       String?
+  teamId          String?
+  isLeader        Boolean    @default(false)
+  role            Role       @default(PARTICIPANT)
+  destination     String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  profileProgress Progress   @default(FILL_DETAILS)
+  aadhaar         String?
+  tShirtSize      TshirtSize @default(S)
+  accounts        Account[]
+  payment         Payments?
+  sessions        Session[]
+  college         College?   @relation(fields: [collegeId], references: [id])
+  team            Team?      @relation(fields: [teamId], references: [id])
+
+  @@index([collegeId])
+  @@index([teamId])
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
+}
+
+model College {
+  id       String     @id @default(cuid())
+  name     String
+  state    States
+  users    User[]
+  Referral Referral[]
+}
+
+model Team {
+  id              String            @id @default(cuid())
+  name            String            @unique
+  isComplete      Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  referralId      Int?
+  ideaSubmission  IdeaSubmission?
+  referral        Referral?         @relation(fields: [referralId], references: [id])
+  members         User[]
+  videoSubmission VideoSubmissions?
+}
+
+model Payments {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  amount        Float
+  transactionId String
+  createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model VideoSubmissions {
+  id     Int    @id @default(autoincrement())
+  teamId String @unique
+  url    String
+  Team   Team   @relation(fields: [teamId], references: [id])
+}
+
+model IdeaSubmission {
+  id               Int    @id @default(autoincrement())
+  teamId           String @unique
+  track            Tracks
+  problemStatement String
+  pptUrl           String
+  Team             Team   @relation(fields: [teamId], references: [id])
+}
+
+model AppSettings {
+  id                    Int     @id @default(autoincrement())
+  isRegistrationOpen    Boolean @default(true)
+  isPaymentOpen         Boolean @default(true)
+  isVideoSubmissionOpen Boolean @default(true)
+  isProfileEditOpen     Boolean @default(true)
+}
+
+model Referral {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  referrer  String
+  teams     Team[]
+  collegeId String
+  college   College? @relation(fields: [collegeId], references: [id])
+  name      String
+  contact   String
+}
+
+model Faq {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  category  Category @default(GENERAL)
+  published Boolean  @default(false)
+}
+
+enum Role {
+  PARTICIPANT
+  ADMIN
+  ORGANISER
+  JUDGE
+  VALIDATOR
+  SUPER_VALIDATOR
+}
+
+enum Courses {
+  BE
+  BTech
+  BCA
+  BSc
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum Progress {
+  FILL_DETAILS
+  PAYMENT
+  FORM_TEAM
+  SUBMIT_IDEA
+  COMPLETE
+}
+
+enum Tracks {
+  FINTECH
+  SUSTAINABLE_DEVELOPMENT
+  HEALTHCARE
+  METAVERSE
+  LOGISTICS
+  OPEN_INNOVATION
+}
+
+enum TshirtSize {
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+enum States {
+  ANDHRA_PRADESH
+  ARUNACHAL_PRADESH
+  ASSAM
+  BIHAR
+  CHHATTISGARH
+  GOA
+  GUJARAT
+  HARYANA
+  HIMACHAL_PRADESH
+  JHARKHAND
+  KARNATAKA
+  KERALA
+  MADHYA_PRADESH
+  MAHARASHTRA
+  MANIPUR
+  MEGHALAYA
+  MIZORAM
+  NAGALAND
+  ODISHA
+  PUNJAB
+  RAJASTHAN
+  SIKKIM
+  TAMIL_NADU
+  TELANGANA
+  TRIPURA
+  UTTARAKHAND
+  UTTAR_PRADESH
+  WEST_BENGAL
+  ANDAMAN_NICOBAR
+  CHANDIGARH
+  DADRA_NAGAR_HAVELI_DAMAN_DIU
+  DELHI
+  JAMMU_KASHMIR
+  LADAKH
+  LAKSHADWEEP
+  PUDUCHERRY
+}
+
+enum Category {
+  GENERAL
+  FOOD
+  STAY
+  TRAVEL
 }
