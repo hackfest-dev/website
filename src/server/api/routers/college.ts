@@ -1,0 +1,26 @@
+import { type States } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createCollegeZ } from "~/server/schema/zod-schema";
+
+export const collegeRouter = createTRPCRouter({
+  createCollege: protectedProcedure
+    .input(createCollegeZ)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        await ctx.db.college.create({
+          data: {
+            name: input.name,
+            state: input.state.toUpperCase() as States,
+          },
+        });
+        return { status: "success", message: "College created successfully" };
+      } catch (error) {
+        console.log(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong",
+        });
+      }
+    }),
+});
