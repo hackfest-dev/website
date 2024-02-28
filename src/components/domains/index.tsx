@@ -89,9 +89,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         const domainTitlePos =
           contentTitleRef.current &&
           (contentTitleRef.current as HTMLDivElement).getBoundingClientRect();
-        const currentTitlePos = (
-          targetTitle as HTMLDivElement
-        ).getBoundingClientRect();
+        const currentTitlePos = targetTitle.getBoundingClientRect();
 
         const x = (domainPos as unknown as DOMRect).x - currentPos.x;
         const y = (domainPos as unknown as DOMRect).y - currentPos.y;
@@ -148,12 +146,14 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       }, 100);
 
       setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         document.body.addEventListener("click", exitAnimaiton);
       }, 1000);
     }
   };
 
   const exitAnimaiton = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     document.body.removeEventListener("click", exitAnimaiton);
     bgBlockRef.current &&
       (bgBlockRef.current as HTMLDivElement).classList.remove(
@@ -177,8 +177,8 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       );
 
     setTimeout(() => {
-      (activeDomain.current?.target as HTMLDivElement).style.zIndex = "0";
-      (activeDomain.current?.title as HTMLDivElement).style.display = "block";
+      activeDomain.current.target!.style.zIndex = "0";
+      activeDomain.current.title!.style.display = "block";
 
       if (activeDomain.current?.target?.parentElement) {
         (
@@ -199,15 +199,13 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         );
     }, 1500);
 
-    (activeDomain.current?.target as HTMLDivElement).style.transform =
-      `translate(0, 0) scale(1)`;
+    activeDomain.current.target!.style.transform = `translate(0, 0) scale(1)`;
     if (titleAnimationRef.current) {
       (titleAnimationRef.current as HTMLDivElement).style.transform =
         `translate(0, 0) scale(1)`;
     }
     if (activeDomain.current) {
-      (activeDomain.current?.img as HTMLDivElement).style.transform =
-        `scale(1)`;
+      activeDomain.current.img!.style.transform = `scale(1)`;
     }
   };
 

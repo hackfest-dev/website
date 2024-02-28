@@ -29,7 +29,7 @@ const SessionButton = () => {
             <>
               <Link href={"/profile"}>
                 <Image
-                  src={session.user?.image as string}
+                  src={session.user.image!}
                   width={40}
                   height={40}
                   alt="profile"

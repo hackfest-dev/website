@@ -15,17 +15,16 @@ async function getSignature() {
       timestamp,
       folder: "next",
     },
-    cloudinaryConfig.api_secret as string,
+    cloudinaryConfig.api_secret!,
   );
   return { timestamp, signature };
 }
 
 async function uploadFile(params: { file: File; folder: "ids" | "ppts" }) {
-  console.log(secrets);
   const { signature, timestamp } = await getSignature();
   const formData = new FormData();
   formData.append("file", params.file);
-  formData.append("api_key", secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY as string);
+  formData.append("api_key", env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
   formData.append("signature", signature);
   formData.append("timestamp", timestamp.toString());
   //todo: fix upload folder issue (cannot upload to folder other than next)
@@ -33,7 +32,7 @@ async function uploadFile(params: { file: File; folder: "ids" | "ppts" }) {
   console.log(signature, timestamp);
   console.log(params.file);
 
-  const endpoint = `https://api.cloudinary.com/v1_1/${secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
+  const endpoint = `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
 
   try {
     const res = await fetch(endpoint, {
@@ -54,7 +53,9 @@ async function uploadFile(params: { file: File; folder: "ids" | "ppts" }) {
 
 async function deleteFile(pid: string) {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await cloudinary.uploader.destroy(pid);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return result;
   } catch (error) {
     console.log(error);

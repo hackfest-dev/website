@@ -28,12 +28,17 @@ import CreateCollege from "./createCollege";
 import { ScrollArea } from "../ui/scroll-area";
 import { useRouter } from "next/navigation";
 import { api } from "~/utils/api";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type collegeRouter } from "~/server/api/routers/college";
 
 export const EditProfileForm: React.FC<{
   user: User & {
     college: College | null;
   };
-  colleges: { id: string; name: string; state: string }[];
+  colleges:
+    | inferRouterOutputs<typeof collegeRouter>["getColleges"]
+    | undefined
+    | null;
   states: string[];
 }> = ({ user, colleges, states }) => {
   const [formData, setFormData] = useState({
@@ -263,7 +268,7 @@ export const EditProfileForm: React.FC<{
                   </CommandEmpty>
                   <CommandGroup>
                     <ScrollArea className="h-72">
-                      {colleges.map((college) => (
+                      {colleges?.map((college) => (
                         <CommandItem
                           key={college.id}
                           value={college.name}

@@ -12,6 +12,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Countown from "./countdown";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 const HeroParallax = () => {
   gsap.registerPlugin(ScrollTrigger);
@@ -83,7 +84,7 @@ const HeroParallax = () => {
 
       <div className="relative -z-20 -mb-2 mt-2 h-2/3 w-screen" ref={fgRef}>
         <Image
-          src={HeroForeground}
+          src={HeroForeground as StaticImport}
           alt="Hero Foreground"
           className="h-full w-full object-cover object-bottom"
         />
@@ -118,7 +119,7 @@ const HeroParallax = () => {
 
       <div className="absolute inset-0 -z-30">
         <Image
-          src={HeroBackgroundSun}
+          src={HeroBackgroundSun as StaticImport}
           alt="Hero Background"
           className="h-screen w-screen object-cover object-top"
         />
@@ -138,7 +139,7 @@ const HeroParallax = () => {
 
       <div className="absolute inset-0 -z-[28]">
         <Image
-          src={HeroBackgroundNoise}
+          src={HeroBackgroundNoise as StaticImport}
           alt="Hero Background"
           className="h-screen w-screen object-cover object-top opacity-50"
         />
@@ -154,7 +155,7 @@ const HeroParallax = () => {
             <Image
               width={200}
               height={200}
-              src={HoverBoard}
+              src={HoverBoard as StaticImport}
               alt="Hover Board"
               className="fly-up-down ease-in-out"
             />

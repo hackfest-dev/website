@@ -26,7 +26,7 @@ export default function TeamsList({
                 data-teamid={team.id}
                 onClick={(e) =>
                   handleTeamDetails(
-                    e.currentTarget.getAttribute("data-teamid") || "",
+                    e.currentTarget.getAttribute("data-teamid") ?? "",
                   )
                 }
                 key={team.id}

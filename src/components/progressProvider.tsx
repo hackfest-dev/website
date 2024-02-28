@@ -9,8 +9,12 @@ export const ProgressContext = createContext<{
 }>({
   currentState: 1,
   maxState: 1,
-  setCurrentState: () => {},
-  setMaxState: () => {},
+  setCurrentState: () => {
+    return;
+  },
+  setMaxState: () => {
+    return;
+  },
 });
 
 const ProgressProvider = ({
