@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Dialog,
   DialogTrigger,
@@ -66,25 +64,25 @@ const CreateCollege = () => {
     setLoading(false);
     startTransition(() => {
       router.refresh();
-    })
+    });
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2 mt-3">
+        <Button className="mt-3 flex items-center gap-2">
           <Plus size={16} /> Add College
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-sm md:w-full w-[90%]">
+      <DialogContent className="w-[90%] max-w-sm md:w-full">
         <DialogHeader>
           <DialogTitle>Add College</DialogTitle>
           <DialogDescription>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-3 mt-3"
+                className="mt-3 flex flex-col gap-3"
               >
                 <FormField
                   control={form.control}
@@ -132,8 +130,8 @@ const CreateCollege = () => {
                     </FormItem>
                   )}
                 ></FormField>
-                <Button type="submit" className="flex items-center gap-2 w-fit">
-                  {(loading || pending) ? (
+                <Button type="submit" className="flex w-fit items-center gap-2">
+                  {loading || pending ? (
                     <Loader2Icon className="animate-spin" />
                   ) : (
                     <>

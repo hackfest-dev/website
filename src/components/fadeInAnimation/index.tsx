@@ -1,5 +1,3 @@
-"use client";
-
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
@@ -40,7 +38,7 @@ export default function FadeIn({
           trigger: ref.current,
           toggleActions: "restart none none reverse",
         },
-      }
+      },
     );
   }, [ref]);
   return (

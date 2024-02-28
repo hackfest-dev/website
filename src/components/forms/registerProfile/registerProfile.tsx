@@ -1,5 +1,3 @@
-"use client";
-
 import { useContext } from "react";
 import { ProgressContext } from "../../progressProvider";
 import ProfileForm from "../profileForm/profileForm";
@@ -17,7 +15,7 @@ const RegisterProfileForm = ({
   colleges: {
     id: string;
     name: string;
-    state : string
+    state: string;
   }[];
   states: string[];
   courses: string[];

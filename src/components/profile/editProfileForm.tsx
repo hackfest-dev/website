@@ -1,4 +1,3 @@
-"use client";
 import { useState, useTransition } from "react";
 import { Button } from "../ui/button";
 import { College, Courses, User } from "@prisma/client";
@@ -65,7 +64,7 @@ export const EditProfileForm: React.FC<{
   const onSubmit = async (
     e:
       | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setIsSaving(true);
     e.preventDefault();
@@ -89,11 +88,11 @@ export const EditProfileForm: React.FC<{
     <>
       <Card className="w-full" suppressHydrationWarning>
         <CardContent className="p-4">
-          <p className="block mt-3 mb-1 text-sm font-medium text-gray-900 dark:text-white">
+          <p className="mb-1 mt-3 block text-sm font-medium text-gray-900 dark:text-white">
             Name :
           </p>
           <div className="flex">
-            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+            <span className="rounded-e-0 inline-flex items-center rounded-s-md border border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
               <CircleUserRound size={20} />
             </span>
             <Input
@@ -111,11 +110,11 @@ export const EditProfileForm: React.FC<{
             />
           </div>
 
-          <p className="block mt-3 mb-1 text-sm font-medium text-gray-900 dark:text-white">
+          <p className="mb-1 mt-3 block text-sm font-medium text-gray-900 dark:text-white">
             Personal Email :
           </p>
           <div className="flex">
-            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+            <span className="rounded-e-0 inline-flex items-center rounded-s-md border border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
               <Mail size={20} />
             </span>
             <input
@@ -129,15 +128,15 @@ export const EditProfileForm: React.FC<{
                 })
               }
               type="text"
-              className="cursor-default rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full min-w-0 flex-1 cursor-default rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Email not found"
             />
           </div>
-          <p className="block mt-3 mb-1 text-sm font-medium text-gray-900 dark:text-white">
+          <p className="mb-1 mt-3 block text-sm font-medium text-gray-900 dark:text-white">
             Phone number :
           </p>
           <div className="flex">
-            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+            <span className="rounded-e-0 inline-flex items-center rounded-s-md border border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
               <Phone size={20} />
             </span>
             <Input
@@ -155,11 +154,11 @@ export const EditProfileForm: React.FC<{
             />
           </div>
 
-          <p className="block mt-3 mb-1 text-sm font-medium text-gray-900 dark:text-white">
+          <p className="mb-1 mt-3 block text-sm font-medium text-gray-900 dark:text-white">
             Course :
           </p>
           <div className="flex">
-            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+            <span className="rounded-e-0 inline-flex items-center rounded-s-md border border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
               <BookText size={20} />
             </span>
             <Popover open={openCourseList} onOpenChange={setOpenCourseList}>
@@ -173,12 +172,12 @@ export const EditProfileForm: React.FC<{
                   {coursevalue
                     ? coursevalue
                     : formData.course
-                    ? formData.course
-                    : "Select course"}
+                      ? formData.course
+                      : "Select course"}
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[100%] max-w-xs md:max-w-md lg:max-w-lg md:w-screen px-3">
+              <PopoverContent className="w-[100%] max-w-xs px-3 md:w-screen md:max-w-md lg:max-w-lg">
                 <Command>
                   <CommandInput
                     placeholder="Search course here..."
@@ -194,7 +193,7 @@ export const EditProfileForm: React.FC<{
                         value={course}
                         onSelect={(currentValue) => {
                           setCoursevalue(
-                            currentValue === coursevalue ? "" : course
+                            currentValue === coursevalue ? "" : course,
                           );
                           setFormData({
                             ...formData,
@@ -211,11 +210,11 @@ export const EditProfileForm: React.FC<{
               </PopoverContent>
             </Popover>
           </div>
-          <p className="block mt-3 mb-1 text-sm font-medium text-gray-900 dark:text-white">
+          <p className="mb-1 mt-3 block text-sm font-medium text-gray-900 dark:text-white">
             College :
           </p>
           <div className="flex">
-            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+            <span className="rounded-e-0 inline-flex items-center rounded-s-md border border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
               <Building2 size={20} />
             </span>
             <Popover open={openCollegeList} onOpenChange={setOpenCollegeList}>
@@ -224,33 +223,33 @@ export const EditProfileForm: React.FC<{
                   variant="outline"
                   role="combobox"
                   aria-expanded={openCollegeList}
-                  className="w-full justify-between rounded-none rounded-r-lg overflow-hidden"
+                  className="w-full justify-between overflow-hidden rounded-none rounded-r-lg"
                 >
                   {collegevalue
                     ? collegevalue
                     : formData.collegeName
-                    ? formData.collegeName +
-                      ", " +
-                      formData.state
-                        .replace(/_/g, " ")
-                        .split(" ")
-                        .map(
-                          (word) =>
-                            word.charAt(0).toUpperCase() +
-                            word.slice(1).toLowerCase()
-                        )
-                        .join(" ")
-                    : "Select college"}
+                      ? formData.collegeName +
+                        ", " +
+                        formData.state
+                          .replace(/_/g, " ")
+                          .split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() +
+                              word.slice(1).toLowerCase(),
+                          )
+                          .join(" ")
+                      : "Select college"}
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[100%] max-w-xs md:max-w-md lg:max-w-lg md:w-screen px-3">
+              <PopoverContent className="w-[100%] max-w-xs px-3 md:w-screen md:max-w-md lg:max-w-lg">
                 <Command>
                   <CommandInput
                     placeholder="Search college here..."
                     className="h-9"
                   />
-                  <CommandEmpty className="mt-3 flex justify-center items-center flex-col text-center">
+                  <CommandEmpty className="mt-3 flex flex-col items-center justify-center text-center">
                     No College with that name found.
                     <CreateCollege />
                   </CommandEmpty>
@@ -272,9 +271,9 @@ export const EditProfileForm: React.FC<{
                                       .map(
                                         (word) =>
                                           word.charAt(0).toUpperCase() +
-                                          word.slice(1).toLowerCase()
+                                          word.slice(1).toLowerCase(),
                                       )
-                                      .join(" ")
+                                      .join(" "),
                             );
                             setFormData({
                               ...formData,
@@ -290,7 +289,7 @@ export const EditProfileForm: React.FC<{
                             .map(
                               (word) =>
                                 word.charAt(0).toUpperCase() +
-                                word.slice(1).toLowerCase()
+                                word.slice(1).toLowerCase(),
                             )
                             .join(" ")}
                         </CommandItem>
@@ -305,9 +304,9 @@ export const EditProfileForm: React.FC<{
         </CardContent>
       </Card>
       <Card className="w-full">
-        <CardContent className="p-4 grid md:grid-cols-1 lg:grid-cols-2 gap-2">
+        <CardContent className="grid gap-2 p-4 md:grid-cols-1 lg:grid-cols-2">
           <div className="sm:py-2">
-            <p className="block my-2 text-sm font-medium text-gray-900 dark:text-white">
+            <p className="my-2 block text-sm font-medium text-gray-900 dark:text-white">
               Aadhaar :
             </p>
             <Dropzone
@@ -318,7 +317,7 @@ export const EditProfileForm: React.FC<{
             />
           </div>
           <div className="sm:py-2">
-            <p className="block my-2 text-sm font-medium text-gray-900 dark:text-white">
+            <p className="my-2 block text-sm font-medium text-gray-900 dark:text-white">
               College ID :
             </p>
             <Dropzone
@@ -330,7 +329,7 @@ export const EditProfileForm: React.FC<{
           </div>
         </CardContent>
       </Card>
-      <div className="w-full flex gap-5 items-center justify-center mt-5">
+      <div className="mt-5 flex w-full items-center justify-center gap-5">
         <Button
           onClick={(e) => {
             toast.promise(() => onSubmit(e), {

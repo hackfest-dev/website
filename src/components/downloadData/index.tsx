@@ -1,5 +1,4 @@
-"use client";
-import { TeamsData } from "@/src/types";
+import { type TeamsData } from "../../types";
 
 const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
   const Participants = (teamsData: TeamsData[]): string => {
@@ -9,7 +8,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
       const { name, members } = team;
 
       const leader = members.find((member) => member.isLeader === true)?.name;
-      const college = members[0].college?.name;
+      const college = members[0]?.college?.name;
       const memberCount = members.length;
 
       const membersInfo = members
@@ -57,7 +56,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
           link.click();
           link.remove();
         }}
-        className="text-black p-3 mb-2 rounded float-right bg-white font-bold text-center "
+        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Participants Data
       </button>
@@ -72,7 +71,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
           link.click();
           link.remove();
         }}
-        className="text-black p-3 mb-2 rounded float-right bg-white font-bold text-center "
+        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Idea Submissions
       </button>
@@ -87,7 +86,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
           link.click();
           link.remove();
         }}
-        className="text-black p-3 mb-2 rounded float-right bg-white font-bold text-center "
+        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Referrals Data
       </button>

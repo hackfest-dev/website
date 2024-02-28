@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import HeroForeground from "@/public/images/hero-foreground2.svg";
 import HeroBackgroundSun from "@/public/images/hero-background-sun.svg";
@@ -58,7 +57,7 @@ const HeroParallax = () => {
         });
       }
     },
-    { scope: ref }
+    { scope: ref },
   );
 
   const boxRef = useRef(null);
@@ -77,16 +76,16 @@ const HeroParallax = () => {
     <div className="relative h-screen w-screen select-none" ref={ref}>
       <div
         ref={titleText}
-        className="absolute inset-0 z-10 flex justify-center items-center"
+        className="absolute inset-0 z-10 flex items-center justify-center"
       >
         <Image className={`w-[800px]`} src={HackfestFont} alt="Hackfest Font" />
       </div>
 
-      <div className="-z-20 h-2/3 -mb-2 mt-2 w-screen relative" ref={fgRef}>
+      <div className="relative -z-20 -mb-2 mt-2 h-2/3 w-screen" ref={fgRef}>
         <Image
           src={HeroForeground}
           alt="Hero Foreground"
-          className="object-cover w-full h-full object-bottom"
+          className="h-full w-full object-cover object-bottom"
         />
 
         {/* <Image
@@ -97,7 +96,7 @@ const HeroParallax = () => {
       </div>
 
       <div
-        className="absolute bottom-[0%] w-screen h-[50%] overflow-hidden"
+        className="absolute bottom-[0%] h-[50%] w-screen overflow-hidden"
         style={{
           transformStyle: "preserve-3d",
           perspective: "200px",
@@ -105,11 +104,11 @@ const HeroParallax = () => {
         ref={gridRef}
       >
         <div
-          className="absolute top-0 w-[200%] h-full left-[-50%] bg-gradient-to-t from-[#060e3c] from-30% to-[#00c6af]"
+          className="absolute left-[-50%] top-0 h-full w-[200%] bg-gradient-to-t from-[#060e3c] from-30% to-[#00c6af]"
           style={{ transform: "rotateX(53deg)" }}
         ></div>
         <div
-          className='bg-[url("/images/grid-sm.svg")] md:bg-[url("/images/grid1.svg")] motion-safe:animate-move w-[200%] h-[100%] left-[-50%] relative'
+          className='relative left-[-50%] h-[100%] w-[200%] bg-[url("/images/grid-sm.svg")] motion-safe:animate-move md:bg-[url("/images/grid1.svg")]'
           style={{
             backgroundRepeat: "repeat round",
             transform: "rotateX(53deg)",
@@ -117,7 +116,7 @@ const HeroParallax = () => {
         ></div>
       </div>
 
-      <div className="absolute -z-30 inset-0">
+      <div className="absolute inset-0 -z-30">
         <Image
           src={HeroBackgroundSun}
           alt="Hero Background"
@@ -131,13 +130,13 @@ const HeroParallax = () => {
           className="h-screen w-screen object-cover object-top"
         />
       </div> */}
-      <div className="absolute mx-3 max-w-6xl w-full left-1/2 md:top-24 md:mt-5 top-1/4 -translate-x-1/2 -z-[29]">
-        <div className="absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 text-[#c1f0a8] opacity-60">
+      <div className="absolute left-1/2 top-1/4 -z-[29] mx-3 w-full max-w-6xl -translate-x-1/2 md:top-24 md:mt-5">
+        <div className="absolute left-1/2 -translate-x-1/2 text-[#c1f0a8] opacity-60 md:left-0 md:translate-x-0">
           <Countown eventTime={new Date("2024-4-15")} />
         </div>
       </div>
 
-      <div className="absolute -z-[28] inset-0">
+      <div className="absolute inset-0 -z-[28]">
         <Image
           src={HeroBackgroundNoise}
           alt="Hero Background"
@@ -148,10 +147,10 @@ const HeroParallax = () => {
       <div
         style={{ perspective: 600 }}
         onMouseMove={(e) => handleMouseMove(e)}
-        className={`z-40 absolute inset-0 flex justify-center items-end`}
+        className={`absolute inset-0 z-40 flex items-end justify-center`}
       >
         <div ref={boxRef} style={{ transformStyle: "preserve-3d" }}>
-          <div className="h-full w-full scale-75 md:scale-100 sm:scale-90 pointer-events-none">
+          <div className="pointer-events-none h-full w-full scale-75 sm:scale-90 md:scale-100">
             <Image
               width={200}
               height={200}

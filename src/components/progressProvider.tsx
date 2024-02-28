@@ -1,5 +1,3 @@
-"use client";
-
 import { Dispatch, ReactNode, createContext, useState } from "react";
 
 // const ProgrssContext = createContext({currentStep: 1, maxStep: 1, setMaxStep: () => {}, setCurrentStep: () => {}});

@@ -1,4 +1,3 @@
-"use client";
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
 import Image from "next/image";
 import { GiTronArrow } from "react-icons/gi";

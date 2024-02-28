@@ -1,4 +1,3 @@
-"use client";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -17,7 +16,7 @@ const SessionButton = () => {
   const { data: session } = useSession();
 
   return (
-    <div className="pl-4 flex justify-center">
+    <div className="flex justify-center pl-4">
       {session ? (
         <>
           {session?.user?.profileProgress !== "COMPLETE" ? (

@@ -1,5 +1,3 @@
-"use client";
-
 import { type RefObject, useEffect, useRef } from "react";
 import { GiDiamonds } from "react-icons/gi";
 import { gsap } from "gsap";
@@ -153,7 +151,7 @@ const AboutHackfest = () => {
             <FadeIn direction="right" className="h-full w-full">
               <div className="flex h-full w-full items-center justify-center gap-4">
                 <div className="items-cente flex flex-col justify-center">
-                  <h1 className="font-obscura text-center text-4xl font-bold tracking-wider lg:text-6xl">
+                  <h1 className="text-center font-obscura text-4xl font-bold tracking-wider lg:text-6xl">
                     APRIL
                   </h1>
                   <p className="flex w-full items-center justify-between text-lg font-semibold tracking-wider lg:text-2xl">
@@ -183,7 +181,7 @@ const AboutHackfest = () => {
                   fill
                   className="object-contain"
                 />
-                <div className="bg-gradient-radial absolute left-1/2 top-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 transform from-teal-300 to-transparent blur-xl transition-all duration-300 group-hover:brightness-125" />
+                <div className="absolute left-1/2 top-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 transform bg-gradient-radial from-teal-300 to-transparent blur-xl transition-all duration-300 group-hover:brightness-125" />
               </div>
             </FadeIn>
           </GridTile>

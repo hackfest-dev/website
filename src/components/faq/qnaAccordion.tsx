@@ -3,31 +3,31 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/src/components/ui/accordion";
-import { useState, useEffect } from "react";
-import { getAllFaqs } from "@/src/server/actions";
+} from "~/components/ui/accordion";
 
 export default function QnaAccordion({
   faqs,
 }: {
-  faqs: {
-    id: number;
-    question: string;
-    answer: string;
-    category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
-    published: boolean;
-  }[];
+  faqs:
+    | {
+        id: number;
+        question: string;
+        answer: string;
+        category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
+        published: boolean;
+      }[]
+    | undefined;
 }) {
   return (
     <>
       <div className="flex flex-col">
-        {faqs.map((faq, index) => {
+        {faqs?.map((faq, index) => {
           return (
             <Accordion
               type="single"
               collapsible
               key={index}
-              className="md:w-[50vw] w-[80vw]"
+              className="w-[80vw] md:w-[50vw]"
             >
               <AccordionItem value="item-1">
                 <AccordionTrigger className="w-full">
