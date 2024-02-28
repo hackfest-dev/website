@@ -1,6 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { createTeamZ, joinTeamZ } from "~/server/schema/zod-schema";
+import {
+  createTeamZ,
+  getTeamDetailsByIdZ,
+  joinTeamZ,
+} from "~/server/schema/zod-schema";
 
 export const teamRouter = createTRPCRouter({
   checkName: protectedProcedure
@@ -79,17 +83,20 @@ export const teamRouter = createTRPCRouter({
       try {
         const user = ctx.session.user;
         if (user?.team) {
-          return { status: "error", message: "You are already in a team" };
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "You are already in a team",
+          });
         }
 
         if (
           user?.profileProgress !== "FORM_TEAM" &&
           user?.profileProgress !== "SUBMIT_IDEA"
         ) {
-          return {
-            status: "error",
+          throw new TRPCError({
+            code: "BAD_REQUEST",
             message: "Please complete your profile first",
-          };
+          });
         }
 
         const team = await ctx.db.team.findFirst({
@@ -103,19 +110,19 @@ export const teamRouter = createTRPCRouter({
           },
         });
         if (!team) {
-          return { status: "error", message: "Team not found" };
+          throw new TRPCError({ code: "NOT_FOUND", message: "Team not found" });
         }
 
         if (team.members.length >= 4) {
-          return { status: "error", message: "Team is already full" };
+          throw new TRPCError({ code: "BAD_REQUEST", message: "Team is full" });
         }
 
         const leader = team.members.find((member) => member.isLeader === true);
         if (user.college !== leader?.college?.name) {
-          return {
-            status: "error",
+          throw new TRPCError({
+            code: "BAD_REQUEST",
             message: "Team members should be from same college only",
-          };
+          });
         }
 
         const res = await ctx.db.team.update({
@@ -150,6 +157,122 @@ export const teamRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
           message: "Something went wrong",
         });
+      }
+    }),
+
+  leaveTeam: protectedProcedure.mutation(async ({ ctx }) => {
+    try {
+      const user = ctx.session.user;
+      await ctx.db.user.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          team: {
+            disconnect: true,
+          },
+          profileProgress: "FORM_TEAM",
+        },
+      });
+
+      const team = await ctx.db.team.findFirst({
+        where: {
+          id: user?.team?.id,
+        },
+        include: {
+          members: true,
+        },
+      });
+
+      const isComplete =
+        team?.members.length === 3 || team?.members.length === 4;
+
+      await ctx.db.team.update({
+        where: {
+          id: user?.team?.id,
+        },
+        data: {
+          isComplete,
+        },
+      });
+
+      return { status: "success", message: "Left team successfully" };
+    } catch (error) {
+      console.log(error);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Something went wrong",
+      });
+    }
+  }),
+
+  deleteTeam: protectedProcedure.mutation(async ({ ctx }) => {
+    try {
+      const user = ctx.session.user;
+      if (!user?.isLeader) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You are not the leader of this team",
+        });
+      }
+
+      await ctx.db.team.update({
+        data: {
+          members: {
+            updateMany: {
+              where: {
+                teamId: user.team?.id,
+              },
+              data: {
+                profileProgress: "FORM_TEAM",
+                isLeader: false,
+              },
+            },
+          },
+        },
+        where: {
+          id: user.team?.id,
+        },
+      });
+
+      await ctx.db.team.delete({
+        where: {
+          id: user.team?.id,
+        },
+      });
+
+      return { status: "success", message: "Team deleted successfully" };
+    } catch (error) {
+      console.log(error);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Something went wrong",
+      });
+    }
+  }),
+
+  getTeamDetailsById: protectedProcedure
+    .input(getTeamDetailsByIdZ)
+    .query(async ({ input, ctx }) => {
+      try {
+        if (!input.teamId) return null;
+        const team = await ctx.db.team.findUnique({
+          where: {
+            id: input.teamId,
+          },
+          include: {
+            members: {
+              include: {
+                college: true,
+              },
+            },
+            ideaSubmission: true,
+          },
+        });
+        return team;
+      } catch (error) {
+        console.log(error);
+        return null;
       }
     }),
 });

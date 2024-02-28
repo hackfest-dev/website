@@ -46,6 +46,39 @@ export const userRouter = createTRPCRouter({
         },
       });
 
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (input.aadhaarFile) {
+        if (!allowedTypes.includes(input.aadhaarFile.type)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Only jpeg, jpg and png files are allowed",
+          });
+        }
+
+        if (input.aadhaarFile.size > 2 * 1024 * 1024) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Uploads must be less than 2MB",
+          });
+        }
+      }
+
+      if (input.collegeIdFile) {
+        if (!allowedTypes.includes(input.collegeIdFile.type)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Only jpeg, jpg and png files are allowed",
+          });
+        }
+
+        if (input.collegeIdFile.size > 2 * 1024 * 1024) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Uploads must be less than 2MB",
+          });
+        }
+      }
+
       //If ID is already there remove the existing one from cloudinary
       if (input.aadhaarFile && user?.aadhaar) {
         await deleteFile(user.aadhaar.split(";")[1]!);
@@ -125,6 +158,39 @@ export const userRouter = createTRPCRouter({
           college: true,
         },
       });
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (input.aadhaarFile) {
+        if (!allowedTypes.includes(input.aadhaarFile.type)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Only jpeg, jpg and png files are allowed",
+          });
+        }
+
+        if (input.aadhaarFile.size > 2 * 1024 * 1024) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Uploads must be less than 2MB",
+          });
+        }
+      }
+
+      if (input.collegeIdFile) {
+        if (!allowedTypes.includes(input.collegeIdFile.type)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Only jpeg, jpg and png files are allowed",
+          });
+        }
+
+        if (input.collegeIdFile.size > 2 * 1024 * 1024) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Uploads must be less than 2MB",
+          });
+        }
+      }
 
       //If ID is already there remove the existing one from cloudinary
       if (input.aadhaarFile && user?.aadhaar) {

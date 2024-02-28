@@ -1,4 +1,4 @@
-import { Courses, Tracks, TshirtSize } from "@prisma/client";
+import { Category, Courses, Tracks, TshirtSize } from "@prisma/client";
 import { z } from "zod";
 
 const updateUserZ = z.object({
@@ -90,6 +90,32 @@ const createCollegeZ = z.object({
     .min(1, { message: "State cannot be empty" }),
 });
 
+const getTeamDetailsByIdZ = z.object({
+  teamId: z.string().min(1, { message: "Team ID cannot be empty" }),
+});
+
+const addFaqZ = z.object({
+  question: z
+    .string()
+    .min(1, { message: "Question cannot be empty" })
+    .max(100, { message: "Question cannot exceed 100 characters" }),
+  category: z.nativeEnum(Category, {
+    required_error: "Category is required",
+  }),
+});
+
+const answerFaqZ = z.object({
+  id: z.number(),
+  answer: z
+    .string()
+    .min(1, { message: "Answer cannot be empty" })
+    .max(100, { message: "Answer cannot exceed 100 characters" }),
+});
+
+const deleteFaqZ = z.object({
+  id: z.number(),
+});
+
 export {
   editProfileZ,
   updateUserZ,
@@ -98,4 +124,8 @@ export {
   createTeamZ,
   joinTeamZ,
   createCollegeZ,
+  getTeamDetailsByIdZ,
+  addFaqZ,
+  answerFaqZ,
+  deleteFaqZ,
 };
