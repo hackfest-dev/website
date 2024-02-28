@@ -23,4 +23,14 @@ export const collegeRouter = createTRPCRouter({
         });
       }
     }),
+
+  getColleges: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.college.findMany({
+      select: {
+        id: true,
+        name: true,
+        state: true,
+      },
+    });
+  }),
 });

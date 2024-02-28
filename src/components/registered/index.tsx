@@ -1,6 +1,5 @@
-'use client';
-import { useEffect, useState } from 'react';
-import Confetti from 'react-dom-confetti';
+import { useEffect, useState } from "react";
+import Confetti from "react-dom-confetti";
 
 const config = {
   angle: 290,
@@ -10,10 +9,10 @@ const config = {
   dragFriction: 0.11,
   duration: 3020,
   stagger: 3,
-  width: '8px',
-  height: '14px',
-  perspective: '503px',
-  colors: ['#f00', '#0f0', '#00f', '#FFC700', '#FF0000', '#2E3191', '#41BBC7'],
+  width: "8px",
+  height: "14px",
+  perspective: "503px",
+  colors: ["#f00", "#0f0", "#00f", "#FFC700", "#FF0000", "#2E3191", "#41BBC7"],
 };
 
 const Registered = () => {
@@ -29,16 +28,16 @@ const Registered = () => {
   }, []);
 
   return (
-    <div className="text-center flex justify-center flex-col">
-      <h1 className="text-7xl md:text-9xl font-black text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
+    <div className="flex flex-col justify-center text-center">
+      <h1 className="bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-7xl font-black text-transparent md:text-9xl">
         Done!
       </h1>
       <Confetti active={show} config={config} />
-      <p className="mt-4 text-gray-300 mb-5 text-md md:text-lg">
+      <p className="text-md mb-5 mt-4 text-gray-300 md:text-lg">
         Successfully Registered! We hope to see you on Top 60 soon.
       </p>
-      <p className="mt-2 text-gray-300 mb-5 text-sm md:text-md">
-        Keep an eye on your mail for further updates.{' '}
+      <p className="md:text-md mb-5 mt-2 text-sm text-gray-300">
+        Keep an eye on your mail for further updates.{" "}
       </p>
     </div>
   );

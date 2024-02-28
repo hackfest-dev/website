@@ -279,4 +279,13 @@ export const userRouter = createTRPCRouter({
       });
     }
   }),
+
+  getUserWithCollege: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.user.findUnique({
+      where: { id: ctx.session.user.id },
+      include: {
+        college: true,
+      },
+    });
+  }),
 });

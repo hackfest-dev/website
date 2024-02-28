@@ -1,28 +1,27 @@
-'use client';
-import Image from 'next/image';
-import { SectionHeading } from '../ui/sectionHeading';
-import { Button } from '../ui/button';
-import { Send } from 'lucide-react';
+import Image from "next/image";
+import { SectionHeading } from "../ui/sectionHeading";
+import { Button } from "../ui/button";
+import { Send } from "lucide-react";
 
 const Sponsors = () => {
   return (
     <>
       <section
         id="sponsors"
-        className="min-h-screen py-20 flex flex-col justify-around items-center gap-2 transition-all"
+        className="flex min-h-screen flex-col items-center justify-around gap-2 py-20 transition-all"
       >
         <SectionHeading
           title="Sponsors"
           classname="text-5xl md:text-6xl xl:text-7xl"
         />
 
-        <div className="flex flex-col w-full xl:flex-row max-w-6xl xl:justify-around justify-center items-center gap-16 xl:gap-4">
-          <div className="flex flex-col justify-center items-center gap-5 w-full xl:w-1/3">
-            <h2 className="text-3xl font-semibold xl:text-4xl h-24 flex justify-center items-center text-center ">
+        <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-16 xl:flex-row xl:justify-around xl:gap-4">
+          <div className="flex w-full flex-col items-center justify-center gap-5 xl:w-1/3">
+            <h2 className="flex h-24 items-center justify-center text-center text-3xl font-semibold xl:text-4xl ">
               Powered By
             </h2>
             <a href="/sponsors">
-              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
+              <div className="relative aspect-square w-52 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl md:w-60">
                 <Image
                   className="rounded-2xl"
                   src="/logos/sponsors/EGHD.jpg"
@@ -33,12 +32,12 @@ const Sponsors = () => {
             </a>
           </div>
 
-          <div className="flex flex-col justify-center items-center gap-5 w-full xl:w-1/3">
-            <h2 className="text-3xl font-semibold xl:text-4xl h-24 flex justify-center items-center text-center">
+          <div className="flex w-full flex-col items-center justify-center gap-5 xl:w-1/3">
+            <h2 className="flex h-24 items-center justify-center text-center text-3xl font-semibold xl:text-4xl">
               Co-Powered By
             </h2>
             <a href="/sponsors">
-              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
+              <div className="relative aspect-square w-52 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl md:w-60">
                 <Image
                   className="rounded-2xl"
                   src="/logos/sponsors/Niveus.jpg"
@@ -49,12 +48,12 @@ const Sponsors = () => {
             </a>
           </div>
 
-          <div className="flex flex-col justify-center items-center gap-5 w-full xl:w-1/3">
-            <h2 className="text-3xl font-semibold xl:text-4xl h-24 flex justify-center items-center text-center">
+          <div className="flex w-full flex-col items-center justify-center gap-5 xl:w-1/3">
+            <h2 className="flex h-24 items-center justify-center text-center text-3xl font-semibold xl:text-4xl">
               Associate Sponsors
             </h2>
             <a href="/sponsors">
-              <div className="relative aspect-square w-52 md:w-60 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl">
+              <div className="relative aspect-square w-52 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl md:w-60">
                 <Image
                   className="rounded-2xl p-6"
                   src="/logos/sponsors/The_Global_Point.png"
@@ -66,25 +65,25 @@ const Sponsors = () => {
           </div>
         </div>
 
-        <div className="relative mt-16 mx-10 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 backdrop-blur-2xl border-2 border-teal-600 rounded-2xl shadow-[0_0_3px_1px_#b9b7b7ad] flex flex-row justify-center items-center w-full sm:w-[40rem] md:w-[72rem] max-w-[90vw] md:max-w-[90%] gap-10 xl:gap-20 text-center">
-          <div className="relative h-52 aspect-square hidden md:flex">
+        <div className="relative mx-10 mt-16 flex w-full max-w-[90vw] flex-row items-center justify-center gap-10 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 text-center shadow-[0_0_3px_1px_#b9b7b7ad] backdrop-blur-2xl sm:w-[40rem] md:w-[72rem] md:max-w-[90%] xl:gap-20">
+          <div className="relative hidden aspect-square h-52 md:flex">
             <Image src="/logos/logo.png" alt="Hackfest_Logo" fill />
           </div>
-          <div className="h-40 w-1 bg-white rounded-full hidden md:flex"></div>
-          <div className="flex flex-col justify-center items-center gap-5 p-6 xl:p-7 ">
+          <div className="hidden h-40 w-1 rounded-full bg-white md:flex"></div>
+          <div className="flex flex-col items-center justify-center gap-5 p-6 xl:p-7 ">
             <p>Any event is incomplete without support and love</p>
             <h3 className="text-3xl font-semibold">
               Interested in sponsoring us?
             </h3>
             <a href="mailto:sponsor@hackfest.dev">
               <Button
-                size={'lg'}
-                className="text-lg flex items-center gap-2 group"
+                size={"lg"}
+                className="group flex items-center gap-2 text-lg"
               >
-                Reach Out To Us{' '}
+                Reach Out To Us{" "}
                 <Send
                   size={16}
-                  className="group-hover:rotate-12 transition-transform duration-300"
+                  className="transition-transform duration-300 group-hover:rotate-12"
                 />
               </Button>
             </a>
