@@ -42,6 +42,7 @@ import { api } from "~/utils/api";
 import { type inferRouterOutputs } from "@trpc/server";
 import { type userRouter } from "~/server/api/routers/user";
 import { type collegeRouter } from "~/server/api/routers/college";
+import { env } from "~/env";
 
 const ProfileForm = ({
   user,
@@ -78,8 +79,8 @@ const ProfileForm = ({
       tshirtSize: user?.tShirtSize ?? undefined,
     },
   });
-  const [aadhaarFile, setAadhaarFile] = useState<File>(new File([], ""));
-  const [clgFile, setClgFile] = useState<File>(new File([], ""));
+  const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
+  const [clgFile, setClgFile] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -107,12 +108,71 @@ const ProfileForm = ({
     return <></>;
   }
 
+  const upload = async (file: File) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!file) return toast.error("No file uploaded");
+    if (file.size > 2 * 1000 * 1000) {
+      return toast.error("Uploads must be less than 2MB");
+    }
+    if (!allowedTypes.includes(file.type))
+      return toast.error("Only jpeg, jpg and png files are allowed");
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(
+      `${env.NEXT_PUBLIC_BASE_URL}/api/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    const data = await response.json();
+    if (!data.secure_url) {
+      toast.error("Error uploading image");
+      //toast.dismiss(loadingToast);
+      return;
+    }
+    return data.secure_url;
+  };
+
+  const something = async () => {
+    console.log({ aadhaarFile, clgFile });
+    if (user?.aadhaar && user?.college_id) {
+      form.setValue("aadhaarUrl", user.aadhaar);
+      form.setValue("collegeIdUrl", user.college_id);
+      if (aadhaarFile) {
+        //upload
+        const newFile = await upload(aadhaarFile);
+        console.log(newFile);
+
+        form.setValue("aadhaarUrl", newFile);
+      }
+      if (clgFile) {
+        const newFile = await upload(clgFile);
+        console.log(newFile);
+        form.setValue("collegeIdUrl", newFile);
+      }
+      form.handleSubmit(onSubmit)();
+    } else {
+      if (!aadhaarFile || !clgFile) {
+        return toast.error("Please fill all details");
+      }
+      const aadhaarUrl = await upload(aadhaarFile);
+      const collegeUrl = await upload(clgFile);
+      form.setValue("aadhaarUrl", aadhaarUrl);
+      form.setValue("collegeIdUrl", collegeUrl);
+      form.handleSubmit(onSubmit)();
+    }
+  };
+
   const onSubmit = async (data: z.infer<typeof updateProfileZ>) => {
     setLoading(true);
     toast.loading("Saving Details...", {
       id: "loadingToast",
       position: "bottom-center",
     });
+
+    //upload here
+    console.log("Running");
 
     await updateProfile
       .mutateAsync({
@@ -121,8 +181,8 @@ const ProfileForm = ({
         course: data.course,
         college: data.college,
         tshirtSize: data.tshirtSize,
-        collegeIdFile: clgFile,
-        aadhaarFile: aadhaarFile,
+        collegeIdUrl: data.collegeIdUrl,
+        aadhaarUrl: data.aadhaarUrl,
       })
       .catch((error) => {
         console.log(error);
@@ -135,7 +195,10 @@ const ProfileForm = ({
     <div className="max-h-max w-full">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            something();
+          }}
           className="flex flex-col gap-2 md:gap-4"
         >
           <h1 className="text-center text-xl lg:text-2xl ">
@@ -346,7 +409,7 @@ const ProfileForm = ({
               <CardContent className="grid gap-2 p-4 md:grid-cols-1 lg:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="aadhaarFile"
+                  name="aadhaarUrl"
                   render={({}) => (
                     <FormItem className="w-full md:w-[calc(90%+1.5rem)]">
                       <FormLabel className="">Aadhar Card</FormLabel>
@@ -366,7 +429,7 @@ const ProfileForm = ({
 
                 <FormField
                   control={form.control}
-                  name="collegeIdFile"
+                  name="collegeIdUrl"
                   render={({}) => {
                     // console.log(field)
                     return (

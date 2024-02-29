@@ -5,7 +5,7 @@ import {
   updateProfileZ,
   updateUserZ,
 } from "~/server/schema/zod-schema";
-import { deleteFile, uploadFile } from "~/utils/cloudinary";
+import { deleteFile } from "~/utils/cloudinary";
 
 export const userRouter = createTRPCRouter({
   verifyUser: protectedProcedure
@@ -46,61 +46,21 @@ export const userRouter = createTRPCRouter({
         },
       });
 
-      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-      if (input.aadhaarFile) {
-        if (!allowedTypes.includes(input.aadhaarFile.type)) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Only jpeg, jpg and png files are allowed",
-          });
-        }
-
-        if (input.aadhaarFile.size > 2 * 1024 * 1024) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Uploads must be less than 2MB",
-          });
-        }
-      }
-
-      if (input.collegeIdFile) {
-        if (!allowedTypes.includes(input.collegeIdFile.type)) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Only jpeg, jpg and png files are allowed",
-          });
-        }
-
-        if (input.collegeIdFile.size > 2 * 1024 * 1024) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Uploads must be less than 2MB",
-          });
-        }
-      }
-
       //If ID is already there remove the existing one from cloudinary
-      if (input.aadhaarFile && user?.aadhaar) {
+      if (input.aadhaarUrl && user?.aadhaar) {
         await deleteFile(user.aadhaar.split(";")[1]!);
       }
-      if (input.collegeIdFile && user?.college_id) {
+      if (input.collegeIdUrl && user?.college_id) {
         await deleteFile(user.college_id.split(";")[1]!);
       }
 
       // upload files only if they exist otherwise set to existing url
-      const adhaarUrl = input.aadhaarFile
-        ? await uploadFile({ file: input.aadhaarFile, folder: "ids" })
-        : user?.aadhaar;
-
-      const collegeIdUrl = input.collegeIdFile
-        ? await uploadFile({ file: input.collegeIdFile, folder: "ids" })
-        : user?.college_id;
 
       const hasNoChanges =
         user?.name === input.name &&
         user?.phone === input.phone &&
-        adhaarUrl === user?.aadhaar &&
-        collegeIdUrl === user?.college_id &&
+        input.aadhaarUrl === user?.aadhaar &&
+        input.collegeIdUrl === user?.college_id &&
         user?.college?.id === input.college &&
         user?.tShirtSize === input.tshirtSize &&
         user?.course === input.course;
@@ -108,10 +68,10 @@ export const userRouter = createTRPCRouter({
       const isComplete =
         input.name &&
         input.phone &&
-        adhaarUrl &&
-        !adhaarUrl?.startsWith("undefined") &&
-        collegeIdUrl &&
-        !collegeIdUrl?.startsWith("undefined") &&
+        input.aadhaarUrl &&
+        !input.aadhaarUrl?.startsWith("undefined") &&
+        input.collegeIdUrl &&
+        !input.collegeIdUrl?.startsWith("undefined") &&
         input.college &&
         input.tshirtSize &&
         input.course
@@ -138,8 +98,8 @@ export const userRouter = createTRPCRouter({
           profileProgress: isComplete ? "FORM_TEAM" : "FILL_DETAILS",
           name: input.name,
           phone: input.phone,
-          aadhaar: adhaarUrl,
-          college_id: collegeIdUrl,
+          aadhaar: input.aadhaarUrl,
+          college_id: input.collegeIdUrl,
           college: { connect: { id: input.college } },
           course: input.course,
           tShirtSize: input.tshirtSize,
@@ -159,61 +119,20 @@ export const userRouter = createTRPCRouter({
         },
       });
 
-      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-      if (input.aadhaarFile) {
-        if (!allowedTypes.includes(input.aadhaarFile.type)) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Only jpeg, jpg and png files are allowed",
-          });
-        }
-
-        if (input.aadhaarFile.size > 2 * 1024 * 1024) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Uploads must be less than 2MB",
-          });
-        }
-      }
-
-      if (input.collegeIdFile) {
-        if (!allowedTypes.includes(input.collegeIdFile.type)) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Only jpeg, jpg and png files are allowed",
-          });
-        }
-
-        if (input.collegeIdFile.size > 2 * 1024 * 1024) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Uploads must be less than 2MB",
-          });
-        }
-      }
-
       //If ID is already there remove the existing one from cloudinary
-      if (input.aadhaarFile && user?.aadhaar) {
+      if (input.aadhaarUrl && user?.aadhaar) {
         await deleteFile(user.aadhaar.split(";")[1]!);
       }
-      if (input.collegeIdFile && user?.college_id) {
+      if (input.collegeIdUrl && user?.college_id) {
         await deleteFile(user.college_id.split(";")[1]!);
       }
 
       // upload files only if they exist otherwise set to existing url
-      const adhaarUrl = input.aadhaarFile
-        ? await uploadFile({ file: input.aadhaarFile, folder: "ids" })
-        : user?.aadhaar;
-
-      const collegeIdUrl = input.collegeIdFile
-        ? await uploadFile({ file: input.collegeIdFile, folder: "ids" })
-        : user?.college_id;
-
       const hasNoChanges =
         user?.name === input.name &&
         user?.phone === input.phone &&
-        adhaarUrl === user?.aadhaar &&
-        collegeIdUrl === user?.college_id &&
+        input.aadhaarUrl === user?.aadhaar &&
+        input.collegeIdUrl === user?.college_id &&
         user?.college?.id === input.college &&
         user?.course === input.course;
 
@@ -229,8 +148,8 @@ export const userRouter = createTRPCRouter({
         data: {
           name: input.name,
           phone: input.phone,
-          aadhaar: adhaarUrl,
-          college_id: collegeIdUrl,
+          aadhaar: input.aadhaarUrl,
+          college_id: input.collegeIdUrl,
           college: { connect: { id: input.college } },
           course: input.course,
         },

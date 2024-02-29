@@ -5,7 +5,7 @@ import { Button } from "../button";
 // Define the props expected by the Dropzone component
 interface DropzoneProps {
   // onChange: React.Dispatch<React.SetStateAction<string[]>>;
-  onChange: React.Dispatch<React.SetStateAction<File>>;
+  onChange: React.Dispatch<React.SetStateAction<File | null>>;
   className?: string;
   fileExtension?: string;
   image?: string;

@@ -26,8 +26,8 @@ const updateProfileZ = z.object({
   course: z.custom<Courses>((val) => {
     return Object.values(Courses).includes(val as Courses);
   }),
-  aadhaarFile: z.custom<File>(),
-  collegeIdFile: z.custom<File>(),
+  aadhaarUrl: z.string(),
+  collegeIdUrl: z.string(),
 });
 
 const editProfileZ = z.object({
@@ -49,8 +49,8 @@ const editProfileZ = z.object({
   course: z.custom<Courses>((val) => {
     return Object.values(Courses).includes(val as Courses);
   }),
-  aadhaarFile: z.custom<File>(),
-  collegeIdFile: z.custom<File>(),
+  aadhaarUrl: z.string(),
+  collegeIdUrl: z.string(),
 });
 
 const submitIdeaZ = z.object({

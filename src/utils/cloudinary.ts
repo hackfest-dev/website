@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
+import type { File as formidableFile } from "formidable";
 import { env } from "~/env";
 
 const cloudinaryConfig = cloudinary.config({
@@ -20,36 +21,51 @@ async function getSignature() {
   return { timestamp, signature };
 }
 
-async function uploadFile(params: { file: File; folder: "ids" | "ppts" }) {
-  const { signature, timestamp } = await getSignature();
-  const formData = new FormData();
-  formData.append("file", params.file);
-  formData.append("api_key", env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
-  formData.append("signature", signature);
-  formData.append("timestamp", timestamp.toString());
-  //todo: fix upload folder issue (cannot upload to folder other than next)
-  formData.append("folder", "next");
-  console.log(signature, timestamp);
-  console.log(params.file);
+const uploadImage = async (file: formidableFile, upload_preset: string) => {
+  if (
+    !file.mimetype ||
+    !["image/png", "image/jpeg", "image/bmp"].includes(file.mimetype)
+  )
+    throw "Invalid file format use png,jpeg,bmp";
 
-  const endpoint = `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
-
-  try {
-    const res = await fetch(endpoint, {
-      method: "POST",
-      body: formData,
+  const p = await cloudinary.uploader
+    .upload(file.filepath, { upload_preset: upload_preset })
+    .catch((err) => {
+      throw err;
     });
-    const data = (await res.json()) as {
-      url: string;
-      public_id: string;
-    };
-    //Return url and public id of uploaded file separated by
-    return data.url + ";" + data.public_id;
-  } catch (e) {
-    console.log(e);
-    throw e;
-  }
-}
+  return p.secure_url + ";" + p.public_id;
+};
+
+// async function uploadFile(params: { file: File; folder: "ids" | "ppts" }) {
+//   const { signature, timestamp } = await getSignature();
+//   const formData = new FormData();
+//   formData.append("file", params.file);
+//   formData.append("api_key", env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+//   formData.append("signature", signature);
+//   formData.append("timestamp", timestamp.toString());
+//   //todo: fix upload folder issue (cannot upload to folder other than next)
+//   formData.append("folder", "next");
+//   console.log(signature, timestamp);
+//   console.log(params.file);
+
+//   const endpoint = `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
+
+//   try {
+//     const res = await fetch(endpoint, {
+//       method: "POST",
+//       body: formData,
+//     });
+//     const data = (await res.json()) as {
+//       url: string;
+//       public_id: string;
+//     };
+//     //Return url and public id of uploaded file separated by
+//     return data.url + ";" + data.public_id;
+//   } catch (e) {
+//     console.log(e);
+//     throw e;
+//   }
+// }
 
 async function deleteFile(pid: string) {
   try {
@@ -63,4 +79,4 @@ async function deleteFile(pid: string) {
   }
 }
 
-export { cloudinaryConfig, getSignature, uploadFile, deleteFile };
+export { cloudinaryConfig, getSignature, uploadImage, deleteFile };
