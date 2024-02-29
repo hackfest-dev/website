@@ -1,4 +1,4 @@
-import React, { useContext, useState, useTransition } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight, Loader2Icon } from "lucide-react";
 import { ProgressContext } from "../progressProvider";
@@ -18,11 +18,12 @@ const FormButtons = ({
   isLeader: boolean;
   isInTeam: boolean;
 }) => {
-  const { currentState, maxState, setCurrentState, setMaxState } =
+  const { currentState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
   let isDisabled = true;
   if (currentState === 0) {
-    if (profileProgress === "FORM_TEAM") isDisabled = false;
+    if (profileProgress === "FORM_TEAM" || profileProgress === "SUBMIT_IDEA")
+      isDisabled = false;
   } else if (currentState === 1) {
     if (isLeader && isComplete) {
       isDisabled = false;
@@ -66,22 +67,26 @@ const FormButtons = ({
           disabled={isDisabled}
           onClick={async () => {
             if (currentState === 0) {
-              if (profileProgress === "FORM_TEAM")
+              if (
+                profileProgress === "FORM_TEAM" ||
+                profileProgress === "SUBMIT_IDEA"
+              )
                 setCurrentState(currentState + 1);
             } else if (currentState === 1) {
               if (isLeader && isComplete) {
                 setIsLoading(true);
-                toast.promise(
-                  async () => await updateProfileProgress.mutateAsync(),
-                  {
-                    position: "bottom-center",
-                    loading: "Proceeding...",
-                    success: "Done!",
-                    error: (error) => {
-                      return "Something went wrong";
+                profileProgress !== "SUBMIT_IDEA" &&
+                  toast.promise(
+                    async () => await updateProfileProgress.mutateAsync(),
+                    {
+                      position: "bottom-center",
+                      loading: "Proceeding...",
+                      success: "Done!",
+                      error: (error) => {
+                        return "Something went wrong";
+                      },
                     },
-                  },
-                );
+                  );
                 setMaxState(2);
                 setCurrentState(currentState + 1);
                 setIsLoading(false);

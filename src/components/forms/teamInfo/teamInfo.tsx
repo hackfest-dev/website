@@ -45,6 +45,9 @@ export default function TeamInfo({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const deleteTeam = api.team.deleteTeam.useMutation();
+  const leaveTeam = api.team.leaveTeam.useMutation();
+
   if (currentState !== 1) return <></>;
   const leader = teamdata?.members?.find(
     (member) => member.id === userId && member?.isLeader,
@@ -55,9 +58,6 @@ export default function TeamInfo({
   teamMembers.sort((a, b) =>
     a.isLeader === b.isLeader ? 0 : a.isLeader ? -1 : 1,
   );
-
-  const deleteTeam = api.team.deleteTeam.useMutation();
-  const leaveTeam = api.team.leaveTeam.useMutation();
 
   const onSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
