@@ -1,9 +1,6 @@
-'use client';
-
-import { Team, User } from '@prisma/client';
-import { useContext, useState, useTransition } from 'react';
-import { ProgressContext } from '../../progressProvider';
-import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { useContext, useState, useTransition } from "react";
+import { ProgressContext } from "../../progressProvider";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import {
   Dialog,
   DialogContent,
@@ -11,83 +8,91 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../../ui/dialog';
-import { Button } from '../../ui/button';
+} from "../../ui/dialog";
+import { Button } from "../../ui/button";
 import {
   Crown,
   Loader2Icon,
   LogOut,
   Trash2,
   UserRoundPlus,
-} from 'lucide-react';
-import { deleteTeam, leaveTeam } from '@/src/server/actions';
-import Image from 'next/image';
-import { Badge } from '../../ui/badge';
-import { toast } from 'sonner';
-import { AiOutlineCopy } from 'react-icons/ai';
-import { BsWhatsapp } from 'react-icons/bs';
-import { Progress } from '@prisma/client';
-import { secrets } from '@/src/lib/secrets';
-import { useRouter } from 'next/navigation';
+} from "lucide-react";
+import Image from "next/image";
+import { Badge } from "../../ui/badge";
+import { toast } from "sonner";
+import { AiOutlineCopy } from "react-icons/ai";
+import { BsWhatsapp } from "react-icons/bs";
+import { type Progress } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type teamRouter } from "~/server/api/routers/team";
+import { api } from "~/utils/api";
+import { env } from "~/env";
 
 export default function TeamInfo({
   teamdata,
   userId,
   userProgress,
 }: {
-  teamdata: Team & { members: User[] };
+  teamdata:
+    | inferRouterOutputs<typeof teamRouter>["getTeamDetailsById"]
+    | null
+    | undefined;
   userId: string;
   userProgress: Progress;
 }) {
   const { currentState } = useContext(ProgressContext);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   if (currentState !== 1) return <></>;
   const leader = teamdata?.members?.find(
-    (member) => member.id === userId && member?.isLeader
+    (member) => member.id === userId && member?.isLeader,
   );
 
-  const teamMembers = teamdata?.members || [];
+  const teamMembers = teamdata?.members ?? [];
 
   teamMembers.sort((a, b) =>
-    a.isLeader === b.isLeader ? 0 : a.isLeader ? -1 : 1
+    a.isLeader === b.isLeader ? 0 : a.isLeader ? -1 : 1,
   );
 
+  const deleteTeam = api.team.deleteTeam.useMutation();
+  const leaveTeam = api.team.leaveTeam.useMutation();
+
   const onSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     setIsLoading(true);
-    leader?.isLeader ? await deleteTeam() : await leaveTeam();
+    leader?.isLeader
+      ? await deleteTeam.mutateAsync()
+      : await leaveTeam.mutateAsync();
     setIsLoading(false);
   };
 
   const copyCode = async () => {
-    await navigator.clipboard.writeText(teamdata?.id);
-    toast.success('Team ID copied to clipboard', {
-      position: 'bottom-center',
+    await navigator.clipboard.writeText(teamdata?.id ?? "");
+    toast.success("Team ID copied to clipboard", {
+      position: "bottom-center",
     });
   };
 
   return (
-    <Card className="w-full h-fit">
+    <Card className="h-fit w-full">
       <CardHeader>
         <CardTitle className="text-center">Team Details</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center gap-2 px-2">
         <Card className="w-full">
           <CardContent>
-            <div className="flex flex-col justify-evenly m-auto my-4 sm:my-auto pt-4 p-0 md:p-4">
-              <div className="flex flex-col lg:flex-row lg:gap-0 gap-3 justify-between items-center">
-                <h1 className="text-2xl text-center font-bold uppercase">
-                  {teamdata?.name || 'Not Available'}
+            <div className="m-auto my-4 flex flex-col justify-evenly p-0 pt-4 sm:my-auto md:p-4">
+              <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-0">
+                <h1 className="text-center text-2xl font-bold uppercase">
+                  {teamdata?.name ?? "Not Available"}
                 </h1>
                 <div
                   onClick={copyCode}
-                  className="cursor-pointer flex items-center justify-evenly text-sm gap-2 border rounded-full px-2 py-1 hover:border-white transition-colors duration-300"
+                  className="flex cursor-pointer items-center justify-evenly gap-2 rounded-full border px-2 py-1 text-sm transition-colors duration-300 hover:border-white"
                 >
                   Copy Team ID
                   <AiOutlineCopy
@@ -99,34 +104,31 @@ export default function TeamInfo({
                 <Button
                   onClick={(e) => {
                     toast.promise(() => onSubmit(e), {
-                      position: 'bottom-center',
+                      position: "bottom-center",
                       loading: leader?.isLeader
-                        ? 'Deleting Team...'
-                        : 'Leaving Team...',
-                      success: (message) => {
-                        return leader?.isLeader ? 'Team Deleted' : 'Team Left';
+                        ? "Deleting Team..."
+                        : "Leaving Team...",
+                      success: () => {
+                        return leader?.isLeader ? "Team Deleted" : "Team Left";
                       },
-                      error: (error) => {
-                        return 'Something went wrong';
+                      error: () => {
+                        return "Something went wrong";
                       },
-                    });
-                    startTransition(() => {
-                      router.refresh();
                     });
                   }}
-                  disabled={isLoading || userProgress === 'COMPLETE' || isPending}
-                  className={`${(isLoading || userProgress === 'COMPLETE' || isPending) ? 'cursor-not-allowed' : ''} ${
+                  disabled={isLoading || userProgress === "COMPLETE"}
+                  className={`${isLoading || userProgress === "COMPLETE" ? "cursor-not-allowed" : ""} ${
                     leader?.isLeader
-                      ? 'bg-red-600 text-white hover:bg-red-600/90'
-                      : ''
+                      ? "bg-red-600 text-white hover:bg-red-600/90"
+                      : ""
                   } flex items-center gap-2`}
                 >
-                  {(isLoading || isPending)
-                    ? 'Loading...'
+                  {isLoading
+                    ? "Loading..."
                     : leader?.isLeader
-                      ? 'Delete Team'
-                      : 'Leave Team'}
-                  {(isLoading || isPending) ? (
+                      ? "Delete Team"
+                      : "Leave Team"}
+                  {isLoading ? (
                     <Loader2Icon size={16} className="animate-spin" />
                   ) : leader?.isLeader ? (
                     <Trash2 size={16} />
@@ -141,9 +143,9 @@ export default function TeamInfo({
                   return (
                     <div
                       key={member.id}
-                      className="flex items-center mt-5 border p-5 rounded-xl md:mx-0 mx-2"
+                      className="mx-2 mt-5 flex items-center rounded-xl border p-5 md:mx-0"
                     >
-                      <div className="flex lg:flex-row lg:gap-0 gap-3 flex-col items-center justify-between w-full md:text-md text-sm">
+                      <div className="md:text-md flex w-full flex-col items-center justify-between gap-3 text-sm lg:flex-row lg:gap-0">
                         <div className="relative">
                           <Image
                             src={member.image!}
@@ -152,109 +154,111 @@ export default function TeamInfo({
                             height={50}
                             className="rounded-xl"
                           />
-                          <div className="absolute -top-3 right-0 rotate-12 w-5 h-5">
+                          <div className="absolute -top-3 right-0 h-5 w-5 rotate-12">
                             {member?.isLeader && <Crown color="yellow" />}
                           </div>
                         </div>
-                        <div className="text-center overflow-hidden truncate">
-                          <p className="font-bold truncate overflow-hidden">
+                        <div className="overflow-hidden truncate text-center">
+                          <p className="overflow-hidden truncate font-bold">
                             {member.name}
                           </p>
-                          <p className="truncate overflow-hidden text-xs">
+                          <p className="overflow-hidden truncate text-xs">
                             {member.email}
                           </p>
                         </div>
-                        <div className="flex flex-col justify-center items-center gap-1">
+                        <div className="flex flex-col items-center justify-center gap-1">
                           <p className="font-bold">{member.phone}</p>
-                          <Badge>{member.isLeader ? 'Leader' : 'Member'}</Badge>
+                          <Badge>{member.isLeader ? "Leader" : "Member"}</Badge>
                         </div>
                       </div>
                     </div>
                   );
-                }) || 'Not Available'}
+                }) || "Not Available"}
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="w-full mb-2">
-          <CardContent className="pt-5 text-center flex justify-between md:gap-0 gap-3 md:flex-row flex-col items-center text-md sm:text-sm">
-            {userProgress === 'COMPLETE' ? (
-              'You have completed Idea Submission'
-            ) : 4 - teamdata?.members?.length === 0 ? (
-              <>Your Team is full! Proceed to Idea submission.</>
-            ) : (
-              <>
-                There&apos;s still room for {4 - teamdata?.members?.length} more
-                teammate{4 - teamdata?.members?.length > 1 ? 's' : ''}!
-              </>
-            )}
-            <Dialog>
-              <DialogTrigger className="flex items-center gap-2" asChild>
-                <Button
-                  size={'sm'}
-                  disabled={
-                    4 - teamdata?.members?.length <= 0 ||
-                    userProgress === 'COMPLETE'
-                  }
-                >
-                  <UserRoundPlus size={16} /> Add More
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-sm md:w-full w-[90%]">
-                <DialogHeader>
-                  <DialogTitle>
-                    {4 - teamdata?.members?.length <= 0 ? (
-                      'Your Team is full!'
-                    ) : (
-                      <>
-                        There&apos;s still room for{' '}
-                        {4 - teamdata?.members?.length} more teammate
-                        {4 - teamdata?.members?.length > 1 ? 's' : ''}!
-                      </>
-                    )}
-                  </DialogTitle>
-                  <DialogDescription className="mt-2">
-                    <div className="p-5 text-center flex flex-col justify-center">
-                      <p className="text-xs bodyFont">
-                        Share this link with your friends to add them to your
-                        team!
-                      </p>
-                      <div className="flex items-center justify-evenly mt-2">
-                        <input
-                          type="url"
-                          className="bg-white bg-opacity-20 rounded-lg text-sm p-2 bodyFont max-w-full w-full"
-                          value={teamdata?.id}
-                        />
-                        <AiOutlineCopy
-                          onClick={copyCode}
-                          size={20}
-                          className="cursor-pointer hover:text-gray-400"
-                        />
-                      </div>
+        <Card className="mb-2 w-full">
+          {teamdata && (
+            <CardContent className="text-md flex flex-col items-center justify-between gap-3 pt-5 text-center sm:text-sm md:flex-row md:gap-0">
+              {userProgress === "COMPLETE" ? (
+                "You have completed Idea Submission"
+              ) : 4 - teamdata.members.length === 0 ? (
+                <>Your Team is full! Proceed to Idea submission.</>
+              ) : (
+                <>
+                  There&apos;s still room for {4 - teamdata.members.length} more
+                  teammate{4 - teamdata.members.length > 1 ? "s" : ""}!
+                </>
+              )}
+              <Dialog>
+                <DialogTrigger className="flex items-center gap-2" asChild>
+                  <Button
+                    size={"sm"}
+                    disabled={
+                      4 - teamdata.members.length <= 0 ||
+                      userProgress === "COMPLETE"
+                    }
+                  >
+                    <UserRoundPlus size={16} /> Add More
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[90%] max-w-sm md:w-full">
+                  <DialogHeader>
+                    <DialogTitle>
+                      {4 - teamdata.members.length <= 0 ? (
+                        "Your Team is full!"
+                      ) : (
+                        <>
+                          There&apos;s still room for{" "}
+                          {4 - teamdata.members.length} more teammate
+                          {4 - teamdata.members.length > 1 ? "s" : ""}!
+                        </>
+                      )}
+                    </DialogTitle>
+                    <DialogDescription className="mt-2">
+                      <div className="flex flex-col justify-center p-5 text-center">
+                        <p className="bodyFont text-xs">
+                          Share this link with your friends to add them to your
+                          team!
+                        </p>
+                        <div className="mt-2 flex items-center justify-evenly">
+                          <input
+                            type="url"
+                            className="bodyFont w-full max-w-full rounded-lg bg-white bg-opacity-20 p-2 text-sm"
+                            value={teamdata?.id}
+                          />
+                          <AiOutlineCopy
+                            onClick={copyCode}
+                            size={20}
+                            className="cursor-pointer hover:text-gray-400"
+                          />
+                        </div>
 
-                      <div className="flex items-center py-2 bodyFont">
-                        <div className="flex-grow h-px bg-gray-600"></div>
-                        <span className="flex-shrink text-sm px-4 italic font-light">
-                          or
-                        </span>
-                        <div className="flex-grow h-px bg-gray-600"></div>
-                      </div>
+                        <div className="bodyFont flex items-center py-2">
+                          <div className="h-px flex-grow bg-gray-600"></div>
+                          <span className="flex-shrink px-4 text-sm font-light italic">
+                            or
+                          </span>
+                          <div className="h-px flex-grow bg-gray-600"></div>
+                        </div>
 
-                      <a
-                        target="_blank"
-                        href={`https://wa.me/?text=${encodeURIComponent(
-                          `Join my team at Hackfest 2024, 3 Day long Hackathon at NMAMIT, Nitte. Copy this Team ID: ${teamdata?.id}. Register here: ${secrets.NEXT_PUBLIC_BASE_URL}/register`
-                        )}`}
-                        className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-lg p-2 cursor-pointer text-sm bodyFont"
-                      >
-                        <BsWhatsapp /> Share on WhatsApp
-                      </a>
-                    </div>
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
-          </CardContent>
+                        <a
+                          target="_blank"
+                          href={`https://wa.me/?text=${encodeURIComponent(
+                            `Join my team at Hackfest 2024, 3 Day long Hackathon at NMAMIT, Nitte. Copy this Team ID: ${teamdata?.id}. Register here: ${env.NEXT_PUBLIC_BASE_URL}/register`,
+                          )}`}
+                          className="bodyFont flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-green-500 p-2 text-sm text-white hover:bg-green-600"
+                        >
+                          <BsWhatsapp /> Share on WhatsApp
+                        </a>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </CardContent>
+          )}
         </Card>
       </CardContent>
     </Card>

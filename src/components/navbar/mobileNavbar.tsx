@@ -1,17 +1,16 @@
-'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import AuthButtons from './authButton';
-import { navLinks } from '@/src/constants';
-import { IoMdClose } from 'react-icons/io';
-import { HiOutlineMenuAlt3 } from 'react-icons/hi';
+import { useState } from "react";
+import Link from "next/link";
+import AuthButtons from "./authButton";
+import { IoMdClose } from "react-icons/io";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { navLinks } from "~/constants";
 
 export const MobileNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <div className="fixed right-5 top-6 flex items-center space-x-4 lg:hidden z-[60]">
+      <div className="fixed right-5 top-6 z-[60] flex items-center space-x-4 lg:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
@@ -26,13 +25,13 @@ export const MobileNavbar = () => {
       </div>
 
       <div
-        className={`flex w-full justify-center fixed top-20 mt-1 transition-transform duration-200 ${
-          isOpen ? 'z-[60] translate-y-0' : '-translate-y-[30rem] z-0'
+        className={`fixed top-20 mt-1 flex w-full justify-center transition-transform duration-200 ${
+          isOpen ? "z-[60] translate-y-0" : "z-0 -translate-y-[30rem]"
         } px-2 lg:hidden`}
       >
         <div
-          className={`mt-2 z-[60] py-5 rounded-xl w-full space-y-3 border hover:border-white/40 border-white/30 bg-white/5 bg-clip-padding backdrop-blur-lg backdrop-filter lg:hidden 
-               flex flex-col justify-center" 
+          className={`justify-center" z-[60] mt-2 flex w-full flex-col space-y-3 rounded-xl border border-white/30 bg-white/5 bg-clip-padding py-5 backdrop-blur-lg 
+               backdrop-filter hover:border-white/40 lg:hidden 
             `}
         >
           {navLinks.map((link, index) => (
@@ -40,7 +39,7 @@ export const MobileNavbar = () => {
               key={index}
               href={link.url}
               onClick={() => setIsOpen(false)}
-              className={`text-white pl-4 underline-offset-4 hover:underline text-lg text-center`}
+              className={`pl-4 text-center text-lg text-white underline-offset-4 hover:underline`}
             >
               {link.label}
             </Link>

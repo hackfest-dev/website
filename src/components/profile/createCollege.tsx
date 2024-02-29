@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Dialog,
   DialogTrigger,
@@ -11,7 +9,6 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Loader2Icon, Plus } from "lucide-react";
-import { createCollege } from "@/src/server/actions";
 import { useState, useTransition } from "react";
 import { States } from "@prisma/client";
 import { toast } from "sonner";
@@ -25,9 +22,8 @@ import {
 } from "../ui/select";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useForm } from "react-hook-form";
-import { createCollegeZ } from "@/src/lib/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { type z } from "zod";
 import {
   Form,
   FormControl,
@@ -37,6 +33,8 @@ import {
   FormMessage,
 } from "../ui/form";
 import { useRouter } from "next/navigation";
+import { createCollegeZ } from "~/server/schema/zod-schema";
+import { api } from "~/utils/api";
 
 const CreateCollege = () => {
   const states = Object.entries(States).map(([, value]) => value);
@@ -48,15 +46,15 @@ const CreateCollege = () => {
       state: States.KARNATAKA,
     },
   });
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const createCollege = api.college.createCollege.useMutation();
+
   const onSubmit = async () => {
     setLoading(true);
-    const res = await createCollege({
+    const res = await createCollege.mutateAsync({
       name: form.getValues("name"),
       state: form.getValues("state"),
     });
@@ -64,27 +62,25 @@ const CreateCollege = () => {
       position: "bottom-center",
     });
     setLoading(false);
-    startTransition(() => {
-      router.refresh();
-    })
+
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2 mt-3">
+        <Button className="mt-3 flex items-center gap-2">
           <Plus size={16} /> Add College
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-sm md:w-full w-[90%]">
+      <DialogContent className="w-[90%] max-w-sm md:w-full">
         <DialogHeader>
           <DialogTitle>Add College</DialogTitle>
           <DialogDescription>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-3 mt-3"
+                className="mt-3 flex flex-col gap-3"
               >
                 <FormField
                   control={form.control}
@@ -132,8 +128,8 @@ const CreateCollege = () => {
                     </FormItem>
                   )}
                 ></FormField>
-                <Button type="submit" className="flex items-center gap-2 w-fit">
-                  {(loading || pending) ? (
+                <Button type="submit" className="flex w-fit items-center gap-2">
+                  {loading ? (
                     <Loader2Icon className="animate-spin" />
                   ) : (
                     <>

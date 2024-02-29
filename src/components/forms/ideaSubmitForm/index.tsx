@@ -1,14 +1,9 @@
-'use client';
-import { submitIdea } from '@/src/server/actions';
-import { Tracks } from '@prisma/client';
-import { useContext, useEffect, useState, useTransition } from 'react';
-import { ProgressContext } from '../../progressProvider';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { submitIdeaZ } from '@/src/lib/zod-schema';
-import { z } from 'zod';
-
-import Image from 'next/image';
+import { Tracks } from "@prisma/client";
+import { useContext, useEffect, useState, useTransition } from "react";
+import { ProgressContext } from "../../progressProvider";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type z } from "zod";
 import {
   Form,
   FormControl,
@@ -16,8 +11,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../../ui/form';
-import { Input } from '../../ui/input';
+} from "../../ui/form";
+import { Input } from "../../ui/input";
 import {
   Select,
   SelectContent,
@@ -25,57 +20,63 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../ui/select';
-import { Button } from '../../ui/button';
-import { Textarea } from '../../ui/textarea';
-import { Dropzone } from '../../ui/dropZone';
-import { SessionProvider, useSession } from 'next-auth/react';
-import { Badge } from '../../ui/badge';
-import { useRouter } from 'next/navigation';
+} from "../../ui/select";
+import { Button } from "../../ui/button";
+import { Textarea } from "../../ui/textarea";
+import { Dropzone } from "../../ui/dropZone";
+import { SessionProvider, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { submitIdeaZ } from "~/server/schema/zod-schema";
+import { api } from "~/utils/api";
+import { toast } from "sonner";
 
 export function Component() {
-  const { currentState, maxState, setCurrentState, setMaxState } =
-    useContext(ProgressContext);
+  const { currentState } = useContext(ProgressContext);
   const form = useForm<z.infer<typeof submitIdeaZ>>({
     resolver: zodResolver(submitIdeaZ),
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>('');
-  const [pdf, setPdf] = useState<File | null>(null);
+  const [error, setError] = useState<string>("");
+  const [pdf, setPdf] = useState<File>(new File([], ""));
   const [wordLimit, setWordLimit] = useState(0);
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const submitIdea = api.idea.submitIdea.useMutation();
 
   const onSubmit = async (data: z.infer<typeof submitIdeaZ>) => {
     setLoading(true);
-    // e.preventDefault();
-    const formData = new FormData();
-    formData.append('ppt', pdf!);
-    formData.append('track', data.track);
-    formData.append('problemStatement', data.problemStatement);
-    formData.append('referralCode', data.referralCode);
-
-    const res = await submitIdea(formData);
+    const res = await submitIdea.mutateAsync(
+      {
+        ppt: pdf,
+        problemStatement: data.problemStatement,
+        track: data.problemStatement as Tracks,
+        referralCode: data.referralCode,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Idea Submitted");
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    );
     setError(res.message);
     setLoading(false);
-    startTransition(() => {
-      router.refresh();
-    })
   };
 
   const user = useSession();
 
   useEffect(() => {
-    if (error) setTimeout(() => setError(''), 2000);
+    if (error) setTimeout(() => setError(""), 2000);
   }, [error]);
 
   if (currentState !== 2) return <></>;
 
   return (
-    <div className={`max-h-max w-full relative `}>
+    <div className={`relative max-h-max w-full `}>
       {!user.data?.user.isLeader && (
-        <div className="z-50 absolute flex justify-center items-center text-center text-2xl md:text-3xl inset-0 opacity-100 text-white h-full w-full">
+        <div className="absolute inset-0 z-50 flex h-full w-full items-center justify-center text-center text-2xl text-white opacity-100 md:text-3xl">
           Waiting for team leader to submit the Idea...
         </div>
       )}
@@ -83,31 +84,31 @@ export function Component() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className={`flex flex-col gap-2 md:gap-4 ${
-            !user.data?.user.isLeader ? 'pointer-events-none opacity-30' : ''
+            !user.data?.user.isLeader ? "pointer-events-none opacity-30" : ""
           }`}
         >
-          <h1 className="text-center lg:text-2xl text-xl ">Submit Idea</h1>
+          <h1 className="text-center text-xl lg:text-2xl ">Submit Idea</h1>
           <p
             className={`text-center ${
-              error.includes('updated') ? 'text-green-500' : 'text-red-500'
+              error.includes("updated") ? "text-green-500" : "text-red-500"
             }`}
           >
             {error}
           </p>
 
-          <div className="flex flex-wrap flex-col md:flex-row justify-center items-center mx-auto gap-4">
+          <div className="mx-auto flex flex-col flex-wrap items-center justify-center gap-4 md:flex-row">
             {/* Name */}
             <FormField
               control={form.control}
               name="problemStatement"
-              render={({ field, formState, fieldState }) => {
+              render={({ field }) => {
                 return (
                   <FormItem className="w-[92%]">
                     <FormLabel className="flex items-center justify-between">
                       Problem Statement
                       <span
                         className={`${
-                          wordLimit > 100 ? 'text-red-500' : 'text-green-500'
+                          wordLimit > 100 ? "text-red-500" : "text-green-500"
                         }`}
                       >
                         {wordLimit} / 100 characters
@@ -134,8 +135,8 @@ export function Component() {
             <FormField
               control={form.control}
               name="referralCode"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[45%] w-full">
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[45%]">
                   <FormLabel className="">Referral Code (Optional)</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder="Referral Code" {...field} />
@@ -149,8 +150,8 @@ export function Component() {
             <FormField
               control={form.control}
               name="track"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[45%] w-full">
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[45%]">
                   <FormLabel className="">Track</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
@@ -165,7 +166,7 @@ export function Component() {
                               key={key}
                               className="capitalize"
                             >
-                              {name.replaceAll('_', ' ').toLowerCase()}
+                              {name.replaceAll("_", " ").toLowerCase()}
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -177,18 +178,18 @@ export function Component() {
               )}
             ></FormField>
 
-            <div className="flex flex-col gap-5 w-full justify-center items-center">
+            <div className="flex w-full flex-col items-center justify-center gap-5">
               <FormField
                 control={form.control}
                 name="ppt"
-                render={({ field, formState, fieldState }) => (
-                  <FormItem className="w-[92%] mx-auto">
+                render={({}) => (
+                  <FormItem className="mx-auto w-[92%]">
                     <FormLabel className="flex items-center justify-between">
                       Idea PPT
                       <a
                         href="/idea_template.pptx"
                         download
-                        className="text-xs underline cursor-pointer"
+                        className="cursor-pointer text-xs underline"
                       >
                         Download PPT Template
                       </a>
@@ -222,20 +223,20 @@ export function Component() {
                   </FormItem>
                 )}
               ></FormField>
-              <p className="text-xs text-center">
-                Please download our provided{' '}
+              <p className="text-center text-xs">
+                Please download our provided{" "}
                 <a
                   href="/idea_template.pptx"
                   download
-                  className="text-xs underline cursor-pointer"
+                  className="cursor-pointer text-xs underline"
                 >
                   PPT Template
-                </a>{' '}
+                </a>{" "}
                 for your submission; only submissions using this template will
                 be accepted.
               </p>
               <Button type="submit" className="w-fit">
-                {(loading || pending) ? 'Submitting..' : 'Submit'}
+                {loading ? "Submitting.." : "Submit"}
               </Button>
             </div>
           </div>

@@ -1,8 +1,8 @@
-import { prisma } from '@/src/lib/db';
-import TeamInfo from './teamInfo';
-import { Progress } from '@prisma/client';
+import TeamInfo from "./teamInfo";
+import { type Progress } from "@prisma/client";
+import { api } from "~/utils/api";
 
-export default async function TeamDetails({
+export default function TeamDetails({
   teamid,
   userId,
   userProgress,
@@ -11,16 +11,16 @@ export default async function TeamDetails({
   userId: string;
   userProgress: Progress;
 }) {
-  const teamdata = await prisma.team.findUnique({
-    where: { id: teamid },
-    include: { members: true },
+  const teamdata = api.team.getTeamDetailsById.useQuery({
+    teamId: teamid,
   });
+
   return (
     <>
       {teamdata && (
         <TeamInfo
           userId={userId}
-          teamdata={teamdata}
+          teamdata={teamdata.data}
           userProgress={userProgress}
         />
       )}

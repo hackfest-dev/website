@@ -1,7 +1,5 @@
-'use client';
-import { verifyUser } from '@/src/server/actions';
-import { TeamsData } from '@/src/types';
-import Image from 'next/image';
+import { type TeamsData } from "~/types";
+import Image from "next/image";
 import {
   TableCell,
   TableHead,
@@ -9,68 +7,77 @@ import {
   Table,
   TableBody,
   TableHeader,
-} from '@/src/components/ui/table';
+} from "~/components/ui/table";
+import { api } from "~/utils/api";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type teamRouter } from "~/server/api/routers/team";
 
-export default function ParticipantsTable({ data }: { data: TeamsData[] }) {
+export default function ParticipantsTable({
+  data,
+}: {
+  data:
+    | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
+    | null
+    | undefined;
+}) {
+  const verifyUser = api.user.verifyUser.useMutation();
   return (
     <>
       <Table className="m-auto w-full" aria-label="Files">
         <TableHeader className="border-2">
-          <TableHead className={'p-4 border-2'}>
-            Name
-          </TableHead>
-          <TableHead className={'p-4 border-2'}>College</TableHead>
-          <TableHead className={'p-4 border-2'}>ID</TableHead>
-          <TableHead className={'p-4 border-2'}>Adhaar</TableHead>
-          <TableHead className={'p-4 border-2'}>Payment Status</TableHead>
-          <TableHead className={'p-4 border-2'}>Action</TableHead>
+          <TableHead className={"border-2 p-4"}>Name</TableHead>
+          <TableHead className={"border-2 p-4"}>College</TableHead>
+          <TableHead className={"border-2 p-4"}>ID</TableHead>
+          <TableHead className={"border-2 p-4"}>Adhaar</TableHead>
+          <TableHead className={"border-2 p-4"}>Payment Status</TableHead>
+          <TableHead className={"border-2 p-4"}>Action</TableHead>
         </TableHeader>
         <TableBody>
           {/*Loop over members and insert TableRows*/}
-          {data.map((element) => {
+          {data?.map((element) => {
             return element.members.map((member, index) => {
               return (
                 <>
-                  <TableRow className={'border p-2 text-xl'}>
+                  <TableRow className={"border p-2 text-xl"}>
                     <TableCell>Team: {element.name}</TableCell>
                   </TableRow>
                   <TableRow key={index}>
-                    <TableCell className={'text-center border p-4'}>
+                    <TableCell className={"border p-4 text-center"}>
                       {member.name}
                     </TableCell>
-                    <TableCell className={'text-center border p-4'}>
+                    <TableCell className={"border p-4 text-center"}>
                       {member.college?.name}
                     </TableCell>
-                    <TableCell className={'text-center border p-4'}>
+                    <TableCell className={"border p-4 text-center"}>
                       <Image
-                        src={member.college_id ? member.college_id : ''}
+                        src={member.college_id ? member.college_id : ""}
                         alt="ID"
                         width="100"
                         height="100"
                         unoptimized
                       />
                     </TableCell>
-                    <TableCell className={'text-center border p-4'}>
+                    <TableCell className={"border p-4 text-center"}>
                       <Image
-                        src={member.aadhaar ? member.aadhaar : ''}
+                        src={member.aadhaar ? member.aadhaar : ""}
                         alt="Aadhaar"
                         width="100"
                         height="100"
                         unoptimized
                       />
                     </TableCell>
-                    <TableCell className={'text-center border p-4'}>
+                    <TableCell className={"border p-4 text-center"}>
                       {member.paymentStatus}
                     </TableCell>
-                    <TableCell className={'text-center border p-4'}>
+                    <TableCell className={"border p-4 text-center"}>
                       <button
                         data-uid={member.id}
                         onClick={(e) => {
-                          const id = e.currentTarget.getAttribute('data-uid');
+                          const id = e.currentTarget.getAttribute("data-uid");
                           console.log(id);
-                          if (id) verifyUser({ userId: id });
+                          if (id) verifyUser.mutate({ userId: id });
                         }}
-                        className="bg-white p-4 rounded text-black"
+                        className="rounded bg-white p-4 text-black"
                       >
                         Verify
                       </button>
