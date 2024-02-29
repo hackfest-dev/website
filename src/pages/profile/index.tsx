@@ -31,7 +31,7 @@ export default function ProfilePage() {
             <Loader2Icon className="animate-spin" />
           </Card>
         ) : !userInfo.data?.team?.id ? (
-          <CreateTeam />
+          <CreateTeam refetch={userInfo.refetch} />
         ) : (
           <TeamDetails
             userId={userInfo.data.id}

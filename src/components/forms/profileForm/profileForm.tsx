@@ -37,7 +37,6 @@ import {
 } from "../../ui/command";
 import CreateCollege from "../../profile/createCollege";
 import { ScrollArea } from "../../ui/scroll-area";
-import { useRouter } from "next/navigation";
 import { updateProfileZ } from "~/server/schema/zod-schema";
 import { api } from "~/utils/api";
 import { type inferRouterOutputs } from "@trpc/server";
@@ -90,7 +89,19 @@ const ProfileForm = ({
   const [openCollegeList, setOpenCollegeList] = useState(false);
   const [collegevalue, setCollegevalue] = useState("");
   const [collegeId, setCollegeId] = useState(user?.collegeId ?? "");
-  const updateProfile = api.user.updateProfile.useMutation();
+  const updateProfile = api.user.updateProfile.useMutation({
+    onSuccess: () => {
+      toast.success("Profile Updated");
+      setLoading(false);
+      if (registerProp) setCurrentState(1);
+      if (maxState <= 1 && registerProp) setMaxState(1);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      setError(error.message);
+      setLoading(false);
+    },
+  });
 
   if (currentState !== 0 && registerProp) {
     return <></>;
@@ -98,46 +109,26 @@ const ProfileForm = ({
 
   const onSubmit = async (data: z.infer<typeof updateProfileZ>) => {
     setLoading(true);
-    // e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("phone", data.phone);
-    formData.append("course", data.course || "");
-    formData.append("college", collegeId || "");
-    formData.append("tshirtSize", data.tshirtSize || "");
-    formData.append("collegeIdFile", clgFile ?? "");
-    formData.append("aadhaarFile", aadhaarFile ?? "");
     toast.loading("Saving Details...", {
       id: "loadingToast",
       position: "bottom-center",
     });
 
-    const res = await updateProfile.mutateAsync({
-      name: data.name,
-      phone: data.phone,
-      course: data.course,
-      college: data.college,
-      tshirtSize: data.tshirtSize,
-      collegeIdFile: data.collegeIdFile,
-      aadhaarFile: data.aadhaarFile,
-    });
+    await updateProfile
+      .mutateAsync({
+        name: data.name,
+        phone: data.phone,
+        course: data.course,
+        college: data.college,
+        tshirtSize: data.tshirtSize,
+        collegeIdFile: clgFile,
+        aadhaarFile: aadhaarFile,
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     toast.dismiss("loadingToast");
-    if (res.status !== "error")
-      toast.success("Profile Updated", {
-        duration: 2000,
-        position: "bottom-center",
-      });
-    else
-      toast.error(res.message, {
-        duration: 2000,
-        position: "bottom-center",
-      });
-    setError(res.message);
-    setLoading(false);
-
-    res.status !== "error" && registerProp && setCurrentState(1);
-    res.status !== "error" && maxState <= 1 && registerProp && setMaxState(1);
   };
 
   return (
@@ -238,7 +229,7 @@ const ProfileForm = ({
                               {colleges?.map((college) => (
                                 <CommandItem
                                   key={college.id}
-                                  value={college.name}
+                                  value={college.id}
                                   onSelect={(currentValue) => {
                                     setCollegeId(college.id);
                                     form.setValue("college", college.id);

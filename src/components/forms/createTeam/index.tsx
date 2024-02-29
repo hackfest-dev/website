@@ -7,8 +7,9 @@ import { Loader2Icon, UserRoundPlus } from "lucide-react";
 import { Input } from "../../ui/input";
 import { useRouter } from "next/navigation";
 import { api } from "~/utils/api";
+import { toast } from "sonner";
 
-export default function CreateTeam() {
+export default function CreateTeam({ refetch }: { refetch: () => void }) {
   const { currentState } = useContext(ProgressContext);
 
   const [teamId, setTeamId] = useState("");
@@ -18,22 +19,44 @@ export default function CreateTeam() {
   const [isWaiting, setIsWaiting] = useState(false);
   const [Loading1, setLoading1] = useState(false);
   const [Loading2, setLoading2] = useState(false);
-  const router = useRouter();
-  const createTeam = api.team.createTeam.useMutation();
-  const joinTeam = api.team.joinTeam.useMutation();
+  const [teamName, setTeamName] = useState("");
+  const createTeam = api.team.createTeam.useMutation({
+    onSuccess: () => {
+      setMessage("Team created successfully");
+      refetch();
+    },
+    onError: (error) => {
+      setError(error.message);
+    },
+  });
+  const joinTeam = api.team.joinTeam.useMutation({
+    onSuccess: () => {
+      setMessage("Team joined successfully");
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error.message);
+      setError(error.message);
+    },
+  });
 
   useEffect(() => {
     if (isWaiting) setTimeout(() => setIsWaiting(false), 200);
   }, [isWaiting]);
 
+  const checkName = api.team.checkName.useQuery(
+    {
+      teamName,
+    },
+    {
+      enabled: !isWaiting && teamName.length > 3,
+    },
+  );
+
   const nameHandler = async (name: string) => {
+    setTeamName(name);
     if (!isWaiting && name.length > 3) {
-      const checkName = api.team.checkName.useQuery({
-        teamName: name,
-      });
-
       const res = checkName.data;
-
       if (
         res?.status === "success" &&
         (res?.message === true || res?.message === false)
@@ -80,14 +103,23 @@ export default function CreateTeam() {
                   onSubmit={async (e) => {
                     setLoading1(true);
                     e.preventDefault();
-                    const formData = new FormData(e.target as HTMLFormElement);
-                    const res = await createTeam.mutateAsync({
-                      teamName: formData.get("teamname") as string,
-                    });
-                    if (res.status === "error") setError(res.message);
-                    if (res.status === "success") {
-                      setMessage(res.message);
-                    }
+                    toast.promise(
+                      createTeam.mutateAsync({
+                        teamName,
+                      }),
+                      {
+                        loading: "Creating team...",
+                        success: "Team created successfully",
+                        error(error) {
+                          return (error as { message: string }).message;
+                        },
+                      },
+                    );
+
+                    // if (res.status === "error") setError(res.message);
+                    // if (res.status === "success") {
+                    //   setMessage(res.message);
+                    // }
                     setLoading1(false);
                   }}
                 >
@@ -99,7 +131,7 @@ export default function CreateTeam() {
                     placeholder="Team Name"
                     className={`rounded border p-2 text-center text-white ${
                       isNameAvailable ? "border-green-500" : "border-red-600"
-                    }`}
+                    } ${checkName.isLoading ? "animate-pulse" : ""}`}
                     name="teamname"
                     required
                   />
@@ -133,11 +165,20 @@ export default function CreateTeam() {
                     setLoading2(true);
                     e.preventDefault();
                     const formData = new FormData(e.target as HTMLFormElement);
-                    const res = await joinTeam.mutateAsync({
-                      teamId: formData.get("teamid") as string,
-                    });
-                    if (res.status === "error") setError(res.message);
-                    if (res.status === "success") setMessage(res.message);
+                    toast.promise(
+                      joinTeam.mutateAsync({
+                        teamId: formData.get("teamid") as string,
+                      }),
+                      {
+                        loading: "Joining team...",
+                        success: "Team joined successfully",
+                        error(error) {
+                          return (error as { message: string }).message;
+                        },
+                      },
+                    );
+                    // if (res.status === "error") setError(res.message);
+                    // if (res.status === "success") setMessage(res.message);
                     setLoading2(false);
                   }}
                 >

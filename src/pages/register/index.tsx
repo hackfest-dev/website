@@ -15,7 +15,7 @@ import { api } from "~/utils/api";
 import RootLayout from "~/components/layout";
 
 export default function RegisterPage() {
-  const { data: user } = api.user.getUserWithTeam.useQuery();
+  const { data: user, refetch } = api.user.getUserWithTeam.useQuery();
 
   let currentStep = 0;
 
@@ -84,7 +84,7 @@ export default function RegisterPage() {
                         userProgress={user.profileProgress}
                       />
                     ) : (
-                      <CreateTeam />
+                      <CreateTeam refetch={refetch} />
                     )}
                     <IdeaSubmitForm />
                     <FormButtons
