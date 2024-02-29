@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { Courses, type College, type User } from "@prisma/client";
 import { Card, CardContent } from "../ui/card";
@@ -26,10 +26,10 @@ import { toast } from "sonner";
 import { Input } from "../ui/input";
 import CreateCollege from "./createCollege";
 import { ScrollArea } from "../ui/scroll-area";
-import { useRouter } from "next/navigation";
 import { api } from "~/utils/api";
 import { type inferRouterOutputs } from "@trpc/server";
 import { type collegeRouter } from "~/server/api/routers/college";
+import { z } from "zod";
 
 export const EditProfileForm: React.FC<{
   user: User & {
@@ -39,8 +39,8 @@ export const EditProfileForm: React.FC<{
     | inferRouterOutputs<typeof collegeRouter>["getColleges"]
     | undefined
     | null;
-  states: string[];
-}> = ({ user, colleges, states }) => {
+  refetch: () => void;
+}> = ({ user, colleges, refetch }) => {
   const [formData, setFormData] = useState({
     uname: user.name ?? "",
     email: user.email ?? "",
@@ -63,38 +63,47 @@ export const EditProfileForm: React.FC<{
   const [coursevalue, setCoursevalue] = useState("");
 
   const courses: string[] = Object.entries(Courses).map(([, value]) => value);
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
-  const editProfile = api.user.editProfile.useMutation();
+  const editProfile = api.user.editProfile.useMutation({
+    onMutate: () => {
+      setIsSaving(true);
+    },
+    onSuccess: () => {
+      setIsSaving(false);
+      toast.success("Profile Updated");
+      refetch();
+    },
+    onError: () => {
+      setIsSaving(false);
+      toast.error("Complete your profile on /register page first!");
+    },
+  });
 
   const onSubmit = async (
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
-    setIsSaving(true);
     e.preventDefault();
-    const form = new FormData();
-    form.append("name", formData.uname);
-    form.append("phone", formData.phone || "0");
-    form.append("course", formData.course || "");
-    form.append("college", formData.collegeId || "");
-    if (clgFile) form.append("collegeId", clgFile);
-    if (aadhaarFile) form.append("adhaar", aadhaarFile);
-    const res = await editProfile.mutateAsync({
-      aadhaarFile: aadhaarFile,
-      collegeIdFile: clgFile,
-      college: formData.collegeId,
-      name: formData.uname,
-      phone: formData.phone,
-      course: formData.course as Courses,
-    });
-    setIsSaving(false);
-    startTransition(() => {
-      router.refresh();
-    });
-    if (res.status == "error") throw new Error(res.message);
-    if (res.status == "info" || res.status == "success") return res.message;
+    await editProfile
+      .mutateAsync({
+        aadhaarFile: aadhaarFile,
+        collegeIdFile: clgFile,
+        college: formData.collegeId,
+        name: formData.uname,
+        phone: formData.phone,
+        course: formData.course as Courses,
+      })
+      .catch((error) => {
+        console.log(
+          (
+            error as {
+              message: string;
+            }
+          ).message,
+        );
+      });
+    // if (res.status == "error") throw new Error(res.message);
+    // if (res.status == "success" || res.status == "success") return res.message;
   };
 
   return (
@@ -344,21 +353,12 @@ export const EditProfileForm: React.FC<{
       </Card>
       <div className="mt-5 flex w-full items-center justify-center gap-5">
         <Button
-          onClick={(e) => {
-            toast.promise(() => onSubmit(e), {
-              position: "bottom-center",
-              loading: "Saving profile info...",
-              success: (message) => {
-                return message + "";
-              },
-              error: (error) => {
-                return error + "";
-              },
-            });
+          onClick={async (e) => {
+            await onSubmit(e);
           }}
-          disabled={isSaving || pending}
+          disabled={isSaving}
           className={`${
-            isSaving || pending ? "cursor-not-allowed" : ""
+            isSaving ? "cursor-not-allowed" : ""
           } flex items-center gap-2`}
         >
           {isSaving ? (

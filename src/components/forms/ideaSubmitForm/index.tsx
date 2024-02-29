@@ -41,7 +41,6 @@ export function Component() {
   const [pdf, setPdf] = useState<File>(new File([], ""));
   const [wordLimit, setWordLimit] = useState(0);
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
   const submitIdea = api.idea.submitIdea.useMutation();
 
   const onSubmit = async (data: z.infer<typeof submitIdeaZ>) => {
@@ -64,9 +63,6 @@ export function Component() {
     );
     setError(res.message);
     setLoading(false);
-    startTransition(() => {
-      router.refresh();
-    });
   };
 
   const user = useSession();
@@ -240,7 +236,7 @@ export function Component() {
                 be accepted.
               </p>
               <Button type="submit" className="w-fit">
-                {loading || pending ? "Submitting.." : "Submit"}
+                {loading ? "Submitting.." : "Submit"}
               </Button>
             </div>
           </div>

@@ -46,8 +46,6 @@ const CreateCollege = () => {
       state: States.KARNATAKA,
     },
   });
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -64,9 +62,7 @@ const CreateCollege = () => {
       position: "bottom-center",
     });
     setLoading(false);
-    startTransition(() => {
-      router.refresh();
-    });
+
     setOpen(false);
   };
 
@@ -133,7 +129,7 @@ const CreateCollege = () => {
                   )}
                 ></FormField>
                 <Button type="submit" className="flex w-fit items-center gap-2">
-                  {loading || pending ? (
+                  {loading ? (
                     <Loader2Icon className="animate-spin" />
                   ) : (
                     <>

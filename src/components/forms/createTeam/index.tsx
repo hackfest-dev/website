@@ -19,8 +19,6 @@ export default function CreateTeam() {
   const [Loading1, setLoading1] = useState(false);
   const [Loading2, setLoading2] = useState(false);
   const router = useRouter();
-  const [pending1, startTransition1] = useTransition();
-  const [pending2, startTransition2] = useTransition();
   const createTeam = api.team.createTeam.useMutation();
   const joinTeam = api.team.joinTeam.useMutation();
 
@@ -90,9 +88,6 @@ export default function CreateTeam() {
                     if (res.status === "success") {
                       setMessage(res.message);
                     }
-                    startTransition1(() => {
-                      router.refresh();
-                    });
                     setLoading1(false);
                   }}
                 >
@@ -115,7 +110,7 @@ export default function CreateTeam() {
                     }`}
                     disabled={!isNameAvailable}
                   >
-                    {Loading1 || pending1 ? (
+                    {Loading1 ? (
                       <>
                         <Loader2Icon size={16} className="animate-spin" />
                       </>
@@ -144,9 +139,6 @@ export default function CreateTeam() {
                     if (res.status === "error") setError(res.message);
                     if (res.status === "success") setMessage(res.message);
                     setLoading2(false);
-                    startTransition2(() => {
-                      router.refresh();
-                    });
                   }}
                 >
                   <h1 className="text-xl font-bold">Join a Team</h1>
@@ -160,7 +152,7 @@ export default function CreateTeam() {
                     required
                   />
                   <Button type="submit" className="flex items-center gap-2">
-                    {Loading2 || pending2 ? (
+                    {Loading2 ? (
                       <>
                         <Loader2Icon size={16} className="animate-spin" />
                       </>

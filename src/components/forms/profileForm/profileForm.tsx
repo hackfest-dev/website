@@ -86,9 +86,6 @@ const ProfileForm = ({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string>("");
-  const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [pending, startTransition] = useTransition();
 
   const [openCollegeList, setOpenCollegeList] = useState(false);
   const [collegevalue, setCollegevalue] = useState("");
@@ -138,9 +135,7 @@ const ProfileForm = ({
       });
     setError(res.message);
     setLoading(false);
-    startTransition(() => {
-      router.refresh();
-    });
+
     res.status !== "error" && registerProp && setCurrentState(1);
     res.status !== "error" && maxState <= 1 && registerProp && setMaxState(1);
   };

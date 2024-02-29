@@ -43,8 +43,6 @@ export default function TeamInfo({
 }) {
   const { currentState } = useContext(ProgressContext);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   if (currentState !== 1) return <></>;
@@ -117,25 +115,20 @@ export default function TeamInfo({
                         return "Something went wrong";
                       },
                     });
-                    startTransition(() => {
-                      router.refresh();
-                    });
                   }}
-                  disabled={
-                    isLoading || userProgress === "COMPLETE" || isPending
-                  }
-                  className={`${isLoading || userProgress === "COMPLETE" || isPending ? "cursor-not-allowed" : ""} ${
+                  disabled={isLoading || userProgress === "COMPLETE"}
+                  className={`${isLoading || userProgress === "COMPLETE" ? "cursor-not-allowed" : ""} ${
                     leader?.isLeader
                       ? "bg-red-600 text-white hover:bg-red-600/90"
                       : ""
                   } flex items-center gap-2`}
                 >
-                  {isLoading || isPending
+                  {isLoading
                     ? "Loading..."
                     : leader?.isLeader
                       ? "Delete Team"
                       : "Leave Team"}
-                  {isLoading || isPending ? (
+                  {isLoading ? (
                     <Loader2Icon size={16} className="animate-spin" />
                   ) : leader?.isLeader ? (
                     <Trash2 size={16} />
@@ -186,84 +179,86 @@ export default function TeamInfo({
           </CardContent>
         </Card>
         <Card className="mb-2 w-full">
-          <CardContent className="text-md flex flex-col items-center justify-between gap-3 pt-5 text-center sm:text-sm md:flex-row md:gap-0">
-            {userProgress === "COMPLETE" ? (
-              "You have completed Idea Submission"
-            ) : 4 - teamdata!.members.length === 0 ? (
-              <>Your Team is full! Proceed to Idea submission.</>
-            ) : (
-              <>
-                There&apos;s still room for {4 - teamdata!.members.length} more
-                teammate{4 - teamdata!.members.length > 1 ? "s" : ""}!
-              </>
-            )}
-            <Dialog>
-              <DialogTrigger className="flex items-center gap-2" asChild>
-                <Button
-                  size={"sm"}
-                  disabled={
-                    4 - teamdata!.members.length <= 0 ||
-                    userProgress === "COMPLETE"
-                  }
-                >
-                  <UserRoundPlus size={16} /> Add More
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-[90%] max-w-sm md:w-full">
-                <DialogHeader>
-                  <DialogTitle>
-                    {4 - teamdata!.members.length <= 0 ? (
-                      "Your Team is full!"
-                    ) : (
-                      <>
-                        There&apos;s still room for{" "}
-                        {4 - teamdata!.members.length} more teammate
-                        {4 - teamdata!.members.length > 1 ? "s" : ""}!
-                      </>
-                    )}
-                  </DialogTitle>
-                  <DialogDescription className="mt-2">
-                    <div className="flex flex-col justify-center p-5 text-center">
-                      <p className="bodyFont text-xs">
-                        Share this link with your friends to add them to your
-                        team!
-                      </p>
-                      <div className="mt-2 flex items-center justify-evenly">
-                        <input
-                          type="url"
-                          className="bodyFont w-full max-w-full rounded-lg bg-white bg-opacity-20 p-2 text-sm"
-                          value={teamdata?.id}
-                        />
-                        <AiOutlineCopy
-                          onClick={copyCode}
-                          size={20}
-                          className="cursor-pointer hover:text-gray-400"
-                        />
-                      </div>
+          {teamdata && (
+            <CardContent className="text-md flex flex-col items-center justify-between gap-3 pt-5 text-center sm:text-sm md:flex-row md:gap-0">
+              {userProgress === "COMPLETE" ? (
+                "You have completed Idea Submission"
+              ) : 4 - teamdata.members.length === 0 ? (
+                <>Your Team is full! Proceed to Idea submission.</>
+              ) : (
+                <>
+                  There&apos;s still room for {4 - teamdata.members.length} more
+                  teammate{4 - teamdata.members.length > 1 ? "s" : ""}!
+                </>
+              )}
+              <Dialog>
+                <DialogTrigger className="flex items-center gap-2" asChild>
+                  <Button
+                    size={"sm"}
+                    disabled={
+                      4 - teamdata.members.length <= 0 ||
+                      userProgress === "COMPLETE"
+                    }
+                  >
+                    <UserRoundPlus size={16} /> Add More
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[90%] max-w-sm md:w-full">
+                  <DialogHeader>
+                    <DialogTitle>
+                      {4 - teamdata.members.length <= 0 ? (
+                        "Your Team is full!"
+                      ) : (
+                        <>
+                          There&apos;s still room for{" "}
+                          {4 - teamdata.members.length} more teammate
+                          {4 - teamdata.members.length > 1 ? "s" : ""}!
+                        </>
+                      )}
+                    </DialogTitle>
+                    <DialogDescription className="mt-2">
+                      <div className="flex flex-col justify-center p-5 text-center">
+                        <p className="bodyFont text-xs">
+                          Share this link with your friends to add them to your
+                          team!
+                        </p>
+                        <div className="mt-2 flex items-center justify-evenly">
+                          <input
+                            type="url"
+                            className="bodyFont w-full max-w-full rounded-lg bg-white bg-opacity-20 p-2 text-sm"
+                            value={teamdata?.id}
+                          />
+                          <AiOutlineCopy
+                            onClick={copyCode}
+                            size={20}
+                            className="cursor-pointer hover:text-gray-400"
+                          />
+                        </div>
 
-                      <div className="bodyFont flex items-center py-2">
-                        <div className="h-px flex-grow bg-gray-600"></div>
-                        <span className="flex-shrink px-4 text-sm font-light italic">
-                          or
-                        </span>
-                        <div className="h-px flex-grow bg-gray-600"></div>
-                      </div>
+                        <div className="bodyFont flex items-center py-2">
+                          <div className="h-px flex-grow bg-gray-600"></div>
+                          <span className="flex-shrink px-4 text-sm font-light italic">
+                            or
+                          </span>
+                          <div className="h-px flex-grow bg-gray-600"></div>
+                        </div>
 
-                      <a
-                        target="_blank"
-                        href={`https://wa.me/?text=${encodeURIComponent(
-                          `Join my team at Hackfest 2024, 3 Day long Hackathon at NMAMIT, Nitte. Copy this Team ID: ${teamdata?.id}. Register here: ${env.NEXT_PUBLIC_BASE_URL}/register`,
-                        )}`}
-                        className="bodyFont flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-green-500 p-2 text-sm text-white hover:bg-green-600"
-                      >
-                        <BsWhatsapp /> Share on WhatsApp
-                      </a>
-                    </div>
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
-          </CardContent>
+                        <a
+                          target="_blank"
+                          href={`https://wa.me/?text=${encodeURIComponent(
+                            `Join my team at Hackfest 2024, 3 Day long Hackathon at NMAMIT, Nitte. Copy this Team ID: ${teamdata?.id}. Register here: ${env.NEXT_PUBLIC_BASE_URL}/register`,
+                          )}`}
+                          className="bodyFont flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-green-500 p-2 text-sm text-white hover:bg-green-600"
+                        >
+                          <BsWhatsapp /> Share on WhatsApp
+                        </a>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </CardContent>
+          )}
         </Card>
       </CardContent>
     </Card>

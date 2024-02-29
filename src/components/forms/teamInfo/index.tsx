@@ -2,7 +2,7 @@ import TeamInfo from "./teamInfo";
 import { type Progress } from "@prisma/client";
 import { api } from "~/utils/api";
 
-export default async function TeamDetails({
+export default function TeamDetails({
   teamid,
   userId,
   userProgress,

@@ -31,7 +31,6 @@ const FormButtons = ({
     if (profileProgress === "SUBMIT_IDEA") isDisabled = true;
   } else isDisabled = true;
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
 
   const [isLoading, setIsLoading] = useState(false);
   const updateProfileProgress = api.user.updateProfileProgress.useMutation({
@@ -86,9 +85,6 @@ const FormButtons = ({
                 setMaxState(2);
                 setCurrentState(currentState + 1);
                 setIsLoading(false);
-                startTransition(() => {
-                  router.refresh();
-                });
               }
             } else if (currentState === 2) {
               if (profileProgress === "SUBMIT_IDEA") return;
@@ -97,10 +93,8 @@ const FormButtons = ({
           className="flex items-center gap-2"
         >
           {/* {currentState === 2 ? "Submit" : "Next"} */}
-          {(isLoading || pending) && (
-            <Loader2Icon size={16} className="animate-spin" />
-          )}
-          {isLoading || pending ? "Proceeding..." : "Next"}
+          {isLoading && <Loader2Icon size={16} className="animate-spin" />}
+          {isLoading ? "Proceeding..." : "Next"}
           <ChevronRight size={16} />
         </Button>
       )}
