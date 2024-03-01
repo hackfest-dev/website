@@ -346,7 +346,7 @@ export const EditProfileForm: React.FC<{
                       {colleges?.map((college) => (
                         <CommandItem
                           key={college.id}
-                          value={college.name}
+                          value={college.name + ", " + college.state}
                           onSelect={(currentValue) => {
                             setCollegevalue(
                               currentValue === collegevalue

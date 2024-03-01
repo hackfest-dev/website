@@ -24,6 +24,7 @@ export default function CreateTeam({ refetch }: { refetch: () => void }) {
       refetch();
     },
     onError: (error) => {
+      console.log(error);
       setError(error.message);
     },
   });
@@ -92,6 +93,12 @@ export default function CreateTeam({ refetch }: { refetch: () => void }) {
                   onSubmit={async (e) => {
                     setLoading1(true);
                     e.preventDefault();
+                    if (teamName.length > 10) {
+                      setLoading1(false);
+                      return toast.error(
+                        "Team name should be less than 10 characters",
+                      );
+                    }
                     toast.promise(
                       createTeam.mutateAsync({
                         teamName,
