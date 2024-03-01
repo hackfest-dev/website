@@ -1,26 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { submitIdeaZ } from "~/server/schema/zod-schema";
-import { uploadFile } from "~/utils/cloudinary";
 
 export const ideaRouter = createTRPCRouter({
   submitIdea: protectedProcedure
     .input(submitIdeaZ)
     .mutation(async ({ input, ctx }) => {
-      if (input.ppt?.type !== "application/pdf") {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Only pdf files are allowed",
-        });
-      }
-
-      if (!input.ppt || input.ppt?.size > 5 * 1024 * 1024) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Upload only pdf of less than 5MB",
-        });
-      }
-
       try {
         const user = ctx.session.user;
         if (!user?.isLeader)
@@ -43,18 +28,13 @@ export const ideaRouter = createTRPCRouter({
             message: "Idea already submitted",
           });
 
-        const pptUrl = await uploadFile({
-          file: input.ppt,
-          folder: "ppts",
-        });
-
         if (input.referralCode === "")
           await ctx.db.team.update({
             data: {
               ideaSubmission: {
                 create: {
                   problemStatement: input.problemStatement,
-                  pptUrl,
+                  pptUrl: input.pptUrl,
                   track: input.track,
                 },
               },
@@ -108,7 +88,7 @@ export const ideaRouter = createTRPCRouter({
               ideaSubmission: {
                 create: {
                   problemStatement: input.problemStatement,
-                  pptUrl,
+                  pptUrl: input.pptUrl,
                   track: input.track,
                 },
               },

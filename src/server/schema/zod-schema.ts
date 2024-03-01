@@ -64,7 +64,7 @@ const submitIdeaZ = z.object({
     required_error: "Track is required",
   }),
   referralCode: z.string().default(""),
-  ppt: z.custom<File>(),
+  pptUrl: z.string(),
 });
 
 const createTeamZ = z.object({

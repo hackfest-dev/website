@@ -37,6 +37,7 @@ export default function ProfilePage() {
             userId={userInfo.data.id}
             teamid={userInfo.data.team.id}
             userProgress={userInfo.data.profileProgress}
+            userRefetch={userInfo.refetch}
           />
         )}
       </div>

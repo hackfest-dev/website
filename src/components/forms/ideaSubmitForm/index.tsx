@@ -1,5 +1,5 @@
 import { Tracks } from "@prisma/client";
-import { useContext, useEffect, useState, useTransition } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProgressContext } from "../../progressProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,13 +24,13 @@ import {
 import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
 import { Dropzone } from "../../ui/dropZone";
-import { SessionProvider, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { submitIdeaZ } from "~/server/schema/zod-schema";
 import { api } from "~/utils/api";
 import { toast } from "sonner";
+import { env } from "~/env";
 
-export function Component() {
+export default function IdeaSubmitForm() {
   const { currentState } = useContext(ProgressContext);
   const form = useForm<z.infer<typeof submitIdeaZ>>({
     resolver: zodResolver(submitIdeaZ),
@@ -38,16 +38,55 @@ export function Component() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [pdf, setPdf] = useState<File>(new File([], ""));
+  const [pdf, setPdf] = useState<File | null>(null);
   const [wordLimit, setWordLimit] = useState(0);
-  const router = useRouter();
   const submitIdea = api.idea.submitIdea.useMutation();
+
+  const upload = async (file: File) => {
+    const allowedTypes = ["application/pdf"];
+    if (!file) return toast.error("No file uploaded");
+    if (file.size > 5 * 1000 * 1000) {
+      return toast.error("Uploads must be less than 5MB");
+    }
+    if (!allowedTypes.includes(file.type))
+      return toast.error("Only pdf files are allowed");
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(
+      `${env.NEXT_PUBLIC_BASE_URL}/api/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    const data = (await response.json()) as { secure_url: string };
+    if (!data.secure_url) {
+      toast.error("Error uploading PDF");
+      return;
+    }
+    return data.secure_url;
+  };
+
+  const something = async () => {
+    if (pdf) {
+      toast.loading("Uploading PDF...", {
+        id: "PDF",
+      });
+      const newFile = await upload(pdf);
+      toast.dismiss("PDF");
+      toast.success("PDF uploaded");
+      console.log(newFile);
+
+      form.setValue("pptUrl", newFile as string);
+    }
+    await form.handleSubmit(onSubmit)();
+  };
 
   const onSubmit = async (data: z.infer<typeof submitIdeaZ>) => {
     setLoading(true);
     const res = await submitIdea.mutateAsync(
       {
-        ppt: pdf,
+        pptUrl: data.pptUrl,
         problemStatement: data.problemStatement,
         track: data.problemStatement as Tracks,
         referralCode: data.referralCode,
@@ -77,12 +116,17 @@ export function Component() {
     <div className={`relative max-h-max w-full `}>
       {!user.data?.user.isLeader && (
         <div className="absolute inset-0 z-50 flex h-full w-full items-center justify-center text-center text-2xl text-white opacity-100 md:text-3xl">
-          Waiting for team leader to submit the Idea...
+          {user.status === "loading"
+            ? "Loading..."
+            : "Waiting for team leader to submit the Idea..."}
         </div>
       )}
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await something();
+          }}
           className={`flex flex-col gap-2 md:gap-4 ${
             !user.data?.user.isLeader ? "pointer-events-none opacity-30" : ""
           }`}
@@ -123,6 +167,7 @@ export function Component() {
                           setWordLimit(e.target.value.length);
                         }}
                         value={field.value}
+                        className="resize-none"
                       />
                     </FormControl>
                     <FormMessage />
@@ -181,7 +226,7 @@ export function Component() {
             <div className="flex w-full flex-col items-center justify-center gap-5">
               <FormField
                 control={form.control}
-                name="ppt"
+                name="pptUrl"
                 render={({}) => (
                   <FormItem className="mx-auto w-[92%]">
                     <FormLabel className="flex items-center justify-between">
@@ -199,26 +244,8 @@ export function Component() {
                         pdf
                         onChange={setPdf}
                         className="w-full"
-                        fileExtension="images"
-                        // image={formData.aadhaarImg.split(';')[0]}
+                        fileExtension="pdf"
                       />
-                      {/* <Input
-                      type="file"
-                      accept="pdf/*"
-                      onChange={(e) => {
-                        if (
-                          e.target.files?.[0] &&
-                          e.target.files?.[0].type === 'application/pdf'
-                        ) {
-                          field.value = e.target.files?.[0];
-                          setPdf(e.target.files?.[0]!);
-                        } else {
-                          setError('Please upload a pdf file');
-                        }
-
-                        console.log(e.target.files?.[0], field.value);
-                      }}
-                    /> */}
                     </FormControl>
                   </FormItem>
                 )}
@@ -243,13 +270,5 @@ export function Component() {
         </form>
       </Form>
     </div>
-  );
-}
-
-export default function IdeaSubmitForm() {
-  return (
-    <SessionProvider>
-      <Component />
-    </SessionProvider>
   );
 }

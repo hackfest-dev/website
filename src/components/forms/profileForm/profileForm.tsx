@@ -1,7 +1,7 @@
-import { TshirtSize } from "@prisma/client";
+import { Courses, TshirtSize } from "@prisma/client";
 import { type Dispatch, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { type z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -203,8 +203,8 @@ const ProfileForm = ({
         course: data.course,
         college: data.college,
         tshirtSize: data.tshirtSize,
-        collegeIdUrl: data.collegeIdUrl as string,
-        aadhaarUrl: data.aadhaarUrl as string,
+        collegeIdUrl: data.collegeIdUrl,
+        aadhaarUrl: data.aadhaarUrl,
       })
       .catch((error) => {
         console.log(error);
