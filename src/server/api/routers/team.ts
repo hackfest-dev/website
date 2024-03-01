@@ -204,6 +204,17 @@ export const teamRouter = createTRPCRouter({
       const isComplete =
         team?.members.length === 3 || team?.members.length === 4;
 
+      if (!isComplete) {
+        await ctx.db.user.updateMany({
+          where: {
+            teamId: team?.id,
+          },
+          data: {
+            profileProgress: "FORM_TEAM",
+          },
+        });
+      }
+
       await ctx.db.team.update({
         where: {
           id: user?.team?.id,

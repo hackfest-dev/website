@@ -22,6 +22,12 @@ export const ideaRouter = createTRPCRouter({
             ideaSubmission: true,
           },
         });
+
+		if(!team?.isComplete) throw new TRPCError({
+			code:"BAD_REQUEST",
+			message:"Team not complete!"
+		})
+
         if (team?.ideaSubmission)
           throw new TRPCError({
             code: "BAD_REQUEST",
