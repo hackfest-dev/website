@@ -67,6 +67,7 @@ export const authOptions: NextAuthOptions = {
         throw new Error("User not found");
       }
       session.user.id = dbUser.id;
+      session.user.role = dbUser.role;
       if (dbUser.team) {
         const team = {
           id: dbUser?.team?.id,
@@ -80,6 +81,7 @@ export const authOptions: NextAuthOptions = {
       session.user.isLeader = dbUser?.isLeader;
       session.user.phone = dbUser?.phone ?? "";
       session.user.profileProgress = dbUser?.profileProgress;
+      
       return session;
     },
   },

@@ -1,4 +1,5 @@
 import { Category, Courses, Tracks, TshirtSize } from "@prisma/client";
+import { X } from "lucide-react";
 import { z } from "zod";
 
 const updateUserZ = z.object({
@@ -116,6 +117,34 @@ const deleteFaqZ = z.object({
   id: z.number(),
 });
 
+const addReferralCodeZ = z.object({
+  code: z
+  .string(),
+  referrer: z
+    .string()
+    .min(1, { message: "Referrer cannot be empty" })
+    .max(50, { message: "Referrer cannot exceed 50 characters" }),
+  collegeId: z
+    .string(
+      {
+        required_error: "College ID is required",
+        invalid_type_error: "Something went wrong",
+      }
+    )
+    .min(1, { message: "College ID cannot be empty" }),
+  name: z
+      .string()
+      .min(1, { message: "Name cannot be empty" })
+      .max(50, { message: "Name cannot exceed 50 characters" }),
+  contact: z
+      .string()
+      .min(10, { message: "Atleast a phone number is needed" })
+      .max(30, { message: "Max character limit" }),
+})
+
+
+
+
 export {
   editProfileZ,
   updateUserZ,
@@ -128,4 +157,6 @@ export {
   addFaqZ,
   answerFaqZ,
   deleteFaqZ,
+  addReferralCodeZ,
+
 };

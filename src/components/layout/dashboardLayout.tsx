@@ -36,16 +36,13 @@ export default function DashboardLayout({
   const pathname = router.pathname;
 
   if (user !== null) {
-    if (user?.data?.user.role === "ORGANISER" && pathname === "/organiser") {
+    if (user?.data?.user.role !== "PARTICIPANT") {
       return (
-        <html lang="en" className={`${obscura.variable}`}>
-          <body className={`dark bg-black text-white ${poppins.className}`}>
-            <ProgressBarProvider>
-              <Toaster richColors expand={true} position="top-center" />
+        <main className={`dark bg-black min-h-screen text-white ${poppins.className}`}>
+          <Toaster richColors expand={true} position="top-center" />
               {children}
-            </ProgressBarProvider>
-          </body>
-        </html>
+          </main>
+        
       );
     } else {
       return <NotFound />;
