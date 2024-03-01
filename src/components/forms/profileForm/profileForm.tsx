@@ -1,5 +1,5 @@
 import { TshirtSize } from "@prisma/client";
-import { type Dispatch, useContext, useState, useTransition } from "react";
+import { type Dispatch, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,6 +49,8 @@ const ProfileForm = ({
   colleges,
   courses,
   registerProp,
+  refetch,
+  refetchColleges,
 }: {
   user:
     | inferRouterOutputs<typeof userRouter>["getUserWithCollege"]
@@ -65,6 +67,8 @@ const ProfileForm = ({
     setCurrentState: Dispatch<number>;
     setMaxState: Dispatch<number>;
   };
+  refetch: () => void;
+  refetchColleges: () => void;
 }) => {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
@@ -84,7 +88,6 @@ const ProfileForm = ({
 
   const [loading, setLoading] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string>("");
 
   const [openCollegeList, setOpenCollegeList] = useState(false);
@@ -94,6 +97,7 @@ const ProfileForm = ({
     onSuccess: () => {
       toast.success("Profile Updated");
       setLoading(false);
+      refetch();
       if (registerProp) setCurrentState(1);
       if (maxState <= 1 && registerProp) setMaxState(1);
     },
@@ -125,7 +129,7 @@ const ProfileForm = ({
         body: formData,
       },
     );
-    const data = await response.json();
+    const data = (await response.json()) as { secure_url: string };
     if (!data.secure_url) {
       toast.error("Error uploading image");
       //toast.dismiss(loadingToast);
@@ -141,26 +145,44 @@ const ProfileForm = ({
       form.setValue("collegeIdUrl", user.college_id);
       if (aadhaarFile) {
         //upload
+        toast.loading("Uploading Aadhaar...", {
+          id: "aadhaar",
+        });
         const newFile = await upload(aadhaarFile);
+        toast.dismiss("aadhaar");
+        toast.success("Aadhaar uploaded");
         console.log(newFile);
 
-        form.setValue("aadhaarUrl", newFile);
+        form.setValue("aadhaarUrl", newFile as string);
       }
       if (clgFile) {
+        toast.loading("Uploading College ID...", {
+          id: "college",
+        });
         const newFile = await upload(clgFile);
+        toast.dismiss("college");
+        toast.success("College ID uploaded");
         console.log(newFile);
-        form.setValue("collegeIdUrl", newFile);
+        form.setValue("collegeIdUrl", newFile as string);
       }
-      form.handleSubmit(onSubmit)();
+      form
+        .handleSubmit(onSubmit)()
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       if (!aadhaarFile || !clgFile) {
         return toast.error("Please fill all details");
       }
       const aadhaarUrl = await upload(aadhaarFile);
       const collegeUrl = await upload(clgFile);
-      form.setValue("aadhaarUrl", aadhaarUrl);
-      form.setValue("collegeIdUrl", collegeUrl);
-      form.handleSubmit(onSubmit)();
+      form.setValue("aadhaarUrl", aadhaarUrl as string);
+      form.setValue("collegeIdUrl", collegeUrl as string);
+      form
+        .handleSubmit(onSubmit)()
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -181,8 +203,8 @@ const ProfileForm = ({
         course: data.course,
         college: data.college,
         tshirtSize: data.tshirtSize,
-        collegeIdUrl: data.collegeIdUrl,
-        aadhaarUrl: data.aadhaarUrl,
+        collegeIdUrl: data.collegeIdUrl as string,
+        aadhaarUrl: data.aadhaarUrl as string,
       })
       .catch((error) => {
         console.log(error);
@@ -195,9 +217,9 @@ const ProfileForm = ({
     <div className="max-h-max w-full">
       <Form {...form}>
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            something();
+            await something();
           }}
           className="flex flex-col gap-2 md:gap-4"
         >
@@ -285,7 +307,7 @@ const ProfileForm = ({
                           />
                           <CommandEmpty className="mt-3 flex flex-col items-center justify-center text-center">
                             No College with that name found.
-                            <CreateCollege />
+                            <CreateCollege refetchColleges={refetchColleges} />
                           </CommandEmpty>
                           <CommandGroup>
                             <ScrollArea className="h-72">
@@ -330,7 +352,9 @@ const ProfileForm = ({
                                     .join(" ")}
                                 </CommandItem>
                               ))}
-                              <CreateCollege />
+                              <CreateCollege
+                                refetchColleges={refetchColleges}
+                              />
                             </ScrollArea>
                           </CommandGroup>
                         </Command>

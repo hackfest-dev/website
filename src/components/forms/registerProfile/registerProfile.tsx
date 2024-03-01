@@ -9,6 +9,8 @@ const RegisterProfileForm = ({
   user,
   colleges,
   courses,
+  refetch,
+  refetchColleges,
 }: {
   user:
     | inferRouterOutputs<typeof userRouter>["getUserWithCollege"]
@@ -19,12 +21,16 @@ const RegisterProfileForm = ({
     | undefined
     | null;
   courses: string[];
+  refetch: () => void;
+  refetchColleges: () => void;
 }) => {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
 
   return (
     <ProfileForm
+      refetch={refetch}
+      refetchColleges={refetchColleges}
       colleges={colleges}
       courses={courses}
       registerProp={{ currentState, maxState, setCurrentState, setMaxState }}

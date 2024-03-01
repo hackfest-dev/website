@@ -79,6 +79,7 @@ export default function RegisterPage() {
                     <RegisterProfile />
                     {user.team ? (
                       <TeamDetails
+                        userRefetch={refetch}
                         userId={user.id}
                         teamid={user.team.id}
                         userProgress={user.profileProgress}

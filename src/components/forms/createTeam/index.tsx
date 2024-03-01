@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState, useTransition } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProgressContext } from "../../progressProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Loader2Icon, UserRoundPlus } from "lucide-react";
 import { Input } from "../../ui/input";
-import { useRouter } from "next/navigation";
 import { api } from "~/utils/api";
 import { toast } from "sonner";
 
@@ -13,7 +12,6 @@ export default function CreateTeam({ refetch }: { refetch: () => void }) {
   const { currentState } = useContext(ProgressContext);
 
   const [teamId, setTeamId] = useState("");
-  const [isNameAvailable, setIsNameAvailable] = useState(false);
   const [Error, setError] = useState("");
   const [Message, setMessage] = useState("");
   const [isWaiting, setIsWaiting] = useState(false);
@@ -44,30 +42,21 @@ export default function CreateTeam({ refetch }: { refetch: () => void }) {
     if (isWaiting) setTimeout(() => setIsWaiting(false), 200);
   }, [isWaiting]);
 
-  const checkName = api.team.checkName.useQuery(
-    {
-      teamName,
-    },
-    {
-      enabled: !isWaiting && teamName.length > 3,
-    },
-  );
-
-  const nameHandler = async (name: string) => {
-    setTeamName(name);
-    if (!isWaiting && name.length > 3) {
-      const res = checkName.data;
-      if (
-        res?.status === "success" &&
-        (res?.message === true || res?.message === false)
-      ) {
-        console.log(res?.message);
-        setIsNameAvailable(res?.message);
-      } else {
-        setError(res?.message as string);
-      }
-    } else setIsNameAvailable(false);
-  };
+  // const nameHandler = async (name: string) => {
+  //   setTeamName(name);
+  //   if (!isWaiting && name.length > 3) {
+  //     const res = checkName.data;
+  //     if (
+  //       res?.status === "success" &&
+  //       (res?.message === true || res?.message === false)
+  //     ) {
+  //       console.log(res?.message);
+  //       setIsNameAvailable(res?.message);
+  //     } else {
+  //       setError(res?.message as string);
+  //     }
+  //   } else setIsNameAvailable(false);
+  // };
 
   useEffect(() => {
     if (Error) setTimeout(() => setError(""), 2000);
@@ -126,22 +115,14 @@ export default function CreateTeam({ refetch }: { refetch: () => void }) {
                   <h1 className="text-xl font-bold">Create a Team</h1>
 
                   <Input
-                    onChange={(e) => nameHandler(e.target.value)}
+                    onChange={(e) => setTeamName(e.target.value)}
                     type="text"
                     placeholder="Team Name"
-                    className={`rounded border p-2 text-center text-white ${
-                      isNameAvailable ? "border-green-500" : "border-red-600"
-                    } ${checkName.isLoading ? "animate-pulse" : ""}`}
+                    className={`rounded border p-2 text-center text-white`}
                     name="teamname"
                     required
                   />
-                  <Button
-                    type="submit"
-                    className={`flex items-center gap-2 ${
-                      !isNameAvailable && "cursor-not-allowed hover:bg-gray-400"
-                    }`}
-                    disabled={!isNameAvailable}
-                  >
+                  <Button type="submit" className={`flex items-center gap-2`}>
                     {Loading1 ? (
                       <>
                         <Loader2Icon size={16} className="animate-spin" />

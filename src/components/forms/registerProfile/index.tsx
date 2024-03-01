@@ -19,6 +19,8 @@ export default function RegisterProfile() {
 
   return (
     <RegisterProfileForm
+      refetch={user.refetch}
+      refetchColleges={colleges.refetch}
       user={user.data}
       colleges={colleges.data}
       courses={courses}

@@ -32,11 +32,15 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useRouter } from "next/navigation";
+
 import { createCollegeZ } from "~/server/schema/zod-schema";
 import { api } from "~/utils/api";
 
-const CreateCollege = () => {
+const CreateCollege = ({
+  refetchColleges,
+}: {
+  refetchColleges: () => void;
+}) => {
   const states = Object.entries(States).map(([, value]) => value);
 
   const form = useForm<z.infer<typeof createCollegeZ>>({
@@ -50,11 +54,15 @@ const CreateCollege = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const createCollege = api.college.createCollege.useMutation();
+  const createCollege = api.college.createCollege.useMutation({
+    onSuccess: () => {
+      refetchColleges();
+    },
+  });
 
   const onSubmit = async () => {
     setLoading(true);
-    const res = await createCollege.mutateAsync({
+    await createCollege.mutateAsync({
       name: form.getValues("name"),
       state: form.getValues("state"),
     });

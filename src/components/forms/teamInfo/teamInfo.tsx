@@ -33,6 +33,8 @@ export default function TeamInfo({
   teamdata,
   userId,
   userProgress,
+  refetchTeam,
+  userRefetch,
 }: {
   teamdata:
     | inferRouterOutputs<typeof teamRouter>["getTeamDetailsById"]
@@ -40,13 +42,24 @@ export default function TeamInfo({
     | undefined;
   userId: string;
   userProgress: Progress;
+  refetchTeam?: () => void;
+  userRefetch?: () => void;
 }) {
   const { currentState } = useContext(ProgressContext);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
-  const deleteTeam = api.team.deleteTeam.useMutation();
-  const leaveTeam = api.team.leaveTeam.useMutation();
+  const deleteTeam = api.team.deleteTeam.useMutation({
+    onSuccess: () => {
+      userRefetch?.();
+      refetchTeam?.();
+    },
+  });
+  const leaveTeam = api.team.leaveTeam.useMutation({
+    onSuccess: () => {
+      userRefetch?.();
+      refetchTeam?.();
+    },
+  });
 
   if (currentState !== 1) return <></>;
   const leader = teamdata?.members?.find(

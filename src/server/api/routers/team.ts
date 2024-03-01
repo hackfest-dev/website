@@ -47,6 +47,19 @@ export const teamRouter = createTRPCRouter({
         });
       }
 
+      const teamNameExists = await ctx.db.team.findFirst({
+        where: {
+          name: input.teamName,
+        },
+      });
+
+      if (teamNameExists) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Team name already exists",
+        });
+      }
+
       try {
         await ctx.db.user.update({
           where: {
@@ -77,59 +90,58 @@ export const teamRouter = createTRPCRouter({
   joinTeam: protectedProcedure
     .input(joinTeamZ)
     .mutation(async ({ input, ctx }) => {
-      try {
-        const user = ctx.session.user;
-        if (user?.team) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "You are already in a team",
-          });
-        }
-
-        if (
-          user?.profileProgress !== "FORM_TEAM" &&
-          user?.profileProgress !== "SUBMIT_IDEA"
-        ) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Please complete your profile first",
-          });
-        }
-
-        const team = await ctx.db.team.findFirst({
-          where: {
-            id: input.teamId,
-          },
-          include: {
-            members: {
-              include: { college: true },
-            },
-            ideaSubmission: true,
-          },
+      const user = ctx.session.user;
+      if (user?.team) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You are already in a team",
         });
-        if (!team) {
-          throw new TRPCError({ code: "NOT_FOUND", message: "Team not found" });
-        }
+      }
 
-        if (team.ideaSubmission) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Idea already submitted",
-          });
-        }
+      if (
+        user?.profileProgress !== "FORM_TEAM" &&
+        user?.profileProgress !== "SUBMIT_IDEA"
+      ) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Please complete your profile first",
+        });
+      }
 
-        if (team.members.length >= 4) {
-          throw new TRPCError({ code: "BAD_REQUEST", message: "Team is full" });
-        }
+      const team = await ctx.db.team.findFirst({
+        where: {
+          id: input.teamId,
+        },
+        include: {
+          members: {
+            include: { college: true },
+          },
+          ideaSubmission: true,
+        },
+      });
+      if (!team) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Team not found" });
+      }
 
-        const leader = team.members.find((member) => member.isLeader === true);
-        if (user.college !== leader?.college?.name) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Team members should be from same college only",
-          });
-        }
+      if (team.ideaSubmission) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Idea already submitted",
+        });
+      }
 
+      if (team.members.length >= 4) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Team is full" });
+      }
+
+      const leader = team.members.find((member) => member.isLeader === true);
+      if (user.college !== leader?.college?.name) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Team members should be from same college only",
+        });
+      }
+      try {
         const res = await ctx.db.team.update({
           where: {
             id: input.teamId,
