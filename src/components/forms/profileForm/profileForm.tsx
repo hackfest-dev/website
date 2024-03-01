@@ -149,6 +149,7 @@ const ProfileForm = ({
           id: "aadhaar",
         });
         const newFile = await upload(aadhaarFile);
+        setAadhaarFile(null);
         toast.dismiss("aadhaar");
         toast.success("Aadhaar uploaded");
         console.log(newFile);
@@ -160,6 +161,7 @@ const ProfileForm = ({
           id: "college",
         });
         const newFile = await upload(clgFile);
+        setClgFile(null);
         toast.dismiss("college");
         toast.success("College ID uploaded");
         console.log(newFile);

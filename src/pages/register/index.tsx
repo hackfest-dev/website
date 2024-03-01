@@ -87,7 +87,7 @@ export default function RegisterPage() {
                     ) : (
                       <CreateTeam refetch={refetch} />
                     )}
-                    <IdeaSubmitForm />
+                    <IdeaSubmitForm refetch={refetch} />
                     <FormButtons
                       isComplete={user.team?.isComplete ? true : false}
                       profileProgress={user.profileProgress}

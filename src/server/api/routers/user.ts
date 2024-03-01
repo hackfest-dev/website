@@ -43,14 +43,28 @@ export const userRouter = createTRPCRouter({
         where: { id: ctx.session.user.id },
         include: {
           college: true,
+		  team:{
+			  include:{
+				  members:true
+			  }
+		  }
         },
       });
 
+	  if(input.college !== user?.college?.id){
+		  if(user?.team && user?.team?.members?.length > 1){
+			throw new TRPCError({
+				code:"BAD_REQUEST",
+				message:"All team members should belong to same college!"
+			})
+		  }
+	  }
+
       //If ID is already there remove the existing one from cloudinary
-      if (input.aadhaarUrl && user?.aadhaar) {
+	  if ( user?.aadhaar && input.aadhaarUrl !== user.aadhaar) {
         await deleteFile(user.aadhaar.split(";")[1]!);
       }
-      if (input.collegeIdUrl && user?.college_id) {
+      if (user?.college_id && input.collegeIdUrl !== user.college_id) {
         await deleteFile(user.college_id.split(";")[1]!);
       }
 
@@ -116,14 +130,28 @@ export const userRouter = createTRPCRouter({
         where: { id: ctx.session.user.id },
         include: {
           college: true,
+		  team:{
+			  include:{
+				  members:true
+			  }
+		  }
         },
       });
 
+	  if(input.college !== user?.college?.id){
+		  if(user?.team && user?.team?.members?.length > 1){
+			throw new TRPCError({
+				code:"BAD_REQUEST",
+				message:"All team members should belong to same college!"
+			})
+		  }
+	  }
+
       //If ID is already there remove the existing one from cloudinary
-      if (input.aadhaarUrl && user?.aadhaar) {
+      if (user?.aadhaar && input.aadhaarUrl !== user?.aadhaar) {
         await deleteFile(user.aadhaar.split(";")[1]!);
       }
-      if (input.collegeIdUrl && user?.college_id) {
+      if (user?.college_id && input.collegeIdUrl !== user.college_id) {
         await deleteFile(user.college_id.split(";")[1]!);
       }
 

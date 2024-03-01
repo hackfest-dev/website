@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { deleteFile, uploadImage } from "../../../utils/cloudinary";
+import { uploadImage } from "../../../utils/cloudinary";
 import { decodeForm } from "../../../utils/form";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
@@ -12,15 +12,14 @@ export default async function handler(
   try {
     console.log("uploadImage");
     const session = await getServerSession(req, res, authOptions);
-    if (session === null || session.user === undefined)
-      throw "User not logged in";
+    if (session?.user === undefined) throw "User not logged in";
 
     const user = await db?.user.findFirst({ where: { id: session.user.id } });
     if (!user) throw "User invalid";
 
     const { files } = await decodeForm(req);
 
-    if (files == undefined || files[0] === undefined) throw "No file uploaded";
+    if (files?.[0] === undefined) throw "No file uploaded";
 
     const result = await uploadImage(files[0], "ID_unsignedUpload");
     if (!result) res.status(500).send("Server Error");

@@ -30,6 +30,7 @@ import { api } from "~/utils/api";
 import { type inferRouterOutputs } from "@trpc/server";
 import { type collegeRouter } from "~/server/api/routers/college";
 import { z } from "zod";
+import { env } from "~/env";
 
 export const EditProfileForm: React.FC<{
   user: User & {
@@ -40,7 +41,8 @@ export const EditProfileForm: React.FC<{
     | undefined
     | null;
   refetch: () => void;
-}> = ({ user, colleges, refetch }) => {
+  collegeRefetch: () => void;
+}> = ({ user, colleges, refetch, collegeRefetch }) => {
   const [formData, setFormData] = useState({
     uname: user.name ?? "",
     email: user.email ?? "",
@@ -53,8 +55,8 @@ export const EditProfileForm: React.FC<{
     collegeId: user.college?.id ?? "",
   });
 
-  const [aadhaarFile, setAadhaarFile] = useState<File>(new File([], ""));
-  const [clgFile, setClgFile] = useState<File>(new File([], ""));
+  const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
+  const [clgFile, setClgFile] = useState<File | null>(null);
 
   const [isSaving, setIsSaving] = useState(false);
   const [openCollegeList, setOpenCollegeList] = useState(false);
@@ -72,22 +74,86 @@ export const EditProfileForm: React.FC<{
       toast.success("Profile Updated");
       refetch();
     },
-    onError: () => {
+    onError: (error) => {
       setIsSaving(false);
-      toast.error("Complete your profile on /register page first!");
+      toast.error(error.message);
     },
   });
 
-  const onSubmit = async (
-    e:
-      | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    e.preventDefault();
+  const upload = async (file: File) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!file) return toast.error("No file uploaded");
+    if (file.size > 2 * 1000 * 1000) {
+      return toast.error("Uploads must be less than 2MB");
+    }
+    if (!allowedTypes.includes(file.type))
+      return toast.error("Only jpeg, jpg and png files are allowed");
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(
+      `${env.NEXT_PUBLIC_BASE_URL}/api/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    const data = (await response.json()) as { secure_url: string };
+    if (!data.secure_url) {
+      toast.error("Error uploading image");
+      //toast.dismiss(loadingToast);
+      return;
+    }
+    return data.secure_url;
+  };
+
+  const something = async () => {
+    console.log({ aadhaarFile, clgFile });
+    if (user?.aadhaar && user?.college_id) {
+      setFormData({ ...formData, aadhaarImg: user.aadhaar });
+      setFormData({ ...formData, collegeIdImg: user.college_id });
+      if (aadhaarFile) {
+        //upload
+        toast.loading("Uploading Aadhaar...", {
+          id: "aadhaar",
+        });
+        const newFile = await upload(aadhaarFile);
+        setAadhaarFile(null);
+        toast.dismiss("aadhaar");
+        toast.success("Aadhaar uploaded");
+        console.log(newFile);
+
+        setFormData({ ...formData, aadhaarImg: newFile as string });
+      }
+      if (clgFile) {
+        toast.loading("Uploading College ID...", {
+          id: "college",
+        });
+        const newFile = await upload(clgFile);
+        setClgFile(null);
+        toast.dismiss("college");
+        toast.success("College ID uploaded");
+        console.log(newFile);
+        setFormData({ ...formData, collegeIdImg: newFile as string });
+      }
+      await onSubmit();
+    } else {
+      if (!aadhaarFile || !clgFile) {
+        return toast.error("Please fill all details");
+      }
+      const aadhaarUrl = await upload(aadhaarFile);
+      const collegeUrl = await upload(clgFile);
+      setFormData({ ...formData, collegeIdImg: aadhaarUrl as string });
+      setFormData({ ...formData, collegeIdImg: collegeUrl as string });
+
+      await onSubmit();
+    }
+  };
+
+  const onSubmit = async () => {
     await editProfile
       .mutateAsync({
-        aadhaarFile: aadhaarFile,
-        collegeIdFile: clgFile,
+        aadhaarUrl: formData.aadhaarImg,
+        collegeIdUrl: formData.collegeIdImg,
         college: formData.collegeId,
         name: formData.uname,
         phone: formData.phone,
@@ -273,7 +339,7 @@ export const EditProfileForm: React.FC<{
                   />
                   <CommandEmpty className="mt-3 flex flex-col items-center justify-center text-center">
                     No College with that name found.
-                    <CreateCollege />
+                    <CreateCollege refetchColleges={collegeRefetch} />
                   </CommandEmpty>
                   <CommandGroup>
                     <ScrollArea className="h-72">
@@ -316,7 +382,7 @@ export const EditProfileForm: React.FC<{
                             .join(" ")}
                         </CommandItem>
                       ))}
-                      <CreateCollege />
+                      <CreateCollege refetchColleges={collegeRefetch} />
                     </ScrollArea>
                   </CommandGroup>
                 </Command>
@@ -354,7 +420,8 @@ export const EditProfileForm: React.FC<{
       <div className="mt-5 flex w-full items-center justify-center gap-5">
         <Button
           onClick={async (e) => {
-            await onSubmit(e);
+            e.preventDefault();
+            await something();
           }}
           disabled={isSaving}
           className={`${

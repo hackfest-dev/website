@@ -46,6 +46,7 @@ export const Profile: React.FC<{
           user={user!}
           colleges={colleges.data}
           refetch={refetch}
+          collegeRefetch={colleges.refetch}
         />
       </CardContent>
     </Card>

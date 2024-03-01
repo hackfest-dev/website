@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { ProgressContext } from "../../progressProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type z } from "zod";
+import { set, type z } from "zod";
 import {
   Form,
   FormControl,
@@ -30,8 +30,9 @@ import { api } from "~/utils/api";
 import { toast } from "sonner";
 import { env } from "~/env";
 
-export default function IdeaSubmitForm() {
-  const { currentState } = useContext(ProgressContext);
+export default function IdeaSubmitForm({ refetch }: { refetch: () => void }) {
+  const { currentState, setCurrentState, setMaxState } =
+    useContext(ProgressContext);
   const form = useForm<z.infer<typeof submitIdeaZ>>({
     resolver: zodResolver(submitIdeaZ),
   });
@@ -75,6 +76,7 @@ export default function IdeaSubmitForm() {
       const newFile = await upload(pdf);
       toast.dismiss("PDF");
       toast.success("PDF uploaded");
+      setPdf(null);
       console.log(newFile);
 
       form.setValue("pptUrl", newFile as string);
@@ -84,24 +86,33 @@ export default function IdeaSubmitForm() {
 
   const onSubmit = async (data: z.infer<typeof submitIdeaZ>) => {
     setLoading(true);
-    const res = await submitIdea.mutateAsync(
-      {
-        pptUrl: data.pptUrl,
-        problemStatement: data.problemStatement,
-        track: data.problemStatement as Tracks,
-        referralCode: data.referralCode,
-      },
-      {
-        onSuccess: () => {
-          toast.success("Idea Submitted");
+    await submitIdea
+      .mutateAsync(
+        {
+          pptUrl: data.pptUrl,
+          problemStatement: data.problemStatement,
+          track: data.track as Tracks,
+          referralCode: data.referralCode,
         },
-        onError: (error) => {
-          toast.error(error.message);
+        {
+          onSuccess: () => {
+            toast.success("Idea Submitted");
+            setLoading(false);
+            setCurrentState(3);
+            setMaxState(3);
+            refetch();
+          },
+          onError: (error) => {
+            toast.error(error.message);
+            setLoading(false);
+            setError(error.message);
+          },
         },
-      },
-    );
-    setError(res.message);
-    setLoading(false);
+      )
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
   };
 
   const user = useSession();

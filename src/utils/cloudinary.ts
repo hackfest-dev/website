@@ -24,7 +24,9 @@ async function getSignature() {
 const uploadImage = async (file: formidableFile, upload_preset: string) => {
   if (
     !file.mimetype ||
-    !["image/png", "image/jpeg", "image/bmp"].includes(file.mimetype)
+    !["image/png", "image/jpeg", "image/bmp", "application/pdf"].includes(
+      file.mimetype,
+    )
   )
     throw "Invalid file format use png,jpeg,bmp";
 

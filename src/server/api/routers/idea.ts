@@ -116,6 +116,8 @@ export const ideaRouter = createTRPCRouter({
         return { status: "success", message: "Idea has been submitted" };
       } catch (error) {
         console.log(error);
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST")
+          throw error;
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Something went wrong",
