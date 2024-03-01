@@ -15,7 +15,11 @@ import { api } from "~/utils/api";
 import RootLayout from "~/components/layout";
 
 export default function RegisterPage() {
-  const { data: user, refetch } = api.user.getUserWithTeam.useQuery();
+  const {
+    data: user,
+    refetch,
+    isLoading,
+  } = api.user.getUserWithTeam.useQuery();
 
   let currentStep = 0;
 

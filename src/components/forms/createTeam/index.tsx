@@ -63,7 +63,7 @@ export default function CreateTeam({ refetch }: { refetch: () => void }) {
     if (Message) setTimeout(() => setMessage(""), 2000);
   }, [Error, Message]);
 
-  if (currentState !== 1) return <></>;
+  if (currentState !== 1) return null;
 
   return (
     <Card className="h-fit w-full">
