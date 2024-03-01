@@ -26,10 +26,7 @@ export default function ProfilePage() {
           )
         )}
         {userInfo.isLoading ? (
-          <Card className="w-h-96 flex h-96 items-center justify-center gap-2">
-            Loading...
-            <Loader2Icon className="animate-spin" />
-          </Card>
+          <></>
         ) : !userInfo.data?.team?.id ? (
           <CreateTeam refetch={userInfo.refetch} />
         ) : (

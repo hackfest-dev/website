@@ -8,14 +8,19 @@ import Registered from "~/components/registered";
 import { Button } from "~/components/ui/button";
 import { LogoutButton } from "~/components/profile/logout";
 import { FaDiscord } from "react-icons/fa";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Loader2Icon } from "lucide-react";
 import CreateTeam from "~/components/forms/createTeam";
 import ProgressProvider from "~/components/progressProvider";
 import { api } from "~/utils/api";
 import RootLayout from "~/components/layout";
+import { Card } from "~/components/ui/card";
 
 export default function RegisterPage() {
-  const { data: user, refetch } = api.user.getUserWithTeam.useQuery();
+  const {
+    data: user,
+    refetch,
+    isLoading,
+  } = api.user.getUserWithTeam.useQuery();
 
   let currentStep = 0;
 
@@ -96,6 +101,11 @@ export default function RegisterPage() {
                     />
                   </div>
                 </>
+              ) : isLoading ? (
+                <Card className="w-h-96 flex h-96 items-center justify-center gap-2">
+                  Loading...
+                  <Loader2Icon className="animate-spin" />
+                </Card>
               ) : (
                 <Registered />
               )}
