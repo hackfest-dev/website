@@ -1,7 +1,5 @@
 import Image from "next/image";
 import { social } from "../../constants";
-import NMAMITLogo from "@/public/logos/NMAMITLogo.png";
-import FLCLogo from "@/public/logos/flcLogo.png";
 import Link from "next/link";
 
 const Footer = () => {

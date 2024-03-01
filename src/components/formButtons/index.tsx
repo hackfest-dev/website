@@ -1,12 +1,11 @@
-"use client";
-import React, { useContext, useState, useTransition } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight, Loader2Icon } from "lucide-react";
 import { ProgressContext } from "../progressProvider";
-import { Progress } from "@prisma/client";
-import { updateProfileProgress } from "@/src/server/actions";
+import { type Progress } from "@prisma/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { api } from "~/utils/api";
 
 const FormButtons = ({
   profileProgress,
@@ -19,11 +18,12 @@ const FormButtons = ({
   isLeader: boolean;
   isInTeam: boolean;
 }) => {
-  const { currentState, maxState, setCurrentState, setMaxState } =
+  const { currentState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
   let isDisabled = true;
   if (currentState === 0) {
-    if (profileProgress === "FORM_TEAM") isDisabled = false;
+    if (profileProgress === "FORM_TEAM" || profileProgress === "SUBMIT_IDEA")
+      isDisabled = false;
   } else if (currentState === 1) {
     if (isLeader && isComplete) {
       isDisabled = false;
@@ -32,12 +32,19 @@ const FormButtons = ({
     if (profileProgress === "SUBMIT_IDEA") isDisabled = true;
   } else isDisabled = true;
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
 
   const [isLoading, setIsLoading] = useState(false);
+  const updateProfileProgress = api.user.updateProfileProgress.useMutation({
+    onSuccess: () => {
+      setIsLoading(false);
+    },
+    onError: () => {
+      setIsLoading(false);
+    },
+  });
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex items-center justify-between">
       <Button
         onClick={() => {
           if (currentState === 0) return;
@@ -49,7 +56,7 @@ const FormButtons = ({
         <ChevronLeft size={16} />
         Previous
       </Button>
-      <span className="text-xs text-center">
+      <span className="text-center text-xs">
         {currentState === 1 &&
           !isLeader &&
           isInTeam &&
@@ -60,26 +67,29 @@ const FormButtons = ({
           disabled={isDisabled}
           onClick={async () => {
             if (currentState === 0) {
-              if (profileProgress === "FORM_TEAM")
+              if (
+                profileProgress === "FORM_TEAM" ||
+                profileProgress === "SUBMIT_IDEA"
+              )
                 setCurrentState(currentState + 1);
             } else if (currentState === 1) {
               if (isLeader && isComplete) {
                 setIsLoading(true);
-                toast.promise(async () => await updateProfileProgress(), {
-                  position: "bottom-center",
-                  loading: "Proceeding...",
-                  success: "Done!",
-                  error: (error) => {
-                    return "Something went wrong";
-                  },
-                });
-                await updateProfileProgress();
+                profileProgress !== "SUBMIT_IDEA" &&
+                  toast.promise(
+                    async () => await updateProfileProgress.mutateAsync(),
+                    {
+                      position: "bottom-center",
+                      loading: "Proceeding...",
+                      success: "Done!",
+                      error: (error) => {
+                        return "Something went wrong";
+                      },
+                    },
+                  );
                 setMaxState(2);
                 setCurrentState(currentState + 1);
                 setIsLoading(false);
-                startTransition(() => {
-                  router.refresh();
-                })
               }
             } else if (currentState === 2) {
               if (profileProgress === "SUBMIT_IDEA") return;
@@ -88,8 +98,8 @@ const FormButtons = ({
           className="flex items-center gap-2"
         >
           {/* {currentState === 2 ? "Submit" : "Next"} */}
-          {(isLoading || pending) && <Loader2Icon size={16} className="animate-spin" />}
-          {(isLoading || pending) ? "Proceeding..." : "Next"}
+          {isLoading && <Loader2Icon size={16} className="animate-spin" />}
+          {isLoading ? "Proceeding..." : "Next"}
           <ChevronRight size={16} />
         </Button>
       )}

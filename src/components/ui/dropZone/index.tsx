@@ -51,7 +51,7 @@ export function Dropzone({
 
   // Function to handle processing of uploaded files
   const handleFiles = (files: FileList) => {
-    const uploadedFile = files[0];
+    const uploadedFile = files[0]!;
     const allowedImageTypes = pdf
       ? ["application/pdf"]
       : ["image/jpeg", "image/png", "image/jpg"];
@@ -125,7 +125,7 @@ export function Dropzone({
           />
         ) : (
           <svg
-            className="w-32 h-32 text-gray-600"
+            className="h-32 w-32 text-gray-600"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -134,7 +134,7 @@ export function Dropzone({
             <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
           </svg>
         )}
-        <div className="text-xs text-center text-muted-foreground">
+        <div className="text-center text-xs text-muted-foreground">
           {pdf
             ? "Only .pdf is allowed less than 5MB. Convert your .ppt to .pdf before uploading."
             : "Only .png, .jpg, and .jpeg files are allowed less than 2MB."}

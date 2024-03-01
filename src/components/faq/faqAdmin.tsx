@@ -1,11 +1,10 @@
-'use client';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
   DialogTitle,
-} from '@/src/components/ui/dialog';
+} from "~/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -13,28 +12,36 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/src/components/ui/table';
-import { FaQuestionCircle } from 'react-icons/fa';
-import { getAllFaqs, deleteFaq, answerFaq } from '@/src/server/actions';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { IoTrashBin } from 'react-icons/io5';
+} from "~/components/ui/table";
+import { FaQuestionCircle } from "react-icons/fa";
+import { useState } from "react";
+import { toast } from "sonner";
+import { IoTrashBin } from "react-icons/io5";
+import { api } from "~/utils/api";
 
 export default function FaqAdmin() {
-  const [faqData, setFaqData] = useState<
-    {
-      id: number;
-      question: string;
-      answer: string;
-      published: boolean;
-    }[]
-  >([]);
-  const [answer, setAnswer] = useState('');
-  useEffect(() => {
-    getAllFaqs().then((data) => {
-      setFaqData(data);
-    });
-  }, []);
+  const [answer, setAnswer] = useState("");
+  const faqData = api.faq.getAllFaqs.useQuery();
+  const answerFaq = api.faq.answerFaq.useMutation({
+    onSuccess: async () => {
+      toast.success("Faq answered");
+      await faqData.refetch();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const deleteFaq = api.faq.deleteFaq.useMutation({
+    onSuccess: async () => {
+      toast.success("Faq deleted");
+      await faqData.refetch();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   return (
     <>
       <Dialog>
@@ -51,7 +58,7 @@ export default function FaqAdmin() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {faqData.map((faq, index) => {
+                {faqData.data?.map((faq, index) => {
                   if (!faq.published) {
                     return (
                       <TableRow key={index} className="text-black">
@@ -65,7 +72,7 @@ export default function FaqAdmin() {
                               </DialogTitle>
                               <input
                                 type="text"
-                                className="text-black p-2 rounded-lg"
+                                className="rounded-lg p-2 text-black"
                                 placeholder="Answer this question"
                                 value={answer}
                                 onChange={(e) => {
@@ -73,29 +80,13 @@ export default function FaqAdmin() {
                                 }}
                               />
                               <button
-                                className="bg-[#020817] text-white p-2 rounded-lg"
+                                className="rounded-lg bg-[#020817] p-2 text-white"
                                 onClick={async () => {
-                                  try {
-                                    if (answer) {
-                                      await answerFaq(faq.id, answer);
-                                      toast.success('Answered', {
-                                        position: 'bottom-center',
-                                      });
-
-                                      setAnswer('');
-                                      getAllFaqs().then((data) => {
-                                        setFaqData(data);
-                                      });
-                                    } else {
-                                      toast.error('Answer cannot be empty', {
-                                        position: 'bottom-center',
-                                      });
-                                    }
-                                  } catch (e) {
-                                    toast.error('Failed to answer', {
-                                      position: 'bottom-center',
-                                    });
-                                  }
+                                  await answerFaq.mutateAsync({
+                                    id: faq.id,
+                                    answer,
+                                  });
+                                  setAnswer("");
                                 }}
                               >
                                 Submit
@@ -105,19 +96,8 @@ export default function FaqAdmin() {
                         </TableCell>
                         <TableCell>
                           <span
-                            onClick={() => {
-                              try {
-                                deleteFaq(faq.id).then(() => {
-                                  setFaqData((prev) => {
-                                    return prev.filter(
-                                      (item) => item.id !== faq.id
-                                    );
-                                  });
-                                });
-                                toast.success('FAQ Deleted');
-                              } catch (e) {
-                                toast.error('Error deleting FAQ');
-                              }
+                            onClick={async () => {
+                              await deleteFaq.mutateAsync({ id: faq.id });
                             }}
                             className="cursor-pointer"
                           >

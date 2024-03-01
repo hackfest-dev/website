@@ -95,6 +95,7 @@ model Team {
   ideaSubmission  IdeaSubmission?
   referral        Referral?         @relation(fields: [referralId], references: [id])
   members         User[]
+  paymentStatus PaymentStatus @default(PENDING)
   videoSubmission VideoSubmissions?
 }
 
@@ -133,7 +134,7 @@ model AppSettings {
 
 model Referral {
   id        Int      @id @default(autoincrement())
-  code      String   @unique
+  code      String   @unique 
   referrer  String
   teams     Team[]
   collegeId String
@@ -152,7 +153,6 @@ model Faq {
 
 enum Role {
   PARTICIPANT
-  ADMIN
   ORGANISER
   JUDGE
   VALIDATOR

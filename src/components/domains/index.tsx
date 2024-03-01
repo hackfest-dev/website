@@ -1,4 +1,3 @@
-"use client";
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
 import Image from "next/image";
 import { GiTronArrow } from "react-icons/gi";
@@ -65,9 +64,9 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
       targetImg instanceof HTMLDivElement
     ) {
       setContents({
-        ...domainList[parseInt(target.dataset.id as string)],
-        index: parseInt(target.dataset.id as string),
-      });
+        ...domainList[parseInt(target.dataset.id!)],
+        index: parseInt(target.dataset.id!),
+      } as DomainProps & { index: number });
       if (activeDomain.current) {
         activeDomain.current = {
           title: targetTitle,
@@ -78,7 +77,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
       contentRef.current &&
         (contentRef.current as HTMLDivElement).classList.add(
-          `${styles.active}`
+          `${styles.active}`,
         );
 
       setTimeout(() => {
@@ -90,9 +89,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         const domainTitlePos =
           contentTitleRef.current &&
           (contentTitleRef.current as HTMLDivElement).getBoundingClientRect();
-        const currentTitlePos = (
-          targetTitle as HTMLDivElement
-        ).getBoundingClientRect();
+        const currentTitlePos = targetTitle.getBoundingClientRect();
 
         const x = (domainPos as unknown as DOMRect).x - currentPos.x;
         const y = (domainPos as unknown as DOMRect).y - currentPos.y;
@@ -114,76 +111,74 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
 
         if (titleAnimationRef.current) {
           (titleAnimationRef.current as HTMLDivElement).style.opacity = `1`;
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.top = `${currentTitlePos.top}px`;
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.left = `${currentTitlePos.left}px`;
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.width = `${currentTitlePos.width}px`;
+          (titleAnimationRef.current as HTMLDivElement).style.top =
+            `${currentTitlePos.top}px`;
+          (titleAnimationRef.current as HTMLDivElement).style.left =
+            `${currentTitlePos.left}px`;
+          (titleAnimationRef.current as HTMLDivElement).style.width =
+            `${currentTitlePos.width}px`;
 
-          (
-            titleAnimationRef.current as HTMLDivElement
-          ).style.transform = `translate(${xTitle}px, ${yTitle}px) scale(1)`;
+          (titleAnimationRef.current as HTMLDivElement).style.transform =
+            `translate(${xTitle}px, ${yTitle}px) scale(1)`;
         }
 
         bgBlockRef.current &&
           (bgBlockRef.current as HTMLDivElement).classList.add(
-            `${styles.active}`
+            `${styles.active}`,
           );
         contentDescriptionRef1.current &&
           (contentDescriptionRef1.current as HTMLDivElement).classList.add(
-            `${styles.active}`
+            `${styles.active}`,
           );
         contentDescriptionRef2.current &&
           (contentDescriptionRef2.current as HTMLDivElement).classList.add(
-            `${styles.active}`
+            `${styles.active}`,
           );
         contentPrizeRef.current &&
           (contentPrizeRef.current as HTMLDivElement).classList.add(
-            `${styles.active}`
+            `${styles.active}`,
           );
         contentExitRef.current &&
           (contentExitRef.current as HTMLDivElement).classList.add(
-            `${styles.active}`
+            `${styles.active}`,
           );
         document.body.style.overflow = "hidden";
       }, 100);
 
       setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         document.body.addEventListener("click", exitAnimaiton);
       }, 1000);
     }
   };
 
   const exitAnimaiton = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     document.body.removeEventListener("click", exitAnimaiton);
     bgBlockRef.current &&
       (bgBlockRef.current as HTMLDivElement).classList.remove(
-        `${styles.active}`
+        `${styles.active}`,
       );
     contentDescriptionRef1.current &&
       (contentDescriptionRef1.current as HTMLDivElement).classList.remove(
-        `${styles.active}`
+        `${styles.active}`,
       );
     contentDescriptionRef2.current &&
       (contentDescriptionRef2.current as HTMLDivElement).classList.remove(
-        `${styles.active}`
+        `${styles.active}`,
       );
     contentPrizeRef.current &&
       (contentPrizeRef.current as HTMLDivElement).classList.remove(
-        `${styles.active}`
+        `${styles.active}`,
       );
     contentExitRef.current &&
       (contentExitRef.current as HTMLDivElement).classList.remove(
-        `${styles.active}`
+        `${styles.active}`,
       );
 
     setTimeout(() => {
-      (activeDomain.current?.target as HTMLDivElement).style.zIndex = "0";
-      (activeDomain.current?.title as HTMLDivElement).style.display = "block";
+      activeDomain.current.target!.style.zIndex = "0";
+      activeDomain.current.title!.style.display = "block";
 
       if (activeDomain.current?.target?.parentElement) {
         (
@@ -200,22 +195,17 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
     setTimeout(() => {
       contentRef.current &&
         (contentRef.current as HTMLDivElement).classList.remove(
-          `${styles.active}`
+          `${styles.active}`,
         );
     }, 1500);
 
-    (
-      activeDomain.current?.target as HTMLDivElement
-    ).style.transform = `translate(0, 0) scale(1)`;
+    activeDomain.current.target!.style.transform = `translate(0, 0) scale(1)`;
     if (titleAnimationRef.current) {
-      (
-        titleAnimationRef.current as HTMLDivElement
-      ).style.transform = `translate(0, 0) scale(1)`;
+      (titleAnimationRef.current as HTMLDivElement).style.transform =
+        `translate(0, 0) scale(1)`;
     }
     if (activeDomain.current) {
-      (
-        activeDomain.current?.img as HTMLDivElement
-      ).style.transform = `scale(1)`;
+      activeDomain.current.img!.style.transform = `scale(1)`;
     }
   };
 
@@ -223,14 +213,14 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
     <>
       <section
         id="tracks"
-        className="max-w-screen-xl p-2 md:p-12 mx-auto w-full"
+        className="mx-auto w-full max-w-screen-xl p-2 md:p-12"
       >
         <div
           id="contents"
           ref={contentRef}
           className={
             styles.contents +
-            " fixed inset-0 z-50 bg-transparent max-w-screen-2xl mx-auto flex lg:flex-row flex-col justify-center items-center gap-10 lg:gap-16 lg:px-12"
+            " fixed inset-0 z-50 mx-auto flex max-w-screen-2xl flex-col items-center justify-center gap-10 bg-transparent lg:flex-row lg:gap-16 lg:px-12"
           }
         >
           {/* Position of domain image when viewing contents */}
@@ -244,11 +234,11 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             }}
           />
           {/* Contents go here */}
-          <div className="max-w-screen-md flex flex-col justify-center gap-2 md:gap-6 px-4 sm:px-8 md:px-12 lg:px-0">
-            <div className="flex text-xl md:text-2xl lg:text-3xl font-obscura">
+          <div className="flex max-w-screen-md flex-col justify-center gap-2 px-4 sm:px-8 md:gap-6 md:px-12 lg:px-0">
+            <div className="flex font-obscura text-xl md:text-2xl lg:text-3xl">
               <div
                 ref={contentTitleRef}
-                className="relative opacity-0 leading-none "
+                className="relative leading-none opacity-0 "
                 style={{
                   width:
                     activeDomain.current.title?.getBoundingClientRect().width,
@@ -259,7 +249,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             </div>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-1">
-                <div className="text-sm md:text-base lg:text-xl flex overflow-clip">
+                <div className="flex overflow-clip text-sm md:text-base lg:text-xl">
                   <div
                     ref={contentDescriptionRef1}
                     className={styles.contentElements}
@@ -267,13 +257,13 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                     {contents.description.p1}
                   </div>
                 </div>
-                <div className="text-sm md:text-base lg:text-xl flex space-y-4 overflow-clip">
+                <div className="flex space-y-4 overflow-clip text-sm md:text-base lg:text-xl">
                   <div
                     ref={contentDescriptionRef2}
                     className={styles.contentElements}
                   >
                     {contents.description.p2}
-                    <span className="md:text-sm text-xs font-semibold italic tracking-wider">
+                    <span className="text-xs font-semibold italic tracking-wider md:text-sm">
                       <br />
                       *Only software solutions are accepted at Hackfest - 2024.
                       There&apos;s no category for Hardware solutions.*
@@ -284,7 +274,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               {contents.prize && (
                 <div
                   ref={contentPrizeRef}
-                  className={`${styles.contentElements} text-xl lg:text-2xl flex overflow-clip relative w-fit mb-2`}
+                  className={`${styles.contentElements} relative mb-2 flex w-fit overflow-clip text-xl lg:text-2xl`}
                 >
                   ₹{contents.prize}
                 </div>
@@ -292,7 +282,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             </div>
             <div
               ref={contentExitRef}
-              className={`${styles.contentElements} w-fit cursor-pointer hover:text-[#89edfa] transition-all duration-300 ease-in-out`}
+              className={`${styles.contentElements} w-fit cursor-pointer transition-all duration-300 ease-in-out hover:text-[#89edfa]`}
               onClick={() => exitAnimaiton()}
             >
               <IoReturnDownBackOutline className="text-3xl md:text-4xl lg:text-6xl" />
@@ -301,29 +291,29 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
         </div>
 
         {/* Grids */}
-        <div className="flex flex-col gap-8 w-full items-center mt-10 lg:mt-0">
+        <div className="mt-10 flex w-full flex-col items-center gap-8 lg:mt-0">
           <SectionHeading
             title="Tracks"
             classname="text-5xl md:text-6xl xl:text-7xl"
           />
-          <div className="relative w-full lg:aspect-[209/100] aspect-[820.72/1008]">
+          <div className="relative aspect-[820.72/1008] w-full lg:aspect-[209/100]">
             {domainList.map((domain, idx) => {
               return (
                 <div
                   key={domain.name}
                   className={`${
                     styles[`domain${idx}`]
-                  } w-[58.6972%] lg:h-1/2 lg:w-[39.872408293%] absolute aspect-[5/3] z-0 pointer-events-none`}
+                  } pointer-events-none absolute z-0 aspect-[5/3] w-[58.6972%] lg:h-1/2 lg:w-[39.872408293%]`}
                 >
                   <div
-                    className="h-full w-full relative z-0 pointer-events-none"
+                    className="pointer-events-none relative z-0 h-full w-full"
                     style={{
                       transition: "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
                     }}
                     data-id={idx}
                   >
                     <div
-                      className={`inset-0 absolute pointer-events-none ${
+                      className={`pointer-events-none absolute inset-0 ${
                         styles[`domainBgImg${idx}`]
                       }`}
                     >
@@ -331,7 +321,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                         viewBox="0 0 482 296"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-full w-full pointer-events-none"
+                        className="pointer-events-none h-full w-full"
                       >
                         <path
                           style={{
@@ -360,7 +350,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                     </div>
 
                     <div
-                      className={`aspect-square w-[40%] rounded-full absolute pointer-events-none ${
+                      className={`pointer-events-none absolute aspect-square w-[40%] rounded-full ${
                         styles[`domainImg${idx}`]
                       }`}
                       style={{
@@ -372,12 +362,12 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
                         src={domain.image}
                         alt={domain.name}
                         fill
-                        className={`object-center  relative`}
+                        className={`relative  object-center`}
                       />
                     </div>
 
                     <div
-                      className={`absolute font-obscura text-xl md:text-2xl leading-none lg:text-3xl max-w-[70%] w-fit pointer-events-none ${
+                      className={`pointer-events-none absolute w-fit max-w-[70%] font-obscura text-xl leading-none md:text-2xl lg:text-3xl ${
                         styles[`title${idx}`]
                       }`}
                     >
@@ -392,16 +382,16 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
               ref={bgBlockRef}
               id="bgBlock"
               className={
-                styles.bgBlock + ` inset-0 z-40 fixed pointer-events-none`
+                styles.bgBlock + ` pointer-events-none fixed inset-0 z-40`
               }
             >
               <Image
                 src={"/images/domains-bg.svg"}
                 alt="background"
                 fill
-                className="object-center object-cover"
+                className="object-cover object-center"
               />
-              <div className="w-full h-full bg-black/25 absolute top-0 left-0"></div>
+              <div className="absolute left-0 top-0 h-full w-full bg-black/25"></div>
               {/* <Image
                 src={"/images/domains-bg(1).svg"}
                 alt=""
@@ -412,7 +402,7 @@ const Domains = ({ domainList }: { domainList: DomainProps[] }) => {
             </div>
             <div
               ref={titleAnimationRef}
-              className="fixed z-50 font-obscura text-xl md:text-2xl lg:text-3xl leading-none pointer-events-none text-left"
+              className="pointer-events-none fixed z-50 text-left font-obscura text-xl leading-none md:text-2xl lg:text-3xl"
               style={{
                 transition: "transform 1s cubic-bezier(1, 0, 0.7, 1) 0s",
                 width:
