@@ -13,7 +13,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     >
       <ProgressBarProvider>
         <Toaster richColors expand={true} position="bottom-center" />
-        <NewsBanner />
+        <div className="absolute inset-0">
+          <NewsBanner />
+        </div>
         <Navbar />
         {props.children}
         <Footer />

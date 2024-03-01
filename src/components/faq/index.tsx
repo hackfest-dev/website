@@ -47,7 +47,7 @@ export const FAQ = () => {
             defaultValue="GENERAL"
             className=" flex flex-col items-center justify-center"
           >
-            <TabsList className="mb-5 scale-[120%] md:scale-150">
+            <TabsList className="mb-5 scale-[110%] md:scale-150">
               <TabsTrigger value="GENERAL">General</TabsTrigger>
               <TabsTrigger value="FOOD">Food</TabsTrigger>
               <TabsTrigger value="STAY">Stay</TabsTrigger>
