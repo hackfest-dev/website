@@ -176,8 +176,18 @@ const ProfileForm = ({
       if (!aadhaarFile || !clgFile) {
         return toast.error("Please fill all details");
       }
+        toast.loading("Uploading Aadhaar...", {
+          id: "aadhaar",
+        });
       const aadhaarUrl = await upload(aadhaarFile);
+        toast.dismiss("aadhaar");
+        toast.success("Aadhaar ID uploaded");
+        toast.loading("Uploading College ID...", {
+          id: "college",
+        });
       const collegeUrl = await upload(clgFile);
+        toast.dismiss("college");
+        toast.success("College ID uploaded");
       form.setValue("aadhaarUrl", aadhaarUrl as string);
       form.setValue("collegeIdUrl", collegeUrl as string);
       form
