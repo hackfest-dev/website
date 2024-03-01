@@ -121,7 +121,7 @@ export default function IdeaSubmitForm({ refetch }: { refetch: () => void }) {
     if (error) setTimeout(() => setError(""), 2000);
   }, [error]);
 
-  if (currentState !== 2) return <></>;
+  if (currentState !== 2) return null;
 
   return (
     <div className={`relative max-h-max w-full `}>

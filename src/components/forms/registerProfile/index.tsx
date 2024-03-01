@@ -12,6 +12,8 @@ export default function RegisterProfile() {
   const colleges = api.college.getColleges.useQuery();
   const courses: string[] = Object.entries(Courses).map(([, value]) => value);
 
+  if (currentState !== 0) return null;
+
   if (currentState === 0 && (user.isLoading || colleges.isLoading))
     return (
       <Card className="w-h-96 flex h-96 items-center justify-center gap-2">

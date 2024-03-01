@@ -21,6 +21,7 @@ export default function TeamDetails({
     teamId: teamid,
   });
   const { currentState } = useContext(ProgressContext);
+  if (currentState !== 1) return null;
 
   return (
     <>
