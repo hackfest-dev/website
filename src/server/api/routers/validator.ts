@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-export const validatorRouter= createTRPCRouter({
+export const validatorRouter = createTRPCRouter({
   setScore: protectedProcedure
     .input(
       z.object({
@@ -29,7 +29,7 @@ export const validatorRouter= createTRPCRouter({
           },
         });
 
-		// If team already has a score just update it
+        // If team already has a score just update it
         if (team && team?.Scores.length > 0) {
           await ctx.db.scoresByJudge.update({
             where: {
@@ -46,9 +46,19 @@ export const validatorRouter= createTRPCRouter({
               },
             },
           });
-        } 
-		// If team is not yet given a score
-		else {
+          await ctx.db.team.update({
+            where: {
+              id: input.teamId,
+            },
+            data: {
+              ValidatorTotalScore: {
+                increment: Number(input.score),
+              },
+            },
+          });
+        }
+        // If team is not yet given a score
+        else {
           // Check if criteria exists
           let validatorCriteria = await ctx.db.criteria.findFirst({
             where: {
