@@ -16,6 +16,7 @@ import { Dialog, DialogTrigger, DialogContent } from "~/components/ui/dialog";
 import DashboardLayout from "~/components/layout/dashboardLayout";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import PDFModal from "~/components/validatorDashboard/pdfModal";
 
 
 
@@ -46,6 +47,9 @@ export default function Validator() {
           
           <TableRow>
             <TableHead>
+              Sl. No.
+            </TableHead>
+            <TableHead>
               Team Name
             </TableHead>
             <TableHead>
@@ -56,26 +60,28 @@ export default function Validator() {
         <TableBody>
           
           {
-            teamData.data?.filter(team=>team.ideaSubmission ? true : false).map((team) => {
+            teamData.data?.filter(team=>team.ideaSubmission ? true : false).map((team,index) => {
               return(
-                <TableRow>
+                <TableRow key={index}>
+                  <TableCell>
+                    {index+1}
+                  </TableCell>
                   <TableCell>
                     {team.name}
                   </TableCell>
                   <TableCell>
-                    {team.ideaSubmission?.pptUrl}
+                  <PDFModal team={team}/>
                     </TableCell>
                     <TableCell>
                     <button
-            
-            className={`${team?.Scores[0]?.userId === user?.data?.user.id && team?.Scores[0]?.score.score === '5' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg` }
-              onClick={() => {
-                submitScore.mutateAsync({
-                  teamId: team.id,
-                  score: '5',
-                });
-              }}
-            >
+                      className={`${team?.Scores[0]?.userId === user?.data?.user.id && team?.Scores[0]?.score.score === '5' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg` }
+                      onClick={() => {
+                        submitScore.mutateAsync({
+                          teamId: team.id,
+                          score: '5',
+                        });
+                      }}
+                    >
               Good
             </button>
                     </TableCell>

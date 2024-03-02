@@ -39,6 +39,7 @@ export const validatorRouter = createTRPCRouter({
 
         // If team already has a score just update it
         if (team && team?.Scores.length > 0) {
+          const newTotalScore = (team.ValidatorTotalScore - Number(team.Scores[0]?.score.score)) + Number(input.score)
           await ctx.db.scoresByJudge.update({
             where: {
               teamId_userId: {
@@ -54,13 +55,12 @@ export const validatorRouter = createTRPCRouter({
               },
             },
           });
-		const newTotalScore = (team.ValidatorTotalScore - Number(team.Scores[0]?.score.score)) + Number(input.score)
           await ctx.db.team.update({
             where: {
               id: input.teamId,
             },
             data: {
-              ValidatorTotalScore: {increment: newTotalScore},
+              ValidatorTotalScore: newTotalScore,
             },
           });
         }
