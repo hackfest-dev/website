@@ -138,8 +138,9 @@ const addReferralCodeZ = z.object({
       .max(50, { message: "Name cannot exceed 50 characters" }),
   contact: z
       .string()
-      .min(10, { message: "Atleast a phone number is needed" })
-      .max(30, { message: "Max character limit" }),
+      .min(10, { message: "Enter valid email or phone number" })
+      .max(10, { message: "Enter valid email or phone number" })
+      .or(z.string().email({message: "Enter valid email or phone number"})),
 })
 
 
