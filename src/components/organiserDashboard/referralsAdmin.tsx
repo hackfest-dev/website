@@ -66,7 +66,7 @@ export default function ReferralsAdmin() {
         name: data.name,
         referrer: data.referrer,
       });
-      reffaralsRefetch();
+      await reffaralsRefetch();
       toast.success("Added referral successfully");
     } catch (e) {
       toast.error("Couldn't add referral code");
