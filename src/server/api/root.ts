@@ -5,6 +5,7 @@ import { collegeRouter } from "./routers/college";
 import { ideaRouter } from "./routers/idea";
 import { FAQRouter } from "./routers/faq";
 import { referralRouter } from "./routers/referral";
+import { validatorRouter } from "./routers/validator";
 
 
 /**
@@ -18,7 +19,8 @@ export const appRouter = createTRPCRouter({
   college: collegeRouter,
   idea: ideaRouter,
   faq: FAQRouter,
-  referrals: referralRouter
+  referrals: referralRouter,
+  validator:validatorRouter
 });
 
 // export type definition of API
