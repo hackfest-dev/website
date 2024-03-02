@@ -34,7 +34,7 @@ interface SubmissionRow {
 
 export default function Validator() {
   const submitScore = api.validator.setScore.useMutation();
-  const teamData = api.team.getTeamsList.useQuery().data;
+  const teamData = api.team.getTeamsList.useQuery()
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -71,7 +71,7 @@ export default function Validator() {
   ];
 
   const table = useReactTable({
-    data: teamData ?? [],
+    data: teamData.data?.filter(team=>team.ideaSubmission ? true : false) ?? [],
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -88,7 +88,7 @@ export default function Validator() {
   });
 
   return (
-    <DashboardLayout>
+    !teamData.isLoading && <DashboardLayout>
       <div className="rounded-md border">
       {/* <Input
           placeholder="Search teams"
