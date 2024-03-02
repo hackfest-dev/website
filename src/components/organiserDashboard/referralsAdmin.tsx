@@ -22,10 +22,28 @@ import {
 } from "../ui/form";
 import ReferralsTable from "./referralsTable";
 import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { ChevronDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "../ui/command";
+import CreateCollege from "../profile/createCollege";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function ReferralsAdmin() {
   const addReferral = api.referrals.addReferralCode.useMutation();
   const [collegeId, setCollegeId] = useState("");
+
+  const [openCollegeList, setOpenCollegeList] = useState(false);
+  const [collegevalue, setCollegevalue] = useState("");
+  const user = api.user.getUserWithCollege.useQuery().data;
+  const { data: colleges, refetch: refetchColleges } =
+    api.college.getColleges.useQuery();
+
   const form = useForm<z.infer<typeof addReferralCodeZ>>({
     defaultValues: {
       code: "HF2024_000",
@@ -75,9 +93,13 @@ export default function ReferralsAdmin() {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="">Club Name</FormLabel>
+                      <FormLabel>Club Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter Club Name" {...field} />
+                        <Input
+                          placeholder="Enter Club Name"
+                          className="text-white"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -88,17 +110,108 @@ export default function ReferralsAdmin() {
               <FormField
                 control={form.control}
                 name="collegeId"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="w-full">
-                      <FormLabel className="">College ID</FormLabel>
-                      <FormControl>
-                        <Input placeholder="asdfsadcasd" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
+                render={({}) => (
+                  <FormItem className="w-[80vw] md:w-[45%]">
+                    <FormLabel>College</FormLabel>
+                    <FormControl>
+                      <Popover
+                        open={openCollegeList}
+                        onOpenChange={setOpenCollegeList}
+                      >
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={openCollegeList}
+                            className="w-full justify-between overflow-hidden truncate text-white"
+                          >
+                            {collegevalue
+                              ? collegevalue
+                              : user?.college?.name
+                                ? user?.college?.name +
+                                  ", " +
+                                  user?.college.state
+                                    .replace(/_/g, " ")
+                                    .split(" ")
+                                    .map(
+                                      (word) =>
+                                        word.charAt(0).toUpperCase() +
+                                        word.slice(1).toLowerCase(),
+                                    )
+                                    .join(" ")
+                                : "Select college"}
+                            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="px-3">
+                          <Command>
+                            <CommandInput
+                              placeholder="Search college here..."
+                              className="h-9"
+                            />
+                            <CommandEmpty className="mt-3 flex flex-col items-center justify-center text-center">
+                              No College with that name found.
+                              <CreateCollege
+                                refetchColleges={refetchColleges}
+                              />
+                            </CommandEmpty>
+                            <CommandGroup>
+                              <ScrollArea className="h-72">
+                                {colleges?.map((college) => (
+                                  <CommandItem
+                                    key={college.id}
+                                    value={college.id}
+                                    onSelect={(currentValue) => {
+                                      setCollegeId(college.id);
+                                      form.setValue("collegeId", college.id);
+                                      setCollegevalue(
+                                        currentValue === collegevalue
+                                          ? collegevalue
+                                          : college.name +
+                                              ", " +
+                                              college.state
+                                                .replace(/_/g, " ")
+                                                .split(" ")
+                                                .map(
+                                                  (word) =>
+                                                    word
+                                                      .charAt(0)
+                                                      .toUpperCase() +
+                                                    word.slice(1).toLowerCase(),
+                                                )
+                                                .join(" "),
+                                      );
+                                      // setFormData({
+                                      //   ...formData,
+                                      //   collegeId: college.id,
+                                      // });
+                                      setOpenCollegeList(false);
+                                    }}
+                                  >
+                                    {college.name},{" "}
+                                    {college.state
+                                      .replace(/_/g, " ")
+                                      .split(" ")
+                                      .map(
+                                        (word) =>
+                                          word.charAt(0).toUpperCase() +
+                                          word.slice(1).toLowerCase(),
+                                      )
+                                      .join(" ")}
+                                  </CommandItem>
+                                ))}
+                                <CreateCollege
+                                  refetchColleges={refetchColleges}
+                                />
+                              </ScrollArea>
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               ></FormField>
 
               <FormField
@@ -107,9 +220,13 @@ export default function ReferralsAdmin() {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="">Referrer Name</FormLabel>
+                      <FormLabel>Referrer Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" {...field} />
+                        <Input
+                          placeholder="Enter Refferer Name"
+                          className="text-white"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -123,9 +240,13 @@ export default function ReferralsAdmin() {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="">Contact</FormLabel>
+                      <FormLabel>Contact</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter contact" {...field} />
+                        <Input
+                          placeholder="Enter contact"
+                          className="text-white"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
