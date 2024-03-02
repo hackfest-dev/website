@@ -1,4 +1,4 @@
-import DownloadDataButton from "~/components/downloadData";
+import DownloadDataButtons from "~/components/downloadData";
 import FaqAdmin from "~/components/faq/faqAdmin";
 import DashboardLayout from "~/components/layout/dashboardLayout";
 import ParticipantsTable from "~/components/participantsTable";
@@ -26,7 +26,7 @@ export default function Organiser() {
       </div>
       <div className="m-auto  overflow-x-scroll md:max-w-[70%]">
         <h1 className="my-10 text-center text-2xl font-bold">Participants</h1>
-        <DownloadDataButton data={res} />
+        <DownloadDataButtons />
         <ParticipantsTable data={res} />
       </div>
       <div>

@@ -1,109 +1,98 @@
 import { type inferRouterOutputs } from "@trpc/server";
 import { type TeamsData } from "../../types";
-import { type teamRouter } from "~/server/api/routers/team";
+import { api } from "~/utils/api";
 
-const DownloadDataButton = ({
-  data,
-}: {
-  data:
-    | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
-    | null
-    | undefined;
-}) => {
-  const Participants = (teamsData: TeamsData[]): string => {
-    let csv = "Team Name,College,Team Leader,Member Count,Members\n";
 
-    teamsData.forEach((team) => {
-      const { name, members } = team;
+export default function DownloadDataButtons(){
+  const data = api.user.getAllUsers.useQuery().data;
+  
+  function usersNotInTeam(){
+    let csv = '';
+    const Headers = 'Name,Email,\n';
+    csv+=Headers;
 
-      const leader = members.find((member) => member.isLeader === true)?.name;
-      const college = members[0]?.college?.name;
-      const memberCount = members.length;
-
-      const membersInfo = members
-        .map((member) => `${member.name}, ${member.email}, ${member.phone}`)
-        .join("\n");
-
-      csv += `${name},${college},${leader},${memberCount},"${membersInfo}"\n`;
-    });
+    data?.map((user) => {
+      if(!user?.teamId){
+        csv+=`${user.name}`+','+`${user.email}`+','+'\n';
+      }
+    })
 
     return csv;
-  };
-  const IdeaSubmissions = (teamsData: TeamsData[]): string => {
-    let csv = "Team Name,Track,Problem Statement,PPT URL\n";
+  }
 
-    teamsData.forEach((team) => {
-      const { name, ideaSubmission } = team;
+  function teamLeadersWithSubmission(){
+    let csv = '';
+    const Headers = 'Name,Phone,Email,\n';
+    csv+=Headers;
 
-      csv += `${name},${ideaSubmission?.track},${ideaSubmission?.problemStatement},${ideaSubmission?.pptUrl}"\n`;
-    });
-
-    return csv;
-  };
-  const Referrals = (teamsData: TeamsData[]): string => {
-    let csv = "Team Name,Referrer,Code\n";
-
-    teamsData.forEach((team) => {
-      const { name, referral } = team;
-      if (referral?.code)
-        csv += `${name},${referral?.referrer},${referral?.code}"\n`;
-    });
+    data?.map((user) => {
+      if(user?.isLeader && user?.profileProgress === 'COMPLETE'){
+        csv+=`${user.name}`+','+`${user.phone}`+','+`${user.email}`+','+'\n';
+      }
+    })
 
     return csv;
-  };
+  }
+  function teamLeadersWithoutSubmission(){
+    let csv = '';
+    const Headers = 'Name,Phone,Email,\n';
+    csv+=Headers;
 
-  return (
+    data?.map((user) => {
+      if(user?.isLeader && user?.profileProgress !== 'COMPLETE'){
+        csv+=`${user.name}`+','+`${user.phone}`+','+`${user.email}`+','+'\n';
+      }
+    })
+
+    return csv;
+  }
+  return(
     <>
       <button
         onClick={async () => {
-          if (!data) return;
-          const csvData = Participants(data);
-          const url = window.URL.createObjectURL(new Blob([csvData]));
+          const data = usersNotInTeam();
+          const url = window.URL.createObjectURL(new Blob([data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "teams.csv");
+          link.setAttribute("download", "Not_In_Team_Emails.csv");
           document.body.appendChild(link);
           link.click();
           link.remove();
         }}
         className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
-        Download Participants Data
+        Users Not in Team
       </button>
       <button
         onClick={async () => {
-          if (!data) return;
-          const csvData = IdeaSubmissions(data);
-          const url = window.URL.createObjectURL(new Blob([csvData]));
+          const data = teamLeadersWithSubmission();
+          const url = window.URL.createObjectURL(new Blob([data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "teams.csv");
+          link.setAttribute("download", "TeamLeaders_With_Submission.csv");
           document.body.appendChild(link);
           link.click();
           link.remove();
         }}
         className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
-        Download Idea Submissions
+        Team Leaders with submission
       </button>
       <button
         onClick={async () => {
-          if (!data) return;
-          const csvData = Referrals(data);
-          const url = window.URL.createObjectURL(new Blob([csvData]));
+          const data = teamLeadersWithoutSubmission();
+          const url = window.URL.createObjectURL(new Blob([data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "teams.csv");
+          link.setAttribute("download", "TeamLeaders_Without_Submission.csv");
           document.body.appendChild(link);
           link.click();
           link.remove();
         }}
         className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
-        Download Referrals Data
+        Team Leaders without submission
       </button>
     </>
-  );
-};
-
-export default DownloadDataButton;
+  )
+}

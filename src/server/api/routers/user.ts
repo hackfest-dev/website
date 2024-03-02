@@ -249,4 +249,16 @@ export const userRouter = createTRPCRouter({
       },
     });
   }),
+
+  getAllUsers: protectedProcedure.query(async ({ctx}) => {
+   try{
+    return await ctx.db.user.findMany()
+   }catch(e){
+      console.log(e)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Something went wrong",
+      });
+   }
+  })
 });
