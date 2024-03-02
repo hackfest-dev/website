@@ -44,6 +44,9 @@ export default function ReferralsAdmin() {
   const { data: colleges, refetch: refetchColleges } =
     api.college.getColleges.useQuery();
 
+  const { data: referrals, refetch: reffaralsRefetch } =
+    api.referrals.getAllReferrals.useQuery();
+
   const form = useForm<z.infer<typeof addReferralCodeZ>>({
     defaultValues: {
       code: "HF2024_000",
@@ -63,11 +66,13 @@ export default function ReferralsAdmin() {
         name: data.name,
         referrer: data.referrer,
       });
+      reffaralsRefetch();
       toast.success("Added referral successfully");
     } catch (e) {
       toast.error("Couldn't add referral code");
     }
   }
+
   return (
     <>
       <Dialog>
@@ -258,7 +263,7 @@ export default function ReferralsAdmin() {
           </Form>
         </DialogContent>
       </Dialog>
-      <ReferralsTable data={api.referrals.getAllReferrals.useQuery().data} />
+      <ReferralsTable data={referrals} />
     </>
   );
 }
