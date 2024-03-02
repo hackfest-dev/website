@@ -13,15 +13,35 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { FaQuestionCircle } from "react-icons/fa";
-import { useState } from "react";
+import { FaExclamationCircle, FaQuestionCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { IoTrashBin } from "react-icons/io5";
 import { api } from "~/utils/api";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { $Enums } from "@prisma/client";
 
 export default function FaqAdmin() {
   const [answer, setAnswer] = useState("");
+
   const faqData = api.faq.getAllFaqs.useQuery();
+
+  const [unPublishedFAQ, setUnPublishedFAQ] = useState<
+    {
+      id: number;
+      question: string;
+      answer: string;
+      category: $Enums.Category;
+      published: boolean;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    if (faqData.data)
+      setUnPublishedFAQ(faqData.data.filter((faq) => !faq.published));
+  }, [faqData.data]);
+
   const answerFaq = api.faq.answerFaq.useMutation({
     onSuccess: async () => {
       toast.success("Faq answered");
@@ -46,7 +66,10 @@ export default function FaqAdmin() {
     <>
       <Dialog>
         <DialogTrigger>
-          <FaQuestionCircle size={25} className="text-white" />
+          <div className="flex items-center justify-center gap-3 rounded-md border-2 p-2 hover:border-white">
+            <span className="text-2xl font-bold">FAQ</span>
+            <FaExclamationCircle className="text-white" />
+          </div>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -58,56 +81,68 @@ export default function FaqAdmin() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {faqData.data?.map((faq, index) => {
-                  if (!faq.published) {
-                    return (
-                      <TableRow key={index} className="text-black">
-                        <TableCell>{faq.question}</TableCell>
-                        <TableCell>
-                          <Dialog>
-                            <DialogTrigger>Answer</DialogTrigger>
-                            <DialogContent>
-                              <DialogTitle className="text-black">
-                                {faq.question}
-                              </DialogTitle>
-                              <input
-                                type="text"
-                                className="rounded-lg p-2 text-black"
-                                placeholder="Answer this question"
-                                value={answer}
-                                onChange={(e) => {
-                                  setAnswer(e.target.value);
-                                }}
-                              />
-                              <button
-                                className="rounded-lg bg-[#020817] p-2 text-white"
-                                onClick={async () => {
-                                  await answerFaq.mutateAsync({
-                                    id: faq.id,
-                                    answer,
-                                  });
-                                  setAnswer("");
-                                }}
-                              >
-                                Submit
-                              </button>
-                            </DialogContent>
-                          </Dialog>
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            onClick={async () => {
-                              await deleteFaq.mutateAsync({ id: faq.id });
-                            }}
-                            className="cursor-pointer"
-                          >
-                            <IoTrashBin />
-                          </span>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }
-                })}
+                {unPublishedFAQ.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={2} className="text-center">
+                      No Faq Found
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  unPublishedFAQ.map((faq, index) => {
+                    if (!faq.published) {
+                      return (
+                        <TableRow key={index} className="text-black">
+                          <TableCell className="text-black dark:text-white">
+                            {faq.question}
+                          </TableCell>
+                          <TableCell>
+                            <Dialog>
+                              <DialogTrigger className="text-black dark:text-white">
+                                <Button>Answer</Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogTitle className="text-black dark:text-white">
+                                  {faq.question}
+                                </DialogTitle>
+                                <Input
+                                  type="text"
+                                  className="rounded-lg p-2 text-black"
+                                  placeholder="Answer this question"
+                                  value={answer}
+                                  onChange={(e) => {
+                                    setAnswer(e.target.value);
+                                  }}
+                                />
+                                <Button
+                                  className="rounded-lg p-2"
+                                  onClick={async () => {
+                                    await answerFaq.mutateAsync({
+                                      id: faq.id,
+                                      answer,
+                                    });
+                                    setAnswer("");
+                                  }}
+                                >
+                                  Submit
+                                </Button>
+                              </DialogContent>
+                            </Dialog>
+                          </TableCell>
+                          <TableCell>
+                            <span
+                              onClick={async () => {
+                                await deleteFaq.mutateAsync({ id: faq.id });
+                              }}
+                              className="cursor-pointer text-black dark:text-white"
+                            >
+                              <IoTrashBin />
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                  })
+                )}
               </TableBody>
             </Table>
           </DialogHeader>

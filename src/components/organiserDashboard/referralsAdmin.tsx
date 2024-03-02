@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogHeader,
 } from "../ui/dialog";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { api } from "~/utils/api";
@@ -58,29 +57,44 @@ export default function ReferralsAdmin() {
   });
 
   async function submitForm(data: z.infer<typeof addReferralCodeZ>) {
-		if(!z.string().email().or(z.string().min(10).max(10)).safeParse(data.contact).success) return toast.error("Enter a valid email or phone")
-      await addReferral.mutateAsync({
-        code: data.code,
-        collegeId: data.collegeId,
-        contact: data.contact,
-        name: data.name,
-        referrer: data.referrer,
-      });
-      await reffaralsRefetch();
-      toast.success("Added referral successfully");
+    if (
+      !z
+        .string()
+        .email()
+        .or(z.string().regex(/^\d{10}$/))
+        .safeParse(data.contact).success
+    )
+      return toast.error("Enter a valid email or phone");
+
+    if (collegeId.length === 0) return toast.error("Please choose a college");
+
+    toast.loading("Adding referral");
+
+    await addReferral.mutateAsync({
+      code: data.code,
+      collegeId: data.collegeId,
+      contact: data.contact,
+      name: data.name,
+      referrer: data.referrer,
+    });
+    await reffaralsRefetch();
+    toast.dismiss();
+    toast.success("Added referral successfully");
   }
 
   return (
     <>
+      <div className="w-full border-b">
+        <h1 className="py-10 text-center text-4xl font-bold">Referrals</h1>
+      </div>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger className="my-5 flex w-full items-center justify-center">
           <button className="rounded-lg bg-white px-4 py-2 text-black">
             + Add Referral Code
           </button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>Add Referral Code</DialogHeader>
-
           <Form {...form}>
             <form
               onSubmit={async (e) => {

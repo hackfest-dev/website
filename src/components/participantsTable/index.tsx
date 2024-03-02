@@ -48,6 +48,10 @@ export default function ParticipantsTable({
     inferRouterOutputs<typeof teamRouter>["getTeamsList"]
   >[] = [
     {
+      accessorKey: "id",
+      header: "Team ID",
+    },
+    {
       accessorKey: "name",
       header: "Team Name",
     },
@@ -78,7 +82,6 @@ export default function ParticipantsTable({
         </span>
       ),
     },
-
     {
       accessorKey: "paymentStatus",
       header: "Payment Status",
@@ -104,15 +107,7 @@ export default function ParticipantsTable({
 
   return (
     <>
-      <div className="rounded-md border">
-        {/* <Input
-          placeholder="Search teams"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
+      <div className="flex flex-col items-center justify-center rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -155,7 +150,7 @@ export default function ParticipantsTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No Teams Found
                 </TableCell>
               </TableRow>
             )}

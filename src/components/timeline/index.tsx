@@ -1,4 +1,3 @@
-import { useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
@@ -30,23 +29,9 @@ const Timeline = ({ events }: { events: Event[] }) => {
   }, [selectedDay]);
 
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["50% end", "end end"],
-  });
-  const smoothScroll = useSpring(scrollYProgress, {
-    mass: 0.5,
-    damping: 25,
-    stiffness: 150,
-  });
+
   const divisions = selectedDay === 1 ? 16 : 14;
   ``;
-  const angle = useTransform(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    smoothScroll,
-    [0, 1],
-    ["0deg", `-${360 - 360 / divisions}deg`],
-  );
 
   return (
     <>

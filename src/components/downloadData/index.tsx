@@ -66,7 +66,7 @@ const DownloadDataButton = ({
           link.click();
           link.remove();
         }}
-        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
+        className="rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Participants Data
       </button>
@@ -82,7 +82,7 @@ const DownloadDataButton = ({
           link.click();
           link.remove();
         }}
-        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
+        className="rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Idea Submissions
       </button>
@@ -98,7 +98,7 @@ const DownloadDataButton = ({
           link.click();
           link.remove();
         }}
-        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
+        className="rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Referrals Data
       </button>

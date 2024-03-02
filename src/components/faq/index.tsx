@@ -14,14 +14,24 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import { api } from "~/utils/api";
+import { Input } from "../ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export const FAQ = () => {
   const [faq, setFaq] = useState<{
     question: string;
-    category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
+    category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL" | undefined;
   }>({
     question: "",
-    category: "GENERAL",
+    category: undefined,
   });
 
   const faqData = api.faq.getAllFaqs.useQuery();
@@ -86,11 +96,12 @@ export const FAQ = () => {
             <DialogTrigger asChild>
               <Button className="font-semibold">Drop your question</Button>
             </DialogTrigger>
-
             <DialogContent>
-              <DialogTitle>Submit your question</DialogTitle>
+              <DialogTitle className="dark:text-white">
+                Submit your question
+              </DialogTitle>
               <div className="flex flex-col gap-2 ">
-                <input
+                <Input
                   type="text"
                   className="rounded-lg border-2 bg-[#020817] p-2"
                   value={faq.question}
@@ -99,24 +110,68 @@ export const FAQ = () => {
                     setFaq({ ...faq, question: e.target.value });
                   }}
                 />
-
-                <select
-                  value={faq.category}
-                  defaultValue={"General"}
-                  onChange={(e) => {
-                    setFaq({ ...faq, category: e.target.value as Category });
-                  }}
-                  className="rounded-lg border-2 bg-[#020817] p-2"
-                >
-                  <option value="GENERAL">General</option>
-                  <option value="STAY">Stay</option>
-                  <option value="TRAVEL">Travel</option>
-                  <option value="FOOD">Food</option>
-                </select>
-
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="secondary">
+                      {faq.category
+                        ? `Selected : ${faq.category}`
+                        : "Select Category"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56 bg-slate-800">
+                    <DropdownMenuLabel className="text-white">
+                      FAQ Category
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuRadioGroup
+                      value={faq.category}
+                      className="bg-slate-800"
+                      onValueChange={(value) =>
+                        setFaq((prev) => {
+                          return { ...prev, category: value as Category };
+                        })
+                      }
+                    >
+                      <DropdownMenuRadioItem
+                        value="GENERAL"
+                        className="text-white hover:text-black"
+                      >
+                        General
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem
+                        value="STAY"
+                        className="text-white hover:text-black"
+                      >
+                        Stay
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem
+                        value="TRAVEL"
+                        className="text-white hover:text-black"
+                      >
+                        Travel
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem
+                        value="FOOD"
+                        className="text-white hover:text-black"
+                      >
+                        Food
+                      </DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <Button
                   onClick={() => {
-                    addFaq.mutate(faq);
+                    if (!faq.category || !faq.question) {
+                      return toast.error(
+                        "Please select a category and enter a question",
+                      );
+                    }
+                    addFaq.mutate(
+                      faq as {
+                        question: string;
+                        category: "GENERAL" | "FOOD" | "STAY" | "TRAVEL";
+                      },
+                    );
                   }}
                   className="font-semibold"
                 >
