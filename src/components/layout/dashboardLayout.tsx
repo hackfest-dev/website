@@ -39,7 +39,7 @@ export default function DashboardLayout({
     if (user?.data?.user.role !== "PARTICIPANT") {
       return (
         <main
-          className={`dark min-h-screen bg-slate-950 text-white ${poppins.className}`}
+          className={`dark min-h-screen bg-slate-950 p-2 text-white ${poppins.className}`}
         >
           <Toaster richColors expand={true} position="top-center" />
           {children}

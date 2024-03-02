@@ -1,4 +1,4 @@
-import { Courses, TshirtSize } from "@prisma/client";
+import { TshirtSize } from "@prisma/client";
 import { type Dispatch, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

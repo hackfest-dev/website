@@ -161,10 +161,11 @@ export const FAQ = () => {
                 </DropdownMenu>
                 <Button
                   onClick={() => {
-                    if (!faq.category || !faq.question) {
-                      return toast.error(
-                        "Please select a category and enter a question",
-                      );
+                    if (!faq.question) {
+                      return toast.error("Please type a question");
+                    }
+                    if (!faq.category) {
+                      return toast.error("Please select a category");
                     }
                     addFaq.mutate(
                       faq as {

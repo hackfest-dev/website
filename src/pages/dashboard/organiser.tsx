@@ -1,4 +1,4 @@
-import DownloadDataButton from "~/components/downloadData";
+import DownloadDataButtons from "~/components/downloadData";
 import FaqAdmin from "~/components/faq/faqAdmin";
 import DashboardLayout from "~/components/layout/dashboardLayout";
 import ParticipantsTable from "~/components/participantsTable";
@@ -23,13 +23,18 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
+import { useSession } from "next-auth/react";
+import NotFound from "../404";
 
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery().data;
+  const users = api.user.getAllUsers.useQuery().data;
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [selectedTeams, setSelectedTeams] = useState(res);
   const [paymentQuery, setPaymentQuery] = useState("ALL");
+
+  const { data, status } = useSession();
 
   useEffect(() => {
     setSelectedTeams(() => {
@@ -49,6 +54,19 @@ export default function Organiser() {
     });
   }, [res, searchQuery, paymentQuery]);
 
+  if (status === "loading")
+    return (
+      <DashboardLayout>
+        <div className="flex h-screen w-screen items-center justify-center">
+          <Spinner />
+        </div>
+      </DashboardLayout>
+    );
+
+  if (!data || !data.user || data.user.role !== "ORGANISER") {
+    return <NotFound />;
+  }
+
   return (
     <DashboardLayout>
       <Tabs defaultValue="teams" className="w-full">
@@ -64,15 +82,25 @@ export default function Organiser() {
           <div className="w-full border-b">
             <h1 className="py-10 text-center text-4xl font-bold">Organiser</h1>
           </div>
-          <div className="my-4 flex w-full items-center justify-center">
+          <div className="my-5 flex flex-col items-center justify-center gap-10 md:flex-row">
+            <div className="flex flex-col">
+              <span className="text-xl">
+                Number of Logins : {users?.length}
+              </span>
+              <span className="text-xl">Number of Teams : {res?.length}</span>
+              <span className="text-xl">
+                Number of Idea submissions :{" "}
+                {res?.filter((team) => team.ideaSubmission).length}
+              </span>
+            </div>
             <FaqAdmin />
           </div>
           <div className="m-auto overflow-x-scroll md:max-w-screen-xl">
             <h1 className="my-8 text-center text-2xl font-bold">
               Participants
             </h1>
-            <div className="my-4 flex h-full w-full items-center justify-around">
-              <DownloadDataButton data={res} />
+            <div className="my-4 flex h-full w-full flex-col items-center justify-around gap-3 md:flex-row">
+              <DownloadDataButtons />
               <Input
                 placeholder="Search Team ID/Name"
                 className="w-52"
