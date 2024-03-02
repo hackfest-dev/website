@@ -25,12 +25,15 @@ import { useState } from "react";
 import { inferRouterOutputs } from "@trpc/server";
 import { teamRouter } from "~/server/api/routers/team";
 import { Tracks } from "@prisma/client";
+import { Dialog, DialogTrigger, DialogContent } from "~/components/ui/dialog";
+import DashboardLayout from "~/components/layout/dashboardLayout";
 
 interface SubmissionRow {
   ideaSubmission: { track: Tracks; pptUrl: string };
 }
 
 export default function Validator() {
+  const submitScore = api.validator.setScore.useMutation();
   const teamData = api.team.getTeamsList.useQuery().data;
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -50,7 +53,19 @@ export default function Validator() {
       accessorKey: "ideaSubmission",
       header: "PPT",
       cell: (cell) => {
-        (cell.cell.row.original as SubmissionRow).ideaSubmission ? "yes" : "no";
+        return(
+          <>
+            {/* {(cell.cell.row.original as SubmissionRow).ideaSubmission?.track} */}
+            <Dialog>
+              <DialogTrigger>
+                Hello
+              </DialogTrigger>
+              <DialogContent className="text-white">
+                Hello
+              </DialogContent>
+            </Dialog>
+          </>
+        )
       },
     },
   ];
@@ -73,7 +88,8 @@ export default function Validator() {
   });
 
   return (
-    <div className="rounded-md border">
+    <DashboardLayout>
+      <div className="rounded-md border">
       {/* <Input
           placeholder="Search teams"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -161,5 +177,6 @@ export default function Validator() {
         </Button>
       </div>
     </div>
+    </DashboardLayout>
   );
 }
