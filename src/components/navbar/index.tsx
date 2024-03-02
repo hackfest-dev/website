@@ -43,7 +43,7 @@ const Navbar = () => {
 
           <div className="hidden  lg:flex gap-2">
             <AuthButtons />
-            {
+            {user?.data?.user && 
               user?.data?.user?.role !== 'PARTICIPANT' && (
                 <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
                   <Button>

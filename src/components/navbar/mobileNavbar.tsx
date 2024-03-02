@@ -47,9 +47,10 @@ export const MobileNavbar = () => {
             </Link>
           ))}
 
-          <div className="flex flex-col gap-2 justify-center items-center">
+          <div className="flex flex-col gap-2 w-full justify-center items-center">
           <AuthButtons />
           {
+            user?.data?.user &&
               user?.data?.user?.role !== 'PARTICIPANT' && (
                 <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
                   <Button>
