@@ -38,9 +38,6 @@
     "@tsparticles/engine": "^3.0.3",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.0.3",
-    "@types/formidable": "^3.4.5",
-    "@types/typescript": "^2.0.0",
-    "add": "^2.0.6",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^1.41.1",
     "clsx": "^2.1.0",
@@ -74,6 +71,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.5",
+    "@types/typescript": "^2.0.0",
     "@types/eslint": "^8.56.2",
     "@types/google-libphonenumber": "^7.4.30",
     "@types/node": "^20.11.20",
