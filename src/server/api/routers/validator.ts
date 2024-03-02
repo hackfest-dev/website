@@ -60,7 +60,7 @@ export const validatorRouter = createTRPCRouter({
               id: input.teamId,
             },
             data: {
-              ValidatorTotalScore: newTotalScore,
+              ValidatorTotalScore: {increment: newTotalScore},
             },
           });
         }
@@ -112,7 +112,7 @@ export const validatorRouter = createTRPCRouter({
 				  id:input.teamId
 			  },
 			  data:{
-				  ValidatorTotalScore:Number(input.score)
+				  ValidatorTotalScore:{increment:Number(input.score)}
 			  }
 		  })
         }
