@@ -1,4 +1,3 @@
-"use clinet";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 
 const Cursor: FunctionComponent = () => {
@@ -9,7 +8,7 @@ const Cursor: FunctionComponent = () => {
     window.dispatchEvent(new Event("mousemove", e));
 
     const parentRect =
-      parentRef.current?.getBoundingClientRect() || new DOMRect(0, 0, 0, 0);
+      parentRef.current?.getBoundingClientRect() ?? new DOMRect(0, 0, 0, 0);
 
     if (cursorRef.current) {
       const cursorRect = cursorRef.current.getBoundingClientRect();
@@ -47,15 +46,17 @@ const Cursor: FunctionComponent = () => {
   }, []);
 
   return (
-    <div ref={parentRef} className="hidden md:block relative w-full h-full">
+    <div ref={parentRef} className="relative hidden h-full w-full md:block">
       <div
         ref={cursorRef}
-        className="absolute w-[30px] h-[30px] transition-opacity top-1/4 left-1/4 -rotate-90">
+        className="absolute left-1/4 top-1/4 h-[30px] w-[30px] -rotate-90 transition-opacity"
+      >
         <svg
           version="1.1"
           id="Layer_1"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512.001 512.001">
+          viewBox="0 0 512.001 512.001"
+        >
           <path
             style={{ fill: "#1E0478" }}
             d="M503.841,8.338c7.902,7.97,10.28,19.397,6.187,29.853L331.722,494.207 c-4.282,10.955-14.427,17.79-25.881,17.79c-1.148,0-2.31-0.068-3.485-0.203c-12.86-1.54-22.653-11.198-24.382-24.031 l-30.055-222.868c-0.054-0.419-0.392-0.756-0.81-0.81L24.24,234.03c-12.833-1.729-22.491-11.522-24.031-24.382 c-1.54-12.846,5.525-24.652,17.587-29.366L473.813,1.976c10.455-4.093,21.883-1.716,29.853,6.187 c0.027,0.027,0.068,0.054,0.095,0.081C503.787,8.271,503.814,8.311,503.841,8.338z M306.557,484.373l166.824-426.65L273.827,257.277 c0.378,1.297,30.92,226.88,30.92,226.88c0.068,0.5,0.095,0.716,0.824,0.81C306.3,485.062,306.381,484.846,306.557,484.373z M254.727,238.177L454.28,38.623L27.631,205.447c-0.473,0.176-0.675,0.27-0.594,0.986c0.095,0.729,0.311,0.756,0.81,0.824 C27.847,207.257,253.43,237.799,254.727,238.177z"

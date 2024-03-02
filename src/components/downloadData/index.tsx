@@ -1,7 +1,15 @@
-"use client";
-import { TeamsData } from "@/src/types";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type TeamsData } from "../../types";
+import { type teamRouter } from "~/server/api/routers/team";
 
-const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
+const DownloadDataButton = ({
+  data,
+}: {
+  data:
+    | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
+    | null
+    | undefined;
+}) => {
   const Participants = (teamsData: TeamsData[]): string => {
     let csv = "Team Name,College,Team Leader,Member Count,Members\n";
 
@@ -9,7 +17,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
       const { name, members } = team;
 
       const leader = members.find((member) => member.isLeader === true)?.name;
-      const college = members[0].college?.name;
+      const college = members[0]?.college?.name;
       const memberCount = members.length;
 
       const membersInfo = members
@@ -48,6 +56,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
     <>
       <button
         onClick={async () => {
+          if (!data) return;
           const csvData = Participants(data);
           const url = window.URL.createObjectURL(new Blob([csvData]));
           const link = document.createElement("a");
@@ -57,12 +66,13 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
           link.click();
           link.remove();
         }}
-        className="text-black p-3 mb-2 rounded float-right bg-white font-bold text-center "
+        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Participants Data
       </button>
       <button
         onClick={async () => {
+          if (!data) return;
           const csvData = IdeaSubmissions(data);
           const url = window.URL.createObjectURL(new Blob([csvData]));
           const link = document.createElement("a");
@@ -72,12 +82,13 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
           link.click();
           link.remove();
         }}
-        className="text-black p-3 mb-2 rounded float-right bg-white font-bold text-center "
+        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Idea Submissions
       </button>
       <button
         onClick={async () => {
+          if (!data) return;
           const csvData = Referrals(data);
           const url = window.URL.createObjectURL(new Blob([csvData]));
           const link = document.createElement("a");
@@ -87,7 +98,7 @@ const DownloadDataButton = ({ data }: { data: TeamsData[] }) => {
           link.click();
           link.remove();
         }}
-        className="text-black p-3 mb-2 rounded float-right bg-white font-bold text-center "
+        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
       >
         Download Referrals Data
       </button>

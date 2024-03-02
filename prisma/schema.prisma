@@ -78,10 +78,11 @@ model VerificationToken {
 }
 
 model College {
-  id    String @id @default(cuid())
-  name  String
-  state States
-  users User[]
+  id       String     @id @default(cuid())
+  name     String
+  state    States
+  users    User[]
+  Referral Referral[]
 }
 
 model Team {
@@ -94,6 +95,7 @@ model Team {
   ideaSubmission  IdeaSubmission?
   referral        Referral?         @relation(fields: [referralId], references: [id])
   members         User[]
+  paymentStatus PaymentStatus @default(PENDING)
   videoSubmission VideoSubmissions?
 }
 
@@ -131,10 +133,14 @@ model AppSettings {
 }
 
 model Referral {
-  id       Int    @id @default(autoincrement())
-  code     String @unique
-  referrer String
-  teams    Team[]
+  id        Int      @id @default(autoincrement())
+  code      String   @unique 
+  referrer  String
+  teams     Team[]
+  collegeId String
+  college   College? @relation(fields: [collegeId], references: [id])
+  name      String
+  contact   String
 }
 
 model Faq {
@@ -147,7 +153,6 @@ model Faq {
 
 enum Role {
   PARTICIPANT
-  ADMIN
   ORGANISER
   JUDGE
   VALIDATOR
@@ -158,6 +163,7 @@ enum Courses {
   BE
   BTech
   BCA
+  BSc
 }
 
 enum PaymentStatus {

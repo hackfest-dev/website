@@ -1,34 +1,32 @@
-"use client";
-
-import { getTeamDetailsById } from "@/src/server/actions";
+// import { getTeamDetailsById } from "@/src/server/actions";
 import { IdeaSubmission, Team, User } from "@prisma/client";
 import { useState } from "react";
 
 export default function TeamsList({
   teams,
 }: {
-  teams: { teamName: string; id: string }[];
+  teams: { teamName: string; id: string }[] | undefined;
 }) {
   const [teamDetails, setTeamDetails] = useState<
     | (Team & { members: User[] } & { ideaSubmission: IdeaSubmission | null })
     | null
   >(null);
   const handleTeamDetails = async (teamId: string) => {
-    setTeamDetails(await getTeamDetailsById(teamId));
+    // setTeamDetails(await getTeamDetailsById(teamId));
   };
   return (
     <>
       <h1 className="text-center text-xl">Team Details</h1>
-      <div className="flex justify-between p-10 w-3/4 m-auto">
-        <div className="bg-gray-300 p-5 w-fit">
-          <h1 className="text-center border-b">Teams</h1>
-          {teams.map((team) => {
+      <div className="m-auto flex w-3/4 justify-between p-10">
+        <div className="w-fit bg-gray-300 p-5">
+          <h1 className="border-b text-center">Teams</h1>
+          {teams?.map((team) => {
             return (
               <button
                 data-teamid={team.id}
                 onClick={(e) =>
                   handleTeamDetails(
-                    e.currentTarget.getAttribute("data-teamid") || "",
+                    e.currentTarget.getAttribute("data-teamid") ?? "",
                   )
                 }
                 key={team.id}
@@ -38,10 +36,10 @@ export default function TeamsList({
             );
           })}
         </div>
-        <div className="bg-gray-500 p-5 w-full">
+        <div className="w-full bg-gray-500 p-5">
           {teamDetails ? (
             <>
-              <h2 className="text-center border-b">
+              <h2 className="border-b text-center">
                 Team Name: {teamDetails?.name}
               </h2>
               <div className="flex">
@@ -53,7 +51,7 @@ export default function TeamsList({
                     {teamDetails?.ideaSubmission?.problemStatement}
                   </h2>
                   <a
-                    className="p-2 m-2 border rounded"
+                    className="m-2 rounded border p-2"
                     href={teamDetails?.ideaSubmission?.pptUrl.split(";")[1]}
                   >
                     View PPT

@@ -1,10 +1,7 @@
-"use client";
-import { College, TshirtSize, User } from "@prisma/client";
-import { updateProfile } from "@/src/server/actions";
-import { Dispatch, useContext, useState } from "react";
+import { Courses, TshirtSize } from "@prisma/client";
+import { type Dispatch, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { updateProfileZ } from "@/src/lib/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -24,7 +21,7 @@ import {
   SelectValue,
 } from "../../ui/select";
 import { Button } from "../../ui/button";
-import { getUrlAndId } from "@/src/lib/utils/helper";
+import { getUrlAndId } from "~/utils/helper";
 import { ProgressContext } from "../../progressProvider";
 import { toast } from "sonner";
 import { ChevronDown, Loader2Icon, Save } from "lucide-react";
@@ -40,24 +37,29 @@ import {
 } from "../../ui/command";
 import CreateCollege from "../../profile/createCollege";
 import { ScrollArea } from "../../ui/scroll-area";
-import { Courses } from "@prisma/client";
+import { updateProfileZ } from "~/server/schema/zod-schema";
+import { api } from "~/utils/api";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type userRouter } from "~/server/api/routers/user";
+import { type collegeRouter } from "~/server/api/routers/college";
+import { env } from "~/env";
 
 const ProfileForm = ({
   user,
   colleges,
-  states,
   courses,
   registerProp,
+  refetch,
+  refetchColleges,
 }: {
-  user: User & {
-    college: College | null;
-  };
-  colleges: {
-    id: string;
-    name: string;
-    state: string;
-  }[];
-  states: string[];
+  user:
+    | inferRouterOutputs<typeof userRouter>["getUserWithCollege"]
+    | null
+    | undefined;
+  colleges:
+    | inferRouterOutputs<typeof collegeRouter>["getColleges"]
+    | undefined
+    | null;
   courses: string[];
   registerProp?: {
     currentState: number;
@@ -65,6 +67,8 @@ const ProfileForm = ({
     setCurrentState: Dispatch<number>;
     setMaxState: Dispatch<number>;
   };
+  refetch: () => void;
+  refetchColleges: () => void;
 }) => {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
@@ -72,11 +76,11 @@ const ProfileForm = ({
   const form = useForm<z.infer<typeof updateProfileZ>>({
     resolver: zodResolver(updateProfileZ),
     defaultValues: {
-      name: user.name ?? "",
-      phone: user.phone ?? "",
-      college: user.collegeId ?? "",
-      course: user.course ?? undefined,
-      tshirtSize: user.tShirtSize ?? undefined,
+      name: user?.name ?? "",
+      phone: user?.phone ?? "",
+      college: user?.collegeId ?? "",
+      course: user?.course ?? undefined,
+      tshirtSize: user?.tShirtSize ?? undefined,
     },
   });
   const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);
@@ -88,64 +92,160 @@ const ProfileForm = ({
 
   const [openCollegeList, setOpenCollegeList] = useState(false);
   const [collegevalue, setCollegevalue] = useState("");
-  const [collegeId, setCollegeId] = useState(user.collegeId ?? "");
+  const [collegeId, setCollegeId] = useState(user?.collegeId ?? "");
+  const updateProfile = api.user.updateProfile.useMutation({
+    onSuccess: () => {
+      toast.success("Profile Updated");
+      setLoading(false);
+      refetch();
+      if (registerProp) setCurrentState(1);
+      if (maxState <= 1 && registerProp) setMaxState(1);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      setError(error.message);
+      setLoading(false);
+    },
+  });
 
   if (currentState !== 0 && registerProp) {
     return <></>;
   }
 
+  const upload = async (file: File) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!file) return toast.error("No file uploaded");
+    if (file.size > 2 * 1000 * 1000) {
+      return toast.error("Uploads must be less than 2MB");
+    }
+    if (!allowedTypes.includes(file.type))
+      return toast.error("Only jpeg, jpg and png files are allowed");
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(
+      `${env.NEXT_PUBLIC_BASE_URL}/api/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    const data = (await response.json()) as { secure_url: string };
+    if (!data.secure_url) {
+      toast.error("Error uploading image");
+      //toast.dismiss(loadingToast);
+      return;
+    }
+    return data.secure_url;
+  };
+
+  const something = async () => {
+    console.log({ aadhaarFile, clgFile });
+    if (user?.aadhaar && user?.college_id) {
+      form.setValue("aadhaarUrl", user.aadhaar);
+      form.setValue("collegeIdUrl", user.college_id);
+      if (aadhaarFile) {
+        //upload
+        toast.loading("Uploading Aadhaar...", {
+          id: "aadhaar",
+        });
+        const newFile = await upload(aadhaarFile);
+        setAadhaarFile(null);
+        toast.dismiss("aadhaar");
+        toast.success("Aadhaar uploaded");
+        console.log(newFile);
+
+        form.setValue("aadhaarUrl", newFile as string);
+      }
+      if (clgFile) {
+        toast.loading("Uploading College ID...", {
+          id: "college",
+        });
+        const newFile = await upload(clgFile);
+        setClgFile(null);
+        toast.dismiss("college");
+        toast.success("College ID uploaded");
+        console.log(newFile);
+        form.setValue("collegeIdUrl", newFile as string);
+      }
+      form
+        .handleSubmit(onSubmit)()
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      if (!aadhaarFile || !clgFile) {
+        return toast.error("Please fill all details");
+      }
+        toast.loading("Uploading Aadhaar...", {
+          id: "aadhaar",
+        });
+      const aadhaarUrl = await upload(aadhaarFile);
+        toast.dismiss("aadhaar");
+        toast.success("Aadhaar ID uploaded");
+        toast.loading("Uploading College ID...", {
+          id: "college",
+        });
+      const collegeUrl = await upload(clgFile);
+        toast.dismiss("college");
+        toast.success("College ID uploaded");
+      form.setValue("aadhaarUrl", aadhaarUrl as string);
+      form.setValue("collegeIdUrl", collegeUrl as string);
+      form
+        .handleSubmit(onSubmit)()
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   const onSubmit = async (data: z.infer<typeof updateProfileZ>) => {
     setLoading(true);
-    // e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("phone", data.phone);
-    formData.append("course", data.course || "");
-    formData.append("college", collegeId || "");
-    formData.append("tshirtSize", data.tshirtSize || "");
-    formData.append("collegeIdFile", clgFile || "");
-    formData.append("aadhaarFile", aadhaarFile || "");
     toast.loading("Saving Details...", {
       id: "loadingToast",
       position: "bottom-center",
     });
 
-    const res = await updateProfile(formData);
+    //upload here
+    console.log("Running");
+
+    await updateProfile
+      .mutateAsync({
+        name: data.name,
+        phone: data.phone,
+        course: data.course,
+        college: data.college,
+        tshirtSize: data.tshirtSize,
+        collegeIdUrl: data.collegeIdUrl,
+        aadhaarUrl: data.aadhaarUrl,
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     toast.dismiss("loadingToast");
-    if (res.type !== "error")
-      toast.success("Profile Updated", {
-        duration: 2000,
-        position: "bottom-center",
-      });
-    else
-      toast.error(res.message, {
-        duration: 2000,
-        position: "bottom-center",
-      });
-    setError(res.message);
-    setLoading(false);
-    res.type !== "error" && registerProp && setCurrentState(1);
-    res.type !== "error" && maxState <= 1 && registerProp && setMaxState(1);
   };
 
   return (
     <div className="max-h-max w-full">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await something();
+          }}
           className="flex flex-col gap-2 md:gap-4"
         >
-          <h1 className="text-center lg:text-2xl text-xl ">
+          <h1 className="text-center text-xl lg:text-2xl ">
             Fill your Details
           </h1>
-          <div className="flex flex-wrap flex-col md:flex-row justify-center items-center mx-auto gap-4">
+          <div className="mx-auto flex flex-col flex-wrap items-center justify-center gap-4 md:flex-row">
             {/* Name */}
             <FormField
               control={form.control}
               name="name"
-              render={({ field, formState, fieldState }) => {
+              render={({ field }) => {
                 return (
-                  <FormItem className="md:w-[45%] w-full">
+                  <FormItem className="w-full md:w-[45%]">
                     <FormLabel className="">Name</FormLabel>
                     <FormControl>
                       <Input placeholder="John Doe" {...field} />
@@ -159,8 +259,8 @@ const ProfileForm = ({
             <FormField
               control={form.control}
               name="phone"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[45%] w-full">
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[45%]">
                   <FormLabel className="">Phone</FormLabel>
                   <FormControl>
                     <Input
@@ -178,8 +278,8 @@ const ProfileForm = ({
             <FormField
               control={form.control}
               name="college"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[45%] w-[80vw]">
+              render={({}) => (
+                <FormItem className="w-[80vw] md:w-[45%]">
                   <FormLabel className="">College</FormLabel>
                   <FormControl>
                     <Popover
@@ -195,16 +295,16 @@ const ProfileForm = ({
                         >
                           {collegevalue
                             ? collegevalue
-                            : user.college?.name
-                              ? user.college?.name +
+                            : user?.college?.name
+                              ? user?.college?.name +
                                 ", " +
-                                user.college.state
+                                user?.college.state
                                   .replace(/_/g, " ")
                                   .split(" ")
                                   .map(
                                     (word) =>
                                       word.charAt(0).toUpperCase() +
-                                      word.slice(1).toLowerCase()
+                                      word.slice(1).toLowerCase(),
                                   )
                                   .join(" ")
                               : "Select college"}
@@ -217,16 +317,16 @@ const ProfileForm = ({
                             placeholder="Search college here..."
                             className="h-9"
                           />
-                          <CommandEmpty className="mt-3 flex justify-center items-center flex-col text-center">
+                          <CommandEmpty className="mt-3 flex flex-col items-center justify-center text-center">
                             No College with that name found.
-                            <CreateCollege />
+                            <CreateCollege refetchColleges={refetchColleges} />
                           </CommandEmpty>
                           <CommandGroup>
                             <ScrollArea className="h-72">
-                              {colleges.map((college) => (
+                              {colleges?.map((college) => (
                                 <CommandItem
                                   key={college.id}
-                                  value={college.name}
+                                  value={college.id}
                                   onSelect={(currentValue) => {
                                     setCollegeId(college.id);
                                     form.setValue("college", college.id);
@@ -241,9 +341,9 @@ const ProfileForm = ({
                                               .map(
                                                 (word) =>
                                                   word.charAt(0).toUpperCase() +
-                                                  word.slice(1).toLowerCase()
+                                                  word.slice(1).toLowerCase(),
                                               )
-                                              .join(" ")
+                                              .join(" "),
                                     );
                                     // setFormData({
                                     //   ...formData,
@@ -259,11 +359,14 @@ const ProfileForm = ({
                                     .map(
                                       (word) =>
                                         word.charAt(0).toUpperCase() +
-                                        word.slice(1).toLowerCase()
+                                        word.slice(1).toLowerCase(),
                                     )
                                     .join(" ")}
                                 </CommandItem>
                               ))}
+                              <CreateCollege
+                                refetchColleges={refetchColleges}
+                              />
                             </ScrollArea>
                           </CommandGroup>
                         </Command>
@@ -278,8 +381,8 @@ const ProfileForm = ({
             <FormField
               control={form.control}
               name="course"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[45%] w-full">
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[45%]">
                   <FormLabel className="">Degree</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
@@ -305,14 +408,14 @@ const ProfileForm = ({
             <FormField
               control={form.control}
               name="tshirtSize"
-              render={({ field, formState, fieldState }) => (
-                <FormItem className="md:w-[45%] w-full">
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[45%]">
                   <FormLabel className="flex items-center justify-between">
                     T-shirt Size
                     <a
                       href="/images/Size_Chart.jpeg"
                       download
-                      className="text-xs underline cursor-pointer"
+                      className="cursor-pointer text-xs underline"
                     >
                       Download Size Chart
                     </a>
@@ -339,12 +442,12 @@ const ProfileForm = ({
             ></FormField>
             {/* files */}
             <Card className="w-full">
-              <CardContent className="p-4 grid md:grid-cols-1 lg:grid-cols-2 gap-2">
+              <CardContent className="grid gap-2 p-4 md:grid-cols-1 lg:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="aadhaarFile"
-                  render={({ field, formState, fieldState }) => (
-                    <FormItem className="md:w-[calc(90%+1.5rem)] w-full">
+                  name="aadhaarUrl"
+                  render={({}) => (
+                    <FormItem className="w-full md:w-[calc(90%+1.5rem)]">
                       <FormLabel className="">Aadhar Card</FormLabel>
                       <FormControl>
                         <div className="sm:py-2">
@@ -362,8 +465,8 @@ const ProfileForm = ({
 
                 <FormField
                   control={form.control}
-                  name="collegeIdFile"
-                  render={({ field, formState, fieldState }) => {
+                  name="collegeIdUrl"
+                  render={({}) => {
                     // console.log(field)
                     return (
                       <FormItem>

@@ -1,36 +1,40 @@
-"use client";
-
 import { useContext } from "react";
 import { ProgressContext } from "../../progressProvider";
 import ProfileForm from "../profileForm/profileForm";
-import { College, User } from "@prisma/client";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type collegeRouter } from "~/server/api/routers/college";
+import { type userRouter } from "~/server/api/routers/user";
 
 const RegisterProfileForm = ({
   user,
   colleges,
-  states,
   courses,
+  refetch,
+  refetchColleges,
 }: {
-  user: User & {
-    college: College | null;
-  };
-  colleges: {
-    id: string;
-    name: string;
-    state : string
-  }[];
-  states: string[];
+  user:
+    | inferRouterOutputs<typeof userRouter>["getUserWithCollege"]
+    | null
+    | undefined;
+  colleges:
+    | inferRouterOutputs<typeof collegeRouter>["getColleges"]
+    | undefined
+    | null;
   courses: string[];
+  refetch: () => void;
+  refetchColleges: () => void;
 }) => {
   const { currentState, maxState, setCurrentState, setMaxState } =
     useContext(ProgressContext);
+
   return (
     <ProfileForm
+      refetch={refetch}
+      refetchColleges={refetchColleges}
       colleges={colleges}
       courses={courses}
       registerProp={{ currentState, maxState, setCurrentState, setMaxState }}
       user={user}
-      states={states}
     />
   );
 };

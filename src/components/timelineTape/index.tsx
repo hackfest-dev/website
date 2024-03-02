@@ -1,13 +1,12 @@
-'use client';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 export default function TimelineTape() {
   const ref = useRef(null);
   const [progress, setProgress] = useState(0);
   const [selectedDay, setSelectedDay] = useState(1);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['0.5 end', 'end end'],
+    offset: ["0.5 end", "end end"],
   });
 
   // <div style="height: 500vh; position: relative;">
@@ -21,19 +20,19 @@ export default function TimelineTape() {
   }, [scrollYProgress]);
 
   // const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-  const rotate = useTransform(scrollYProgress, [0, 1], ['0deg', '360deg']);
+  const rotate = useTransform(scrollYProgress, [0, 1], ["0deg", "360deg"]);
 
   return (
     <>
       <div
-      id="timeline"
-        className="xl:h-[120dvh] h-[50dvh] flex "
+        id="timeline"
+        className="flex h-[50dvh] xl:h-[120dvh] "
         onClick={() => {
           console.log(progress);
         }}
       >
         <div
-          className="sticky flex h-screen w-full xl:scale-[80%] lg:scale-[75%] md:scale-[60%] sm:scale-[50%] scale-[30%] -translate-x-48  sm:-translate-x-36 xl:tranaslate-x-24"
+          className="xl:tranaslate-x-24 sticky flex h-screen w-full -translate-x-48 scale-[30%] sm:-translate-x-36 sm:scale-[50%] md:scale-[60%]  lg:scale-[75%] xl:scale-[80%]"
           ref={ref}
         >
           <div className="absolute -left-[25%] top-1/2 z-10">
@@ -209,9 +208,9 @@ export default function TimelineTape() {
               </g>
             </svg>
 
-            <div className="flex gap-5 justify-center py-12">
+            <div className="flex justify-center gap-5 py-12">
               <button
-                className="text-5xl bg-[#1e7373] w-24 h-24 rounded-full bg-opacity-30 backdrop-blur-3xl border border-[#1e7373]"
+                className="h-24 w-24 rounded-full border border-[#1e7373] bg-[#1e7373] bg-opacity-30 text-5xl backdrop-blur-3xl"
                 onClick={() => {
                   setSelectedDay(1);
                 }}
@@ -219,7 +218,7 @@ export default function TimelineTape() {
                 1
               </button>
               <button
-                className="text-5xl bg-[#1e7373] w-24 h-24 rounded-full bg-opacity-30 backdrop-blur-3xl border border-[#1e7373]"
+                className="h-24 w-24 rounded-full border border-[#1e7373] bg-[#1e7373] bg-opacity-30 text-5xl backdrop-blur-3xl"
                 onClick={() => {
                   setSelectedDay(2);
                 }}
@@ -227,7 +226,7 @@ export default function TimelineTape() {
                 2
               </button>
               <button
-                className="text-5xl bg-[#1e7373] w-24 h-24 rounded-full bg-opacity-30 backdrop-blur-3xl border border-[#1e7373]"
+                className="h-24 w-24 rounded-full border border-[#1e7373] bg-[#1e7373] bg-opacity-30 text-5xl backdrop-blur-3xl"
                 onClick={() => {
                   setSelectedDay(3);
                 }}

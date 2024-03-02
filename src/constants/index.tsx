@@ -1,4 +1,5 @@
 import { AiOutlineInstagram, AiOutlineMail } from "react-icons/ai";
+import { FaDiscord } from "react-icons/fa";
 
 export const dates: [Date, Date, Date] = [
   new Date("2024-4-5"),
@@ -45,6 +46,11 @@ export const social: Array<{
     icon: <AiOutlineMail className=" hover:text-yellow-500" />,
     name: "E-mail",
   },
+  {
+    link: "https://discord.gg/d9hQV8Hcv6",
+    icon: <FaDiscord className=" hover:text-yellow-500" />,
+    name: "Discord",
+  },
 ];
 
 export const domains: Array<{
@@ -57,7 +63,7 @@ export const domains: Array<{
     name: "Fintech",
     image: "/images/fintech.png",
     description: {
-      p1: "Crafting the future of finance by creating solutions that revolutionize the way we manage, invest and trasact in the financial realm.",
+      p1: "Crafting the future of finance by creating solutions that revolutionize the way we manage, invest and transact in the financial realm.",
       p2: "Tackle challenges related to digital payments, financial inclusion, or innovative solutions for managing and investing money.",
     },
     prize: 10000,
@@ -93,7 +99,7 @@ export const domains: Array<{
     name: "Logistics",
     image: "/images/logistics.png",
     description: {
-      p1: "Redifine logistics and contribute to a world  where movement of goods is faster, smarter and also sustainable.",
+      p1: "Redefine logistics and contribute to a world  where movement of goods is faster, smarter and also sustainable.",
       p2: "Revolutionize the way goods and services move across the globe. Tackle challenges in supply chain optimization, last-mile delivery, warehouse management, or transportation efficiency. Build solutions that streamline logistics operations, reduce environmental impact, and ensure the seamless flow of products from point A to point B. Your code can be the driving force behind a more connected and efficient global logistics network.",
     },
     prize: 10000,
@@ -102,7 +108,7 @@ export const domains: Array<{
     name: "Open Innovation",
     image: "/images/openInnovation.png",
     description: {
-      p1: "Your Innovation knows no bounds!!! Push the boundaries and Break free from traditional barriers with code.",
+      p1: "Innovation knows no bounds!!! Push the boundaries and Break free from traditional barriers with code.",
       p2: "This track encourages participants to work on any problem they are passionate about, fostering innovation and allowing for a wide range of projects across different domains. Solve a problem that matters to you. Identify an issue in your community or a personal challenge and develop a creative and impactful solution using technology.",
     },
     prize: null,
