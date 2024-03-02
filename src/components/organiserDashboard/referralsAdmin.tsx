@@ -58,7 +58,7 @@ export default function ReferralsAdmin() {
   });
 
   async function submitForm(data: z.infer<typeof addReferralCodeZ>) {
-    try {
+		if(!z.string().email().or(z.string().min(10).max(10)).safeParse(data.contact).success) return toast.error("Enter a valid email or phone")
       await addReferral.mutateAsync({
         code: data.code,
         collegeId: data.collegeId,
@@ -68,9 +68,6 @@ export default function ReferralsAdmin() {
       });
       await reffaralsRefetch();
       toast.success("Added referral successfully");
-    } catch (e) {
-      toast.error("Couldn't add referral code");
-    }
   }
 
   return (
