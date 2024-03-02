@@ -323,6 +323,15 @@ export const teamRouter = createTRPCRouter({
           },
           ideaSubmission: true,
           referral: true,
+          Scores: {
+            where:{
+              userId: ctx.session.user.id
+            },
+            include: {
+              score: true,
+              User: true
+            }
+          }
         },
       });
     } catch (error) {

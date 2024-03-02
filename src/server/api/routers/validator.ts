@@ -76,14 +76,14 @@ export const validatorRouter = createTRPCRouter({
           }
 
           // Update score for that team in validator criteria
-          await ctx.db.scoresByJudge.update({
+          await ctx.db.scoresByJudge.upsert({
             where: {
               teamId_userId: {
                 teamId: input.teamId,
                 userId: user.id,
               },
             },
-            data: {
+            update: {
               score: {
                 create: {
                   criteria: {
@@ -92,6 +92,28 @@ export const validatorRouter = createTRPCRouter({
                     },
                   },
                   score: input.score as string,
+                },
+              },
+            },
+            create: {
+              User: {
+                connect: {
+                  id: user.id,
+                },
+              },
+              Team: {
+                connect: {
+                  id: input.teamId,
+                },
+              },
+              score: {
+                create: {
+                  score: input.score as string,
+                  criteria: {
+                    connect: {
+                      id: validatorCriteria.id,
+                    },
+                  },
                 },
               },
             },

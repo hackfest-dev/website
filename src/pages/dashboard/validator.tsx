@@ -7,175 +7,116 @@ import {
   TableCell,
 } from "~/components/ui/table";
 import { api } from "~/utils/api";
-
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  type ColumnDef,
-  type VisibilityState,
-  type SortingState,
-  type ColumnFiltersState,
-} from "@tanstack/react-table";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 import { inferRouterOutputs } from "@trpc/server";
 import { teamRouter } from "~/server/api/routers/team";
-import { Tracks } from "@prisma/client";
+import { Scores, Team, Tracks, User } from "@prisma/client";
 import { Dialog, DialogTrigger, DialogContent } from "~/components/ui/dialog";
 import DashboardLayout from "~/components/layout/dashboardLayout";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
-interface SubmissionRow {
-  ideaSubmission: { track: Tracks; pptUrl: string };
-}
+
+
 
 export default function Validator() {
-  const submitScore = api.validator.setScore.useMutation();
-  const teamData = api.team.getTeamsList.useQuery()
-
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
-
-  const columns: ColumnDef<
-    unknown,
-    inferRouterOutputs<typeof teamRouter>["getTeamsList"]
-  >[] = [
-    {
-      accessorKey: "name",
-      header: "Team Name",
+  const submitScore = api.validator.setScore.useMutation({
+    onSuccess: () => {
+      toast.success('Score submitted');
+      teamData.refetch()
     },
-    {
-      accessorKey: "ideaSubmission",
-      header: "PPT",
-      cell: (cell) => {
-        return(
-          <>
-            {/* {(cell.cell.row.original as SubmissionRow).ideaSubmission?.track} */}
-            <Dialog>
-              <DialogTrigger>
-                Hello
-              </DialogTrigger>
-              <DialogContent className="text-white">
-                Hello
-              </DialogContent>
-            </Dialog>
-          </>
-        )
-      },
-    },
-  ];
-
-  const table = useReactTable({
-    data: teamData.data?.filter(team=>team.ideaSubmission ? true : false) ?? [],
-    columns: columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    // onRowSelectionChange: getSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
+  const teamData = api.team.getTeamsList.useQuery();
+  const user = useSession();
+
+  
+
+  
 
   return (
     !teamData.isLoading && <DashboardLayout>
       <div className="rounded-md border">
-      {/* <Input
-          placeholder="Search teams"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
-
+      
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
+          
+          <TableRow>
+            <TableHead>
+              Team Name
+            </TableHead>
+            <TableHead>
+              PPT
+            </TableHead> 
+          </TableRow>
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          
+          {
+            teamData.data?.filter(team=>team.ideaSubmission ? true : false).map((team) => {
+              return(
+                <TableRow>
+                  <TableCell>
+                    {team.name}
                   </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
+                  <TableCell>
+                    {team.ideaSubmission?.pptUrl}
+                    </TableCell>
+                    <TableCell>
+                    <button
+            
+            className={`${team?.Scores[0]?.userId === user?.data?.user.id && team?.Scores[0]?.score.score === '5' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg` }
+              onClick={() => {
+                submitScore.mutateAsync({
+                  teamId: team.id,
+                  score: '5',
+                });
+              }}
+            >
+              Good
+            </button>
+                    </TableCell>
+                    
+                    <TableCell>
+                    <button
+            
+            className={`${team?.Scores[0]?.userId === user?.data?.user.id && team?.Scores[0]?.score.score === '10' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg` }
+              onClick={() => {
+                submitScore.mutateAsync({
+                  teamId: team.id,
+                  score: '10',
+                });
+              }}
+            >
+              Better
+            </button>
+                    </TableCell>
+
+                    <TableCell>
+                    <button
+            
+            className={`${team?.Scores[0]?.userId === user?.data?.user.id && team?.Scores[0]?.score.score === '15' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg` }
+              onClick={() => {
+                submitScore.mutateAsync({
+                  teamId: team.id,
+                  score: '15',
+                });
+              }}
+            >
+              Best
+            </button>
+                    </TableCell>
+                </TableRow>
+              )
+            })
+          }
         </TableBody>
       </Table>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </Button>
-      </div>
+      
     </div>
     </DashboardLayout>
   );
