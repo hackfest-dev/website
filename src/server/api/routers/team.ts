@@ -237,7 +237,7 @@ export const teamRouter = createTRPCRouter({
   deleteTeam: protectedProcedure.mutation(async ({ ctx }) => {
     try {
       const user = ctx.session.user;
-      
+
       if (!user?.isLeader) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -306,8 +306,11 @@ export const teamRouter = createTRPCRouter({
     }),
 
   getTeamsList: protectedProcedure.query(async ({ ctx }) => {
-    console.log(ctx.session.user.role)
-    if (ctx.session.user.role !== 'ORGANISER')
+    console.log(ctx.session.user.role);
+    if (
+      ctx.session.user.role !== "ORGANISER" &&
+      ctx.session.user.role !== "VALIDATOR"
+    )
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "You are not an organiser",
