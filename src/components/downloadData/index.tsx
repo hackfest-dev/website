@@ -2,51 +2,64 @@ import { type inferRouterOutputs } from "@trpc/server";
 import { type TeamsData } from "../../types";
 import { api } from "~/utils/api";
 
-
-export default function DownloadDataButtons(){
+export default function DownloadDataButtons() {
   const data = api.user.getAllUsers.useQuery().data;
-  
-  function usersNotInTeam(){
-    let csv = '';
-    const Headers = 'Name,Email,\n';
-    csv+=Headers;
+
+  function usersNotInTeam() {
+    let csv = "";
+    const Headers = "Name,Email,\n";
+    csv += Headers;
 
     data?.map((user) => {
-      if(!user?.teamId){
-        csv+=`${user.name}`+','+`${user.email}`+','+'\n';
+      if (!user?.teamId) {
+        csv += `${user.name}` + "," + `${user.email}` + "," + "\n";
       }
-    })
+    });
 
     return csv;
   }
 
-  function teamLeadersWithSubmission(){
-    let csv = '';
-    const Headers = 'Name,Phone,Email,\n';
-    csv+=Headers;
+  function teamLeadersWithSubmission() {
+    let csv = "";
+    const Headers = "Name,Phone,Email,\n";
+    csv += Headers;
 
     data?.map((user) => {
-      if(user?.isLeader && user?.profileProgress === 'COMPLETE'){
-        csv+=`${user.name}`+','+`${user.phone}`+','+`${user.email}`+','+'\n';
+      if (user?.isLeader && user?.profileProgress === "COMPLETE") {
+        csv +=
+          `${user.name}` +
+          "," +
+          `${user.phone}` +
+          "," +
+          `${user.email}` +
+          "," +
+          "\n";
       }
-    })
+    });
 
     return csv;
   }
-  function teamLeadersWithoutSubmission(){
-    let csv = '';
-    const Headers = 'Name,Phone,Email,\n';
-    csv+=Headers;
+  function teamLeadersWithoutSubmission() {
+    let csv = "";
+    const Headers = "Name,Phone,Email,\n";
+    csv += Headers;
 
     data?.map((user) => {
-      if(user?.isLeader && user?.profileProgress !== 'COMPLETE'){
-        csv+=`${user.name}`+','+`${user.phone}`+','+`${user.email}`+','+'\n';
+      if (user?.isLeader && user?.profileProgress !== "COMPLETE") {
+        csv +=
+          `${user.name}` +
+          "," +
+          `${user.phone}` +
+          "," +
+          `${user.email}` +
+          "," +
+          "\n";
       }
-    })
+    });
 
     return csv;
   }
-  return(
+  return (
     <>
       <button
         onClick={async () => {
@@ -59,7 +72,7 @@ export default function DownloadDataButtons(){
           link.click();
           link.remove();
         }}
-        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
+        className="rounded bg-white p-2 text-center font-bold text-black "
       >
         Users Not in Team
       </button>
@@ -74,7 +87,7 @@ export default function DownloadDataButtons(){
           link.click();
           link.remove();
         }}
-        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
+        className="rounded bg-white p-2 text-center font-bold text-black "
       >
         Team Leaders with submission
       </button>
@@ -89,10 +102,10 @@ export default function DownloadDataButtons(){
           link.click();
           link.remove();
         }}
-        className="float-right mb-2 rounded bg-white p-3 text-center font-bold text-black "
+        className="rounded bg-white p-2 text-center font-bold text-black "
       >
         Team Leaders without submission
       </button>
     </>
-  )
+  );
 }

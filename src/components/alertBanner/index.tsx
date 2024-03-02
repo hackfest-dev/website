@@ -1,12 +1,11 @@
-import { motion } from 'framer-motion';
 const AlertBanner = () => {
   return (
     <>
-      <motion.div className="absolute w-full">
-        <h3 className="md:text-2xl sm:text-xl text-lg text-center font-bold bg-[#f3bc1f]/50 md:py-1">
+      <div className="absolute w-full">
+        <h3 className="bg-[#f3bc1f]/50 text-center text-lg font-bold sm:text-xl md:py-1 md:text-2xl">
           Dates to be announced soon!
         </h3>
-      </motion.div>
+      </div>
     </>
   );
 };

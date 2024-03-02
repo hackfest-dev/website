@@ -40,7 +40,6 @@ export default function ParticipantsTable({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  
 
   const verifyUser = api.user.verifyUser.useMutation();
 
@@ -48,6 +47,10 @@ export default function ParticipantsTable({
     unknown,
     inferRouterOutputs<typeof teamRouter>["getTeamsList"]
   >[] = [
+    {
+      accessorKey: "id",
+      header: "Team ID",
+    },
     {
       accessorKey: "name",
       header: "Team Name",
@@ -79,7 +82,10 @@ export default function ParticipantsTable({
         </span>
       ),
     },
-
+    {
+      accessorKey: 'ValidatorTotalScore',
+      header: 'Validator Score',
+    },
     {
       accessorKey: "paymentStatus",
       header: "Payment Status",
@@ -105,27 +111,7 @@ export default function ParticipantsTable({
 
   return (
     <>
-      <div className="rounded-md border">
-        {/* <Input
-          placeholder="Search teams"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
-
-        <div className="flex flex-col">
-          <span>
-            Number of Logins: {api.user.getAllUsers.useQuery().data?.length}
-          </span>
-          <span>
-            Number of Teams: {api.team.getTeamsList.useQuery().data?.length}
-          </span>
-          <span>
-            Number of Idea submissions: {api.team.getTeamsList.useQuery().data?.filter((team) => team.ideaSubmission).length}
-          </span>
-        </div>
+      <div className="flex flex-col items-center justify-center rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -168,7 +154,7 @@ export default function ParticipantsTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No Teams Found
                 </TableCell>
               </TableRow>
             )}

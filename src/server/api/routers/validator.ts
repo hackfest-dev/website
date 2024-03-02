@@ -14,7 +14,7 @@ export const validatorRouter = createTRPCRouter({
       try {
         //Check if user is validator
         const user = ctx.session.user;
-        if (user?.role === "VALIDATOR")
+        if (user?.role !== "VALIDATOR")
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Not a validator!",
@@ -25,12 +25,21 @@ export const validatorRouter = createTRPCRouter({
             id: input.teamId,
           },
           include: {
-            Scores: true,
+            Scores: {
+				where:{
+					userId:user.id
+				},
+				include:{
+					score:true
+				}
+
+			},
           },
         });
 
         // If team already has a score just update it
         if (team && team?.Scores.length > 0) {
+          const newTotalScore = (team.ValidatorTotalScore - Number(team.Scores[0]?.score.score)) + Number(input.score)
           await ctx.db.scoresByJudge.update({
             where: {
               teamId_userId: {
@@ -51,9 +60,7 @@ export const validatorRouter = createTRPCRouter({
               id: input.teamId,
             },
             data: {
-              ValidatorTotalScore: {
-                increment: Number(input.score),
-              },
+              ValidatorTotalScore: newTotalScore,
             },
           });
         }
@@ -76,26 +83,38 @@ export const validatorRouter = createTRPCRouter({
           }
 
           // Update score for that team in validator criteria
-          await ctx.db.scoresByJudge.update({
-            where: {
-              teamId_userId: {
-                teamId: input.teamId,
-                userId: user.id,
-              },
-            },
+          await ctx.db.scoresByJudge.create({
             data: {
+              User: {
+                connect: {
+                  id: user.id,
+                },
+              },
+              Team: {
+                connect: {
+                  id: input.teamId,
+                },
+              },
               score: {
                 create: {
+                  score: input.score as string,
                   criteria: {
                     connect: {
                       id: validatorCriteria.id,
                     },
                   },
-                  score: input.score as string,
                 },
               },
             },
           });
+		  await ctx.db.team.update({
+			  where:{
+				  id:input.teamId
+			  },
+			  data:{
+				  ValidatorTotalScore:{increment:Number(input.score)}
+			  }
+		  })
         }
       } catch (error) {
         console.log(error);
@@ -110,7 +129,6 @@ export const validatorRouter = createTRPCRouter({
   getScoresByTeam: protectedProcedure
     .input(
       z.object({
-        score: z.enum(["5", "10", "15"]),
         teamId: z.string(),
       }),
     )
