@@ -14,6 +14,7 @@ import ProgressProvider from "~/components/progressProvider";
 import { api } from "~/utils/api";
 import RootLayout from "~/components/layout";
 import { Card } from "~/components/ui/card";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const {
@@ -114,6 +115,20 @@ export default function RegisterPage() {
                       isInTeam={user.team ? true : false}
                     />
                   </div>
+
+                  <div className=" flex w-full flex-col gap-1 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 px-5 py-2 mt-6 text-sm text-white backdrop-blur-2xl md:text-base xl:text-lg">
+              <p className="flex md:flex-row flex-col w-full justify-center items-center gap-2">
+                <span className="font-semibold">Technical Issues? </span>
+                <a href="https://discord.gg/d9hQV8Hcv6">
+                  <button className="bg-white text-sm px-3 py-1 rounded-md text-black">Join Our Discord</button>
+                </a>
+                <span>Or</span>
+                <Link href="/contact">
+                 <button className="bg-white text-sm px-3 py-1 rounded-md text-black">Reach out to us</button>
+                </Link>
+              </p>
+              
+            </div>
                 </>
               ) : (
                 <Registered />

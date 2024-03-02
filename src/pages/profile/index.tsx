@@ -14,7 +14,14 @@ export default function ProfilePage() {
 
   return (
     <RootLayout>
-      <div className="md:px-auto mx-auto mb-10 mt-28 flex min-h-screen w-full max-w-4xl flex-col justify-center gap-2 p-3 md:mb-20">
+      <div
+        className="bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933]"
+        style={{
+          background:
+            "url('/images/noise.svg') repeat,linear-gradient(180deg, #060e3c 0%, #052d4f 30%, #001933 100%)",
+        }}
+      >
+      <div className="md:px-auto mx-auto pb-10 pt-28 flex min-h-screen w-full max-w-4xl flex-col justify-center gap-2 p-3 md:pb-20">
         {userInfo.isLoading ? (
           <Card className="w-h-96 flex h-96 items-center justify-center gap-2">
             Loading...
@@ -37,6 +44,7 @@ export default function ProfilePage() {
             userRefetch={userInfo.refetch}
           />
         )}
+      </div>
       </div>
     </RootLayout>
   );
