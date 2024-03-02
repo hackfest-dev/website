@@ -113,6 +113,7 @@ export const EditProfileForm: React.FC<{
       setFormData({ ...formData, collegeIdImg: user.college_id });
       if (aadhaarFile) {
         //upload
+		if(aadhaarFile.size > 2*1000*1000) return toast.error("Uploads must be less than 2Mb")
         toast.loading("Uploading Aadhaar...", {
           id: "aadhaar",
         });
@@ -122,9 +123,10 @@ export const EditProfileForm: React.FC<{
         toast.success("Aadhaar uploaded");
         console.log(newFile);
 
-        setFormData({ ...formData, aadhaarImg: newFile as string });
+        setFormData(prev=>{ return {...prev, aadhaarImg: newFile as string }});
       }
       if (clgFile) {
+		if(clgFile.size > 2*1000*1000) return toast.error("Uploads must be less than 2Mb")
         toast.loading("Uploading College ID...", {
           id: "college",
         });
@@ -133,9 +135,8 @@ export const EditProfileForm: React.FC<{
         toast.dismiss("college");
         toast.success("College ID uploaded");
         console.log(newFile);
-        setFormData({ ...formData, collegeIdImg: newFile as string });
+        setFormData(prev=>{ return {...prev, collegeIdImg: newFile as string }});
       }
-      await onSubmit();
     } else {
       if (!aadhaarFile || !clgFile) {
         return toast.error("Please fill all details");
@@ -145,7 +146,6 @@ export const EditProfileForm: React.FC<{
       setFormData({ ...formData, collegeIdImg: aadhaarUrl as string });
       setFormData({ ...formData, collegeIdImg: collegeUrl as string });
 
-      await onSubmit();
     }
   };
 
@@ -422,6 +422,7 @@ export const EditProfileForm: React.FC<{
           onClick={async (e) => {
             e.preventDefault();
             await something();
+			await onSubmit();
           }}
           disabled={isSaving}
           className={`${

@@ -40,6 +40,7 @@ export default function ParticipantsTable({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  
 
   const verifyUser = api.user.verifyUser.useMutation();
 
@@ -113,6 +114,18 @@ export default function ParticipantsTable({
           }
           className="max-w-sm"
         /> */}
+
+        <div className="flex flex-col">
+          <span>
+            Number of Logins: {api.user.getAllUsers.useQuery().data?.length}
+          </span>
+          <span>
+            Number of Teams: {api.team.getTeamsList.useQuery().data?.length}
+          </span>
+          <span>
+            Number of Idea submissions: {api.team.getTeamsList.useQuery().data?.filter((team) => team.ideaSubmission).length}
+          </span>
+        </div>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
