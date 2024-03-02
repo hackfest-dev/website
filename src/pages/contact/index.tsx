@@ -38,6 +38,21 @@ const contacts = [
   },
 ];
 
+const technicalContact = [
+  {
+    name: "Nandan R Pai",
+    designation: "Technical Committee",
+    email: "nnm22am033@nmamit.in",
+    ph: "9481585863",
+  },
+  {
+    name: "Srivatsa R Upadhya",
+    designation: "Technical Committee",
+    email: "4nm21cs171@nmamit.in",
+    ph: "9449414199",
+  },
+]
+
 export default function Contact() {
   return (
     <RootLayout>
@@ -62,6 +77,22 @@ export default function Contact() {
               );
             })}
           </div>
+
+          <SectionHeading
+          title="TECHNICAL SUPPORT"
+          classname="text-5xl md:text-6xl xl:text-7xl"
+        />
+
+<div className="flex w-full flex-wrap items-center justify-center gap-3 md:gap-24">
+            {technicalContact.map((contact, idx) => {
+              return (
+                <div key={idx} className="w-full max-w-xs md:max-w-sm">
+                  <ContactCard {...contact} />
+                </div>
+              )
+            })}
+          </div>
+
           <div className="flex w-full max-w-sm flex-col items-center justify-center gap-2 md:max-w-xl md:gap-4">
             <div className=" flex w-full flex-col gap-1 rounded-2xl border-2 border-teal-600 bg-gradient-to-br from-teal-700/50 via-teal-300/50 to-teal-700/50 px-5 py-2 text-sm text-white backdrop-blur-2xl md:text-base xl:text-lg">
               <p>
