@@ -187,12 +187,18 @@ model Scores {
 
 model Judges {
   id     Int             @id @default(autoincrement())
-  userId String          @unique
+  userId String          @unique 
   User   User            @relation(fields: [userId], references: [id])
   track  Tracks
+  type JudgeType @default(VALIDATOR)
   scores ScoresByJudge[]
 }
 
+enum JudgeType {
+  JUDGE
+  VALIDATOR
+  SUPER_VALIDATOR
+}
 enum CriteriaType {
   JUDGE
   VALIDATOR

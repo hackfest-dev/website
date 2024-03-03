@@ -16,7 +16,7 @@ export const validatorRouter = createTRPCRouter({
         const user = ctx.session.user;
         const judge = await ctx.db.judges.findFirst({
           where: {
-            id: user.id,
+            userId: user.id,
           },
         });
         if (!judge || judge?.type !== "VALIDATOR")
@@ -80,21 +80,16 @@ export const validatorRouter = createTRPCRouter({
             },
           });
           // if no criteria create one
-          if (!validatorCriteria) {
-            validatorCriteria = await ctx.db.criteria.create({
-              data: {
-                name: "top100",
-                type: "VALIDATOR",
-              },
-            });
-          }
-
           // Update score for that team in validator criteria
           await ctx.db.scoresByJudge.create({
             data: {
-              Judge: {
+              userId: user.id,
+              Judges: {
                 connect: {
-                  id: user.id,
+                  userId: user.id,
+                  User: {
+                    id: user.id,
+                  }
                 },
               },
               Team: {
@@ -107,7 +102,7 @@ export const validatorRouter = createTRPCRouter({
                   score: input.score as string,
                   criteria: {
                     connect: {
-                      id: validatorCriteria.id,
+                      id: validatorCriteria?.id,
                     },
                   },
                 },
