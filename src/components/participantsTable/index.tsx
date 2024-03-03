@@ -83,6 +83,10 @@ export default function ParticipantsTable({
       ),
     },
     {
+      accessorKey: 'ValidatorTotalScore',
+      header: 'Validator Score',
+    },
+    {
       accessorKey: "paymentStatus",
       header: "Payment Status",
     },

@@ -4,13 +4,15 @@ import AuthButtons from "./authButton";
 import { IoMdClose } from "react-icons/io";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { navLinks } from "~/constants";
+import { Button } from "../ui/button";
+import { useSession } from "next-auth/react";
 
 export const MobileNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const user = useSession();
   return (
     <>
-      <div className="fixed right-5 top-9 z-[60] flex items-center space-x-4 lg:hidden">
+      <div className="fixed right-5 top-[3.75rem] z-[60] flex items-center space-x-4 lg:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
@@ -45,7 +47,19 @@ export const MobileNavbar = () => {
             </Link>
           ))}
 
+          <div className="flex flex-col gap-2 w-full justify-center items-center">
           <AuthButtons />
+          {
+            user?.data?.user &&
+              user?.data?.user?.role !== 'PARTICIPANT' && (
+                <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
+                  <Button>
+                    Dashboard
+                  </Button>
+                </Link>
+              )
+            }
+          </div>
         </div>
       </div>
     </>

@@ -3,8 +3,11 @@ import Link from "next/link";
 import AuthButtons from "./authButton";
 import { MobileNavbar } from "./mobileNavbar";
 import { navLinks } from "~/constants";
+import { useSession } from "next-auth/react";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
+  const user = useSession();
   return (
     <div className="mx-3 flex justify-center">
       <nav className="fixed z-[60] mt-3 w-full max-w-6xl rounded-full border  border-white/30 bg-white/5 bg-clip-padding px-5 backdrop-blur-lg backdrop-filter sm:mt-5">
@@ -38,8 +41,17 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="hidden  lg:flex">
+          <div className="hidden  lg:flex gap-2">
             <AuthButtons />
+            {user?.data?.user && 
+              user?.data?.user?.role !== 'PARTICIPANT' && (
+                <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
+                  <Button>
+                    Dashboard
+                  </Button>
+                </Link>
+              )
+            }
           </div>
         </div>
       </nav>
