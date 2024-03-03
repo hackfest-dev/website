@@ -6,6 +6,7 @@ import { ideaRouter } from "./routers/idea";
 import { FAQRouter } from "./routers/faq";
 import { referralRouter } from "./routers/referral";
 import { validatorRouter } from "./routers/validator";
+import { organiserRouter } from "./routers/organiser";
 
 
 
@@ -21,7 +22,8 @@ export const appRouter = createTRPCRouter({
   idea: ideaRouter,
   faq: FAQRouter,
   referrals: referralRouter,
-  validator:validatorRouter
+  validator:validatorRouter,
+  organiser: organiserRouter
 });
 
 // export type definition of API

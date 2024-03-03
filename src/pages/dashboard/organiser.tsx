@@ -25,6 +25,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { useSession } from "next-auth/react";
 import NotFound from "../404";
+import JudgePanel from "~/components/organiserDashboard/judgePanel";
 
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery();
@@ -76,6 +77,9 @@ export default function Organiser() {
           </TabsTrigger>
           <TabsTrigger className="w-full" value="referrals">
             Referrals
+          </TabsTrigger>
+          <TabsTrigger className="w-full" value="judges">
+            Judges
           </TabsTrigger>
         </TabsList>
         <TabsContent value="teams">
@@ -153,6 +157,10 @@ export default function Organiser() {
 
         <TabsContent value="referrals">
           <ReferralsAdmin />
+        </TabsContent>
+
+        <TabsContent value="judges">
+          <JudgePanel/>
         </TabsContent>
       </Tabs>
     </DashboardLayout>
