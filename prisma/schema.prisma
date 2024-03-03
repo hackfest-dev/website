@@ -64,7 +64,7 @@ model User {
   sessions        Session[]
   college         College?   @relation(fields: [collegeId], references: [id])
   team            Team?      @relation(fields: [teamId], references: [id])
-  Judge           Judges?
+  Judges          Judges?
 
   @@index([collegeId])
   @@index([teamId])
@@ -101,7 +101,7 @@ model Team {
   Scores                   ScoresByJudge[]
   ValidatorTotalScore      Int               @default(0)
   SuperValidatorTotalScore Int               @default(0)
-  TeamProgress             TeamProgress      @default(NOT_SELECTED)
+  teamProgress             TeamProgress      @default(NOT_SELECTED)
 }
 
 model Payments {
@@ -137,14 +137,6 @@ model AppSettings {
   isProfileEditOpen     Boolean @default(true)
 }
 
-model Judges {
-  id     String          @unique
-  type   JudgeTypes      @default(VALIDATOR)
-  User   User            @relation(fields: [id], references: [id])
-  track  Tracks          @default(ALL)
-  Scores ScoresByJudge[]
-}
-
 model Referral {
   id        Int      @id @default(autoincrement())
   code      String   @unique
@@ -168,18 +160,19 @@ model Criteria {
   id     Int          @id @default(autoincrement())
   name   String
   type   CriteriaType
-  weight Int          @default(1)
   scores Scores[]
+  weight Int          @default(1)
 }
 
 model ScoresByJudge {
-  id      Int    @id @default(autoincrement())
-  userId  String
-  Judge   Judges @relation(fields: [userId], references: [id])
-  teamId  String
-  Team    Team   @relation(fields: [teamId], references: [id])
-  scoreId Int    @unique
-  score   Scores @relation(fields: [scoreId], references: [id])
+  id       Int     @id @default(autoincrement())
+  userId   String
+  teamId   String
+  Team     Team    @relation(fields: [teamId], references: [id])
+  scoreId  Int     @unique
+  score    Scores  @relation(fields: [scoreId], references: [id])
+  Judges   Judges? @relation(fields: [judgesId], references: [id])
+  judgesId Int?
 
   @@unique([teamId, userId])
 }
@@ -192,6 +185,14 @@ model Scores {
   ScoresByJudge ScoresByJudge?
 }
 
+model Judges {
+  id     Int             @id @default(autoincrement())
+  userId String          @unique
+  User   User            @relation(fields: [userId], references: [id])
+  track  Tracks
+  scores ScoresByJudge[]
+}
+
 enum CriteriaType {
   JUDGE
   VALIDATOR
@@ -201,9 +202,6 @@ enum CriteriaType {
 enum Role {
   PARTICIPANT
   ORGANISER
-}
-
-enum JudgeTypes {
   JUDGE
   VALIDATOR
   SUPER_VALIDATOR
@@ -287,15 +285,15 @@ enum States {
   PUDUCHERRY
 }
 
+enum TeamProgress {
+  NOT_SELECTED
+  SEMI_SELECTED
+  SELECTED
+}
+
 enum Category {
   GENERAL
   FOOD
   STAY
   TRAVEL
-}
-
-enum TeamProgress {
-  NOT_SELECTED
-  SEMI_SELECTED
-  SELECTED
 }
