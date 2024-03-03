@@ -309,8 +309,7 @@ export const teamRouter = createTRPCRouter({
   getTeamsList: protectedProcedure.query(async ({ ctx }) => {
     console.log(ctx.session.user.role);
     if (
-      ctx.session.user.role !== "ORGANISER" &&
-      ctx.session.user.role !== "VALIDATOR"
+      ctx.session.user.role === 'PARTICIPANT'
     )
       throw new TRPCError({
         code: "FORBIDDEN",
@@ -330,7 +329,7 @@ export const teamRouter = createTRPCRouter({
             },
             include: {
               score: true,
-              User: true,
+              Judges: true,
             },
           },
         },
@@ -360,7 +359,7 @@ export const teamRouter = createTRPCRouter({
             id: input.teamId,
           },
           data: {
-            TeamProgress: "SEMI_SELECTED",
+            teamProgress: "SEMI_SELECTED",
           },
         });
       } catch (error) {
@@ -393,7 +392,7 @@ export const teamRouter = createTRPCRouter({
             id: input.teamId,
           },
           data: {
-            TeamProgress: "SELECTED",
+            teamProgress: "SELECTED",
           },
         });
       } catch (error) {
@@ -426,7 +425,7 @@ export const teamRouter = createTRPCRouter({
             id: input.teamId,
           },
           data: {
-            TeamProgress: "NOT_SELECTED",
+            teamProgress: "NOT_SELECTED",
           },
         });
       } catch (error) {
