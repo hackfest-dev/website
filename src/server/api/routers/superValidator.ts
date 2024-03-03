@@ -6,23 +6,24 @@ export const validatorRouter = createTRPCRouter({
   setScore: protectedProcedure
     .input(
       z.object({
-        score: z.enum(["5", "10", "15"]),
+        score: z.string(),
         teamId: z.string(),
+        criteriaId: z.number(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
       try {
         //Check if user is validator
         const user = ctx.session.user;
-        const judge = await ctx.db.judges.findFirst({
-          where: {
-            id: user.id,
-          },
-        });
-        if (!judge || judge?.type !== "VALIDATOR")
+		const judge = await ctx.db.judges.findUnique({
+			where:{
+				id:user.id
+			}
+		})
+        if (judge?.type !== "SUPER_VALIDATOR")
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Not a validator!",
+            message: "Not allowed to perform this action",
           });
 
         const team = await ctx.db.team.findUnique({
@@ -57,7 +58,7 @@ export const validatorRouter = createTRPCRouter({
             data: {
               score: {
                 update: {
-                  score: input.score as string,
+                  score: input.score,
                 },
               },
             },
@@ -74,19 +75,17 @@ export const validatorRouter = createTRPCRouter({
         // If team is not yet given a score
         else {
           // Check if criteria exists
-          let validatorCriteria = await ctx.db.criteria.findFirst({
+          const judgingCriteria = await ctx.db.criteria.findUnique({
             where: {
-              type: "VALIDATOR",
+				id:input.criteriaId
             },
           });
           // if no criteria create one
-          if (!validatorCriteria) {
-            validatorCriteria = await ctx.db.criteria.create({
-              data: {
-                name: "top100",
-                type: "VALIDATOR",
-              },
-            });
+          if (!judgingCriteria) {
+			  throw new TRPCError({
+				  code:"BAD_REQUEST",
+				  message:"Criteria not found"
+			  })
           }
 
           // Update score for that team in validator criteria
@@ -104,10 +103,10 @@ export const validatorRouter = createTRPCRouter({
               },
               score: {
                 create: {
-                  score: input.score as string,
+                  score: input.score ,
                   criteria: {
                     connect: {
-                      id: validatorCriteria.id,
+                      id: judgingCriteria.id,
                     },
                   },
                 },
@@ -119,7 +118,7 @@ export const validatorRouter = createTRPCRouter({
               id: input.teamId,
             },
             data: {
-              ValidatorTotalScore: { increment: Number(input.score) },
+              SuperValidatorTotalScore: { increment: Number(input.score) * judgingCriteria.weight },
             },
           });
         }

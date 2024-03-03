@@ -37,9 +37,9 @@ model Session {
 }
 
 model User {
-  id              String          @id @default(cuid())
+  id              String     @id @default(cuid())
   name            String?
-  email           String?         @unique
+  email           String?    @unique
   emailVerified   DateTime?
   phone           String?
   state           String?
@@ -47,24 +47,24 @@ model User {
   image           String?
   course          Courses?
   college_id      String?
-  isVerified      Boolean         @default(false)
-  paymentStatus   String?         @default("PENDING")
+  isVerified      Boolean    @default(false)
+  paymentStatus   String?    @default("PENDING")
   paymentId       String?
   teamId          String?
-  isLeader        Boolean         @default(false)
-  role            Role            @default(PARTICIPANT)
+  isLeader        Boolean    @default(false)
+  role            Role       @default(PARTICIPANT)
   destination     String?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  profileProgress Progress        @default(FILL_DETAILS)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  profileProgress Progress   @default(FILL_DETAILS)
   aadhaar         String?
-  tShirtSize      TshirtSize      @default(S)
+  tShirtSize      TshirtSize @default(S)
   accounts        Account[]
   payment         Payments?
   sessions        Session[]
-  college         College?        @relation(fields: [collegeId], references: [id])
-  team            Team?           @relation(fields: [teamId], references: [id])
-  Scores          ScoresByJudge[]
+  college         College?   @relation(fields: [collegeId], references: [id])
+  team            Team?      @relation(fields: [teamId], references: [id])
+  Judge           Judges?
 
   @@index([collegeId])
   @@index([teamId])
@@ -101,6 +101,7 @@ model Team {
   Scores                   ScoresByJudge[]
   ValidatorTotalScore      Int               @default(0)
   SuperValidatorTotalScore Int               @default(0)
+  TeamProgress             TeamProgress      @default(NOT_SELECTED)
 }
 
 model Payments {
@@ -136,6 +137,14 @@ model AppSettings {
   isProfileEditOpen     Boolean @default(true)
 }
 
+model Judges {
+  id     String          @unique
+  type   JudgeTypes      @default(VALIDATOR)
+  User   User            @relation(fields: [id], references: [id])
+  track  Tracks          @default(ALL)
+  Scores ScoresByJudge[]
+}
+
 model Referral {
   id        Int      @id @default(autoincrement())
   code      String   @unique
@@ -159,13 +168,14 @@ model Criteria {
   id     Int          @id @default(autoincrement())
   name   String
   type   CriteriaType
+  weight Int          @default(1)
   scores Scores[]
 }
 
 model ScoresByJudge {
   id      Int    @id @default(autoincrement())
   userId  String
-  User    User   @relation(fields: [userId], references: [id])
+  Judge   Judges @relation(fields: [userId], references: [id])
   teamId  String
   Team    Team   @relation(fields: [teamId], references: [id])
   scoreId Int    @unique
@@ -191,6 +201,9 @@ enum CriteriaType {
 enum Role {
   PARTICIPANT
   ORGANISER
+}
+
+enum JudgeTypes {
   JUDGE
   VALIDATOR
   SUPER_VALIDATOR
@@ -224,6 +237,7 @@ enum Tracks {
   METAVERSE
   LOGISTICS
   OPEN_INNOVATION
+  ALL
 }
 
 enum TshirtSize {
@@ -278,4 +292,10 @@ enum Category {
   FOOD
   STAY
   TRAVEL
+}
+
+enum TeamProgress {
+  NOT_SELECTED
+  SEMI_SELECTED
+  SELECTED
 }
