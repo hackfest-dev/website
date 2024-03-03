@@ -1,5 +1,5 @@
 import { TshirtSize } from "@prisma/client";
-import { type Dispatch, useContext, useState } from "react";
+import { type Dispatch, useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -108,6 +108,9 @@ const ProfileForm = ({
     },
   });
 
+  const [collegeSearchQuery, setCollegeSearchQuery] = useState("");
+  const [selectedColleges, setSelectedColleges] = useState(colleges);
+
   if (currentState !== 0 && registerProp) {
     return <></>;
   }
@@ -176,18 +179,18 @@ const ProfileForm = ({
       if (!aadhaarFile || !clgFile) {
         return toast.error("Please fill all details");
       }
-        toast.loading("Uploading Aadhaar...", {
-          id: "aadhaar",
-        });
+      toast.loading("Uploading Aadhaar...", {
+        id: "aadhaar",
+      });
       const aadhaarUrl = await upload(aadhaarFile);
-        toast.dismiss("aadhaar");
-        toast.success("Aadhaar ID uploaded");
-        toast.loading("Uploading College ID...", {
-          id: "college",
-        });
+      toast.dismiss("aadhaar");
+      toast.success("Aadhaar ID uploaded");
+      toast.loading("Uploading College ID...", {
+        id: "college",
+      });
       const collegeUrl = await upload(clgFile);
-        toast.dismiss("college");
-        toast.success("College ID uploaded");
+      toast.dismiss("college");
+      toast.success("College ID uploaded");
       form.setValue("aadhaarUrl", aadhaarUrl as string);
       form.setValue("collegeIdUrl", collegeUrl as string);
       form
@@ -224,6 +227,20 @@ const ProfileForm = ({
 
     toast.dismiss("loadingToast");
   };
+
+  useEffect(() => {
+    setSelectedColleges(
+      colleges?.filter(
+        (college) =>
+          college.name
+            .toLowerCase()
+            .includes(collegeSearchQuery.toLowerCase()) ||
+          college.state
+            .toLowerCase()
+            .includes(collegeSearchQuery.toLowerCase()),
+      ),
+    );
+  }, [colleges, collegeSearchQuery]);
 
   return (
     <div className="max-h-max w-full">
@@ -312,64 +329,64 @@ const ProfileForm = ({
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="px-3">
-                        <Command>
-                          <CommandInput
-                            placeholder="Search college here..."
-                            className="h-9"
-                          />
-                          <CommandEmpty className="mt-3 flex flex-col items-center justify-center text-center">
-                            No College with that name found.
-                            <CreateCollege refetchColleges={refetchColleges} />
-                          </CommandEmpty>
-                          <CommandGroup>
-                            <ScrollArea className="h-72">
-                              {colleges?.map((college) => (
-                                <CommandItem
-                                  key={college.id}
-                                  value={college.id}
-                                  onSelect={(currentValue) => {
-                                    setCollegeId(college.id);
-                                    form.setValue("college", college.id);
-                                    setCollegevalue(
-                                      currentValue === collegevalue
-                                        ? collegevalue
-                                        : college.name +
-                                            ", " +
-                                            college.state
-                                              .replace(/_/g, " ")
-                                              .split(" ")
-                                              .map(
-                                                (word) =>
-                                                  word.charAt(0).toUpperCase() +
-                                                  word.slice(1).toLowerCase(),
-                                              )
-                                              .join(" "),
-                                    );
-                                    // setFormData({
-                                    //   ...formData,
-                                    //   collegeId: college.id,
-                                    // });
-                                    setOpenCollegeList(false);
-                                  }}
-                                >
-                                  {college.name},{" "}
-                                  {college.state
-                                    .replace(/_/g, " ")
-                                    .split(" ")
-                                    .map(
-                                      (word) =>
-                                        word.charAt(0).toUpperCase() +
-                                        word.slice(1).toLowerCase(),
-                                    )
-                                    .join(" ")}
-                                </CommandItem>
-                              ))}
-                              <CreateCollege
-                                refetchColleges={refetchColleges}
-                              />
-                            </ScrollArea>
-                          </CommandGroup>
-                        </Command>
+                        <Input
+                          placeholder="Search college here..."
+                          className="h-9"
+                          value={collegeSearchQuery}
+                          onChange={(e) => {
+                            setCollegeSearchQuery(e.target.value);
+                          }}
+                        />
+                        <ScrollArea className="h-72 pt-5">
+                          <div className="group">
+                            {selectedColleges?.length === 0 && (
+                              <div className="text-center text-gray-500">
+                                No colleges found
+                              </div>
+                            )}
+                            {selectedColleges?.map((college) => (
+                              <Button
+                                variant="ghost"
+                                className={`h-max w-full justify-start text-wrap text-start font-normal ${collegeId === college.id ? "bg-accent text-accent-foreground group-hover:bg-inherit group-hover:text-inherit group-hover:hover:bg-accent group-hover:hover:text-accent-foreground" : ""}`}
+                                key={college.id}
+                                onClick={(e) => {
+                                  setCollegeId(college.id);
+                                  form.setValue("college", college.id);
+                                  setCollegevalue(
+                                    college.name +
+                                      ", " +
+                                      college.state
+                                        .replace(/_/g, " ")
+                                        .split(" ")
+                                        .map(
+                                          (word) =>
+                                            word.charAt(0).toUpperCase() +
+                                            word.slice(1).toLowerCase(),
+                                        )
+                                        .join(" "),
+                                  );
+                                  // setFormData({
+                                  //   ...formData,
+                                  //   collegeId: college.id,
+                                  // });
+                                  setOpenCollegeList(false);
+                                }}
+                              >
+                                {college.name},{" "}
+                                {college.state
+                                  .replace(/_/g, " ")
+                                  .split(" ")
+                                  .map(
+                                    (word) =>
+                                      word.charAt(0).toUpperCase() +
+                                      word.slice(1).toLowerCase(),
+                                  )
+                                  .join(" ")}
+                              </Button>
+                            ))}
+                          </div>
+                          <CreateCollege refetchColleges={refetchColleges} />
+                        </ScrollArea>
                       </PopoverContent>
                     </Popover>
                   </FormControl>
