@@ -4,13 +4,13 @@ import {
   DialogContent,
   DialogHeader,
 } from "../ui/dialog";
-import { useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { api } from "~/utils/api";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { addJudgeZ, addReferralCodeZ } from "~/server/schema/zod-schema";
+import { addJudgeZ } from "~/server/schema/zod-schema";
 import {
   Form,
   FormControl,
@@ -19,37 +19,45 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import ReferralsTable from "./referralsTable";
 import { toast } from "sonner";
+import JudgesTable from "./judgesTable";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { JudgeType, Tracks, User } from "@prisma/client";
+import { ScrollArea } from "../ui/scroll-area";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ChevronDown } from "lucide-react";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "../ui/command";
-import CreateCollege from "../profile/createCollege";
-import { ScrollArea } from "../ui/scroll-area";
-import JudgesTable from "./judgesTable";
 
-export default function JudgePanel(){
-  const {data: judgesData, refetch: judgesRefetch} = api.organiser.getJudgesList.useQuery();
+interface Props {
+  users: User[] | undefined;
+}
+
+const JudgePanel: FunctionComponent<Props> = ({ users }) => {
+  const [judgeType, setJudgeType] = useState<JudgeType>("VALIDATOR");
+  const [userQuery, setUserQuery] = useState<string>("");
+  const [openUserList, setOpenUserList] = useState<boolean>(false);
+
+  const [selectedUsers, setSelectedUsers] = useState(users);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  const { data: judgesData, refetch: judgesRefetch } =
+    api.organiser.getJudgesList.useQuery();
+
   const addJudge = api.organiser.addJudge.useMutation({
-    onSuccess: async() => {
+    onSuccess: async () => {
       await judgesRefetch();
-    }
+    },
+    onError: async () => {
+      toast.dismiss();
+      toast.error("Error adding judge");
+    },
   });
-  const [collegeId, setCollegeId] = useState("");
-
-  const [openCollegeList, setOpenCollegeList] = useState(false);
-  const [collegevalue, setCollegevalue] = useState("");
-  const user = api.user.getUserWithCollege.useQuery().data;
-  const { data: users, refetch: refetchUsers } =
-    api.user.getAllUsers.useQuery();
-
-  
 
   const form = useForm<z.infer<typeof addJudgeZ>>({
     defaultValues: {
@@ -60,22 +68,34 @@ export default function JudgePanel(){
   });
 
   async function submitForm(data: z.infer<typeof addJudgeZ>) {
-    toast.loading("Adding judge");
+    if (!form.getValues().userId) return toast.error("Please select a user");
 
+    toast.loading("Adding judge");
     await addJudge.mutateAsync({
       userId: data.userId,
       type: data.type,
-      track: data.track,
+      track: data.type !== "SUPER_VALIDATOR" ? "ALL" : data.track,
     });
     await judgesRefetch();
     toast.dismiss();
     toast.success("Added judge successfully");
   }
 
+  useEffect(() => {
+    if (!users) return;
+    setSelectedUsers(() => {
+      return users.filter(
+        (user) =>
+          user.id.toLowerCase().includes(userQuery.toLocaleLowerCase()) ||
+          user.name?.toLowerCase().includes(userQuery.toLowerCase()),
+      );
+    });
+  }, [users, userQuery]);
+
   return (
     <>
       <div className="w-full border-b">
-        <h1 className="py-10 text-center text-4xl font-bold">Referrals</h1>
+        <h1 className="py-10 text-center text-4xl font-bold">Judges</h1>
       </div>
       <Dialog>
         <DialogTrigger className="my-5 flex w-full items-center justify-center">
@@ -99,13 +119,60 @@ export default function JudgePanel(){
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel>User Id</FormLabel>
+                      <FormLabel>User Id/Name</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Enter User ID"
-                          className="text-white"
-                          {...field}
-                        />
+                        <Popover
+                          open={openUserList}
+                          onOpenChange={setOpenUserList}
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={openUserList}
+                              className="w-full justify-between overflow-hidden truncate dark:text-white"
+                            >
+                              {userName ? userName : "Select user"}
+                              <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="px-3">
+                            <Input
+                              placeholder="Enter User ID/Name"
+                              className="text-white"
+                              value={userQuery}
+                              defaultValue={field.value}
+                              onChange={(e) => {
+                                setUserQuery(e.target.value);
+                              }}
+                            />
+                            <ScrollArea className="h-72 pt-5">
+                              <div className="group">
+                                {selectedUsers?.length === 0 && (
+                                  <div className="text-center text-gray-500">
+                                    No users found
+                                  </div>
+                                )}
+                                {selectedUsers?.map((user) => (
+                                  <Button
+                                    variant="ghost"
+                                    className={`h-max w-full justify-start text-wrap text-start font-normal ${userId === user.id ? "bg-accent text-accent-foreground group-hover:bg-inherit group-hover:text-inherit group-hover:hover:bg-accent group-hover:hover:text-accent-foreground" : ""}`}
+                                    key={user.id}
+                                    onClick={(e) => {
+                                      setUserId(user.id);
+                                      form.setValue("userId", user.id);
+                                      setUserName(user.name);
+                                      setOpenUserList(false);
+                                      setUserQuery("");
+                                    }}
+                                  >
+                                    {user.name}
+                                  </Button>
+                                ))}
+                              </div>
+                            </ScrollArea>
+                          </PopoverContent>
+                        </Popover>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -113,19 +180,32 @@ export default function JudgePanel(){
                 }}
               ></FormField>
 
-<FormField
+              <FormField
                 control={form.control}
                 name="type"
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel>Type</FormLabel>
+                      <FormLabel>Judge Type</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Enter Type"
-                          className="text-white"
-                          {...field}
-                        />
+                        <Select
+                          onValueChange={(e) => {
+                            field.onChange(e);
+                            setJudgeType(e as JudgeType);
+                          }}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder={field.value} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="VALIDATOR">Validator</SelectItem>
+                            <SelectItem value="SUPER_VALIDATOR">
+                              Super Validator
+                            </SelectItem>
+                            <SelectItem value="JUDGE">Judge</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -141,11 +221,35 @@ export default function JudgePanel(){
                     <FormItem className="w-full">
                       <FormLabel>Tracks</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Enter Tracks"
-                          className="text-white"
-                          {...field}
-                        />
+                        <Select
+                          disabled={judgeType !== "SUPER_VALIDATOR"}
+                          onValueChange={field.onChange}
+                          value={
+                            judgeType !== "SUPER_VALIDATOR"
+                              ? "ALL"
+                              : form.getValues().track
+                          }
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder={field.value} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ALL">ALL</SelectItem>
+                            <SelectItem value="FINTECH">FINTECH</SelectItem>
+                            <SelectItem value="SUSTAINABLE_DEVELOPMENT">
+                              SUSTAINABLE_DEVELOPMENT
+                            </SelectItem>
+                            <SelectItem value="HEALTHCARE">
+                              HEALTHCARE
+                            </SelectItem>
+                            <SelectItem value="METAVERSE">METAVERSE</SelectItem>
+                            <SelectItem value="LOGISTICS">LOGISTICS</SelectItem>
+                            <SelectItem value="OPEN_INNOVATION">
+                              OPEN_INNOVATION
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -153,13 +257,14 @@ export default function JudgePanel(){
                 }}
               ></FormField>
 
-              
               <Button type="submit">Add Judge</Button>
             </form>
           </Form>
         </DialogContent>
       </Dialog>
-      <JudgesTable {...judgesData}/>
+      <JudgesTable data={judgesData} refetch={judgesRefetch} />
     </>
   );
-}
+};
+
+export default JudgePanel;

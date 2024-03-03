@@ -1,4 +1,3 @@
-import { States } from "@prisma/client";
 import { FunctionComponent } from "react";
 import {
   TableCell,
@@ -10,12 +9,35 @@ import {
 } from "~/components/ui/table";
 import Spinner from "../spinner";
 import { api } from "~/utils/api";
+import { JudgeType, Judges, Tracks, User } from "@prisma/client";
+import { Button } from "../ui/button";
+import { toast } from "sonner";
 
+interface TableProps {
+  data:
+    | ({
+        User: User;
+      } & {
+        id: number;
+        userId: string;
+        track: Tracks;
+        type: JudgeType;
+      })[]
+    | undefined;
+  refetch: () => void;
+}
 
-
-const JudgesTable: FunctionComponent<any> = ({ data }) => {
-    const deleteJudge = api.organiser.removeJudge.useMutation({      
-    })
+const JudgesTable: FunctionComponent<TableProps> = ({ data, refetch }) => {
+  const deleteJudge = api.organiser.removeJudge.useMutation({
+    onSuccess: async () => {
+      toast.dismiss();
+      toast.success("Judge deleted");
+      await refetch();
+    },
+    onError: async () => {
+      toast.error("Error adding judge");
+    },
+  });
   return (
     <div className="flex w-full items-center justify-center">
       <div className="h-full max-w-screen-2xl rounded-md border p-10">
@@ -39,13 +61,27 @@ const JudgesTable: FunctionComponent<any> = ({ data }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((judge: any) => {
+              {data.map((judge) => {
                 return (
                   <TableRow key={judge.id}>
-                    <TableCell>{judge?.user?.name}</TableCell>
-                    <TableCell>{judge?.type}</TableCell>
-                    <TableCell>{judge?.track}</TableCell>
-                    <TableCell>{judge?.user?.phone || judge?.user?.email}</TableCell>
+                    <TableCell>{judge.User.name}</TableCell>
+                    <TableCell>{judge.type}</TableCell>
+                    <TableCell>{judge.track}</TableCell>
+                    <TableCell>
+                      {judge.User.phone || judge.User.email}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => {
+                          toast.loading("Deleting judge...");
+                          deleteJudge.mutate({
+                            userId: judge.userId,
+                          });
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}

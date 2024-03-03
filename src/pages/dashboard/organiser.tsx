@@ -91,7 +91,9 @@ export default function Organiser() {
               <span className="text-xl">
                 Number of Logins : {users?.length}
               </span>
-              <span className="text-xl">Number of Teams : {res?.data?.length}</span>
+              <span className="text-xl">
+                Number of Teams : {res?.data?.length}
+              </span>
               <span className="text-xl">
                 Number of Idea submissions :{" "}
                 {res?.data?.filter((team) => team.ideaSubmission).length}
@@ -143,7 +145,10 @@ export default function Organiser() {
             {!res ? (
               <Spinner size="large" />
             ) : (
-              <ParticipantsTable data={selectedTeams} dataRefecth={res.refetch}/>
+              <ParticipantsTable
+                data={selectedTeams}
+                dataRefecth={res.refetch}
+              />
             )}
           </div>
           <div>
@@ -160,7 +165,7 @@ export default function Organiser() {
         </TabsContent>
 
         <TabsContent value="judges">
-          <JudgePanel/>
+          <JudgePanel users={users} />
         </TabsContent>
       </Tabs>
     </DashboardLayout>

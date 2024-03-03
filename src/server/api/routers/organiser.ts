@@ -6,71 +6,76 @@ import { addJudgeZ } from "~/server/schema/zod-schema";
 
 export const organiserRouter = createTRPCRouter({
     getJudgesList: protectedProcedure
-    .query(async ({ctx})=>{
-        if(ctx.session.user.role !== 'ORGANISER'){
-            throw new TRPCError({ code: 'UNAUTHORIZED', message: 'You cannot perform this action' })
-        }
-
-        return await ctx.db.judges.findMany({
-            include: {
-                User: true
+        .query(async ({ ctx }) => {
+            if (ctx.session.user.role !== 'ORGANISER') {
+                throw new TRPCError({ code: 'UNAUTHORIZED', message: 'You cannot perform this action' })
             }
-        })
-    }),
+
+            return await ctx.db.judges.findMany({
+                include: {
+                    User: true
+                }
+            })
+        }),
     addJudge: protectedProcedure
         .input(
             addJudgeZ
         )
-        .mutation(async ({input, ctx}) => {
-            if(ctx.session.user.role !== 'ORGANISER'){
-                throw new TRPCError({ code: 'UNAUTHORIZED', message: 'You cannot perform this action' })
-            }
+        .mutation(async ({ input, ctx }) => {
+            try {
 
-            const user = await ctx.db.user.findUnique({
-                where: {
-                    id: input.userId
-                },
-                include: {
-                    Judges: true
+                if (ctx.session.user.role !== 'ORGANISER') {
+                    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'You cannot perform this action' })
                 }
-            })
 
-            if(!user?.Judges){
-                await ctx.db.user.update({
+                const user = await ctx.db.user.findUnique({
                     where: {
                         id: input.userId
                     },
-                    data: {
-                        role: input.type,
+                    include: {
+                        Judges: true
                     }
                 })
 
-                await ctx.db.judges.create({
-                    data: {
-                        userId: input.userId,
-                        track: input.track,
-                    },
-                })
-
-
-            }else{
-                await ctx.db.user.update({
-                    where: {
-                        id: input.userId
-                    },
-                    data: {
-                        role: input.type,
-                    }
-                })
-
-                await ctx.db.judges.update({
-                    where: {
-                        userId: input.userId
-                    },
-                    data: {
-                        type: input.type,
-                        track: input.track,
-                    }
+                if (!user?.Judges) {
+                    await ctx.db.user.update({
+                        where: {
+                            id: input.userId
+                        },
+                        data: {
+                            role: input.type,
+                        }
+                    })
+                    await ctx.db.judges.create({
+                        data: {
+                            userId: input.userId,
+                            track: input.track,
+                        },
+                    })
+                } else {
+                    await ctx.db.user.update({
+                        where: {
+                            id: input.userId
+                        },
+                        data: {
+                            role: input.type,
+                        }
+                    })
+                    await ctx.db.judges.update({
+                        where: {
+                            userId: input.userId
+                        },
+                        data: {
+                            type: input.type,
+                            track: input.track,
+                        }
+                    })
+                }
+            } catch (error) {
+                console.log(error)
+                throw new TRPCError({
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: "Something went wrong"
                 })
             }
         }),
@@ -78,24 +83,31 @@ export const organiserRouter = createTRPCRouter({
         .input(z.object({
             userId: z.string()
         }))
-        .mutation(async ({input, ctx}) => {
-            if(ctx.session.user.role !== 'ORGANISER'){
-                throw new TRPCError({ code: 'UNAUTHORIZED', message: 'You cannot perform this action' })
+        .mutation(async ({ input, ctx }) => {
+            try {
+                if (ctx.session.user.role !== 'ORGANISER') {
+                    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'You cannot perform this action' })
+                }
+
+                await ctx.db.judges.delete({
+                    where: {
+                        userId: input.userId
+                    }
+                })
+                await ctx.db.user.update({
+                    where: {
+                        id: input.userId
+                    },
+                    data: {
+                        role: 'PARTICIPANT'
+                    }
+                })
+            } catch (error) {
+                console.log(error)
+                throw new TRPCError({
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: "Something went wrong"
+                })
             }
-
-            await ctx.db.judges.delete({
-                where: {
-                    userId: input.userId
-                }
-            })
-
-            await ctx.db.user.update({
-                where: {
-                    id: input.userId
-                },
-                data: {
-                    role: 'PARTICIPANT'
-                }
-            }) 
         })
 })
