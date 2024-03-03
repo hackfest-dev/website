@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-export const validatorRouter = createTRPCRouter({
+export const superValidatorRouter = createTRPCRouter({
   setScore: protectedProcedure
     .input(
       z.object({
@@ -17,7 +17,7 @@ export const validatorRouter = createTRPCRouter({
         const user = ctx.session.user;
 		const judge = await ctx.db.judges.findUnique({
 			where:{
-				id:user.id
+				userId:user.id
 			}
 		})
         if (judge?.type !== "SUPER_VALIDATOR")
@@ -91,9 +91,13 @@ export const validatorRouter = createTRPCRouter({
           // Update score for that team in validator criteria
           await ctx.db.scoresByJudge.create({
             data: {
-              Judge: {
+              userId: user.id,
+              Judges: {
                 connect: {
-                  id: user.id,
+                  userId: user.id,
+                  User: {
+                    id: user.id,
+                  }
                 },
               },
               Team: {

@@ -347,7 +347,7 @@ export const teamRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-      if (user.role !== "VALIDATOR") {
+      if (user.role !== "ORGANISER") {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Not allowed to perform this action",
@@ -413,7 +413,7 @@ export const teamRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-      if (user.role !== "VALIDATOR" && user.role !== "SUPER_VALIDATOR") {
+      if (user.role !== 'ORGANISER') {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Not allowed to perform this action",
