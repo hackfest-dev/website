@@ -27,11 +27,11 @@ import { useSession } from "next-auth/react";
 import NotFound from "../404";
 
 export default function Organiser() {
-  const res = api.team.getTeamsList.useQuery().data;
+  const res = api.team.getTeamsList.useQuery();
   const users = api.user.getAllUsers.useQuery().data;
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const [selectedTeams, setSelectedTeams] = useState(res);
+  const [selectedTeams, setSelectedTeams] = useState(res.data);
   const [paymentQuery, setPaymentQuery] = useState("ALL");
 
   const { data, status } = useSession();
@@ -39,20 +39,20 @@ export default function Organiser() {
   useEffect(() => {
     setSelectedTeams(() => {
       if (!res) return [];
-      if (searchQuery === "" && paymentQuery === "ALL") return res;
+      if (searchQuery === "" && paymentQuery === "ALL") return res.data;
       const newSearchQuery = searchQuery.trim().toLowerCase();
-      const partiallyFiltered = res.filter((team) => {
+      const partiallyFiltered = res?.data?.filter((team) => {
         const teamName = team.name.toLowerCase();
         return (
           teamName.includes(newSearchQuery) || team.id.includes(newSearchQuery)
         );
       });
       if (paymentQuery === "ALL") return partiallyFiltered;
-      return partiallyFiltered.filter(
+      return partiallyFiltered?.filter(
         (team) => team.paymentStatus === paymentQuery,
       );
     });
-  }, [res, searchQuery, paymentQuery]);
+  }, [res.data, searchQuery, paymentQuery]);
 
   if (status === "loading")
     return (
@@ -87,10 +87,10 @@ export default function Organiser() {
               <span className="text-xl">
                 Number of Logins : {users?.length}
               </span>
-              <span className="text-xl">Number of Teams : {res?.length}</span>
+              <span className="text-xl">Number of Teams : {res?.data?.length}</span>
               <span className="text-xl">
                 Number of Idea submissions :{" "}
-                {res?.filter((team) => team.ideaSubmission).length}
+                {res?.data?.filter((team) => team.ideaSubmission).length}
               </span>
             </div>
             <FaqAdmin />
@@ -139,7 +139,7 @@ export default function Organiser() {
             {!res ? (
               <Spinner size="large" />
             ) : (
-              <ParticipantsTable data={selectedTeams} />
+              <ParticipantsTable data={selectedTeams} dataRefecth={res.refetch}/>
             )}
           </div>
           <div>
