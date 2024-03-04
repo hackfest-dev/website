@@ -130,7 +130,7 @@ const HeroParallax = () => {
       </div> */}
       <div className="absolute left-1/2 top-1/4 -z-[29] mx-3 w-full max-w-6xl -translate-x-1/2 md:top-24 md:mt-5">
         <div className="absolute left-1/2 -translate-x-1/2 text-[#c1f0a8] opacity-60 md:left-0 md:translate-x-0">
-          <Countown eventTime={new Date("2024-4-15")} />
+          <Countown eventTime={new Date("2024-4-5")} />
         </div>
       </div>
 
