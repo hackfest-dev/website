@@ -32,7 +32,7 @@ const JudgesTable: FunctionComponent<TableProps> = ({ data, refetch }) => {
     onSuccess: async () => {
       toast.dismiss();
       toast.success("Judge deleted");
-      await refetch();
+      refetch();
     },
     onError: async () => {
       toast.error("Error adding judge");
@@ -68,7 +68,7 @@ const JudgesTable: FunctionComponent<TableProps> = ({ data, refetch }) => {
                     <TableCell>{judge.type}</TableCell>
                     <TableCell>{judge.track}</TableCell>
                     <TableCell>
-                      {judge.User.phone || judge.User.email}
+                      {judge.User.phone ?? judge.User.email}
                     </TableCell>
                     <TableCell>
                       <Button

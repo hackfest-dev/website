@@ -48,7 +48,7 @@ export default function ParticipantsTable({
   const moveToTop100 = api.team.moveToTop100.useMutation( 
     {
       onSuccess: async () => {
-        await dataRefecth();
+        dataRefecth();
         toast.success("Moved to Top 100");
         toast.dismiss('moveToTop100');
 
@@ -62,7 +62,7 @@ export default function ParticipantsTable({
   const resetProgress = api.team.resetTeamProgress.useMutation(
     {
       onSuccess: async () => {
-        await dataRefecth();
+        dataRefecth();
         toast.success("Progress Reset");
         toast.dismiss('resetProgress');
       },

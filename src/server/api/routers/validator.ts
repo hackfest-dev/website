@@ -74,7 +74,7 @@ export const validatorRouter = createTRPCRouter({
         // If team is not yet given a score
         else {
           // Check if criteria exists
-          let validatorCriteria = await ctx.db.criteria.findFirst({
+          const validatorCriteria = await ctx.db.criteria.findFirst({
             where: {
               type: "VALIDATOR",
             },

@@ -93,6 +93,8 @@ const ProfileForm = ({
   const [openCollegeList, setOpenCollegeList] = useState(false);
   const [collegevalue, setCollegevalue] = useState("");
   const [collegeId, setCollegeId] = useState(user?.collegeId ?? "");
+
+  
   const updateProfile = api.user.updateProfile.useMutation({
     onSuccess: () => {
       toast.success("Profile Updated");
@@ -111,9 +113,25 @@ const ProfileForm = ({
   const [collegeSearchQuery, setCollegeSearchQuery] = useState("");
   const [selectedColleges, setSelectedColleges] = useState(colleges);
 
+  useEffect(() => {
+    setSelectedColleges(
+      colleges?.filter(
+        (college) =>
+          college.name
+            .toLowerCase()
+            .includes(collegeSearchQuery.toLowerCase()) ||
+          college.state
+            .toLowerCase()
+            .includes(collegeSearchQuery.toLowerCase()),
+      ),
+    );
+  }, [colleges, collegeSearchQuery]);
+  
   if (currentState !== 0 && registerProp) {
     return <></>;
   }
+
+  
 
   const upload = async (file: File) => {
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
@@ -228,19 +246,7 @@ const ProfileForm = ({
     toast.dismiss("loadingToast");
   };
 
-  useEffect(() => {
-    setSelectedColleges(
-      colleges?.filter(
-        (college) =>
-          college.name
-            .toLowerCase()
-            .includes(collegeSearchQuery.toLowerCase()) ||
-          college.state
-            .toLowerCase()
-            .includes(collegeSearchQuery.toLowerCase()),
-      ),
-    );
-  }, [colleges, collegeSearchQuery]);
+  
 
   return (
     <div className="max-h-max w-full">

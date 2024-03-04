@@ -222,7 +222,7 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
                       <FormLabel>Tracks</FormLabel>
                       <FormControl>
                         <Select
-                          disabled={judgeType !== "SUPER_VALIDATOR"}
+                          disabled={judgeType === "VALIDATOR"}
                           onValueChange={field.onChange}
                           value={
                             judgeType !== "SUPER_VALIDATOR"
