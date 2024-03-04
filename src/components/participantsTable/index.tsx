@@ -23,6 +23,8 @@ import {
   type ColumnFiltersState,
 } from "@tanstack/react-table";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
+import { Team, TeamProgress } from "@prisma/client";
 
 interface MembersRow {
   members: { college: { name: string } }[];
@@ -30,16 +32,53 @@ interface MembersRow {
 
 export default function ParticipantsTable({
   data,
+  dataRefecth
 }: {
   data:
     | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
     | null
     | undefined;
+  dataRefecth: () => void;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const moveToTop100 = api.team.moveToTop100.useMutation( 
+    {
+      onSuccess: async () => {
+        dataRefecth();
+        toast.success("Moved to Top 100");
+        toast.dismiss('moveToTop100');
+
+      },
+      onError: (e) => {
+        toast.error(e.message);
+      }
+    }
+  );
+
+  const resetProgress = api.team.resetTeamProgress.useMutation(
+    {
+      onSuccess: async () => {
+        dataRefecth();
+        toast.success("Progress Reset");
+        toast.dismiss('resetProgress');
+      },
+      onError: (e) => {
+        toast.error(e.message);
+      }
+    }
+  )
+
+  if(resetProgress.isLoading){
+    toast.loading("Resetting Progress", {id: 'resetProgress'});
+  }
+  
+  if(moveToTop100.isLoading){
+    toast.loading("Moving to Top 100", {id: 'moveToTop100'});
+  }
 
   const verifyUser = api.user.verifyUser.useMutation();
 
@@ -85,6 +124,48 @@ export default function ParticipantsTable({
     {
       accessorKey: 'ValidatorTotalScore',
       header: 'Validator Score',
+    },
+    {
+      accessorKey: 'teamProgress',
+      header: 'Progress',
+    },
+    {
+      accessorKey: 'teamProgress',
+      header: 'Actions',
+      cell: (cell) => {
+        return(
+          <>
+            <button className={`${(cell.cell.row.original as Team).teamProgress === 'SEMI_SELECTED' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg`}
+              onClick={async () => {
+                await moveToTop100.mutateAsync({
+                  teamId: (cell.cell.row.original as Team).id
+                })
+              }}
+            >
+              Top 100
+            </button>
+          </>
+        )
+      }
+    },
+    {
+      accessorKey: 'teamProgress',
+      header: 'Actions',
+      cell: (cell) => {
+        return(
+          <>
+            <button className={`${(cell.cell.row.original as Team).teamProgress === 'NOT_SELECTED' ? 'pointer-events-none' : 'bg-red-400 text-black'} px-4 py-2 rounded-lg`}
+              onClick={async () => {
+                await resetProgress.mutateAsync({
+                  teamId: (cell.cell.row.original as Team).id
+                })
+              }}
+            >
+              Reset
+            </button>
+          </>
+        )
+      }
     },
     {
       accessorKey: "paymentStatus",
