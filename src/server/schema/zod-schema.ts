@@ -143,6 +143,18 @@ const addReferralCodeZ = z.object({
       .or(z.string().email({message: "Enter valid email or phone number"})),
 })
 
+const addJudgeZ = z.object({
+  userId: z.string(),
+  type: z.enum(["VALIDATOR", "SUPER_VALIDATOR", "JUDGE"]),
+  track: z.enum(['FINTECH',
+  'SUSTAINABLE_DEVELOPMENT',
+  'HEALTHCARE',
+  'METAVERSE',
+  'LOGISTICS',
+  'OPEN_INNOVATION',
+  'ALL'])
+})
+
 
 
 
@@ -159,5 +171,5 @@ export {
   answerFaqZ,
   deleteFaqZ,
   addReferralCodeZ,
-
+  addJudgeZ
 };

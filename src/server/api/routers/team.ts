@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
   createTeamZ,
@@ -308,8 +309,7 @@ export const teamRouter = createTRPCRouter({
   getTeamsList: protectedProcedure.query(async ({ ctx }) => {
     console.log(ctx.session.user.role);
     if (
-      ctx.session.user.role !== "ORGANISER" &&
-      ctx.session.user.role !== "VALIDATOR"
+      ctx.session.user.role === 'PARTICIPANT'
     )
       throw new TRPCError({
         code: "FORBIDDEN",
@@ -324,14 +324,14 @@ export const teamRouter = createTRPCRouter({
           ideaSubmission: true,
           referral: true,
           Scores: {
-            where:{
-              userId: ctx.session.user.id
+            where: {
+              userId: ctx.session.user.id,
             },
             include: {
               score: true,
-              User: true
-            }
-          }
+              Judges: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -339,4 +339,103 @@ export const teamRouter = createTRPCRouter({
       return null;
     }
   }),
+  moveToTop100: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+      if (user.role !== "ORGANISER") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Not allowed to perform this action",
+        });
+      }
+      try {
+        await ctx.db.team.update({
+          where: {
+            id: input.teamId,
+          },
+          data: {
+            teamProgress: "SEMI_SELECTED",
+          },
+        });
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST") {
+          return error;
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong!",
+        });
+      }
+    }),
+  moveToTop60: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+      if (user.role !== "SUPER_VALIDATOR") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Not allowed to perform this action",
+        });
+      }
+      try {
+        await ctx.db.team.update({
+          where: {
+            id: input.teamId,
+          },
+          data: {
+            teamProgress: "SELECTED",
+          },
+        });
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST") {
+          return error;
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong!",
+        });
+      }
+    }),
+  resetTeamProgress: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+      if (user.role !== 'ORGANISER') {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Not allowed to perform this action",
+        });
+      }
+      try {
+        await ctx.db.team.update({
+          where: {
+            id: input.teamId,
+          },
+          data: {
+            teamProgress: "NOT_SELECTED",
+          },
+        });
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST") {
+          return error;
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong!",
+        });
+      }
+    }),
 });
