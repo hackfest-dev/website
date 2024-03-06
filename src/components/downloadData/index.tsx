@@ -21,13 +21,15 @@ export default function DownloadDataButtons() {
 
   function teamLeadersWithSubmission() {
     let csv = "";
-    const Headers = "Name,Phone,Email,\n";
+    const Headers = "Name,College,Phone,Email,\n";
     csv += Headers;
 
     data?.map((user) => {
       if (user?.isLeader && user?.profileProgress === "COMPLETE") {
         csv +=
           `${user.name}` +
+          ',' + 
+          `${user.college?.name}` +
           "," +
           `${user.phone}` +
           "," +
@@ -41,13 +43,15 @@ export default function DownloadDataButtons() {
   }
   function teamLeadersWithoutSubmission() {
     let csv = "";
-    const Headers = "Name,Phone,Email,\n";
+    const Headers = "Name,Email,Phone,Email,\n";
     csv += Headers;
 
     data?.map((user) => {
       if (user?.isLeader && user?.profileProgress !== "COMPLETE") {
         csv +=
           `${user.name}` +
+          ','+
+          `${user.college?.name}` +
           "," +
           `${user.phone}` +
           "," +

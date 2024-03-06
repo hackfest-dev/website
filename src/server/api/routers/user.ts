@@ -252,7 +252,13 @@ export const userRouter = createTRPCRouter({
 
   getAllUsers: protectedProcedure.query(async ({ctx}) => {
    try{
-    return await ctx.db.user.findMany()
+    return await ctx.db.user.findMany(
+      {
+        include: {
+          college: true
+        }
+      }
+    )
    }catch(e){
       console.log(e)
       throw new TRPCError({
