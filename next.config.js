@@ -21,7 +21,12 @@ const config = {
         protocol:"https",
         hostname:"res.cloudinary.com",
         // pathname:"/"
-      }
+      },
+      {
+        protocol:"https",
+        hostname:"i1.sndcdn.com",
+        // pathname:"/"
+      },
     ],
   },
 
