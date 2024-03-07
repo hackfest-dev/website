@@ -11,6 +11,7 @@ import DashboardLayout from "~/components/layout/dashboardLayout";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import PDFModal from "~/components/validatorDashboard/pdfModal";
+import { Button } from "~/components/ui/button";
 
 
 
@@ -81,7 +82,12 @@ export default function Validator() {
                     {team.name}
                   </TableCell>
                   <TableCell>
-                  <PDFModal team={team}/>
+                  {/* <PDFModal team={team}/> */}
+                  <a href={team.ideaSubmission?.pptUrl.split(';')[0]} target="_blank">
+                  <Button>
+                    View PDF
+                    </Button>
+                  </a>
                     </TableCell>
                     <TableCell>
                     <button
