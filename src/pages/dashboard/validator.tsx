@@ -11,6 +11,8 @@ import DashboardLayout from "~/components/layout/dashboardLayout";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import PDFModal from "~/components/validatorDashboard/pdfModal";
+import Spinner from "~/components/spinner";
+import NotFound from "../404";
 
 
 
@@ -32,8 +34,21 @@ export default function Validator() {
   if(submitScore.isLoading){
     toast.loading('Submitting score',{id: 'submitting-score'});
   }
-  
+  const { data, status } = useSession();
 
+  if (status === "loading")
+    return (
+      <DashboardLayout>
+        <div className="flex h-screen w-screen items-center justify-center">
+          <Spinner />
+        </div>
+      </DashboardLayout>
+    );
+
+
+  if (!data || !data.user || data.user.role !== "ORGANISER") {
+    return <NotFound />;
+  }
   
 
   return (
