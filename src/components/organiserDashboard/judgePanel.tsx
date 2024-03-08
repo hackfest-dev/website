@@ -74,7 +74,7 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
     await addJudge.mutateAsync({
       userId: data.userId,
       type: data.type,
-      track: data.type !== "SUPER_VALIDATOR" ? "ALL" : data.track,
+      track: data.type !== "VALIDATOR" ? "ALL" : data.track,
     });
     await judgesRefetch();
     toast.dismiss();

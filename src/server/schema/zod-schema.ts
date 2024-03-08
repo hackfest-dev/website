@@ -145,7 +145,7 @@ const addReferralCodeZ = z.object({
 
 const addJudgeZ = z.object({
   userId: z.string(),
-  type: z.enum(["VALIDATOR", "SUPER_VALIDATOR", "JUDGE"]),
+  type: z.enum(["VALIDATOR", "JUDGE"]),
   track: z.enum(['FINTECH',
   'SUSTAINABLE_DEVELOPMENT',
   'HEALTHCARE',

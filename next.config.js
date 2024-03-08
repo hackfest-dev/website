@@ -27,6 +27,11 @@ const config = {
         hostname:"i1.sndcdn.com",
         // pathname:"/"
       },
+      {
+        protocol:"https",
+        hostname:"img.freepik.com",
+        // pathname:"/"
+      },
     ],
   },
 

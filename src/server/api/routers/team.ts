@@ -380,7 +380,7 @@ export const teamRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-      if (user.role !== "SUPER_VALIDATOR") {
+      if (user.role !== "ORGANISER") {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Not allowed to perform this action",
@@ -438,4 +438,40 @@ export const teamRouter = createTRPCRouter({
         });
       }
     }),
+    toggleAttendance: protectedProcedure
+    .input(z.object({
+      teamId: z.string()
+    }))
+    .mutation(async ({input, ctx}) => {
+      const user = ctx.session.user;
+      if (user.role !== 'ORGANISER' && user.role !== 'TEAM') {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Not allowed to perform this action",
+        });
+      }
+      try {
+        const team = await ctx.db.team.findUnique({
+          where: {
+            id: input.teamId
+          }
+        })
+        await ctx.db.team.update({
+          where: {
+            id: input.teamId
+          },
+          data: {
+            attended: !team?.attended
+          },
+        });
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST") {
+          return error;
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong!",
+        });
+      }
+    })
 });

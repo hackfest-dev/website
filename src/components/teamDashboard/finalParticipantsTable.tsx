@@ -31,7 +31,7 @@ interface MembersRow {
   members: { college: { name: string } }[];
 }
 
-export default function ParticipantsTable({
+export default function FinalParticipantsTable({
   data,
   dataRefecth
 }: {
@@ -45,35 +45,6 @@ export default function ParticipantsTable({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-
-  const moveToTop100 = api.team.moveToTop100.useMutation( 
-    {
-      onSuccess: async () => {
-        dataRefecth();
-        toast.success("Moved to Top 100");
-        toast.dismiss('moveToTop100');
-
-      },
-      onError: (e) => {
-        toast.error(e.message);
-      }
-    }
-  );
-
-  const moveToTop60 = api.team.moveToTop60.useMutation( 
-    {
-      onSuccess: async () => {
-        dataRefecth();
-        toast.success("Moved to Top 60");
-        toast.dismiss('moveToTop60');
-
-      },
-      onError: (e) => {
-        toast.error(e.message);
-      }
-    }
-  );
-
   const toggleAttendance = api.team.toggleAttendance.useMutation({
     onSuccess: () => {
       toast.dismiss("attendanceToast");
@@ -90,31 +61,9 @@ export default function ParticipantsTable({
     })
   }
 
-  const resetProgress = api.team.resetTeamProgress.useMutation(
-    {
-      onSuccess: async () => {
-        dataRefecth();
-        toast.success("Progress Reset");
-        toast.dismiss('resetProgress');
-      },
-      onError: (e) => {
-        toast.error(e.message);
-      }
-    }
-  )
-
-  if(resetProgress.isLoading){
-    toast.loading("Resetting Progress", {id: 'resetProgress'});
+  if(toggleAttendance.isLoading){
+    toast.loading("Updating Attendance", {id: "attendanceToast"});
   }
-  if(moveToTop60.isLoading){
-    toast.loading("Moving to Top 60", {id: 'moveToTop60'});
-  }
-  
-  if(moveToTop100.isLoading){
-    toast.loading("Moving to Top 100", {id: 'moveToTop100'});
-  }
-
-  const verifyUser = api.user.verifyUser.useMutation();
 
   const columns: ColumnDef<
     unknown,
@@ -160,71 +109,6 @@ export default function ParticipantsTable({
       header: "Payment Status",
     },
     {
-      accessorKey: 'ValidatorTotalScore',
-      header: 'Validator Score',
-    },
-    {
-      accessorKey: 'teamProgress',
-      header: 'Progress',
-    },
-    {
-      accessorKey: 'teamProgress',
-      header: 'Actions',
-      cell: (cell) => {
-        return(
-          <>
-            <button className={`${(cell.cell.row.original as Team).teamProgress === 'SEMI_SELECTED' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg`}
-              onClick={async () => {
-                await moveToTop100.mutateAsync({
-                  teamId: (cell.cell.row.original as Team).id
-                })
-              }}
-            >
-              Top 100
-            </button>
-          </>
-        )
-      }
-    },
-    {
-      accessorKey: 'teamProgress',
-      header: 'Actions',
-      cell: (cell) => {
-        return(
-          <>
-            <button className={`${(cell.cell.row.original as Team).teamProgress === 'SELECTED' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg`}
-              onClick={async () => {
-                await moveToTop60.mutateAsync({
-                  teamId: (cell.cell.row.original as Team).id
-                })
-              }}
-            >
-              Top 60
-            </button>
-          </>
-        )
-      }
-    },
-    {
-      accessorKey: 'teamProgress',
-      header: 'Actions',
-      cell: (cell) => {
-        return(
-          <>
-            <button className={`${(cell.cell.row.original as Team).teamProgress === 'NOT_SELECTED' ? 'pointer-events-none' : 'bg-red-400 text-black'} px-4 py-2 rounded-lg`}
-              onClick={async () => {
-                await resetProgress.mutateAsync({
-                  teamId: (cell.cell.row.original as Team).id
-                })
-              }}
-            >
-              Reset
-            </button>
-          </>
-        )
-      }
-    },
-    {
       accessorKey: '',
       header: 'Attendance',
       cell: ({cell}) => {
@@ -254,6 +138,7 @@ export default function ParticipantsTable({
         )
       }
     },
+    
     
   ];
 
