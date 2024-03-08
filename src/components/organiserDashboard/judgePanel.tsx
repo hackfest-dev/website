@@ -225,7 +225,7 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
                           disabled={judgeType === "VALIDATOR"}
                           onValueChange={field.onChange}
                           value={
-                            judgeType !== "SUPER_VALIDATOR"
+                            judgeType !== "JUDGE"
                               ? "ALL"
                               : form.getValues().track
                           }

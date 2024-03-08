@@ -234,14 +234,14 @@ export default function ParticipantsTable({
             {
               !(cell.row.original as Team).attended ? (
                 <div className="bg-green-500 inline-block p-2 rounded-lg">
-                  <span className=" text-white cursor-pointer" onClick={() => {
-                      ToggleAttendance(`${(cell.row.original as Team).id}`);
+                  <span className=" text-white cursor-pointer" onClick={async () => {
+                      await ToggleAttendance(`${(cell.row.original as Team).id}`);
                   }} ><Check /></span>
                 </div>
               ) : (
                 <div className="bg-red-500 inline-block p-2 rounded-lg">
-                  <span className=" text-white cursor-pointer" onClick={() => {
-                      ToggleAttendance(`${(cell.row.original as Team).id}`);
+                  <span className=" text-white cursor-pointer" onClick={async () => {
+                      await ToggleAttendance(`${(cell.row.original as Team).id}`);
                   }}>
                   <X/>
                 </span>
