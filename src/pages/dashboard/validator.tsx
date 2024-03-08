@@ -46,7 +46,7 @@ export default function Validator() {
     );
 
 
-  if (!data || !data.user || data.user.role !== "ORGANISER") {
+  if (!data || !data.user || data.user.role !== "VALIDATOR") {
     return <NotFound />;
   }
   
