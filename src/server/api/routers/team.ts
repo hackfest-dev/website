@@ -333,6 +333,9 @@ export const teamRouter = createTRPCRouter({
             },
           },
         },
+        orderBy: {
+          name: "asc"
+        }
       });
     } catch (error) {
       console.log(error);

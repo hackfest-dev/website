@@ -21,6 +21,7 @@ import { api } from "~/utils/api";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { $Enums } from "@prisma/client";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function FaqAdmin() {
   const [answer, setAnswer] = useState("");
@@ -72,8 +73,8 @@ export default function FaqAdmin() {
           </div>
         </DialogTrigger>
         <DialogContent>
-          <DialogHeader>
-            <Table>
+        <ScrollArea className="h-96">
+        <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Question</TableHead>
@@ -145,7 +146,7 @@ export default function FaqAdmin() {
                 )}
               </TableBody>
             </Table>
-          </DialogHeader>
+        </ScrollArea>
         </DialogContent>
       </Dialog>
     </>
