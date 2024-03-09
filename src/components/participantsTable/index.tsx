@@ -281,6 +281,7 @@ export default function ParticipantsTable({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
+                <TableHead>Sl. No</TableHead>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -303,7 +304,9 @@ export default function ParticipantsTable({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
+                  <TableCell>{parseInt(row.id)+1}</TableCell>
                   {row.getVisibleCells().map((cell) => (
+                    
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
