@@ -35,7 +35,8 @@ export default function ProfilePage() {
         {userInfo.isLoading ? (
           <></>
         ) : !userInfo.data?.team?.id ? (
-          <CreateTeam refetch={userInfo.refetch} />
+          // <CreateTeam refetch={userInfo.refetch} />
+          <></>
         ) : (
           <TeamDetails
             userId={userInfo.data.id}

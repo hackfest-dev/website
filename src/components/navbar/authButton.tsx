@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { FiLogIn } from "react-icons/fi";
 import Link from "next/link";
+import { LogoutButton } from "../profile/logout";
 
 const AuthButton = () => {
   return (
@@ -21,9 +22,10 @@ const SessionButton = () => {
         <>
           {session?.user?.profileProgress !== "COMPLETE" ? (
             <>
-              <Link href={"/register"}>
+              {/* <Link href={"/register"}>
                 <Button>Register</Button>
-              </Link>
+              </Link> */}
+              <LogoutButton />
             </>
           ) : (
             <>

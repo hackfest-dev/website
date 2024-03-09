@@ -114,7 +114,7 @@ export default function TeamInfo({
                     className="cursor-pointer hover:text-gray-400"
                   />
                 </div>
-                <Button
+                {/* <Button
                   onClick={(e) => {
                     toast.promise(() => onSubmit(e), {
                       position: "bottom-center",
@@ -148,7 +148,7 @@ export default function TeamInfo({
                   ) : (
                     <LogOut size={16} />
                   )}
-                </Button>
+                </Button> */}
               </div>
 
               <div className="w-full">
@@ -191,7 +191,7 @@ export default function TeamInfo({
             </div>
           </CardContent>
         </Card>
-        <Card className="mb-2 w-full">
+        {/* <Card className="mb-2 w-full">
           {teamdata && (
             <CardContent className="text-md flex flex-col items-center justify-between gap-3 pt-5 text-center sm:text-sm md:flex-row md:gap-0">
               {userProgress === "COMPLETE" ? (
@@ -272,7 +272,7 @@ export default function TeamInfo({
               </Dialog>
             </CardContent>
           )}
-        </Card>
+        </Card> */}
       </CardContent>
     </Card>
   );
