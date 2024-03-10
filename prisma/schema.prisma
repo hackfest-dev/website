@@ -44,7 +44,7 @@ model User {
   phone           String?
   state           String?
   collegeId       String?
-  image           String? @default("https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=900&t=st=1709875148~exp=1709875748~hmac=2f5b619c6bda073396a93cd48021b7013f5231bdfa745dcf976c260cca8c1b38")
+  image           String?    @default("https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=900&t=st=1709875148~exp=1709875748~hmac=2f5b619c6bda073396a93cd48021b7013f5231bdfa745dcf976c260cca8c1b38")
   course          Courses?
   college_id      String?
   isVerified      Boolean    @default(false)
@@ -102,7 +102,7 @@ model Team {
   ValidatorTotalScore      Int               @default(0)
   SuperValidatorTotalScore Int               @default(0)
   teamProgress             TeamProgress      @default(NOT_SELECTED)
-  attended Boolean @default(false)
+  attended                 Boolean           @default(false)
 }
 
 model Payments {
@@ -188,10 +188,10 @@ model Scores {
 
 model Judges {
   id     Int             @id @default(autoincrement())
-  userId String          @unique 
+  userId String          @unique
   User   User            @relation(fields: [userId], references: [id])
   track  Tracks
-  type JudgeType @default(VALIDATOR)
+  type   JudgeType       @default(VALIDATOR)
   scores ScoresByJudge[]
 }
 
@@ -199,6 +199,7 @@ enum JudgeType {
   JUDGE
   VALIDATOR
 }
+
 enum CriteriaType {
   JUDGE
   VALIDATOR
