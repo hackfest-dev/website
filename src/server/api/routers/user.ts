@@ -266,7 +266,7 @@ export const userRouter = createTRPCRouter({
       });
     }
   }),
-  toggleAttendance: protectedProcedure
+  markAttendance: protectedProcedure
     .input(
       z.object({
         userId: z.string(),
@@ -283,23 +283,36 @@ export const userRouter = createTRPCRouter({
           message: "You cannot perform this action",
         });
       try {
-        const user = await ctx.db.user.findUnique({
-          where: { id: input.userId },
-        });
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          });
-        }
         const updatedUser = await ctx.db.user.update({
           where: { id: input.userId },
           data: {
-            attended: !user.attended,
+            attended: true,
+          },
+          include: {
+            college: true,
+            team: {
+              include: {
+                members: true,
+              },
+            },
           },
         });
 
-        return updatedUser;
+        const teamMembers = updatedUser.team?.members;
+        if (teamMembers?.filter((member) => !member.attended).length === 0) {
+          await ctx.db.team.update({
+            where: { id: updatedUser.team?.id },
+            data: {
+              attended: true,
+            },
+          });
+        }
+
+        return {
+          name: updatedUser.name,
+          teamName: updatedUser.team?.name,
+          collegeName: updatedUser.college?.name,
+        };
       } catch (e) {
         console.log(e);
         throw new TRPCError({
