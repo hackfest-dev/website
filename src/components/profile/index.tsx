@@ -36,14 +36,18 @@ export const Profile: React.FC<{
               height={150}
               className="h-32 w-32 rounded-xl"
             />
-            <QRCodeSVG
-              value={user?.id ?? ""}
-              size={130}
-              bgColor="transparent"
-              color="#ffffff"
-              fgColor="#ffffff"
-              className="h-32 w-32"
-            />
+            {user?.id &&
+              user?.team?.paymentStatus === "PAID" &&
+              user?.team?.teamProgress === "SELECTED" && (
+                <QRCodeSVG
+                  value={user?.id ?? ""}
+                  size={130}
+                  bgColor="transparent"
+                  color="#ffffff"
+                  fgColor="#ffffff"
+                  className="h-32 w-32"
+                />
+              )}
           </CardContent>
           <CardFooter className="p-0">
             <h1 className="text-md w-full whitespace-nowrap text-center font-semibold md:text-lg">

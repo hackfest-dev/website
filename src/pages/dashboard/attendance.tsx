@@ -21,7 +21,6 @@ export default function Attendance() {
   };
 
   const startCamera = async () => {
-    // start the camera again
     await navigator.mediaDevices
       .getUserMedia({ video: { facingMode: "environment" } })
       .then((stream) => {
@@ -40,15 +39,17 @@ export default function Attendance() {
 
   return (
     <>
-      <video className="w-full rounded-lg border border-gray-400" ref={ref} />
-      {!result && (
-        <div className="mt-2 text-center text-sm text-gray-400">
-          <span className="text-green-500">Note:</span> Detection is retried
-          every 300ms. If you are not seeing the detection, try moving the
-          camera closer to the QR code.
-        </div>
-      )}
-      <Badge color={"info"}>Scanned ID: {result}</Badge>
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <video className="w-full rounded-lg border border-gray-400" ref={ref} />
+        {!result && (
+          <div className="mt-2 text-center text-sm text-gray-400">
+            <span className="text-green-500">Note:</span> Detection is retried
+            every 300ms. If you are not seeing the detection, try moving the
+            camera closer to the QR code.
+          </div>
+        )}
+        <Badge color={"info"}>Scanned ID: {result}</Badge>
+      </div>
     </>
   );
 }
