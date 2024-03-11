@@ -27,6 +27,7 @@ export default function Attendance() {
   if (updateAttendance.isLoading) {
     toast.loading("Marking attendance...", { id: "attendance" });
   }
+
   const [result, setResult] = useState<string | null>(null);
   const { ref } = useZxing({
     onDecodeResult(result) {
@@ -92,20 +93,19 @@ export default function Attendance() {
             Scan
           </Button>
         )}
+        {attendedUser && (
+          <Card className="dark mx-5 py-8">
+            <CardHeader>
+              <CardTitle>Attended User</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col text-xl text-green-500">
+              <div className="font-bold">{attendedUser.name}</div>
+              <div className="font-semibold">{attendedUser.teamName}</div>
+              <div>{attendedUser.collegeName}</div>
+            </CardContent>
+          </Card>
+        )}
       </div>
-
-      {attendedUser && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Attended User</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3 text-green-500">
-            <div className="font-bold">{attendedUser.name}</div>
-            <div className="font-semibold">{attendedUser.teamName}</div>
-            <div>{attendedUser.collegeName}</div>
-          </CardContent>
-        </Card>
-      )}
     </>
   );
 }
