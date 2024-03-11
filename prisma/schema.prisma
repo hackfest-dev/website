@@ -65,7 +65,8 @@ model User {
   college         College?   @relation(fields: [collegeId], references: [id])
   team            Team?      @relation(fields: [teamId], references: [id])
   Judges          Judges?
-
+  attended Boolean @default(false)
+  
   @@index([collegeId])
   @@index([teamId])
 }

@@ -6,6 +6,7 @@ import {
   updateUserZ,
 } from "~/server/schema/zod-schema";
 import { deleteFile } from "~/utils/cloudinary";
+import { z } from "zod";
 
 export const userRouter = createTRPCRouter({
   verifyUser: protectedProcedure
@@ -43,25 +44,25 @@ export const userRouter = createTRPCRouter({
         where: { id: ctx.session.user.id },
         include: {
           college: true,
-		  team:{
-			  include:{
-				  members:true
-			  }
-		  }
+          team: {
+            include: {
+              members: true,
+            },
+          },
         },
       });
 
-	  if(input.college !== user?.college?.id){
-		  if(user?.team && user?.team?.members?.length > 1){
-			throw new TRPCError({
-				code:"BAD_REQUEST",
-				message:"All team members should belong to same college!"
-			})
-		  }
-	  }
+      if (input.college !== user?.college?.id) {
+        if (user?.team && user?.team?.members?.length > 1) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "All team members should belong to same college!",
+          });
+        }
+      }
 
       //If ID is already there remove the existing one from cloudinary
-	  if ( user?.aadhaar && input.aadhaarUrl !== user.aadhaar) {
+      if (user?.aadhaar && input.aadhaarUrl !== user.aadhaar) {
         await deleteFile(user.aadhaar.split(";")[1]!);
       }
       if (user?.college_id && input.collegeIdUrl !== user.college_id) {
@@ -130,22 +131,22 @@ export const userRouter = createTRPCRouter({
         where: { id: ctx.session.user.id },
         include: {
           college: true,
-		  team:{
-			  include:{
-				  members:true
-			  }
-		  }
+          team: {
+            include: {
+              members: true,
+            },
+          },
         },
       });
 
-	  if(input.college !== user?.college?.id){
-		  if(user?.team && user?.team?.members?.length > 1){
-			throw new TRPCError({
-				code:"BAD_REQUEST",
-				message:"All team members should belong to same college!"
-			})
-		  }
-	  }
+      if (input.college !== user?.college?.id) {
+        if (user?.team && user?.team?.members?.length > 1) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "All team members should belong to same college!",
+          });
+        }
+      }
 
       //If ID is already there remove the existing one from cloudinary
       if (user?.aadhaar && input.aadhaarUrl !== user?.aadhaar) {
@@ -250,21 +251,61 @@ export const userRouter = createTRPCRouter({
     });
   }),
 
-  getAllUsers: protectedProcedure.query(async ({ctx}) => {
-   try{
-    return await ctx.db.user.findMany(
-      {
+  getAllUsers: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      return await ctx.db.user.findMany({
         include: {
-          college: true
-        }
-      }
-    )
-   }catch(e){
-      console.log(e)
+          college: true,
+        },
+      });
+    } catch (e) {
+      console.log(e);
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Something went wrong",
       });
-   }
-  })
+    }
+  }),
+  toggleAttendance: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      if (
+        ctx.session.user.role === "PARTICIPANT" ||
+        ctx.session.user.role === "JUDGE" ||
+        ctx.session.user.role === "VALIDATOR"
+      )
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You cannot perform this action",
+        });
+      try {
+        const user = await ctx.db.user.findUnique({
+          where: { id: input.userId },
+        });
+        if (!user) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "User not found",
+          });
+        }
+        const updatedUser = await ctx.db.user.update({
+          where: { id: input.userId },
+          data: {
+            attended: !user.attended,
+          },
+        });
+
+        return updatedUser;
+      } catch (e) {
+        console.log(e);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong",
+        });
+      }
+    }),
 });
