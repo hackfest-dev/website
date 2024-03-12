@@ -497,4 +497,39 @@ export const teamRouter = createTRPCRouter({
         });
       }
     }),
+  revalidateScore: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.session.user.role !== "ADMIN") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You are not an admin",
+      });
+    }
+    const teams = await ctx.db.team.findMany({
+      include: {
+        Scores: {
+          include: {
+            score: true,
+          },
+        },
+      },
+    });
+
+    await Promise.all(
+      teams.map(async (team) => {
+        const scores = team.Scores.map((score) => score.score.score);
+        let totalScore = 0;
+        scores.map((score) => {
+          totalScore += parseInt(score);
+        });
+        return ctx.db.team.update({
+          where: {
+            id: team.id,
+          },
+          data: {
+            ValidatorTotalScore: totalScore,
+          },
+        });
+      }),
+    );
+  }),
 });

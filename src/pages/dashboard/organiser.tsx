@@ -37,6 +37,7 @@ import {
   SheetTrigger,
 } from "~/components/ui/sheet";
 import { Label } from "@radix-ui/react-label";
+import { toast } from "sonner";
 
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery();
@@ -129,6 +130,15 @@ export default function Organiser() {
     return <NotFound />;
   }
 
+  const revalidateScores = api.team.revalidateScore.useMutation({
+    onSuccess: () => {
+      toast.success("Scores revalidated successfully");
+    },
+    onError: () => {
+      toast.error("Error revalidating scores");
+    },
+  });
+
   return (
     <DashboardLayout>
       <Tabs defaultValue="teams" className="w-full">
@@ -168,6 +178,15 @@ export default function Organiser() {
             </h1>
             <div className="my-4 flex h-full w-full flex-col items-center justify-around gap-3 md:flex-row">
               <DownloadDataButtons />
+              {data.user.role === "ADMIN" && (
+                <Button
+                  onClick={async () => {
+                    await revalidateScores.mutateAsync();
+                  }}
+                >
+                  Revalidate Scores
+                </Button>
+              )}
               <Sheet>
                 <SheetTrigger>
                   <Button>
