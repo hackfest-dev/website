@@ -19,7 +19,6 @@ import { Button } from "~/components/ui/button";
 import { useSession } from "next-auth/react";
 import NotFound from "../404";
 
-
 export default function Team() {
   const res = api.team.getTeamsList.useQuery();
   const users = api.user.getAllUsers.useQuery().data;
@@ -57,67 +56,68 @@ export default function Team() {
       </DashboardLayout>
     );
 
-  if (!data || !data.user || data.user.role !== "TEAM") {
+  if (
+    !data ||
+    !data.user ||
+    (data.user.role !== "TEAM" && data.user.role !== "ADMIN")
+  ) {
     return <NotFound />;
   }
 
   return (
     <DashboardLayout>
       <div className="w-full border-b">
-            <h1 className="py-10 text-center text-4xl font-bold">Volunteer Dashboard</h1>
-          </div>
-          <div className="m-auto overflow-x-scroll md:max-w-screen-xl">
-            <h1 className="my-8 text-center text-2xl font-bold">
-              Participants
-            </h1>
-            <div className="my-4 flex h-full w-full flex-col items-center justify-around gap-3 md:flex-row">
-              {/* <DownloadDataButtons /> */}
-              <Input
-                placeholder="Search Team ID/Name"
-                className="w-52"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                }}
-              />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline">{paymentQuery}</Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuLabel>Payment Staus</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuRadioGroup
-                    value={paymentQuery}
-                    onValueChange={(value) => setPaymentQuery(value)}
-                  >
-                    <DropdownMenuRadioItem value="ALL">
-                      All
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="PAID">
-                      Paid
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="PENDING">
-                      Pending
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="FAILED">
-                      Failed
-                    </DropdownMenuRadioItem>
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            {!res ? (
-              <Spinner size="large" />
-            ) : (
-              <FinalParticipantsTable
-                data={selectedTeams?.filter((team) => team.teamProgress === 'SELECTED')}
-                dataRefecth={res.refetch}
-              />
+        <h1 className="py-10 text-center text-4xl font-bold">
+          Volunteer Dashboard
+        </h1>
+      </div>
+      <div className="m-auto overflow-x-scroll md:max-w-screen-xl">
+        <h1 className="my-8 text-center text-2xl font-bold">Participants</h1>
+        <div className="my-4 flex h-full w-full flex-col items-center justify-around gap-3 md:flex-row">
+          {/* <DownloadDataButtons /> */}
+          <Input
+            placeholder="Search Team ID/Name"
+            className="w-52"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">{paymentQuery}</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel>Payment Staus</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuRadioGroup
+                value={paymentQuery}
+                onValueChange={(value) => setPaymentQuery(value)}
+              >
+                <DropdownMenuRadioItem value="ALL">All</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="PAID">Paid</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="PENDING">
+                  Pending
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="FAILED">
+                  Failed
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        {!res ? (
+          <Spinner size="large" />
+        ) : (
+          <FinalParticipantsTable
+            data={selectedTeams?.filter(
+              (team) => team.teamProgress === "SELECTED",
             )}
-          </div>
-          <div>
-          </div>
+            dataRefecth={res.refetch}
+          />
+        )}
+      </div>
+      <div></div>
     </DashboardLayout>
   );
 }

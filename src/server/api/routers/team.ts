@@ -324,9 +324,7 @@ export const teamRouter = createTRPCRouter({
 
   getTeamsList: protectedProcedure.query(async ({ ctx }) => {
     console.log(ctx.session.user.role);
-    if (
-      ctx.session.user.role === 'PARTICIPANT'
-    )
+    if (ctx.session.user.role === "PARTICIPANT")
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "You are not an organiser",
@@ -350,8 +348,8 @@ export const teamRouter = createTRPCRouter({
           },
         },
         orderBy: {
-          name: "asc"
-        }
+          name: "asc",
+        },
       });
     } catch (error) {
       console.log(error);
@@ -366,7 +364,7 @@ export const teamRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-      if (user.role !== "ORGANISER") {
+      if (user.role !== "ORGANISER" && user.role !== "ADMIN") {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Not allowed to perform this action",
@@ -399,7 +397,7 @@ export const teamRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-      if (user.role !== "ORGANISER") {
+      if (user.role !== "ORGANISER" && user.role !== "ADMIN") {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Not allowed to perform this action",
@@ -432,7 +430,7 @@ export const teamRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-      if (user.role !== 'ORGANISER') {
+      if (user.role !== "ORGANISER" && user.role !== "ADMIN") {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Not allowed to perform this action",
@@ -457,13 +455,19 @@ export const teamRouter = createTRPCRouter({
         });
       }
     }),
-    toggleAttendance: protectedProcedure
-    .input(z.object({
-      teamId: z.string()
-    }))
-    .mutation(async ({input, ctx}) => {
+  toggleAttendance: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-      if (user.role !== 'ORGANISER' && user.role !== 'TEAM') {
+      if (
+        user.role !== "ORGANISER" &&
+        user.role !== "TEAM" &&
+        user.role !== "ADMIN"
+      ) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Not allowed to perform this action",
@@ -472,15 +476,15 @@ export const teamRouter = createTRPCRouter({
       try {
         const team = await ctx.db.team.findUnique({
           where: {
-            id: input.teamId
-          }
-        })
+            id: input.teamId,
+          },
+        });
         await ctx.db.team.update({
           where: {
-            id: input.teamId
+            id: input.teamId,
           },
           data: {
-            attended: !team?.attended
+            attended: !team?.attended,
           },
         });
       } catch (error) {
@@ -492,5 +496,5 @@ export const teamRouter = createTRPCRouter({
           message: "Something went wrong!",
         });
       }
-    })
+    }),
 });

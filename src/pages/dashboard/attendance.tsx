@@ -4,9 +4,11 @@ import { Badge } from "~/components/ui/badge";
 import { api } from "~/utils/api";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
-import { College, Team, User } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import NotFound from "../404";
 export default function Attendance() {
+  const { data: user } = useSession();
   const [attendedUser, setAttndeduser] = useState<{
     name: string | null;
     collegeName: string | undefined;
@@ -54,6 +56,15 @@ export default function Attendance() {
         }
       });
   };
+
+  if (
+    !user ||
+    (user?.user.role !== "ORGANISER" &&
+      user?.user.role !== "TEAM" &&
+      user?.user.role !== "ADMIN")
+  ) {
+    return <NotFound />;
+  }
 
   return (
     <>

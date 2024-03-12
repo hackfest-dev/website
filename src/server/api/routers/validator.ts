@@ -89,7 +89,7 @@ export const validatorRouter = createTRPCRouter({
                   userId: user.id,
                   User: {
                     id: user.id,
-                  }
+                  },
                 },
               },
               Team: {

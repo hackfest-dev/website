@@ -208,6 +208,7 @@ enum CriteriaType {
 }
 
 enum Role {
+  ADMIN
   PARTICIPANT
   ORGANISER
   JUDGE

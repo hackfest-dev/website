@@ -6,6 +6,7 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { navLinks } from "~/constants";
 import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
+import DashboardButton from "./dashboardButton";
 
 export const MobileNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,18 +48,16 @@ export const MobileNavbar = () => {
             </Link>
           ))}
 
-          <div className="flex flex-col gap-2 w-full justify-center items-center">
-          <AuthButtons />
-          {
-            user?.data?.user &&
-              user?.data?.user?.role !== 'PARTICIPANT' && (
-                <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
-                  <Button>
-                    Dashboard
-                  </Button>
-                </Link>
-              )
-            }
+          <div className="flex w-full flex-col items-center justify-center gap-2">
+            <AuthButtons />
+            {user?.data?.user && user?.data?.user?.role !== "PARTICIPANT" && (
+              // <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
+              //   <Button>
+              //     Dashboard
+              //   </Button>
+              // </Link>
+              <DashboardButton role={user?.data?.user?.role} />
+            )}
           </div>
         </div>
       </div>

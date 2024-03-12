@@ -5,6 +5,7 @@ import { MobileNavbar } from "./mobileNavbar";
 import { navLinks } from "~/constants";
 import { useSession } from "next-auth/react";
 import { Button } from "../ui/button";
+import DashboardButton from "./dashboardButton";
 
 const Navbar = () => {
   const user = useSession();
@@ -41,17 +42,16 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="hidden  lg:flex gap-2">
+          <div className="hidden  gap-2 lg:flex">
             <AuthButtons />
-            {user?.data?.user && 
-              user?.data?.user?.role !== 'PARTICIPANT' && (
-                <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
-                  <Button>
-                    Dashboard
-                  </Button>
-                </Link>
-              )
-            }
+            {user?.data?.user && user?.data?.user?.role !== "PARTICIPANT" && (
+              // <Link href={`/dashboard/${user?.data?.user?.role.toLowerCase()}`}>
+              //   <Button>
+              //     Dashboard
+              //   </Button>
+              // </Link>
+              <DashboardButton role={user?.data?.user?.role} />
+            )}
           </div>
         </div>
       </nav>

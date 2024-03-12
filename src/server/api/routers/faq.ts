@@ -33,7 +33,10 @@ export const FAQRouter = createTRPCRouter({
   answerFaq: protectedProcedure
     .input(answerFaqZ)
     .mutation(async ({ input, ctx }) => {
-      if (ctx.session.user.role !== "ORGANISER") {
+      if (
+        ctx.session.user.role !== "ORGANISER" &&
+        ctx.session.user.role !== "ADMIN"
+      ) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Only Organisers can answer FAQs",

@@ -121,7 +121,11 @@ export default function Organiser() {
       </DashboardLayout>
     );
 
-  if (!data || !data.user || data.user.role !== "ORGANISER") {
+  if (
+    !data ||
+    !data.user ||
+    (data.user.role !== "ORGANISER" && data.user.role !== "ADMIN")
+  ) {
     return <NotFound />;
   }
 
