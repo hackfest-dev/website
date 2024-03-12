@@ -38,7 +38,7 @@ import {
 } from "~/components/ui/sheet";
 import { Label } from "@radix-ui/react-label";
 import { toast } from "sonner";
-
+import { useMutation } from "@tanstack/react-query";
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery();
   const users = api.user.getAllUsers.useQuery().data;
@@ -130,14 +130,15 @@ export default function Organiser() {
     return <NotFound />;
   }
 
-  const revalidateScores = api.team.revalidateScore.useMutation({
-    onSuccess: () => {
-      toast.success("Scores revalidated successfully");
-    },
-    onError: () => {
-      toast.error("Error revalidating scores");
-    },
-  });
+  // const revalidateScores = api.team.revalidateScore.useMutation({
+  //   onSuccess: () => {
+  //     toast.success("Scores revalidated successfully");
+  //     res.refetch();
+  //   },
+  //   onError: () => {
+  //     toast.error("Error revalidating scores");
+  //   },
+  // });
 
   return (
     <DashboardLayout>
@@ -178,7 +179,7 @@ export default function Organiser() {
             </h1>
             <div className="my-4 flex h-full w-full flex-col items-center justify-around gap-3 md:flex-row">
               <DownloadDataButtons />
-              {data.user.role === "ADMIN" && (
+              {/* {data.user.role === "ADMIN" && (
                 <Button
                   onClick={async () => {
                     await revalidateScores.mutateAsync();
@@ -186,7 +187,7 @@ export default function Organiser() {
                 >
                   Revalidate Scores
                 </Button>
-              )}
+              )} */}
               <Sheet>
                 <SheetTrigger>
                   <Button>
