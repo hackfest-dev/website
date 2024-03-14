@@ -113,6 +113,17 @@ export default function Organiser() {
     trackQuery,
   ]);
 
+  // const revalidateScores = api.team.revalidateScore.useMutation({
+  //   onSuccess: async () => {
+  //     toast.success("Scores revalidated successfully");
+  //     await res.refetch();
+  //   },
+  //   onError: () => {
+  //     toast.error("Error revalidating scores");
+  //   },
+  // });
+
+
   if (status === "loading")
     return (
       <DashboardLayout>
@@ -129,16 +140,6 @@ export default function Organiser() {
   ) {
     return <NotFound />;
   }
-
-  // const revalidateScores = api.team.revalidateScore.useMutation({
-  //   onSuccess: () => {
-  //     toast.success("Scores revalidated successfully");
-  //     res.refetch();
-  //   },
-  //   onError: () => {
-  //     toast.error("Error revalidating scores");
-  //   },
-  // });
 
   return (
     <DashboardLayout>
@@ -228,7 +229,7 @@ export default function Organiser() {
                             <DropdownMenuSeparator />
                             <DropdownMenuRadioGroup
                               value={submissionQuery}
-                              onValueChange={(value) =>
+                              onValueChange={(value: string) =>
                                 setSubmissionQuery(value)
                               }
                             >
@@ -264,7 +265,9 @@ export default function Organiser() {
                             <DropdownMenuSeparator />
                             <DropdownMenuRadioGroup
                               value={trackQuery}
-                              onValueChange={(value) => setTrackQuery(value)}
+                              onValueChange={(value: string) =>
+                                setTrackQuery(value)
+                              }
                             >
                               <DropdownMenuRadioItem value="ALL">
                                 All
@@ -304,7 +307,9 @@ export default function Organiser() {
                             <DropdownMenuSeparator />
                             <DropdownMenuRadioGroup
                               value={top60Query}
-                              onValueChange={(value) => setTop60Query(value)}
+                              onValueChange={(value: string) =>
+                                setTop60Query(value)
+                              }
                             >
                               <DropdownMenuRadioItem value="ALL">
                                 All
@@ -333,7 +338,9 @@ export default function Organiser() {
                             <DropdownMenuSeparator />
                             <DropdownMenuRadioGroup
                               value={paymentQuery}
-                              onValueChange={(value) => setPaymentQuery(value)}
+                              onValueChange={(value: string) =>
+                                setPaymentQuery(value)
+                              }
                             >
                               <DropdownMenuRadioItem value="ALL">
                                 All

@@ -126,7 +126,7 @@ export const FAQ = () => {
                     <DropdownMenuRadioGroup
                       value={faq.category}
                       className="bg-slate-800"
-                      onValueChange={(value) =>
+                      onValueChange={(value: string) =>
                         setFaq((prev) => {
                           return { ...prev, category: value as Category };
                         })

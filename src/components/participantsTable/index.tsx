@@ -24,7 +24,7 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { Team, TeamProgress } from "@prisma/client";
+import { IdeaSubmission, Team, TeamProgress } from "@prisma/client";
 import { Check, X } from "lucide-react";
 
 interface MembersRow {
@@ -33,7 +33,7 @@ interface MembersRow {
 
 export default function ParticipantsTable({
   data,
-  dataRefecth
+  dataRefecth,
 }: {
   data:
     | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
@@ -46,33 +46,27 @@ export default function ParticipantsTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const moveToTop100 = api.team.moveToTop100.useMutation( 
-    {
-      onSuccess: async () => {
-        dataRefecth();
-        toast.success("Moved to Top 100");
-        toast.dismiss('moveToTop100');
+  const moveToTop100 = api.team.moveToTop100.useMutation({
+    onSuccess: async () => {
+      dataRefecth();
+      toast.success("Moved to Top 100");
+      toast.dismiss("moveToTop100");
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
 
-      },
-      onError: (e) => {
-        toast.error(e.message);
-      }
-    }
-  );
-
-  const moveToTop60 = api.team.moveToTop60.useMutation( 
-    {
-      onSuccess: async () => {
-        dataRefecth();
-        toast.success("Moved to Top 60");
-        toast.dismiss('moveToTop60');
-
-      },
-      onError: (e) => {
-        toast.error(e.message);
-      }
-    }
-  );
+  const moveToTop60 = api.team.moveToTop60.useMutation({
+    onSuccess: async () => {
+      dataRefecth();
+      toast.success("Moved to Top 60");
+      toast.dismiss("moveToTop60");
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
 
   const toggleAttendance = api.team.toggleAttendance.useMutation({
     onSuccess: () => {
@@ -82,36 +76,34 @@ export default function ParticipantsTable({
     },
     onError: (error) => {
       toast.error(error.message);
-    }
+    },
   });
   async function ToggleAttendance(id: string) {
     await toggleAttendance.mutateAsync({
-        teamId: id
-    })
+      teamId: id,
+    });
   }
 
-  const resetProgress = api.team.resetTeamProgress.useMutation(
-    {
-      onSuccess: async () => {
-        dataRefecth();
-        toast.success("Progress Reset");
-        toast.dismiss('resetProgress');
-      },
-      onError: (e) => {
-        toast.error(e.message);
-      }
-    }
-  )
+  const resetProgress = api.team.resetTeamProgress.useMutation({
+    onSuccess: async () => {
+      dataRefecth();
+      toast.success("Progress Reset");
+      toast.dismiss("resetProgress");
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
 
-  if(resetProgress.isLoading){
-    toast.loading("Resetting Progress", {id: 'resetProgress'});
+  if (resetProgress.isLoading) {
+    toast.loading("Resetting Progress", { id: "resetProgress" });
   }
-  if(moveToTop60.isLoading){
-    toast.loading("Moving to Top 60", {id: 'moveToTop60'});
+  if (moveToTop60.isLoading) {
+    toast.loading("Moving to Top 60", { id: "moveToTop60" });
   }
-  
-  if(moveToTop100.isLoading){
-    toast.loading("Moving to Top 100", {id: 'moveToTop100'});
+
+  if (moveToTop100.isLoading) {
+    toast.loading("Moving to Top 100", { id: "moveToTop100" });
   }
 
   const verifyUser = api.user.verifyUser.useMutation();
@@ -160,101 +152,134 @@ export default function ParticipantsTable({
       header: "Payment Status",
     },
     {
-      accessorKey: 'ValidatorTotalScore',
-      header: 'Validator Score',
+      accessorKey: "ValidatorTotalScore",
+      header: "Validator Score",
     },
     {
-      accessorKey: 'teamProgress',
-      header: 'Progress',
+      accessorKey: "teamProgress",
+      header: "Progress",
     },
     {
-      accessorKey: 'teamProgress',
-      header: 'Actions',
+      accessorKey: "ideaSubmission",
+      header: "Actions",
       cell: (cell) => {
-        return(
+        return (
           <>
-            <button className={`${(cell.cell.row.original as Team).teamProgress === 'SEMI_SELECTED' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg`}
+            <a
+              href={
+                (
+                  cell.cell.row.original as Team & {
+                    ideaSubmission: IdeaSubmission | null;
+                  }
+                ).ideaSubmission?.pptUrl?.split(";")[0]
+              }
+              target="_blank"
+            >
+              <Button>View PDF</Button>
+            </a>
+          </>
+        );
+      },
+    },
+    {
+      accessorKey: "teamProgress",
+      header: "Actions",
+      cell: (cell) => {
+        return (
+          <>
+            <button
+              className={`${(cell.cell.row.original as Team).teamProgress === "SEMI_SELECTED" ? "bg-green-700 text-white" : "bg-white text-black"} rounded-lg px-4 py-2`}
               onClick={async () => {
                 await moveToTop100.mutateAsync({
-                  teamId: (cell.cell.row.original as Team).id
-                })
+                  teamId: (cell.cell.row.original as Team).id,
+                });
               }}
             >
               Top 100
             </button>
           </>
-        )
-      }
+        );
+      },
     },
     {
-      accessorKey: 'teamProgress',
-      header: 'Actions',
+      accessorKey: "teamProgress",
+      header: "Actions",
       cell: (cell) => {
-        return(
+        return (
           <>
-            <button className={`${(cell.cell.row.original as Team).teamProgress === 'SELECTED' ? 'bg-green-700 text-white' : 'bg-white text-black'} px-4 py-2 rounded-lg`}
+            <button
+              className={`${(cell.cell.row.original as Team).teamProgress === "SELECTED" ? "bg-green-700 text-white" : "bg-white text-black"} rounded-lg px-4 py-2`}
               onClick={async () => {
                 await moveToTop60.mutateAsync({
-                  teamId: (cell.cell.row.original as Team).id
-                })
+                  teamId: (cell.cell.row.original as Team).id,
+                });
               }}
             >
               Top 60
             </button>
           </>
-        )
-      }
+        );
+      },
     },
     {
-      accessorKey: 'teamProgress',
-      header: 'Actions',
+      accessorKey: "teamProgress",
+      header: "Actions",
       cell: (cell) => {
-        return(
+        return (
           <>
-            <button className={`${(cell.cell.row.original as Team).teamProgress === 'NOT_SELECTED' ? 'pointer-events-none' : 'bg-red-400 text-black'} px-4 py-2 rounded-lg`}
+            <button
+              className={`${(cell.cell.row.original as Team).teamProgress === "NOT_SELECTED" ? "pointer-events-none" : "bg-red-400 text-black"} rounded-lg px-4 py-2`}
               onClick={async () => {
                 await resetProgress.mutateAsync({
-                  teamId: (cell.cell.row.original as Team).id
-                })
+                  teamId: (cell.cell.row.original as Team).id,
+                });
               }}
             >
               Reset
             </button>
           </>
-        )
-      }
+        );
+      },
     },
     {
-      accessorKey: '',
-      header: 'Attendance',
-      cell: ({cell}) => {
-        return(
+      accessorKey: "",
+      header: "Attendance",
+      cell: ({ cell }) => {
+        return (
           <>
             <div className="flex">
-            {
-              !(cell.row.original as Team).attended ? (
-                <div className="bg-green-500 inline-block p-2 rounded-lg">
-                  <span className=" text-white cursor-pointer" onClick={async () => {
-                      await ToggleAttendance(`${(cell.row.original as Team).id}`);
-                  }} ><Check /></span>
+              {!(cell.row.original as Team).attended ? (
+                <div className="inline-block rounded-lg bg-green-500 p-2">
+                  <span
+                    className=" cursor-pointer text-white"
+                    onClick={async () => {
+                      await ToggleAttendance(
+                        `${(cell.row.original as Team).id}`,
+                      );
+                    }}
+                  >
+                    <Check />
+                  </span>
                 </div>
               ) : (
-                <div className="bg-red-500 inline-block p-2 rounded-lg">
-                  <span className=" text-white cursor-pointer" onClick={async () => {
-                      await ToggleAttendance(`${(cell.row.original as Team).id}`);
-                  }}>
-                  <X/>
-                </span>
+                <div className="inline-block rounded-lg bg-red-500 p-2">
+                  <span
+                    className=" cursor-pointer text-white"
+                    onClick={async () => {
+                      await ToggleAttendance(
+                        `${(cell.row.original as Team).id}`,
+                      );
+                    }}
+                  >
+                    <X />
+                  </span>
                 </div>
-              )
-              
-            }
+              )}
             </div>
           </>
-        )
-      }
+        );
+      },
     },
-    
   ];
 
   const table = useReactTable({
@@ -304,9 +329,8 @@ export default function ParticipantsTable({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  <TableCell>{parseInt(row.id)+1}</TableCell>
+                  <TableCell>{parseInt(row.id) + 1}</TableCell>
                   {row.getVisibleCells().map((cell) => (
-                    
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
