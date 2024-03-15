@@ -6,7 +6,7 @@ export default function NewsBanner() {
       {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10].map((item) => {
         return (
           <div key={item} className="mr-5 flex">
-            Registrations closed <span className="ml-5">◆</span>
+            Shortlisted teams will be announced soon <span className="ml-5">◆</span>
           </div>
         );
       })}
