@@ -199,6 +199,7 @@ model Judges {
 enum JudgeType {
   JUDGE
   VALIDATOR
+  SUPER_VALIDATOR
 }
 
 enum CriteriaType {
@@ -213,6 +214,7 @@ enum Role {
   ORGANISER
   JUDGE
   VALIDATOR
+  SUPER_VALIDATOR
   TEAM
 }
 

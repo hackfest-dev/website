@@ -455,6 +455,39 @@ export const teamRouter = createTRPCRouter({
         });
       }
     }),
+    resetToTop100: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+      if (user.role !== "ORGANISER" && user.role !== "ADMIN") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Not allowed to perform this action",
+        });
+      }
+      try {
+        await ctx.db.team.update({
+          where: {
+            id: input.teamId,
+          },
+          data: {
+            teamProgress: "SEMI_SELECTED",
+          },
+        });
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST") {
+          return error;
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong!",
+        });
+      }
+    }),
   toggleAttendance: protectedProcedure
     .input(
       z.object({
