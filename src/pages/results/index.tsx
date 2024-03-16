@@ -45,7 +45,7 @@ export default function Results() {
 
   return (
     <RootLayout>
-      <div className="min-h-screen bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933] py-20 text-center text-5xl">
+      <div className="min-h-screen overflow-clip bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933] py-20 text-center text-5xl">
         {topTeams && (
           <div className="flex flex-col gap-4 pb-12 pt-12">
             <div className=" px-4 text-3xl font-semibold md:text-5xl">
@@ -61,8 +61,8 @@ export default function Results() {
           <Confetti active={show} config={config} />
         </div>
         {!topTeams ? (
-          <div className="absolute left-1/2 top-1/2 flex translate-x-[-50%] translate-y-[-50%] items-center gap-2 text-xl">
-            <div>Loading results...</div>
+          <div className="absolute left-1/2 top-1/2 flex w-full translate-x-[-50%] translate-y-[-50%] items-center justify-center gap-2 text-sm md:text-xl">
+            <div className="w-full">Loading results...</div>
             <Spinner />
           </div>
         ) : (
@@ -70,7 +70,7 @@ export default function Results() {
             {topTeams?.map((team) => (
               <Card
                 key={team.id}
-                className="flex h-60 w-80 items-center justify-center py-4 text-center"
+                className="flex h-60 w-80 items-center justify-center px-4 py-4 text-center hover:scale-[1.01]"
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <div className="text-2xl font-semibold">{team.name}</div>
@@ -83,7 +83,7 @@ export default function Results() {
           </div>
         )}
         {topTeams && (
-          <div className="mx-8 mt-20 text-sm opacity-60">
+          <div className="mx-8 mt-10 text-sm opacity-60 md:mt-20">
             It was hard for us to shortlist the top ideas, because of all the
             quality ideas we received. It was based on multiple criterias like
             innovation, creativite features, relevance to track, market fit,
