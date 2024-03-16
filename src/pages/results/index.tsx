@@ -73,26 +73,17 @@ export default function Results() {
                     <div className="px-10 flex flex-row flex-wrap justify-center items-center gap-10">
                         
                                 {topTeams?.map((team) => (
-                                    <Card key={team.id} className="w-80 h-40 text-center py-4">
-                                        <CardHeader>
-                                            <CardTitle>{team.name}</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="text-sm">
-                                                {team.members[0]?.college?.name}
-                                            </div>
-                                            {/* <div className="text-sm opacity-35">
-                                                {team.members
-                                                    .filter((member) => member.isLeader === true)
-                                                    .map((leader) => leader.name)}
-                                            </div> */}
-                                        </CardContent> 
+                                    <Card key={team.id} className="w-80 h-60 text-center py-4 items-center justify-center">
+                                        <div className="flex flex-col justify-center items-center gap-2">
+                                            <div className="text-2xl font-semibold">{team.name}</div>
+                                            <div className="text-sm opacity-60">{team.members[0]?.college?.name}</div>
+                                        </div> 
                                     </Card>
                                 ))}
                             
                     </div>)
                 }
-                {topTeams && <div className="text-sm mx-8 mt-20 opacity-60">It was hard for us to shortlist the top ideas, because of all the quality ideas we received. It was based on multiple criterias like innovation, creativite features, relevance to track, market fit, feasibility, existing solution comparision etc. If your team didn't make it to top, don't worry, bounce back stronger at Hackfest 2025! See you there.</div>}
+                {topTeams && <div className="text-sm mx-8 mt-20 opacity-60">It was hard for us to shortlist the top ideas, because of all the quality ideas we received. It was based on multiple criterias like innovation, creativite features, relevance to track, market fit, feasibility, existing solution comparision etc. If your team didn&apos;t make it to top, don&apos;t worry, bounce back stronger at Hackfest 2025! See you there.</div>}
             </div>
         </RootLayout>
     )
