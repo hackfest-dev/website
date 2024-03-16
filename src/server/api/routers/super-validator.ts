@@ -53,4 +53,19 @@ export const superValidatorRouter = createTRPCRouter({
 		})
     }
   }),
+  getTop60: protectedProcedure.query(async ({ ctx }) => {
+return ctx.db.team.findMany({
+  where:{
+    teamProgress:"SELECTED"
+  },
+  include:{
+    members:{
+      include:{
+        college:true,
+        team:true,
+      }
+    },
+  }
+})
+  }),
 });
