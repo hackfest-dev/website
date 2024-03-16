@@ -3,11 +3,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
-import { Role } from "@prisma/client";
+import { type Role } from "@prisma/client";
 import { Card, CardContent } from "../ui/card";
 export default function DashboardButton({ role }: { role: Role }) {
   const [dashboards, setDashboards] = useState<string[]>([]);
@@ -34,7 +33,7 @@ export default function DashboardButton({ role }: { role: Role }) {
       }
     }
   }, [role]);
-  console.log(role, dashboards);
+
   return (
     <>
       {dashboards.length > 1 && (
@@ -58,6 +57,11 @@ export default function DashboardButton({ role }: { role: Role }) {
             </Card>
           </PopoverContent>
         </Popover>
+      )}
+      {dashboards.length === 0 && (
+        <Link href={`/results`}>
+          <Button>Results</Button>
+        </Link>
       )}
       {dashboards.length === 1 && (
         <Link href={`/dashboard/${role?.toLowerCase()}`}>

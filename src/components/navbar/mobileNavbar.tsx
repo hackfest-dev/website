@@ -4,7 +4,6 @@ import AuthButtons from "./authButton";
 import { IoMdClose } from "react-icons/io";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { navLinks } from "~/constants";
-import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import DashboardButton from "./dashboardButton";
 
@@ -13,7 +12,7 @@ export const MobileNavbar = () => {
   const user = useSession();
   return (
     <>
-      <div className="fixed right-5 top-6 z-[60] flex items-center space-x-4 lg:hidden">
+      <div className="fixed right-5 top-[3.75rem] z-[60] flex items-center space-x-4 lg:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"

@@ -128,7 +128,7 @@ export default function RegisterPage() {
     //              <button className="bg-white text-sm px-3 py-1 rounded-md text-black">Reach out to us</button>
     //             </Link>
     //           </p>
-              
+
     //         </div>
     //             </>
     //           ) : (
@@ -136,7 +136,7 @@ export default function RegisterPage() {
     //           )}
     //         </ProgressProvider>
     //       </div>
-    //     </div> 
+    //     </div>
     //   </main>
     // </RootLayout>
 
@@ -147,12 +147,12 @@ export default function RegisterPage() {
         <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center bg-black/20"></div>
 
         <div className="z-10 flex w-full flex-col items-center justify-center rounded-3xl border border-white/20 bg-black/50 px-5 py-10">
-            <div className="flex flex-col justify-center text-center">
-              <h1 className="bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-7xl font-black text-transparent md:text-9xl">
-                Registrations closed
-              </h1>
-            </div>
+          <div className="flex flex-col justify-center text-center">
+            <h1 className="bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-4xl font-black text-transparent md:text-6xl">
+              Registrations closed
+            </h1>
           </div>
+        </div>
       </div>
     </RootLayout>
   );
