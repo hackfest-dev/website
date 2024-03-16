@@ -72,7 +72,7 @@ export default function Results() {
                     </div>) :(
                     <div className="px-10 flex flex-row flex-wrap justify-center items-center gap-10">
                         
-                                {topTeams.map((team) => (
+                                {topTeams?.map((team) => (
                                     <Card key={team.id} className="w-80 h-40 text-center py-4">
                                         <CardHeader>
                                             <CardTitle>{team.name}</CardTitle>
