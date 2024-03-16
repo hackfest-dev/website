@@ -48,8 +48,6 @@ model User {
   course          Courses?
   college_id      String?
   isVerified      Boolean    @default(false)
-  paymentStatus   String?    @default("PENDING")
-  paymentId       String?
   teamId          String?
   isLeader        Boolean    @default(false)
   role            Role       @default(PARTICIPANT)
@@ -59,14 +57,14 @@ model User {
   profileProgress Progress   @default(FILL_DETAILS)
   aadhaar         String?
   tShirtSize      TshirtSize @default(S)
+  attended        Boolean    @default(false)
+  resume          String?
   accounts        Account[]
-  payment         Payments?
+  Judges          Judges?
   sessions        Session[]
   college         College?   @relation(fields: [collegeId], references: [id])
   team            Team?      @relation(fields: [teamId], references: [id])
-  Judges          Judges?
-  attended Boolean @default(false)
-  
+
   @@index([collegeId])
   @@index([teamId])
 }
@@ -83,8 +81,8 @@ model College {
   id       String     @id @default(cuid())
   name     String
   state    States
-  users    User[]
   Referral Referral[]
+  users    User[]
 }
 
 model Team {
@@ -94,25 +92,18 @@ model Team {
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   referralId               Int?
-  ideaSubmission           IdeaSubmission?
-  referral                 Referral?         @relation(fields: [referralId], references: [id])
-  members                  User[]
   paymentStatus            PaymentStatus     @default(PENDING)
-  videoSubmission          VideoSubmissions?
-  Scores                   ScoresByJudge[]
-  ValidatorTotalScore      Int               @default(0)
   SuperValidatorTotalScore Int               @default(0)
+  ValidatorTotalScore      Int               @default(0)
   teamProgress             TeamProgress      @default(NOT_SELECTED)
   attended                 Boolean           @default(false)
-}
-
-model Payments {
-  id            String   @id @default(cuid())
-  userId        String   @unique
-  amount        Float
-  transactionId String
-  createdAt     DateTime @default(now())
-  user          User     @relation(fields: [userId], references: [id])
+  ideaSubmission           IdeaSubmission?
+  Scores                   ScoresByJudge[]
+  referral                 Referral?         @relation(fields: [referralId], references: [id])
+  members                  User[]
+  videoSubmission          VideoSubmissions?
+  paymentProof    String?
+  transactionId   String?
 }
 
 model VideoSubmissions {
@@ -140,14 +131,14 @@ model AppSettings {
 }
 
 model Referral {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
+  id        Int     @id @default(autoincrement())
+  code      String  @unique
   referrer  String
-  teams     Team[]
   collegeId String
-  college   College? @relation(fields: [collegeId], references: [id])
-  name      String
   contact   String
+  name      String
+  college   College @relation(fields: [collegeId], references: [id])
+  teams     Team[]
 }
 
 model Faq {
@@ -162,19 +153,19 @@ model Criteria {
   id     Int          @id @default(autoincrement())
   name   String
   type   CriteriaType
-  scores Scores[]
   weight Int          @default(1)
+  scores Scores[]
 }
 
 model ScoresByJudge {
   id       Int     @id @default(autoincrement())
   userId   String
   teamId   String
-  Team     Team    @relation(fields: [teamId], references: [id])
   scoreId  Int     @unique
-  score    Scores  @relation(fields: [scoreId], references: [id])
-  Judges   Judges? @relation(fields: [judgesId], references: [id])
   judgesId Int?
+  Judges   Judges? @relation(fields: [judgesId], references: [id])
+  score    Scores  @relation(fields: [scoreId], references: [id])
+  Team     Team    @relation(fields: [teamId], references: [id])
 
   @@unique([teamId, userId])
 }
@@ -183,16 +174,16 @@ model Scores {
   id            Int            @id @default(autoincrement())
   score         String
   criteriaId    Int
-  criteria      Criteria       @relation(references: [id], fields: [criteriaId])
+  criteria      Criteria       @relation(fields: [criteriaId], references: [id])
   ScoresByJudge ScoresByJudge?
 }
 
 model Judges {
-  id     Int             @id @default(autoincrement())
-  userId String          @unique
-  User   User            @relation(fields: [userId], references: [id])
   track  Tracks
+  userId String          @unique
+  id     Int             @id @default(autoincrement())
   type   JudgeType       @default(VALIDATOR)
+  User   User            @relation(fields: [userId], references: [id])
   scores ScoresByJudge[]
 }
 
@@ -209,13 +200,13 @@ enum CriteriaType {
 }
 
 enum Role {
-  ADMIN
   PARTICIPANT
   ORGANISER
   JUDGE
   VALIDATOR
-  SUPER_VALIDATOR
   TEAM
+  ADMIN
+  SUPER_VALIDATOR
 }
 
 enum Courses {
