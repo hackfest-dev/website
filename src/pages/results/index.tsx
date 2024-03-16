@@ -48,7 +48,7 @@ export default function Results() {
       <div className="min-h-screen overflow-clip bg-gradient-to-b from-[#060e3c] via-[#052d4f] to-[#001933] py-20 text-center text-5xl">
         {topTeams && (
           <div className="flex flex-col gap-4 pb-12 pt-12">
-            <div className=" px-4 text-3xl font-semibold md:text-5xl">
+            <div className="px-4 text-3xl font-semibold md:text-5xl">
               Congratulations!
             </div>
             <div className="px-4 text-base md:text-lg">
@@ -66,11 +66,11 @@ export default function Results() {
             <Spinner />
           </div>
         ) : (
-          <div className="flex flex-row flex-wrap items-center justify-center gap-10 px-10">
+          <div className="flex flex-row flex-wrap items-stretch justify-center gap-10 px-10">
             {topTeams?.map((team) => (
               <Card
                 key={team.id}
-                className="flex h-60 w-80 items-center justify-center px-4 py-4 text-center hover:scale-[1.01]"
+                className="flex w-80 items-center justify-center px-4 py-4 text-center hover:scale-[1.01]"
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <div className="text-2xl font-semibold">{team.name}</div>
@@ -83,7 +83,7 @@ export default function Results() {
           </div>
         )}
         {topTeams && (
-          <div className="mx-8 mt-10 text-sm opacity-60 md:mt-20">
+          <div className="mx-8 mt-10 px-3 text-sm opacity-60 md:px-20">
             It was hard for us to shortlist the top ideas, because of all the
             quality ideas we received. It was based on multiple criterias like
             innovation, creativite features, relevance to track, market fit,
