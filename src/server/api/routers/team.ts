@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 import {
   createTeamZ,
   getTeamDetailsByIdZ,
@@ -528,6 +528,28 @@ export const teamRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
           message: "Something went wrong!",
         });
+      }
+    }),
+    getTop60:publicProcedure.query(async ({ ctx }) => {
+      try {
+        return ctx.db.team.findMany({
+          where:{
+            teamProgress:"SELECTED"
+          },
+          include:{
+            members:{
+              include:{
+                college:true,
+                team:true,
+              }
+            },
+          }
+        })
+      } catch (error) {
+        throw new TRPCError({
+          code:"INTERNAL_SERVER_ERROR",
+          message:"Oops! Something went wrong!"
+        })
       }
     }),
   revalidateScore: protectedProcedure.mutation(async ({ ctx }) => {

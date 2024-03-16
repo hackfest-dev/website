@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const superValidatorRouter = createTRPCRouter({
   getTop100: protectedProcedure.query(async ({ ctx }) => {
@@ -52,20 +52,5 @@ export const superValidatorRouter = createTRPCRouter({
 			message:"Oops! Something went wrong!"
 		})
     }
-  }),
-  getTop60: protectedProcedure.query(async ({ ctx }) => {
-return ctx.db.team.findMany({
-  where:{
-    teamProgress:"SELECTED"
-  },
-  include:{
-    members:{
-      include:{
-        college:true,
-        team:true,
-      }
-    },
-  }
-})
   }),
 });
