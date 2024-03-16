@@ -13,7 +13,7 @@ export const MobileNavbar = () => {
   const user = useSession();
   return (
     <>
-      <div className="fixed right-5 top-[3.75rem] z-[60] flex items-center space-x-4 lg:hidden">
+      <div className="fixed right-5 top-6 z-[60] flex items-center space-x-4 lg:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
