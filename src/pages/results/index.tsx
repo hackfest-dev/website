@@ -7,6 +7,7 @@ import Spinner from "~/components/spinner";
 
 export default function Results() {
   const topTeams = api.team.getTop60.useQuery().data;
+  const teamID = api.user.getUserWithTeam.useQuery().data?.teamId;
 
   const config = {
     angle: 290,
@@ -51,7 +52,7 @@ export default function Results() {
             <div className="px-4 text-3xl font-semibold md:text-5xl">
               Congratulations!
             </div>
-            <div className="px-4 text-base md:text-lg">
+            <div className="px-4 text-sm opacity-60">
               Here are the top teams selected for Hackfest 2024, See y&apos;all
               at NMAMIT!
             </div>
@@ -61,8 +62,8 @@ export default function Results() {
           <Confetti active={show} config={config} />
         </div>
         {!topTeams ? (
-          <div className="absolute left-1/2 top-1/2 flex w-full translate-x-[-50%] translate-y-[-50%] items-center justify-center gap-2 text-sm md:text-xl">
-            <div className="w-full">Loading results...</div>
+          <div className="absolute left-1/2 top-1/2 flex translate-x-[-50%] translate-y-[-50%] items-center justify-center gap-2 text-sm md:text-xl">
+            <div className="whitespace-nowrap">Loading results...</div>
             <Spinner />
           </div>
         ) : (
@@ -70,7 +71,7 @@ export default function Results() {
             {topTeams?.map((team) => (
               <Card
                 key={team.id}
-                className="flex w-80 items-center justify-center px-4 py-4 text-center hover:scale-[1.01]"
+                className={`${teamID === team.id && "bg-base-400"} flex w-80 items-center justify-center border-2 px-4 py-4 text-center hover:scale-[1.01]`}
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <div className="text-2xl font-semibold">{team.name}</div>
@@ -86,10 +87,10 @@ export default function Results() {
           <div className="mx-8 mt-10 px-3 text-sm opacity-60 md:px-20">
             It was hard for us to shortlist the top ideas, because of all the
             quality ideas we received. It was based on multiple criterias like
-            innovation, creativite features, relevance to track, market fit,
+            innovation, creative features, relevance to track, market fit,
             feasibility, existing solution comparision etc. If your team
             didn&apos;t make it to top, don&apos;t worry, bounce back stronger
-            at Hackfest 2025! See you there.
+            at Hackfest 2025! See you there.
           </div>
         )}
       </div>
