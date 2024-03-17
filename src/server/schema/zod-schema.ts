@@ -156,6 +156,17 @@ const addJudgeZ = z.object({
 })
 
 
+const finalSubmissionZ = z.object({
+  paymentId: z.string().min(1,{message:'Payment ID cannot be empty'}),
+  paymentProof: z.string(),
+  teamId: z.string(),
+})
+
+const resumeSubmissionZ = z.object({
+  userId: z.string(),
+  resumeUrl: z.string()
+})
+
 
 
 export {
@@ -171,5 +182,7 @@ export {
   answerFaqZ,
   deleteFaqZ,
   addReferralCodeZ,
-  addJudgeZ
+  addJudgeZ,
+  finalSubmissionZ,
+  resumeSubmissionZ
 };
