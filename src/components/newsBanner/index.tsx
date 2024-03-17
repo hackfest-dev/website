@@ -6,7 +6,10 @@ export default function NewsBanner() {
       {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10].map((item) => {
         return (
           <div key={item} className="mr-5 flex">
-            Shortlisted teams will be announced soon <span className="ml-5">◆</span>
+            <Link href={"/results"} className="mr-1 underline">
+              Results{" "}
+            </Link>{" "}
+            are out! <span className="ml-5">◆</span>
           </div>
         );
       })}

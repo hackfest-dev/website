@@ -4,7 +4,6 @@ import AuthButtons from "./authButton";
 import { IoMdClose } from "react-icons/io";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { navLinks } from "~/constants";
-import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import DashboardButton from "./dashboardButton";
 
@@ -28,7 +27,7 @@ export const MobileNavbar = () => {
       </div>
 
       <div
-        className={`fixed top-20 mt-1 flex w-full justify-center transition-transform duration-200 ${
+        className={`fixed top-28 mt-1 flex w-full justify-center transition-transform duration-200 ${
           isOpen ? "z-[60] translate-y-0" : "z-0 -translate-y-[30rem]"
         } px-2 lg:hidden`}
       >
