@@ -98,7 +98,7 @@ export default function FinalSubmission({
                 <DialogTrigger className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold">
                     Pay
                 </DialogTrigger>
-                <DialogContent className="max-h-[80dvh] max-w-[95vw] overflow-y-auto">
+                <DialogContent className="max-h-[60dvh] max-w-[95vw] overflow-y-auto">
                     <div className="flex flex-col gap-5 justify-center items-center">
                         <div className="flex flex-col gap-5 w-fit items-center justify-center">
                             <QRCodeSVG value={`upi://pay?pa=prathamajs@okhdfcbank&pn=Prathama%20S%20J&am=${(teamlength)*300}&cu=INR`} size={130}
