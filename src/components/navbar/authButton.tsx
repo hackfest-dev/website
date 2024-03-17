@@ -20,26 +20,15 @@ const SessionButton = () => {
     <div className="flex justify-center pl-4">
       {session ? (
         <>
-          {session?.user?.profileProgress !== "COMPLETE" ? (
-            <>
-              {/* <Link href={"/register"}>
-                <Button>Register</Button>
-              </Link> */}
-              <LogoutButton />
-            </>
-          ) : (
-            <>
-              <Link href={"/profile"}>
-                <Image
-                  src={session.user.image!}
-                  width={40}
-                  height={40}
-                  alt="profile"
-                  className="rounded-full"
-                />
-              </Link>
-            </>
-          )}
+          <Link href={"/profile"}>
+            <Image
+              src={session.user.image!}
+              width={40}
+              height={40}
+              alt="profile"
+              className="rounded-full"
+            />
+          </Link>
         </>
       ) : (
         <Button
