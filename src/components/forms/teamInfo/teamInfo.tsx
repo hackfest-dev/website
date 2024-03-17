@@ -28,6 +28,8 @@ import { type inferRouterOutputs } from "@trpc/server";
 import { type teamRouter } from "~/server/api/routers/team";
 import { api } from "~/utils/api";
 import { env } from "~/env";
+import FinalSubmission from "~/components/finalSubmissionModal";
+
 
 export default function TeamInfo({
   teamdata,
@@ -149,6 +151,18 @@ export default function TeamInfo({
                     <LogOut size={16} />
                   )}
                 </Button> */}
+                {
+                  teamdata?.transactionId && (
+                    <Badge className="bg-amber-500/20 text-white border border-amber-500">
+                      Processing
+                    </Badge>
+                  )
+                }
+                {
+                  teamdata?.teamProgress === 'SELECTED' && !teamdata?.transactionId && userId === teamMembers[0]?.id && (
+                    <FinalSubmission teamId={teamdata?.id ?? ''} teamlength={teamdata?.members?.length ?? 0}  />
+                  )
+                }
               </div>
 
               <div className="w-full">

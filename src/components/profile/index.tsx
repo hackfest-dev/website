@@ -12,6 +12,7 @@ import { type inferRouterOutputs } from "@trpc/server";
 import { type userRouter } from "~/server/api/routers/user";
 import { QRCodeSVG } from "qrcode.react";
 
+
 export const Profile: React.FC<{
   user:
     | inferRouterOutputs<typeof userRouter>["getUserWithTeam"]

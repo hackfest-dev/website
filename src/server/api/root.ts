@@ -8,6 +8,7 @@ import { referralRouter } from "./routers/referral";
 import { validatorRouter } from "./routers/validator";
 import { organiserRouter } from "./routers/organiser";
 import { superValidatorRouter } from "./routers/super-validator";
+import { finalSubmissionRoute } from "./routers/finalSubmission";
 
 
 
@@ -26,6 +27,7 @@ export const appRouter = createTRPCRouter({
   validator:validatorRouter,
   organiser: organiserRouter,
   superValidator: superValidatorRouter,
+  finalSubmission: finalSubmissionRoute
 });
 
 // export type definition of API
