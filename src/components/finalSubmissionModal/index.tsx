@@ -12,10 +12,12 @@ import { Button } from "../ui/button";
 
 
 export default function FinalSubmission({
+    refetchTeam,
     teamlength,
     teamId,
     
 }: {
+    refetchTeam?: () => void;
     teamlength: number;
     teamId: string;
     
@@ -68,19 +70,22 @@ export default function FinalSubmission({
     async function submitPayment(){
         if(screenshot && transactionId){
             if(screenshot.size > 2*1000*1000) return toast.error("Uploads must be less than 2Mb")
-        toast.loading("Uploading Payment Proof...", {
+        toast.loading("Registering...", {
           id: "paymentProof",
         });
         const newFile = await upload(screenshot);
         setScreenshot(null);
-        toast.dismiss("paymentProof");
-        toast.success("Paymentproof uploaded");
-
         await submitPaymentMutation.mutateAsync({
             paymentId: transactionId,
-            paymentProof: newFile as string,
+            paymentProof: (newFile as string).split(';')[0] ?? '',
             teamId: teamId
+        }).then(() => {
+            refetchTeam?.()
         })
+
+        toast.dismiss("paymentProof");
+        toast.success("Registered");
+
       }else{
         toast.info('Fill both fields!')
       }
@@ -89,13 +94,13 @@ export default function FinalSubmission({
     return(
         <>
             <Dialog>
-                <DialogTrigger>
+                <DialogTrigger className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold">
                     Pay
                 </DialogTrigger>
                 <DialogContent>
                     <div className="flex flex-col gap-5 justify-center items-center">
                         <div className="flex flex-col gap-5 w-fit items-center justify-center">
-                            <QRCodeSVG value={`upi://pay?pa=nidheeshatbayari@oksbi&pn=Nidheesha%20T&am=${(teamlength*300)}&cu=INR`} size={130}
+                            <QRCodeSVG value={`upi://pay?pa=prathamajs@okhdfcbank&pn=Prathama%20S%20J&am=${(teamlength)*300}&cu=INR`} size={130}
                   bgColor="transparent"
                   color="#ffffff"
                   fgColor="#ffffff"
@@ -116,6 +121,8 @@ export default function FinalSubmission({
                             Submit
                         </Button>
                     </div>
+
+                    <Badge className="text-center w-full flex items-center justify-center bg-amber-500/20 text-white border border-amber-500">You will receive an email after we verify your payment <br /> {'{'}Expected wait time 12 hours{')'}</Badge>
                 </DialogContent>
             </Dialog>
         </>

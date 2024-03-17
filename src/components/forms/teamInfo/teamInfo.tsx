@@ -102,8 +102,15 @@ export default function TeamInfo({
           <CardContent>
             <div className="m-auto my-4 flex flex-col justify-evenly p-0 pt-4 sm:my-auto md:p-4">
               <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-0">
-                <h1 className="text-center text-2xl font-bold uppercase">
+                <h1 className="text-center text-2xl font-bold uppercase flex gap-5 justify-center items-center">
                   {teamdata?.name ?? "Not Available"}
+                  {
+                    teamdata?.teamProgress === 'SELECTED' && (
+                      <Badge className="text-white bg-green-500/20 border border-green-500">
+                        Top 60
+                      </Badge>
+                    )
+                  }
                 </h1>
                 <div
                   onClick={copyCode}
@@ -152,7 +159,14 @@ export default function TeamInfo({
                   )}
                 </Button> */}
                 {
-                  teamdata?.transactionId && (
+                  (teamdata?.transactionId && teamdata?.paymentStatus === 'PAID') && (
+                    <Badge className="bg-green-500/20 text-white border border-green-500">
+                      Paid
+                    </Badge>
+                  )
+                }
+                {
+                  (teamdata?.transactionId && teamdata?.paymentStatus !== 'PAID') && (
                     <Badge className="bg-amber-500/20 text-white border border-amber-500">
                       Processing
                     </Badge>
@@ -160,7 +174,7 @@ export default function TeamInfo({
                 }
                 {
                   teamdata?.teamProgress === 'SELECTED' && !teamdata?.transactionId && userId === teamMembers[0]?.id && (
-                    <FinalSubmission teamId={teamdata?.id ?? ''} teamlength={teamdata?.members?.length ?? 0}  />
+                    <FinalSubmission refetchTeam={refetchTeam} teamId={teamdata?.id ?? ''} teamlength={teamdata?.members?.length ?? 0}  />
                   )
                 }
               </div>
