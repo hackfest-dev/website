@@ -39,6 +39,8 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
+import PaymentVerification from "~/components/adminDashboard/paymentVerification";
+import Top60Table from "~/components/tables/top60Table";
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery();
   const users = api.user.getAllUsers.useQuery().data;
@@ -53,6 +55,8 @@ export default function Organiser() {
   const [trackQuery, setTrackQuery] = useState("ALL");
 
   const { data, status } = useSession();
+
+  
 
   useEffect(() => {
     setSelectedTeams(() => {
@@ -136,121 +140,42 @@ export default function Organiser() {
   if (
     !data ||
     !data.user ||
-    (data.user.role !== "ORGANISER" && data.user.role !== "ADMIN")
+    (data.user.role !== "ADMIN")
   ) {
     return <NotFound />;
   }
 
   return (
     <DashboardLayout>
-      <Tabs defaultValue="teams" className="w-full">
-        <TabsList className="flex flex-row items-center justify-center">
-          <TabsTrigger className="w-full" value="teams">
-            Teams
-          </TabsTrigger>
-          <TabsTrigger className="w-full" value="referrals">
-            Referrals
-          </TabsTrigger>
-          <TabsTrigger className="w-full" value="roles">
-            Roles
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="teams">
-          <div className="w-full border-b">
-            <h1 className="py-10 text-center text-4xl font-bold">Organiser</h1>
-          </div>
-          <div className="my-5 flex flex-col items-center justify-center gap-10 md:flex-row">
-            <div className="flex flex-col">
-              <span className="text-xl">
-                Number of Logins : {users?.length}
-              </span>
-              <span className="text-xl">
-                Number of Teams : {res?.data?.length}
-              </span>
-              <span className="text-xl">
-                Number of Idea submissions :{" "}
-                {res?.data?.filter((team) => team.ideaSubmission).length}
-              </span>
-            </div>
-            <FaqAdmin />
+      <Tabs defaultValue="top60" className="w-full">
+       <TabsList className="w-full">
+        <TabsTrigger value="top60" className="w-full">
+            Top 60
+        </TabsTrigger>
+        <TabsTrigger value="paymentVerification" className="w-full">
+            Verify Payment
+        </TabsTrigger>
+       </TabsList>
+
+        <TabsContent value="top60">
+        <div className="w-full border-b">
+            <h1 className="py-10 text-center text-4xl font-bold z-10">Admin</h1>
           </div>
           <div className="m-auto overflow-x-scroll md:max-w-screen-xl">
-            <h1 className="my-8 text-center text-2xl font-bold">
-              Participants
-            </h1>
+            
             <div className="my-4 flex h-full w-full flex-col items-center justify-around gap-3 md:flex-row">
-              <DownloadDataButtons />
-              {/* {data.user.role === "ADMIN" && (
-                <Button
-                  onClick={async () => {
-                    await revalidateScores.mutateAsync();
-                  }}
-                >
-                  Revalidate Scores
-                </Button>
-              )} */}
-              <Sheet>
-                <SheetTrigger>
-                  <Button>
-                    Filters
-                    {(searchQuery !== "" ||
-                      paymentQuery !== "ALL" ||
-                      top60Query !== "TOP 60" ||
-                      submissionQuery !== "ALL" ||
-                      trackQuery !== "ALL") &&
-                      " (Applied)"}
-                  </Button>
-                </SheetTrigger>
-                <SheetContent className="bg-slate-950 ">
-                  <SheetHeader>
-                    <SheetTitle className="text-white">Filters</SheetTitle>
-                    <SheetDescription className="flex flex-col items-center justify-center gap-10">
-                      <div className="flex flex-col items-center justify-center gap-3">
-                        <Label>Team ID/Name</Label>
+            <div className="flex flex-col items-center justify-center gap-3">
                         <Input
                           placeholder="Search Team ID/Name"
                           className="w-52"
                           value={searchQuery}
                           onChange={(e) => {
                             setSearchQuery(e.target.value);
-                          }}
+                          }} 
                         />
-                      </div>
-                      <div className="flex flex-col items-center justify-center gap-3">
-                        <Label>Idea Submission Status</Label>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="outline">{submissionQuery}</Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>
-                              Submission Status
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuRadioGroup
-                              value={submissionQuery}
-                              onValueChange={(value: string) =>
-                                setSubmissionQuery(value)
-                              }
-                            >
-                              <DropdownMenuRadioItem value="ALL">
-                                All
-                              </DropdownMenuRadioItem>
-                              <DropdownMenuRadioItem value="SUBMITTED">
-                                Submitted
-                              </DropdownMenuRadioItem>
-                              <DropdownMenuRadioItem value="NOT SUBMITTED">
-                                Not Submitted
-                              </DropdownMenuRadioItem>
-                            </DropdownMenuRadioGroup>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                      <div className="flex flex-col items-center justify-center gap-3">
-                        <Label>
-                          Track Choosen
-                          {submissionQuery === "NOT SUBMITTED" && " (N A)"}
-                        </Label>
+                </div>
+
+                <div className="flex flex-col items-center justify-center gap-3">
                         <DropdownMenu>
                           <DropdownMenuTrigger
                             asChild
@@ -260,7 +185,7 @@ export default function Organiser() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent className="w-56">
                             <DropdownMenuLabel>
-                              Submission Status
+                              Track
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuRadioGroup
@@ -294,41 +219,8 @@ export default function Organiser() {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
+
                       <div className="flex flex-col items-center justify-center gap-3">
-                        <Label>Selection of Teams</Label>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="outline">{top60Query}</Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>
-                              Shortlist Status
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuRadioGroup
-                              value={top60Query}
-                              onValueChange={(value: string) =>
-                                setTop60Query(value)
-                              }
-                            >
-                              <DropdownMenuRadioItem value="ALL">
-                                All
-                              </DropdownMenuRadioItem>
-                              <DropdownMenuRadioItem value="TOP 60">
-                                Top 60
-                              </DropdownMenuRadioItem>
-                              <DropdownMenuRadioItem value="TOP 100">
-                                Top 100
-                              </DropdownMenuRadioItem>
-                              <DropdownMenuRadioItem value="NOT SELECTED">
-                                Not Selected
-                              </DropdownMenuRadioItem>
-                            </DropdownMenuRadioGroup>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                      <div className="flex flex-col items-center justify-center gap-3">
-                        <Label>Payment Status</Label>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="outline">{paymentQuery}</Button>
@@ -358,28 +250,36 @@ export default function Organiser() {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
+
                       <Button
                         variant="destructive"
                         onClick={() => {
                           setPaymentQuery("ALL");
                           setSearchQuery("");
                           setSubmissionQuery("ALL");
-                          setTop60Query("TOP 60");
+                          setTop60Query("ALL");
                           setTrackQuery("ALL");
                         }}
                       >
                         RESET
                       </Button>
-                    </SheetDescription>
-                  </SheetHeader>
-                </SheetContent>
-              </Sheet>
+              {/* <DownloadDataButtons /> */}
+              {/* {data.user.role === "ADMIN" && (
+                <Button
+                  onClick={async () => {
+                    await revalidateScores.mutateAsync();
+                  }}
+                >
+                  Revalidate Scores
+                </Button>
+              )} */}
+              
             </div>
             {!res ? (
               <Spinner size="large" />
             ) : (
-              <ParticipantsTable
-                data={selectedTeams}
+              <Top60Table
+                data={res.data?.filter(team => team.teamProgress === 'SELECTED')}
                 dataRefecth={res.refetch}
               />
             )}
@@ -391,16 +291,12 @@ export default function Organiser() {
               })}
             /> */}
           </div>
-        </TabsContent>
+            </TabsContent>
 
-        <TabsContent value="referrals">
-          <ReferralsAdmin />
-        </TabsContent>
-
-        <TabsContent value="roles">
-          <JudgePanel users={users} />
-          <VolunteerPanel users={users} />
-        </TabsContent>
+            <TabsContent value="paymentVerification">
+                <PaymentVerification data={res.data?.filter(item => item.paymentStatus === 'PENDING' && item.transactionId)}
+                dataRefecth={res.refetch}/>
+            </TabsContent>
       </Tabs>
     </DashboardLayout>
   );

@@ -5,6 +5,7 @@ import NotFound from "../not-found";
 import ProgressBarProvider from "../progressBarProvider";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import DashboardButton from "../navbar/dashboardButton";
 
 const obscura = localFont({
   src: "../../../public/fonts/camera-obscura.otf",
@@ -42,6 +43,13 @@ export default function DashboardLayout({
           className={`dark min-h-screen bg-slate-950 p-2 text-white ${poppins.className}`}
         >
           <Toaster richColors expand={true} position="top-center" />
+          {
+            user?.data?.user.role === "ADMIN" ? (
+              <div className="flex w-full py-4 justify-center items-center">
+          <DashboardButton role={user?.data?.user.role ?? 'PARTICIPANT'} />
+          </div>
+            ): null
+          }
           {children}
         </main>
       );

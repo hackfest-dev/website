@@ -28,7 +28,7 @@ import { type inferRouterOutputs } from "@trpc/server";
 import { type teamRouter } from "~/server/api/routers/team";
 import { api } from "~/utils/api";
 import { env } from "~/env";
-import FinalSubmission from "~/components/finalSubmissionModal";
+import FinalSubmission from "~/components/finalSubmission";
 
 
 export default function TeamInfo({

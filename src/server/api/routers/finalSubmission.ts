@@ -93,7 +93,9 @@ export const finalSubmissionRoute = createTRPCRouter({
                 id: input.teamId
             },
             data: {
-                paymentStatus: "PENDING"
+                paymentStatus: "PENDING",
+                paymentProof: null,
+                transactionId: null
             }
         })
     }),
