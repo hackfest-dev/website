@@ -5,35 +5,80 @@ import { api } from "~/utils/api";
 export default function DownloadDataButtons() {
   const data = api.user.getAllUsers.useQuery().data;
 
-  function usersNotInTeam() {
+  // function usersNotInTeam() {
+  //   let csv = "";
+  //   const Headers = "Name,Email,\n";
+  //   csv += Headers;
+
+  //   data?.map((user) => {
+  //     if (!user?.teamId) {
+  //       csv += `${user.name}` + "," + `${user.email}` + "," + "\n";
+  //     }
+  //   });
+
+  //   return csv;
+  // }
+
+  // function teamLeadersWithSubmission() {
+  //   let csv = "";
+  //   const Headers = "Name,College,Phone,Email,\n";
+  //   csv += Headers;
+
+  //   data?.map((user) => {
+  //     if (user?.isLeader && user?.profileProgress === "COMPLETE") {
+  //       csv +=
+  //         `${user.name}` +
+  //         ',' + 
+  //         `${user.college?.name}` +
+  //         "," +
+  //         `${user.phone}` +
+  //         "," +
+  //         `${user.email}` +
+  //         "," +
+  //         "\n";
+  //     }
+  //   });
+
+  //   return csv;
+  // }
+  // function teamLeadersWithoutSubmission() {
+  //   let csv = "";
+  //   const Headers = "Name,Email,Phone,Email,\n";
+  //   csv += Headers;
+
+  //   data?.map((user) => {
+  //     if (user?.isLeader && user?.profileProgress !== "COMPLETE") {
+  //       csv +=
+  //         `${user.name}` +
+  //         ','+
+  //         `${user.college?.name}` +
+  //         "," +
+  //         `${user.phone}` +
+  //         "," +
+  //         `${user.email}` +
+  //         "," +
+  //         "\n";
+  //     }
+  //   });
+
+  //   return csv;
+  // }
+
+  function top60TeamLeaders(){
     let csv = "";
-    const Headers = "Name,Email,\n";
+    const Headers = "Name,Phone,Email,Team Name,\n";
     csv += Headers;
 
     data?.map((user) => {
-      if (!user?.teamId) {
-        csv += `${user.name}` + "," + `${user.email}` + "," + "\n";
-      }
-    });
-
-    return csv;
-  }
-
-  function teamLeadersWithSubmission() {
-    let csv = "";
-    const Headers = "Name,College,Phone,Email,\n";
-    csv += Headers;
-
-    data?.map((user) => {
-      if (user?.isLeader && user?.profileProgress === "COMPLETE") {
+      if (user?.isLeader && user?.team?.teamProgress === "SELECTED") {
         csv +=
           `${user.name}` +
           ',' + 
-          `${user.college?.name}` +
-          "," +
           `${user.phone}` +
           "," +
           `${user.email}` +
+          "," +
+          `${user.team?.name}` +
           "," +
           "\n";
       }
@@ -41,21 +86,22 @@ export default function DownloadDataButtons() {
 
     return csv;
   }
-  function teamLeadersWithoutSubmission() {
+
+  function top60TeamMembers(){
     let csv = "";
-    const Headers = "Name,Email,Phone,Email,\n";
+    const Headers = "Name,Phone,Email,Team Name,\n";
     csv += Headers;
 
     data?.map((user) => {
-      if (user?.isLeader && user?.profileProgress !== "COMPLETE") {
+      if ( user?.team?.teamProgress === "SELECTED") {
         csv +=
           `${user.name}` +
-          ','+
-          `${user.college?.name}` +
-          "," +
+          ',' + 
           `${user.phone}` +
           "," +
           `${user.email}` +
+          "," +
+          `${user.team?.name}` +
           "," +
           "\n";
       }
@@ -65,7 +111,7 @@ export default function DownloadDataButtons() {
   }
   return (
     <>
-      <button
+      {/* <button
         onClick={async () => {
           const data = usersNotInTeam();
           const url = window.URL.createObjectURL(new Blob([data]));
@@ -79,8 +125,8 @@ export default function DownloadDataButtons() {
         className="rounded bg-white p-2 text-center font-bold text-black "
       >
         Users Not in Team
-      </button>
-      <button
+      </button> */}
+      {/* <button
         onClick={async () => {
           const data = teamLeadersWithSubmission();
           const url = window.URL.createObjectURL(new Blob([data]));
@@ -109,7 +155,41 @@ export default function DownloadDataButtons() {
         className="rounded bg-white p-2 text-center font-bold text-black "
       >
         Team Leaders without submission
+      </button> */}
+
+
+      <button
+        onClick={async () => {
+          const data = top60TeamLeaders();
+          const url = window.URL.createObjectURL(new Blob([data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "Top_60_leaders.csv");
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        }}
+        className="rounded bg-white p-2 text-center font-bold text-black "
+      >
+        Top 60 Leaders
       </button>
+
+      <button
+        onClick={async () => {
+          const data = top60TeamMembers();
+          const url = window.URL.createObjectURL(new Blob([data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "Top_60_all.csv");
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        }}
+        className="rounded bg-white p-2 text-center font-bold text-black "
+      >
+        Top 60 All
+      </button>
+      
     </>
   );
 }
