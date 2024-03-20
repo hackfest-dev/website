@@ -26,6 +26,9 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { IdeaSubmission, Team, TeamProgress } from "@prisma/client";
 import { Check, X } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { members } from "~/types";
+import Link from "next/link";
 
 interface MembersRow {
   members: { college: { name: string } }[];
@@ -113,8 +116,72 @@ export default function ParticipantsTable({
     inferRouterOutputs<typeof teamRouter>["getTeamsList"]
   >[] = [
     {
-      accessorKey: "id",
-      header: "Team ID",
+      accessorKey: '',
+      header: 'Info',
+      cell: (cell) => {
+      
+        return (
+          <div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>View</Button>
+              </DialogTrigger>
+              <DialogContent className="text-white flex flex-col gap-4 max-h-[60dvh] mx-5 overflow-y-auto">
+              <div className="flex gap-5">
+                <span className="font-semibold">Name: </span>              {(cell.cell.row.original as Team).name}
+              </div>
+              <div className="flex gap-5">
+                <span className="font-semibold">College: </span>                {(cell.cell.row.original as Team & { members: members[]}).members[0]!.college?.name}
+              </div>
+              <div className="flex gap-5">
+                <span className="font-semibold">ID: </span>
+              {(cell.cell.row.original as Team).id}
+              </div>
+              
+              <div className="flex flex-col gap-5">
+                {
+                  (cell.cell.row.original as Team & { members: members[]}).members.map((member, index) => (
+                    <Table key={index} className="border border-white">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-semibold">Name</TableCell>
+                          <TableCell>{member.name} {member.isLeader ? '(L)' : null}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-semibold">Email</TableCell>
+                          <TableCell>{member.email}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-semibold">Phone</TableCell>
+                          <TableCell>{member.phone}</TableCell>
+                        </TableRow>
+                        <TableRow>
+  <TableCell className="font-semibold">Aadhaar</TableCell>
+  <TableCell><a href={member.aadhaar!.split(';')[0]} target='_blank'>
+    <Button>
+      View
+    </Button>
+  </a></TableCell>
+</TableRow>
+<TableRow>
+<TableCell className="font-semibold">College ID</TableCell>
+  <TableCell><a href={member.college_id!.split(';')[0]} target='_blank'>
+    <Button>
+      View
+    </Button>
+  </a></TableCell>
+</TableRow>
+                        
+                      </TableBody>
+                    </Table>
+                  ))
+                }
+              </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "name",
