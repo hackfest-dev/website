@@ -17,11 +17,11 @@ const GithubSheet = () => {
   const sendInvitation = api.github.sendInvitation.useMutation({
     onSuccess: () => {
       toast.dismiss();
-      toast.success("Successfully created repos, teams, and sent invitations");
+      toast.success("Successfully created teams, repos, and sent invitations");
     },
     onError: () => {
       toast.dismiss();
-      toast.error("Error creating repos, teams or sending invitations");
+      toast.error("Error creating teams, repos or sending invitations");
     },
   });
 
@@ -47,10 +47,38 @@ const GithubSheet = () => {
     },
   });
 
+  const makeRepoPrivate = api.github.makeRepoPrivate.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully made repo private");
+    },
+    onError: () => {
+      toast.dismiss();
+      toast.error("Error making repo private");
+    },
+  });
+
+  const makeRepoPublic = api.github.makeRepoPublic.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully made repo public");
+    },
+    onError: () => {
+      toast.dismiss();
+      toast.error("Error making repo public");
+    },
+  });
+
+  // TODO: remove this hardcoded value
+  const githubAllowed = true;
+
   return (
     <Sheet>
-      <SheetTrigger disabled={true}>
-        <Button variant={"outline"} className="font-semibold">
+      <SheetTrigger disabled={!githubAllowed}>
+        <Button
+          variant={githubAllowed ? "default" : "outline"}
+          className="font-semibold"
+        >
           Github
         </Button>
       </SheetTrigger>
@@ -71,30 +99,29 @@ const GithubSheet = () => {
             <div className="flex flex-col items-center justify-center gap-2">
               <Button
                 onClick={() => {
-                  toast.loading("Creating repositories, teams etc");
+                  toast.loading(
+                    "Creating teams, repositories, sending invitations",
+                  );
                   sendInvitation.mutate();
                 }}
               >
                 Create Repositories
               </Button>
               <Label>
-                This will create repositories in the organization, create teams,
-                send invitations to participants to join respective teams
+                This will create teams, create repos, send invitations to
+                participants to join respective teams
               </Label>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
               <Button
                 onClick={() => {
-                  toast.loading("Disabling commits");
+                  toast.loading("Enabling commits");
                   enableCommits.mutate();
                 }}
               >
                 Enable commits
               </Button>
-              <Label>
-                This will allow all participants&apos; to commit to thier
-                respective repositories
-              </Label>
+              <Label>Enables commits for every team to thier repo</Label>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
               <Button
@@ -105,10 +132,29 @@ const GithubSheet = () => {
               >
                 Disable commits
               </Button>
-              <Label>
-                This will make all participants&apos; repositories public and
-                restrict commits
-              </Label>
+              <Label>Disales commit for every team to thier repo</Label>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Button
+                onClick={() => {
+                  toast.loading("Making repo private");
+                  makeRepoPrivate.mutate();
+                }}
+              >
+                Make Repo Private
+              </Button>
+              <Label>Makes the repo private</Label>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Button
+                onClick={() => {
+                  toast.loading("Making repo public");
+                  makeRepoPublic.mutate();
+                }}
+              >
+                Make Repo Public
+              </Button>
+              <Label>Makes the repo public</Label>
             </div>
           </SheetDescription>
         </SheetHeader>
