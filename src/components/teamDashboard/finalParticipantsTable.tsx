@@ -24,7 +24,7 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { Team, TeamProgress } from "@prisma/client";
+import { Team } from "@prisma/client";
 import { Check, X } from "lucide-react";
 
 interface MembersRow {

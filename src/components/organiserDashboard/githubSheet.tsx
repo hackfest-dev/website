@@ -49,8 +49,10 @@ const GithubSheet = () => {
 
   return (
     <Sheet>
-      <SheetTrigger>
-        <Button className="font-semibold">Github</Button>
+      <SheetTrigger disabled={true}>
+        <Button variant={"outline"} className="font-semibold">
+          Github
+        </Button>
       </SheetTrigger>
       <SheetContent className="dark bg-slate-950">
         <SheetHeader className="mt-4">
@@ -90,8 +92,8 @@ const GithubSheet = () => {
                 Enable commits
               </Button>
               <Label>
-                This will allow all participants' to commit to thier respective
-                repositories
+                This will allow all participants&apos; to commit to thier
+                respective repositories
               </Label>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
@@ -104,7 +106,7 @@ const GithubSheet = () => {
                 Disable commits
               </Button>
               <Label>
-                This will make all participants' repositories public and
+                This will make all participants&apos; repositories public and
                 restrict commits
               </Label>
             </div>

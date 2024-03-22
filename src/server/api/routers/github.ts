@@ -27,10 +27,10 @@ export const githubRouter = createTRPCRouter({
           teamProgress: "SELECTED",
         },
         select: {
+          id: true,
           name: true,
           members: {
             select: {
-              // TODO: add whatever resume or something
               email: true
             }
           }
@@ -40,7 +40,7 @@ export const githubRouter = createTRPCRouter({
       for (const team of teams) {
         if (team.name !== "hello")
           continue
-        const githubTeamName = `${team!.name}`
+        const githubTeamName = `${team.name}`
         const githubRepoName = `${githubTeamName}`
 
         const githubTeam = await octokit.rest.teams.create({
@@ -48,7 +48,7 @@ export const githubRouter = createTRPCRouter({
           name: githubTeamName,
         });
         console.log(`Github team created : ${githubTeam.data.name}`)
-        const { id: githubTeamId } = githubTeam.data
+        const { id: githubTeamId, slug: githubTeamSlug } = githubTeam.data
 
         const githubRepo = await octokit.request('POST /orgs/{org}/repos', {
           org: ORGANIZATION_NAME,
@@ -62,7 +62,21 @@ export const githubRouter = createTRPCRouter({
         })
         console.log(`Github repo created : ${githubRepo.data.name}`)
 
-        for (const member of team!.members) {
+        const githubInDB = await ctx.db.github.create({
+          data: {
+            githubRepoId: githubRepo.data.id,
+            githubRepoName: githubRepo.data.name,
+            githubTeamId: githubTeamId,
+            githubTeamSlug: githubTeamSlug,
+            team: {
+              connect: {
+                id: team.id
+              }
+            },
+          }
+        })
+
+        for (const member of team.members) {
           if (member.email === "prabhuomkar9@gmail.com") continue
           const email = member.email!
           const invitation = await octokit.request("POST /orgs/{org}/invitations", {
@@ -91,27 +105,22 @@ export const githubRouter = createTRPCRouter({
           teamProgress: "SELECTED",
         },
         select: {
-          name: true,
-          members: {
-            select: {
-              // TODO: add whatever resume or something
-              email: true
-            }
-          }
+          id: true,
+          github: true
         }
       })
 
       for (const team of teams) {
-        // await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
-        //   org: 'ORG',
-        //   team_slug: 'TEAM_SLUG',
-        //   owner: 'OWNER',
-        //   repo: 'REPO',
-        //   permission: 'maintain',
-        //   headers: {
-        //     'X-GitHub-Api-Version': '2022-11-28'
-        //   }
-        // })
+        await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+          org: ORGANIZATION_NAME,
+          team_slug: team.github!.githubTeamSlug,
+          owner: ORGANIZATION_NAME,
+          repo: 'REPO',
+          permission: 'maintain',
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
       }
     }),
 
@@ -127,13 +136,8 @@ export const githubRouter = createTRPCRouter({
           teamProgress: "SELECTED",
         },
         select: {
-          name: true,
-          members: {
-            select: {
-              // TODO: add whatever resume or something
-              email: true
-            }
-          }
+          id: true,
+          github: true
         }
       })
 

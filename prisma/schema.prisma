@@ -192,12 +192,13 @@ model Judges {
 }
 
 model Github {
-  id             Int     @id @default(autoincrement())
-  githubTeamId   Int?
-  githubTeamSlug String?
-  githubRepoId   String?
-  teamId         String  @unique
-  team           Team    @relation(fields: [teamId], references: [id])
+  id             Int    @id @default(autoincrement())
+  githubRepoId   Int
+  githubRepoName String
+  githubTeamId   Int
+  githubTeamSlug String
+  teamId         String @unique
+  team           Team   @relation(fields: [teamId], references: [id])
 }
 
 enum JudgeType {

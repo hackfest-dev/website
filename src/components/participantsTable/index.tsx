@@ -116,36 +116,43 @@ export default function ParticipantsTable({
     inferRouterOutputs<typeof teamRouter>["getTeamsList"]
   >[] = [
     {
-      accessorKey: '',
-      header: 'Info',
+      accessorKey: "",
+      header: "Info",
       cell: (cell) => {
-      
         return (
           <div>
             <Dialog>
               <DialogTrigger asChild>
                 <Button>View</Button>
               </DialogTrigger>
-              <DialogContent className="text-white flex flex-col gap-4 max-h-[60dvh] mx-5 overflow-y-auto">
-              <div className="flex gap-5">
-                <span className="font-semibold">Name: </span>              {(cell.cell.row.original as Team).name}
-              </div>
-              <div className="flex gap-5">
-                <span className="font-semibold">College: </span>                {(cell.cell.row.original as Team & { members: members[]}).members[0]!.college?.name}
-              </div>
-              <div className="flex gap-5">
-                <span className="font-semibold">ID: </span>
-              {(cell.cell.row.original as Team).id}
-              </div>
-              
-              <div className="flex flex-col gap-5">
-                {
-                  (cell.cell.row.original as Team & { members: members[]}).members.map((member, index) => (
+              <DialogContent className="mx-5 flex max-h-[60dvh] flex-col gap-4 overflow-y-auto text-white">
+                <div className="flex gap-5">
+                  <span className="font-semibold">Name: </span>{" "}
+                  {(cell.cell.row.original as Team).name}
+                </div>
+                <div className="flex gap-5">
+                  <span className="font-semibold">College: </span>{" "}
+                  {
+                    (cell.cell.row.original as Team & { members: members[] })
+                      .members[0]!.college?.name
+                  }
+                </div>
+                <div className="flex gap-5">
+                  <span className="font-semibold">ID: </span>
+                  {(cell.cell.row.original as Team).id}
+                </div>
+
+                <div className="flex flex-col gap-5">
+                  {(
+                    cell.cell.row.original as Team & { members: members[] }
+                  ).members.map((member, index) => (
                     <Table key={index} className="border border-white">
                       <TableBody>
                         <TableRow>
                           <TableCell className="font-semibold">Name</TableCell>
-                          <TableCell>{member.name} {member.isLeader ? '(L)' : null}</TableCell>
+                          <TableCell>
+                            {member.name} {member.isLeader ? "(L)" : null}
+                          </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell className="font-semibold">Email</TableCell>
@@ -156,27 +163,35 @@ export default function ParticipantsTable({
                           <TableCell>{member.phone}</TableCell>
                         </TableRow>
                         <TableRow>
-  <TableCell className="font-semibold">Aadhaar</TableCell>
-  <TableCell><a href={member.aadhaar!.split(';')[0]} target='_blank'>
-    <Button>
-      View
-    </Button>
-  </a></TableCell>
-</TableRow>
-<TableRow>
-<TableCell className="font-semibold">College ID</TableCell>
-  <TableCell><a href={member.college_id!.split(';')[0]} target='_blank'>
-    <Button>
-      View
-    </Button>
-  </a></TableCell>
-</TableRow>
-                        
+                          <TableCell className="font-semibold">
+                            Aadhaar
+                          </TableCell>
+                          <TableCell>
+                            <a
+                              href={member.aadhaar?.split(";")[0]}
+                              target="_blank"
+                            >
+                              <Button>View</Button>
+                            </a>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-semibold">
+                            College ID
+                          </TableCell>
+                          <TableCell>
+                            <a
+                              href={member.college_id?.split(";")[0]}
+                              target="_blank"
+                            >
+                              <Button>View</Button>
+                            </a>
+                          </TableCell>
+                        </TableRow>
                       </TableBody>
                     </Table>
-                  ))
-                }
-              </div>
+                  ))}
+                </div>
               </DialogContent>
             </Dialog>
           </div>
@@ -192,7 +207,7 @@ export default function ParticipantsTable({
       header: "College",
       cell: (members) => (
         <span>
-          {(members.row.original as MembersRow).members[0]!.college.name}
+          {(members.row.original as MembersRow).members[0]?.college?.name}
         </span>
       ),
     },
