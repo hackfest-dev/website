@@ -2,6 +2,7 @@ import { TRPCClientError } from "@trpc/client";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { Octokit } from "octokit";
 import { env } from "~/env";
+import { z } from "zod";
 
 const ORGANIZATION_NAME = env.ORGANIZATION_NAME
 const GITHUB_PERSONAL_ACCESS_TOKEN = env.GITHUB_PERSONAL_ACCESS_TOKEN
@@ -11,12 +12,29 @@ const { data: { login } } = await octokit.rest.users.getAuthenticated();
 console.log("Hello, %s", login);
 
 export const githubRouter = createTRPCRouter({
-  // TODO: change name
+  getAllGithubTeams: protectedProcedure
+    .query(async ({ ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to get teams")
+      }
+
+      return await ctx.db.github.findMany({
+        include: {
+          team: {
+            select: {
+              name: true
+            }
+          }
+        }
+      })
+    }),
+
   sendInvitation: protectedProcedure
     .mutation(async ({ input, ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
-        throw new TRPCClientError("You are not authorized to send invitation")
+        throw new TRPCClientError("Unauthorized to send invitation")
       }
 
       const teams = await ctx.db.team.findMany({
@@ -33,13 +51,10 @@ export const githubRouter = createTRPCRouter({
           }
         }
       })
-      console.log(teams)
 
       for (const team of teams) {
-        if (team.name !== "hello")
-          continue
-        const githubTeamName = `${team.name}`
-        const githubRepoName = `${githubTeamName}`
+        const githubTeamName = `Team - ${team.name}`
+        const githubRepoName = `Team Repo - ${team.name}`
 
         const githubTeam = await octokit.rest.teams.create({
           org: ORGANIZATION_NAME,
@@ -52,7 +67,7 @@ export const githubRouter = createTRPCRouter({
         const githubRepo = await octokit.request('POST /orgs/{org}/repos', {
           org: ORGANIZATION_NAME,
           name: githubRepoName,
-          description: `Repository of team - [${githubTeamName}] for hackfest`,
+          description: `Hackfest Repository - ${githubTeamName}`,
           private: true,
           team_id: githubTeamId,
           headers: {
@@ -62,6 +77,17 @@ export const githubRouter = createTRPCRouter({
         console.log(`Github repo created : ${githubRepo.data.name}`)
 
         const { id: githubRepoId } = githubRepo.data
+
+        await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+          owner: ORGANIZATION_NAME,
+          repo: githubRepoName,
+          path: 'README.md',
+          message: 'Initial Commit',
+          content: btoa(`# ${githubTeamName}`),
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
 
         const githubInDB = await ctx.db.github.upsert({
           create: {
@@ -88,10 +114,10 @@ export const githubRouter = createTRPCRouter({
         console.log(githubInDB)
 
         for (const member of team.members) {
-          if (member.email !== "nnm22is002@nmamit.in") continue
-          const email = member.email
+          const email = member.email!
           const invitation = await octokit.request("POST /orgs/{org}/invitations", {
             org: ORGANIZATION_NAME,
+            // TODO: change email to github username
             email: email,
             role: "direct_member",
             team_ids: [githubTeamId],
@@ -104,11 +130,94 @@ export const githubRouter = createTRPCRouter({
       }
     }),
 
-  enableCommits: protectedProcedure
+  enableCommitForTeam: protectedProcedure
+    .input(z.object({
+      teamId: z.string()
+    }))
     .mutation(async ({ input, ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
-        throw new TRPCClientError("You are not authorized to send invitation")
+        throw new TRPCClientError("Unauthorized to enable commits")
+      }
+
+      const githubTeam = await ctx.db.github.findUnique({
+        where: {
+          teamId: input.teamId
+        },
+        include: {
+          team: {
+            select: {
+              name: true
+            }
+          }
+        }
+      })
+
+      if (!githubTeam) {
+        console.log(`Could not find team with id : ${input.teamId}`)
+        throw new TRPCClientError("Could not find team")
+      }
+
+      await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+        org: ORGANIZATION_NAME,
+        team_slug: githubTeam.githubTeamSlug,
+        owner: ORGANIZATION_NAME,
+        repo: githubTeam.githubRepoName,
+        permission: 'maintain',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+      console.log(`Enabled commit for team : ${githubTeam.team.name} with team id : ${input.teamId}`)
+    }),
+
+  disableCommitForTeam: protectedProcedure
+    .input(z.object({
+      teamId: z.string()
+    }))
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to disable commits")
+      }
+
+      const githubTeam = await ctx.db.github.findUnique({
+        where: {
+          teamId: input.teamId
+        },
+        include: {
+          team: {
+            select: {
+              name: true
+            }
+          }
+        }
+      })
+
+      if (!githubTeam) {
+        console.log(`Could not find team with id : ${input.teamId}`)
+        throw new TRPCClientError("Could not find team")
+      }
+
+      await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+        org: ORGANIZATION_NAME,
+        team_slug: githubTeam.githubTeamSlug,
+        owner: ORGANIZATION_NAME,
+        repo: githubTeam.githubRepoName,
+        permission: 'pull',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+      console.log(`Disabled commit for team : ${githubTeam.team.name} with team id : ${input.teamId}`)
+    }
+    ),
+
+  enableCommitForAll: protectedProcedure
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to enable commits")
       }
 
       const githubTeams = await ctx.db.github.findMany({
@@ -136,11 +245,11 @@ export const githubRouter = createTRPCRouter({
       }
     }),
 
-  disableCommits: protectedProcedure
+  disableCommitForAll: protectedProcedure
     .mutation(async ({ input, ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
-        throw new TRPCClientError("You are not authorized to send invitation")
+        throw new TRPCClientError("Unauthorized to disable commits")
       }
 
       const githubTeams = await ctx.db.github.findMany({
@@ -168,11 +277,89 @@ export const githubRouter = createTRPCRouter({
       }
     }),
 
-  makeRepoPrivate: protectedProcedure
+  makeRepoPrivateForTeam: protectedProcedure
+    .input(z.object({
+      teamId: z.string()
+    }))
     .mutation(async ({ input, ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
-        throw new TRPCClientError("You are not authorized to send invitation")
+        throw new TRPCClientError("Unauthorized to make repo private")
+      }
+
+      const githubTeam = await ctx.db.github.findUnique({
+        where: {
+          teamId: input.teamId
+        },
+        include: {
+          team: {
+            select: {
+              name: true
+            }
+          }
+        }
+      })
+
+      if (!githubTeam) {
+        console.log(`Could not find team with id : ${input.teamId}`)
+        throw new TRPCClientError("Could not find team")
+      }
+
+      await octokit.request('PATCH /repos/{owner}/{repo}', {
+        owner: ORGANIZATION_NAME,
+        repo: githubTeam.githubRepoName,
+        private: true,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+      console.log(`Made repo private for team : ${githubTeam.team.name}`)
+    }),
+
+  makeRepoPublicForTeam: protectedProcedure
+    .input(z.object({
+      teamId: z.string()
+    }))
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to make repo public")
+      }
+
+      const githubTeam = await ctx.db.github.findUnique({
+        where: {
+          teamId: input.teamId
+        },
+        include: {
+          team: {
+            select: {
+              name: true
+            }
+          }
+        }
+      })
+
+      if (!githubTeam) {
+        console.log(`Could not find team with id : ${input.teamId}`)
+        throw new TRPCClientError("Could not find team")
+      }
+
+      await octokit.request('PATCH /repos/{owner}/{repo}', {
+        owner: ORGANIZATION_NAME,
+        repo: githubTeam.githubRepoName,
+        private: false,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+      console.log(`Made repo public for team : ${githubTeam.team.name}`)
+    }),
+
+  makeRepoPrivateForAll: protectedProcedure
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to make repo private")
       }
 
       const githubTeams = await ctx.db.github.findMany({
@@ -198,11 +385,11 @@ export const githubRouter = createTRPCRouter({
       }
     }),
 
-  makeRepoPublic: protectedProcedure
+  makeRepoPublicForAll: protectedProcedure
     .mutation(async ({ input, ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
-        throw new TRPCClientError("You are not authorized to send invitation")
+        throw new TRPCClientError("Unauthorized to make repo public")
       }
 
       const githubTeams = await ctx.db.github.findMany({

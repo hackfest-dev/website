@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -8,95 +8,151 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { Button } from "../ui/button";
-import { Label } from "../ui/label";
 import Link from "next/link";
 import { api } from "~/utils/api";
 import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "../ui/command";
+import { cn } from "~/lib/utils";
 
 const GithubSheet = () => {
+  const [teamId, setTeamId] = useState<string>("");
+  const [open, setOpen] = React.useState(false);
+  const [teamQuery, setTeamQuery] = React.useState("");
+
+  const { data: githubTeams } = api.github.getAllGithubTeams.useQuery();
+
   const sendInvitation = api.github.sendInvitation.useMutation({
     onSuccess: () => {
       toast.dismiss();
       toast.success("Successfully created teams, repos, and sent invitations");
     },
-    onError: () => {
+    onError: ({ message }) => {
       toast.dismiss();
-      toast.error("Error creating teams, repos or sending invitations");
+      toast.error(message);
     },
   });
 
-  const disableCommits = api.github.disableCommits.useMutation({
-    onSuccess: () => {
-      toast.dismiss();
-      toast.success("Successfully disabling commits");
-    },
-    onError: () => {
-      toast.dismiss();
-      toast.error("Error disabling commits");
-    },
-  });
-
-  const enableCommits = api.github.enableCommits.useMutation({
+  const enableCommitForTeam = api.github.enableCommitForTeam.useMutation({
     onSuccess: () => {
       toast.dismiss();
       toast.success("Successfully enabling commits");
     },
-    onError: () => {
+    onError: ({ message }) => {
       toast.dismiss();
-      toast.error("Error enabling commits");
+      toast.error(message);
     },
   });
 
-  const makeRepoPrivate = api.github.makeRepoPrivate.useMutation({
+  const disableCommitForTeam = api.github.disableCommitForTeam.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully disabled commit for team");
+    },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
+  const makeRepoPrivateForAll = api.github.makeRepoPrivateForAll.useMutation({
     onSuccess: () => {
       toast.dismiss();
       toast.success("Successfully made repo private");
     },
-    onError: () => {
+    onError: ({ message }) => {
       toast.dismiss();
-      toast.error("Error making repo private");
+      toast.error(message);
     },
   });
 
-  const makeRepoPublic = api.github.makeRepoPublic.useMutation({
+  const makeRepoPublicForAll = api.github.makeRepoPublicForAll.useMutation({
     onSuccess: () => {
       toast.dismiss();
       toast.success("Successfully made repo public");
     },
-    onError: () => {
+    onError: ({ message }) => {
       toast.dismiss();
-      toast.error("Error making repo public");
+      toast.error(message);
     },
   });
 
-  // TODO: remove this hardcoded value
-  const githubAllowed = true;
+  const enableCommitForAll = api.github.enableCommitForAll.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully enabled commits");
+    },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
+  const disableCommitForAll = api.github.disableCommitForAll.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully disabled commits");
+    },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
+  const makeRepoPrivateForTeam = api.github.makeRepoPrivateForTeam.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully made repo private for team");
+    },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
+  const makeRepoPublicForTeam = api.github.makeRepoPublicForTeam.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully made repo public for team");
+    },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
 
   return (
     <Sheet>
-      <SheetTrigger disabled={!githubAllowed}>
-        <Button
-          variant={githubAllowed ? "default" : "outline"}
-          className="font-semibold"
-        >
-          Github
-        </Button>
+      <SheetTrigger>
+        <Button className="font-semibold">Github</Button>
       </SheetTrigger>
-      <SheetContent className="dark bg-slate-950">
-        <SheetHeader className="mt-4">
+      <SheetContent className="dark overflow-scroll bg-slate-950">
+        <SheetHeader>
           <SheetTitle className="text-2xl text-white">
             Github Related Actions
           </SheetTitle>
-          <SheetDescription className="flex flex-col items-center justify-center gap-7">
-            <Label className="text-lg">
+          <SheetDescription className="flex flex-col items-center justify-center gap-5">
+            <h1 className="text-lg font-semibold">
               Organization Name :{" "}
-              <span className="font-mono text-blue-400 underline">
-                <Link href={"https://github.com/hackfest-dev"} target="_blank">
-                  Hackfest
-                </Link>
-              </span>
-            </Label>
-            <div className="flex flex-col items-center justify-center gap-2">
+              <Link
+                href={"https://github.com/hackfest-dev"}
+                target="_blank"
+                className="font-mono text-blue-400 underline"
+              >
+                Hackfest
+              </Link>
+            </h1>
+            <div className="flex w-full flex-col items-center justify-center gap-3 rounded-sm border p-3">
+              <h3 className="text-xl font-bold text-white">
+                Creation & Invitation
+              </h3>
               <Button
                 onClick={() => {
                   toast.loading(
@@ -105,56 +161,172 @@ const GithubSheet = () => {
                   sendInvitation.mutate();
                 }}
               >
-                Create Repositories
+                Send invitations
               </Button>
-              <Label>
-                This will create teams, create repos, send invitations to
-                participants to join respective teams
-              </Label>
+              <h3 className="px-3 font-semibold leading-snug">
+                Create teams, create private repo and assign team, send
+                invitation to members of team to join github team
+              </h3>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2">
-              <Button
-                onClick={() => {
-                  toast.loading("Enabling commits");
-                  enableCommits.mutate();
-                }}
-              >
-                Enable commits
-              </Button>
-              <Label>Enables commits for every team to thier repo</Label>
+            <div className="flex w-full flex-col items-center justify-center gap-3 rounded-sm border p-3 md:gap-5">
+              <h3 className="text-xl font-bold text-white">Actions for all</h3>
+              <div className="grid grid-cols-1 grid-rows-4 items-center justify-center gap-1 px-3 md:grid-cols-2 md:grid-rows-2 md:gap-3">
+                <h3 className="font-semibold">Commits</h3>
+                <div className="flex flex-row items-center justify-center gap-3">
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Enabling commits for all teams");
+                      enableCommitForAll.mutate();
+                    }}
+                  >
+                    Enable
+                  </Button>
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Disabling commits for all teams");
+                      disableCommitForAll.mutate();
+                    }}
+                  >
+                    Disable
+                  </Button>
+                </div>
+                <h3 className="font-semibold">Repo Visibility</h3>
+                <div className="flex flex-row items-center justify-center gap-3">
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Making all teams' repo private");
+                      makeRepoPrivateForAll.mutate();
+                    }}
+                  >
+                    Private
+                  </Button>
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Making all teams' repo public");
+                      makeRepoPublicForAll.mutate();
+                    }}
+                  >
+                    Public
+                  </Button>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2">
-              <Button
-                onClick={() => {
-                  toast.loading("Disabling commits");
-                  disableCommits.mutate();
-                }}
-              >
-                Disable commits
-              </Button>
-              <Label>Disales commit for every team to thier repo</Label>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-2">
-              <Button
-                onClick={() => {
-                  toast.loading("Making repo private");
-                  makeRepoPrivate.mutate();
-                }}
-              >
-                Make Repo Private
-              </Button>
-              <Label>Makes the repo private</Label>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-2">
-              <Button
-                onClick={() => {
-                  toast.loading("Making repo public");
-                  makeRepoPublic.mutate();
-                }}
-              >
-                Make Repo Public
-              </Button>
-              <Label>Makes the repo public</Label>
+            <div className="flex w-full flex-col items-center justify-center gap-3 rounded-sm border p-3 md:gap-5">
+              <h3 className="text-xl font-bold text-white">
+                Actions for particular team
+              </h3>
+              <div className="grid grid-cols-1 grid-rows-5 items-center justify-center gap-1 px-3 md:grid-cols-2 md:grid-rows-3 md:gap-3">
+                <div className="col-span-1 flex items-center justify-center md:col-span-2">
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        className="w-[200px] justify-between"
+                      >
+                        {teamQuery
+                          ? githubTeams?.find(
+                              (githubTeam) =>
+                                githubTeam.team.name === teamQuery,
+                            )?.team.name
+                          : "Select Team"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search Team Name" />
+                        <CommandEmpty>No team found</CommandEmpty>
+                        <CommandGroup>
+                          {githubTeams?.map((githubTeam) => (
+                            <CommandItem
+                              key={githubTeam.id}
+                              value={githubTeam.team.name}
+                              onSelect={(currentValue) => {
+                                setTeamQuery(
+                                  currentValue === teamQuery
+                                    ? ""
+                                    : currentValue,
+                                );
+                                setTeamId(
+                                  currentValue === teamQuery
+                                    ? ""
+                                    : githubTeam.teamId,
+                                );
+                                setOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  teamQuery === githubTeam.team.name
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                }`}
+                              />
+                              {githubTeam.team.name}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <h3 className="font-semibold">Commits</h3>
+                <div className="flex flex-row items-center justify-center gap-3">
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Enabling commits");
+                      enableCommitForTeam.mutate({
+                        teamId: teamId,
+                      });
+                    }}
+                  >
+                    Enable
+                  </Button>
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Disabling commits");
+                      disableCommitForTeam.mutate({
+                        teamId: teamId,
+                      });
+                    }}
+                  >
+                    Disable
+                  </Button>
+                </div>
+                <h3 className="font-semibold">Repo Visibility</h3>
+                <div className="flex flex-row items-center justify-center gap-3">
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Making repo private for team");
+                      makeRepoPrivateForTeam.mutate({
+                        teamId: teamId,
+                      });
+                    }}
+                  >
+                    Private
+                  </Button>
+                  <Button
+                    className="min-w-[72px]"
+                    onClick={() => {
+                      toast.loading("Making repo public for team");
+                      makeRepoPublicForTeam.mutate({
+                        teamId: teamId,
+                      });
+                    }}
+                  >
+                    Public
+                  </Button>
+                </div>
+              </div>
             </div>
           </SheetDescription>
         </SheetHeader>
