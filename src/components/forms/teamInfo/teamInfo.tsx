@@ -29,6 +29,7 @@ import { type teamRouter } from "~/server/api/routers/team";
 import { api } from "~/utils/api";
 import { env } from "~/env";
 import FinalSubmission from "~/components/finalSubmission";
+import ResumeGithubModal from "~/components/finalSubmission/resumeGithubModal";
 
 
 export default function TeamInfo({
@@ -175,6 +176,18 @@ export default function TeamInfo({
                 {
                   teamdata?.teamProgress === 'SELECTED' && !teamdata?.transactionId && userId === teamMembers[0]?.id && (
                     <FinalSubmission refetchTeam={refetchTeam} teamId={teamdata?.id ?? ''} teamlength={teamdata?.members?.length ?? 0}  />
+                  )
+                }
+                {
+                  teamdata?.teamProgress === 'SELECTED' &&  teamMembers.filter((member) => !member.resume && !member.github).length !== 0 && (
+                    <>
+                    
+                      <ResumeGithubModal
+                      refetchTeam={refetchTeam}
+                      teamdata={teamdata}
+                      userId={userId}
+                      />
+                    </>
                   )
                 }
               </div>

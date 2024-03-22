@@ -64,6 +64,7 @@ model User {
   sessions        Session[]
   college         College?   @relation(fields: [collegeId], references: [id])
   team            Team?      @relation(fields: [teamId], references: [id])
+  github          String?
 
   @@index([collegeId])
   @@index([teamId])
@@ -87,6 +88,7 @@ model College {
 
 model Team {
   id                       String            @id @default(cuid())
+  teamNo                   Int?
   name                     String            @unique
   isComplete               Boolean           @default(false)
   createdAt                DateTime          @default(now())
@@ -105,6 +107,7 @@ model Team {
   github                   Github?
   paymentProof             String?
   transactionId            String?
+  transportation           Boolean           @default(false)
 }
 
 model VideoSubmissions {
