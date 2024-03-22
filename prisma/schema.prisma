@@ -102,8 +102,9 @@ model Team {
   referral                 Referral?         @relation(fields: [referralId], references: [id])
   members                  User[]
   videoSubmission          VideoSubmissions?
-  paymentProof    String?
-  transactionId   String?
+  github                   Github?
+  paymentProof             String?
+  transactionId            String?
 }
 
 model VideoSubmissions {
@@ -185,6 +186,15 @@ model Judges {
   type   JudgeType       @default(VALIDATOR)
   User   User            @relation(fields: [userId], references: [id])
   scores ScoresByJudge[]
+}
+
+model Github {
+  id             Int     @id @default(autoincrement())
+  githubTeamId   Int?
+  githubTeamSlug String?
+  githubRepoId   String?
+  teamId         String  @unique
+  team           Team    @relation(fields: [teamId], references: [id])
 }
 
 enum JudgeType {
