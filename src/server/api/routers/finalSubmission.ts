@@ -4,31 +4,6 @@ import {z} from 'zod';
 import { TRPCError } from "@trpc/server";
 import { finalSubmissionZ, resumeSubmissionZ } from "~/server/schema/zod-schema";
 export const finalSubmissionRoute = createTRPCRouter({
-    resumeUpload: protectedProcedure
-    .input(resumeSubmissionZ)
-    .mutation(async ({ctx, input}) => {
-        if(!ctx.session.user.isLeader){
-            throw new TRPCError({
-                code: 'UNAUTHORIZED',
-                message: 'You are not a team leader'
-            })
-        }
-        try{
-            const user = await ctx.db.user.update({
-                where: {
-                    id: input.userId
-                },
-                data: {
-                    resume: input.resumeUrl
-                }
-            })
-        }catch(e){
-            throw new TRPCError({
-                code: 'INTERNAL_SERVER_ERROR',
-                message: 'Something went wrong'
-            })
-        }
-    }),
     finalSubmission: protectedProcedure
     .input(finalSubmissionZ)
     .mutation(async ({ctx,input}) =>{
@@ -99,5 +74,50 @@ export const finalSubmissionRoute = createTRPCRouter({
             }
         })
     }),
-
+    submitGithub: protectedProcedure
+    .input(z.object({
+        userId: z.string(),
+        github: z.string()
+    }))
+    .mutation(async ({ctx, input})=>{
+        const user =await ctx.db.user.update({
+            where:{
+                id: input.userId
+            },
+            data:{
+                github: input.github
+            }
+        })
+        return user
+    }),
+    submitResume: protectedProcedure
+    .input(z.object({
+        userId: z.string(),
+        resume: z.string()
+    }))
+    .mutation(async ({ctx,input}) => {
+        const user = await ctx.db.user.update({
+            where:{
+                id: input.userId
+            },
+            data:{
+                resume: input.resume
+            }
+        })
+        return user;
+    }),
+    markTransport: protectedProcedure
+    .input(z.object({
+        teamId: z.string()
+    }))
+    .mutation(async ({ctx,input}) => {
+        const team = await ctx.db.team.update({
+            where: {
+                id: input.teamId
+            },
+            data: {
+                transportation: true
+            }
+        })
+    })
 })
