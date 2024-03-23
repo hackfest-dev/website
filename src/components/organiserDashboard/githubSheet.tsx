@@ -20,12 +20,16 @@ import {
   CommandInput,
   CommandItem,
 } from "../ui/command";
-import { cn } from "~/lib/utils";
+import { Input } from "../ui/input";
 
 const GithubSheet = () => {
   const [teamId, setTeamId] = useState<string>("");
-  const [open, setOpen] = React.useState(false);
-  const [teamQuery, setTeamQuery] = React.useState("");
+  const [userTeamId, setUserTeamId] = useState<string>("");
+  const [teamQuery, setTeamQuery] = useState("");
+  const [userTeamQuery, setUserTeamQuery] = useState("");
+  const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
+  const [userTeamDropdownOpen, setUserTeamDropdownOpen] = useState(false);
+  const [githubUsername, setGithubUsername] = useState("");
 
   const { data: githubTeams } = api.github.getAllGithubTeams.useQuery();
 
@@ -33,6 +37,17 @@ const GithubSheet = () => {
     onSuccess: () => {
       toast.dismiss();
       toast.success("Successfully created teams, repos, and sent invitations");
+    },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
+  const sendInvitationToUser = api.github.sendInvitationToUser.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully sent invitation to user");
     },
     onError: ({ message }) => {
       toast.dismiss();
@@ -138,7 +153,7 @@ const GithubSheet = () => {
           <SheetTitle className="text-2xl text-white">
             Github Related Actions
           </SheetTitle>
-          <SheetDescription className="flex flex-col items-center justify-center gap-5">
+          <SheetDescription className="flex flex-col items-center justify-center gap-3">
             <h1 className="text-lg font-semibold">
               Organization Name :{" "}
               <Link
@@ -170,63 +185,62 @@ const GithubSheet = () => {
             </div>
             <div className="flex w-full flex-col items-center justify-center gap-3 rounded-sm border p-3 md:gap-5">
               <h3 className="text-xl font-bold text-white">Actions for all</h3>
-              <div className="grid grid-cols-1 grid-rows-4 items-center justify-center gap-1 px-3 md:grid-cols-2 md:grid-rows-2 md:gap-3">
-                <h3 className="font-semibold">Commits</h3>
-                <div className="flex flex-row items-center justify-center gap-3">
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Enabling commits for all teams");
-                      enableCommitForAll.mutate();
-                    }}
-                  >
-                    Enable
-                  </Button>
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Disabling commits for all teams");
-                      disableCommitForAll.mutate();
-                    }}
-                  >
-                    Disable
-                  </Button>
-                </div>
-                <h3 className="font-semibold">Repo Visibility</h3>
-                <div className="flex flex-row items-center justify-center gap-3">
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Making all teams' repo private");
-                      makeRepoPrivateForAll.mutate();
-                    }}
-                  >
-                    Private
-                  </Button>
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Making all teams' repo public");
-                      makeRepoPublicForAll.mutate();
-                    }}
-                  >
-                    Public
-                  </Button>
-                </div>
+              <div className="grid grid-cols-2 grid-rows-4 items-center justify-center gap-1 px-3 md:grid-cols-3 md:grid-rows-2 md:gap-3">
+                <h3 className="col-span-2 font-semibold md:col-span-1">
+                  Commits
+                </h3>
+                <Button
+                  onClick={() => {
+                    toast.loading("Enabling commits for all teams");
+                    enableCommitForAll.mutate();
+                  }}
+                >
+                  Enable
+                </Button>
+                <Button
+                  onClick={() => {
+                    toast.loading("Disabling commits for all teams");
+                    disableCommitForAll.mutate();
+                  }}
+                >
+                  Disable
+                </Button>
+                <h3 className="col-span-2 font-semibold md:col-span-1">
+                  Repo Visibility
+                </h3>
+                <Button
+                  onClick={() => {
+                    toast.loading("Making all teams' repo private");
+                    makeRepoPrivateForAll.mutate();
+                  }}
+                >
+                  Private
+                </Button>
+                <Button
+                  onClick={() => {
+                    toast.loading("Making all teams' repo public");
+                    makeRepoPublicForAll.mutate();
+                  }}
+                >
+                  Public
+                </Button>
               </div>
             </div>
             <div className="flex w-full flex-col items-center justify-center gap-3 rounded-sm border p-3 md:gap-5">
               <h3 className="text-xl font-bold text-white">
                 Actions for particular team
               </h3>
-              <div className="grid grid-cols-1 grid-rows-5 items-center justify-center gap-1 px-3 md:grid-cols-2 md:grid-rows-3 md:gap-3">
-                <div className="col-span-1 flex items-center justify-center md:col-span-2">
-                  <Popover open={open} onOpenChange={setOpen}>
+              <div className="grid grid-cols-2 grid-rows-5 items-center justify-center gap-1 px-3 md:grid-cols-3 md:grid-rows-3 md:gap-3">
+                <div className="col-span-2 flex items-center justify-center md:col-span-3">
+                  <Popover
+                    open={teamDropdownOpen}
+                    onOpenChange={setTeamDropdownOpen}
+                  >
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         role="combobox"
-                        aria-expanded={open}
+                        aria-expanded={teamDropdownOpen}
                         className="w-[200px] justify-between"
                       >
                         {teamQuery
@@ -258,7 +272,7 @@ const GithubSheet = () => {
                                     ? ""
                                     : githubTeam.teamId,
                                 );
-                                setOpen(false);
+                                setTeamDropdownOpen(false);
                               }}
                             >
                               <Check
@@ -276,56 +290,136 @@ const GithubSheet = () => {
                     </PopoverContent>
                   </Popover>
                 </div>
-                <h3 className="font-semibold">Commits</h3>
-                <div className="flex flex-row items-center justify-center gap-3">
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Enabling commits");
-                      enableCommitForTeam.mutate({
-                        teamId: teamId,
-                      });
-                    }}
-                  >
-                    Enable
-                  </Button>
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Disabling commits");
-                      disableCommitForTeam.mutate({
-                        teamId: teamId,
-                      });
-                    }}
-                  >
-                    Disable
-                  </Button>
-                </div>
-                <h3 className="font-semibold">Repo Visibility</h3>
-                <div className="flex flex-row items-center justify-center gap-3">
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Making repo private for team");
-                      makeRepoPrivateForTeam.mutate({
-                        teamId: teamId,
-                      });
-                    }}
-                  >
-                    Private
-                  </Button>
-                  <Button
-                    className="min-w-[72px]"
-                    onClick={() => {
-                      toast.loading("Making repo public for team");
-                      makeRepoPublicForTeam.mutate({
-                        teamId: teamId,
-                      });
-                    }}
-                  >
-                    Public
-                  </Button>
-                </div>
+                <h3 className="col-span-2 font-semibold md:col-span-1">
+                  Commits
+                </h3>
+                <Button
+                  onClick={() => {
+                    toast.loading("Enabling commits");
+                    enableCommitForTeam.mutate({
+                      teamId: teamId,
+                    });
+                  }}
+                >
+                  Enable
+                </Button>
+                <Button
+                  onClick={() => {
+                    toast.loading("Disabling commits");
+                    disableCommitForTeam.mutate({
+                      teamId: teamId,
+                    });
+                  }}
+                >
+                  Disable
+                </Button>
+                <h3 className="col-span-2 font-semibold md:col-span-1">
+                  Repo Visibility
+                </h3>
+                <Button
+                  onClick={() => {
+                    toast.loading("Making repo private for team");
+                    makeRepoPrivateForTeam.mutate({
+                      teamId: teamId,
+                    });
+                  }}
+                >
+                  Private
+                </Button>
+                <Button
+                  onClick={() => {
+                    toast.loading("Making repo public for team");
+                    makeRepoPublicForTeam.mutate({
+                      teamId: teamId,
+                    });
+                  }}
+                >
+                  Public
+                </Button>
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-center justify-center gap-3 rounded-sm border p-3 md:gap-5">
+              <h3 className="text-xl font-bold text-white">
+                Actions for particular user
+              </h3>
+              <div className="grid grid-cols-1 grid-rows-3 items-center justify-center gap-3 px-3">
+                <Popover
+                  open={userTeamDropdownOpen}
+                  onOpenChange={setUserTeamDropdownOpen}
+                >
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={userTeamDropdownOpen}
+                      className="w-[200px] justify-between"
+                    >
+                      {userTeamQuery
+                        ? githubTeams?.find(
+                            (githubTeam) =>
+                              githubTeam.team.name === userTeamQuery,
+                          )?.team.name
+                        : "Select Team"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search Team Name" />
+                      <CommandEmpty>No team found</CommandEmpty>
+                      <CommandGroup>
+                        {githubTeams?.map((githubTeam) => (
+                          <CommandItem
+                            key={githubTeam.id}
+                            value={githubTeam.team.name}
+                            onSelect={(currentValue) => {
+                              setUserTeamQuery(
+                                currentValue === userTeamQuery
+                                  ? ""
+                                  : currentValue,
+                              );
+                              setUserTeamId(
+                                currentValue === userTeamQuery
+                                  ? ""
+                                  : githubTeam.teamId,
+                              );
+                              setUserTeamDropdownOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={`mr-2 h-4 w-4 ${
+                                teamQuery === githubTeam.team.name
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              }`}
+                            />
+                            {githubTeam.team.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <Input
+                  placeholder="Github Username"
+                  value={githubUsername}
+                  onChange={(e) => {
+                    setGithubUsername(() => {
+                      return e.target.value;
+                    });
+                  }}
+                />
+                <Button
+                  onClick={() => {
+                    toast.loading("Sending invitation to user");
+                    sendInvitationToUser.mutate({
+                      teamId: userTeamId,
+                      githubUsername: githubUsername,
+                    });
+                  }}
+                >
+                  Send Invitation
+                </Button>
               </div>
             </div>
           </SheetDescription>
