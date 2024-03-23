@@ -1,5 +1,5 @@
 import { TRPCClientError } from "@trpc/client";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { Octokit } from "octokit";
 import { env } from "~/env";
 import { z } from "zod";
@@ -31,7 +31,7 @@ export const githubRouter = createTRPCRouter({
     }),
 
   sendInvitation: protectedProcedure
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
         throw new TRPCClientError("Unauthorized to send invitation")
@@ -46,7 +46,7 @@ export const githubRouter = createTRPCRouter({
           name: true,
           members: {
             select: {
-              email: true
+              github: true
             }
           }
         }
@@ -114,11 +114,20 @@ export const githubRouter = createTRPCRouter({
         console.log(githubInDB)
 
         for (const member of team.members) {
-          const email = member.email!
+          const githubUsername = member.github
+          if (!githubUsername)
+            continue
+
+          const githubUser = await octokit.request('GET /users/{username}', {
+            username: githubUsername,
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+
           const invitation = await octokit.request("POST /orgs/{org}/invitations", {
             org: ORGANIZATION_NAME,
-            // TODO: change email to github username
-            email: email,
+            invitee_id: githubUser.data.id,
             role: "direct_member",
             team_ids: [githubTeamId],
             headers: {
@@ -128,6 +137,47 @@ export const githubRouter = createTRPCRouter({
           console.log(`Team invitation sent : ${invitation.data.email}`)
         }
       }
+    }),
+
+  sendInvitationToUser: protectedProcedure
+    .input(z.object({
+      teamId: z.string(),
+      githubUsername: z.string(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to send invitation")
+      }
+
+      const githubTeam = await ctx.db.github.findUnique({
+        where: {
+          teamId: input.teamId
+        }
+      })
+
+      if (!githubTeam) {
+        console.log(`Could not find team with id : ${input.teamId}`)
+        throw new TRPCClientError("Could not find team")
+      }
+
+      const githubUser = await octokit.request('GET /users/{username}', {
+        username: input.githubUsername,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+
+      const invitation = await octokit.request("POST /orgs/{org}/invitations", {
+        org: ORGANIZATION_NAME,
+        invitee_id: githubUser.data.id,
+        role: "direct_member",
+        team_ids: [githubTeam.githubTeamId],
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+      console.log(`Team invitation sent : ${invitation.data.email}`)
     }),
 
   enableCommitForTeam: protectedProcedure
@@ -214,7 +264,7 @@ export const githubRouter = createTRPCRouter({
     ),
 
   enableCommitForAll: protectedProcedure
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
         throw new TRPCClientError("Unauthorized to enable commits")
@@ -246,7 +296,7 @@ export const githubRouter = createTRPCRouter({
     }),
 
   disableCommitForAll: protectedProcedure
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
         throw new TRPCClientError("Unauthorized to disable commits")
@@ -356,7 +406,7 @@ export const githubRouter = createTRPCRouter({
     }),
 
   makeRepoPrivateForAll: protectedProcedure
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
         throw new TRPCClientError("Unauthorized to make repo private")
@@ -386,7 +436,7 @@ export const githubRouter = createTRPCRouter({
     }),
 
   makeRepoPublicForAll: protectedProcedure
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ ctx }) => {
       if (ctx.session.user.role !== "ADMIN"
         && ctx.session.user.role !== "ORGANISER") {
         throw new TRPCClientError("Unauthorized to make repo public")
