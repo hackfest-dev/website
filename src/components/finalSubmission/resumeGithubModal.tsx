@@ -184,6 +184,7 @@ export default function ResumeGithubModal({
                 <DialogContent className="p-8 max-h-[60dvh] overflow-y-auto space-y-8">
                     <h1 className="text-2xl text-white font-bold">Upload Resumes</h1>
                     <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+                    
 
                     {
                         resumes.map((resume, index) => {
