@@ -144,6 +144,10 @@ export default function ResumeGithubModal({
 
 
         const submitPromises = updatedResumes.map(async (resume) => {
+            const githubUrl = resume.github;
+const regex = /(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9]+)/;
+const match = githubUrl.match(regex);
+const githubUsername = match ? match[1] : githubUrl;
             await submitResume.mutateAsync({
                 userId: resume.userId,
                 resume: resume.resumeUrl ?? '',
@@ -151,7 +155,7 @@ export default function ResumeGithubModal({
 
             await submitGithub.mutateAsync({
                 userId: resume.userId,
-                github: resume.github,
+                github: githubUsername ?? '',
             })
 
             if(transport && teamdata){
@@ -181,7 +185,7 @@ export default function ResumeGithubModal({
                     </Button>
                 </DialogTrigger>
 
-                <DialogContent className="p-8 max-h-[60dvh] overflow-y-auto space-y-8">
+                <DialogContent className="p-8 max-h-[60dvh] overflow-y-auto space-y-8 md:max-w-fit max-w-[95vw] mx-auto items-center justify-center">
                     <h1 className="text-2xl text-white font-bold">Upload Resumes</h1>
                     <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
                     
@@ -240,7 +244,7 @@ export default function ResumeGithubModal({
                             }}/>
                             <label className="text-white">Do you need bus from Mangalore station?</label>
                         </div>
-                        <Badge className="flex gap-2 text-center bg-yellow-500/20 text-white border border-yellow-500">
+                        <Badge className="flex gap-2 text-center bg-yellow-500/20 hover:bg-yellow-500/20 text-white border border-yellow-500">
                            Bus will arrive at 8:30AM and leave at 9:00 AM from <br /> Mangalore Central Railway Station
                         </Badge>
                         <Button onClick={async () => {await submitResumeAndGithub()}}>
