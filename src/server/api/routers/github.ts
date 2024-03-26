@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { Octokit } from "octokit";
 import { env } from "~/env";
 import { z } from "zod";
-import { createReadmeContent, tName2GHRName, tName2GHTName } from "~/utils/github";
+import { tName2GHRName, tName2GHTName } from "~/utils/github";
 
 const ORGANIZATION_NAME = env.ORGANIZATION_NAME
 const GITHUB_PERSONAL_ACCESS_TOKEN = env.GITHUB_PERSONAL_ACCESS_TOKEN
@@ -53,95 +53,94 @@ export const githubRouter = createTRPCRouter({
         }
       })
 
+      let count = 0;
+
       for (const team of teams) {
         const githubTeamName = tName2GHTName(team.name)
         const githubRepoName = tName2GHRName(team.name)
 
-        const githubTeam = await octokit.rest.teams.create({
-          org: ORGANIZATION_NAME,
-          name: githubTeamName,
-        });
-        console.log(`Github team created : ${githubTeam.data.name}`)
+        try {
+          const githubTeam = await octokit.rest.teams.create({
+            org: ORGANIZATION_NAME,
+            name: githubTeamName,
+          });
+          console.log(`Github team created : ${githubTeam.data.name}`)
 
-        const { id: githubTeamId, slug: githubTeamSlug } = githubTeam.data
+          const { id: githubTeamId, slug: githubTeamSlug } = githubTeam.data
 
-        const githubRepo = await octokit.request('POST /orgs/{org}/repos', {
-          org: ORGANIZATION_NAME,
-          name: githubRepoName,
-          description: `Hackfest Repository - ${githubTeamName}`,
-          private: true,
-          team_id: githubTeamId,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
-        console.log(`Github repo created : ${githubRepo.data.name}`)
-
-        const { id: githubRepoId } = githubRepo.data
-
-        //TODO: Is this necessary
-        await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-          owner: ORGANIZATION_NAME,
-          repo: githubRepoName,
-          path: 'README.md',
-          message: 'Initial Commit',
-          content: createReadmeContent(githubTeamName),
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
-
-        const githubInDB = await ctx.db.github.upsert({
-          create: {
-            githubRepoId: [githubRepoId],
-            githubRepoName: [githubRepoName],
-            githubTeamId: githubTeamId,
-            githubTeamSlug: githubTeamSlug,
-            team: {
-              connect: {
-                id: team.id
-              }
-            }
-          },
-          update: {
-            githubRepoId: {
-              push: githubRepoId
-            },
-            githubRepoName: {
-              push: githubRepoName
-            },
-            githubTeamId: githubTeamId,
-            githubTeamSlug: githubTeamSlug,
-          },
-          where: {
-            teamId: team.id
-          }
-        })
-        console.log(githubInDB)
-
-        for (const member of team.members) {
-          const githubUsername = member.github
-          if (!githubUsername)
-            continue
-
-          const githubUser = await octokit.request('GET /users/{username}', {
-            username: githubUsername,
+          const githubRepo = await octokit.request('POST /orgs/{org}/repos', {
+            org: ORGANIZATION_NAME,
+            name: githubRepoName,
+            description: `Hackfest Repository - ${githubTeamName}`,
+            private: true,
+            team_id: githubTeamId,
             headers: {
               'X-GitHub-Api-Version': '2022-11-28'
             }
           })
+          console.log(`Github repo created : ${githubRepo.data.name}`)
 
-          const invitation = await octokit.request("POST /orgs/{org}/invitations", {
-            org: ORGANIZATION_NAME,
-            invitee_id: githubUser.data.id,
-            role: "direct_member",
-            team_ids: [githubTeamId],
-            headers: {
-              "X-GitHub-Api-Version": "2022-11-28",
+          const { id: githubRepoId } = githubRepo.data
+
+          const githubInDB = await ctx.db.github.upsert({
+            create: {
+              githubRepoId: [githubRepoId],
+              githubRepoName: [githubRepoName],
+              githubTeamId: githubTeamId,
+              githubTeamSlug: githubTeamSlug,
+              team: {
+                connect: {
+                  id: team.id
+                }
+              }
             },
-          });
-          console.log(`Team invitation sent : ${invitation.data.email}`)
-        }
+            update: {
+              githubRepoId: {
+                push: githubRepoId
+              },
+              githubRepoName: {
+                push: githubRepoName
+              },
+              githubTeamId: githubTeamId,
+              githubTeamSlug: githubTeamSlug,
+            },
+            where: {
+              teamId: team.id
+            }
+          })
+          console.log(githubInDB)
+
+          for (const member of team.members) {
+            const githubUsername = member.github
+            if (!githubUsername)
+              continue
+
+            try {
+              const githubUser = await octokit.request('GET /users/{username}', {
+                username: githubUsername,
+                headers: {
+                  'X-GitHub-Api-Version': '2022-11-28'
+                }
+              })
+
+              const invitation = await octokit.request("POST /orgs/{org}/invitations", {
+                org: ORGANIZATION_NAME,
+                invitee_id: githubUser.data.id,
+                role: "direct_member",
+                team_ids: [githubTeamId],
+                headers: {
+                  "X-GitHub-Api-Version": "2022-11-28",
+                },
+              });
+              console.log(`Team invitation sent : ${invitation.data.email}`)
+              count++;
+            } catch { continue }
+          }
+        } catch { continue }
+      }
+
+      if (count === 0) {
+        throw new TRPCClientError("No invitations sent")
       }
     }),
 
@@ -523,7 +522,6 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      const githubTeamName = tName2GHTName(githubTeam.team.name)
       const githubRepoName = tName2GHRName(githubTeam.team.name, githubTeam.githubRepoId.length + 1)
 
       const githubRepo = await octokit.request('POST /orgs/{org}/repos', {
@@ -539,18 +537,6 @@ export const githubRouter = createTRPCRouter({
       console.log(`Github repo created : ${githubRepo.data.name}`)
 
       const { id: githubRepoId } = githubRepo.data
-
-      //TODO: Is this necessary
-      await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-        owner: ORGANIZATION_NAME,
-        repo: githubRepoName,
-        path: 'README.md',
-        message: 'Initial Commit',
-        content: btoa(`# ${githubTeamName}`),
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      })
 
       const githubInDB = await ctx.db.github.update({
         where: {
@@ -568,7 +554,6 @@ export const githubRouter = createTRPCRouter({
       console.log(githubInDB)
     }),
 
-  // TODO: is this necessary
   getNumberOfRepos: protectedProcedure
     .input(z.object({
       teamId: z.string()
