@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { Octokit } from "octokit";
 import { env } from "~/env";
 import { z } from "zod";
+import { createReadmeContent, tName2GHRName, tName2GHTName } from "~/utils/github";
 
 const ORGANIZATION_NAME = env.ORGANIZATION_NAME
 const GITHUB_PERSONAL_ACCESS_TOKEN = env.GITHUB_PERSONAL_ACCESS_TOKEN
@@ -53,8 +54,8 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const team of teams) {
-        const githubTeamName = `Team - ${team.name}`
-        const githubRepoName = `Team Repo - ${team.name}`
+        const githubTeamName = tName2GHTName(team.name)
+        const githubRepoName = tName2GHRName(team.name)
 
         const githubTeam = await octokit.rest.teams.create({
           org: ORGANIZATION_NAME,
@@ -78,12 +79,13 @@ export const githubRouter = createTRPCRouter({
 
         const { id: githubRepoId } = githubRepo.data
 
+        //TODO: Is this necessary
         await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
           owner: ORGANIZATION_NAME,
           repo: githubRepoName,
           path: 'README.md',
           message: 'Initial Commit',
-          content: btoa(`# ${githubTeamName}`),
+          content: createReadmeContent(githubTeamName),
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
           }
@@ -91,8 +93,8 @@ export const githubRouter = createTRPCRouter({
 
         const githubInDB = await ctx.db.github.upsert({
           create: {
-            githubRepoId: githubRepoId,
-            githubRepoName: githubRepoName,
+            githubRepoId: [githubRepoId],
+            githubRepoName: [githubRepoName],
             githubTeamId: githubTeamId,
             githubTeamSlug: githubTeamSlug,
             team: {
@@ -102,8 +104,12 @@ export const githubRouter = createTRPCRouter({
             }
           },
           update: {
-            githubRepoId: githubRepoId,
-            githubRepoName: githubRepoName,
+            githubRepoId: {
+              push: githubRepoId
+            },
+            githubRepoName: {
+              push: githubRepoName
+            },
             githubTeamId: githubTeamId,
             githubTeamSlug: githubTeamSlug,
           },
@@ -208,16 +214,19 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
-        org: ORGANIZATION_NAME,
-        team_slug: githubTeam.githubTeamSlug,
-        owner: ORGANIZATION_NAME,
-        repo: githubTeam.githubRepoName,
-        permission: 'maintain',
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      })
+      for (let repoName of githubTeam.githubRepoName) {
+        await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+          org: ORGANIZATION_NAME,
+          team_slug: githubTeam.githubTeamSlug,
+          owner: ORGANIZATION_NAME,
+          repo: repoName,
+          permission: 'maintain',
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+      }
+
       console.log(`Enabled commit for team : ${githubTeam.team.name} with team id : ${input.teamId}`)
     }),
 
@@ -249,16 +258,19 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
-        org: ORGANIZATION_NAME,
-        team_slug: githubTeam.githubTeamSlug,
-        owner: ORGANIZATION_NAME,
-        repo: githubTeam.githubRepoName,
-        permission: 'pull',
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      })
+      for (let repoName of githubTeam.githubRepoName) {
+        await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+          org: ORGANIZATION_NAME,
+          team_slug: githubTeam.githubTeamSlug,
+          owner: ORGANIZATION_NAME,
+          repo: repoName,
+          permission: 'pull',
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+      }
+
       console.log(`Disabled commit for team : ${githubTeam.team.name} with team id : ${input.teamId}`)
     }
     ),
@@ -281,16 +293,19 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
-          org: ORGANIZATION_NAME,
-          team_slug: githubTeam.githubTeamSlug,
-          owner: ORGANIZATION_NAME,
-          repo: githubTeam.githubRepoName,
-          permission: 'maintain',
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
+        for (let repoName of githubTeam.githubRepoName) {
+          await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+            org: ORGANIZATION_NAME,
+            team_slug: githubTeam.githubTeamSlug,
+            owner: ORGANIZATION_NAME,
+            repo: repoName,
+            permission: 'maintain',
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+        }
+
         console.log(`Enabled commit for team : ${githubTeam.team.name}`)
       }
     }),
@@ -313,16 +328,19 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
-          org: ORGANIZATION_NAME,
-          team_slug: githubTeam.githubTeamSlug,
-          owner: ORGANIZATION_NAME,
-          repo: githubTeam.githubRepoName,
-          permission: 'pull',
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
+        for (let repoName of githubTeam.githubRepoName) {
+          await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+            org: ORGANIZATION_NAME,
+            team_slug: githubTeam.githubTeamSlug,
+            owner: ORGANIZATION_NAME,
+            repo: repoName,
+            permission: 'pull',
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+        }
+
         console.log(`Disabled commit for team : ${githubTeam.team.name}`)
       }
     }),
@@ -355,14 +373,17 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      await octokit.request('PATCH /repos/{owner}/{repo}', {
-        owner: ORGANIZATION_NAME,
-        repo: githubTeam.githubRepoName,
-        private: true,
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      })
+      for (let repoName of githubTeam.githubRepoName) {
+        await octokit.request('PATCH /repos/{owner}/{repo}', {
+          owner: ORGANIZATION_NAME,
+          repo: repoName,
+          private: true,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+      }
+
       console.log(`Made repo private for team : ${githubTeam.team.name}`)
     }),
 
@@ -394,14 +415,17 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      await octokit.request('PATCH /repos/{owner}/{repo}', {
-        owner: ORGANIZATION_NAME,
-        repo: githubTeam.githubRepoName,
-        private: false,
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      })
+      for (let repoName of githubTeam.githubRepoName) {
+        await octokit.request('PATCH /repos/{owner}/{repo}', {
+          owner: ORGANIZATION_NAME,
+          repo: repoName,
+          private: false,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+      }
+
       console.log(`Made repo public for team : ${githubTeam.team.name}`)
     }),
 
@@ -423,14 +447,17 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        await octokit.request('PATCH /repos/{owner}/{repo}', {
-          owner: ORGANIZATION_NAME,
-          repo: githubTeam.githubRepoName,
-          private: true,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
+        for (let repoName of githubTeam.githubRepoName) {
+          await octokit.request('PATCH /repos/{owner}/{repo}', {
+            owner: ORGANIZATION_NAME,
+            repo: repoName,
+            private: true,
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+        }
+
         console.log(`Made repo private for team : ${githubTeam.team.name}`)
       }
     }),
@@ -453,15 +480,119 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        await octokit.request('PATCH /repos/{owner}/{repo}', {
-          owner: ORGANIZATION_NAME,
-          repo: githubTeam.githubRepoName,
-          private: false,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
+        for (let repoName of githubTeam.githubRepoName) {
+          await octokit.request('PATCH /repos/{owner}/{repo}', {
+            owner: ORGANIZATION_NAME,
+            repo: repoName,
+            private: false,
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+        }
+
         console.log(`Made repo public for team : ${githubTeam.team.name}`)
       }
     }),
+
+  addRepoToTeam: protectedProcedure
+    .input(z.object({
+      teamId: z.string()
+    }))
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to make repo public")
+      }
+
+      const githubTeam = await ctx.db.github.findUnique({
+        where: {
+          teamId: input.teamId
+        },
+        include: {
+          team: {
+            select: {
+              name: true
+            }
+          }
+        }
+      })
+
+      if (!githubTeam) {
+        console.log(`Could not find team with id : ${input.teamId}`)
+        throw new TRPCClientError("Could not find team")
+      }
+
+      const githubTeamName = tName2GHTName(githubTeam.team.name)
+      const githubRepoName = tName2GHRName(githubTeam.team.name, githubTeam.githubRepoId.length + 1)
+
+      const githubRepo = await octokit.request('POST /orgs/{org}/repos', {
+        org: ORGANIZATION_NAME,
+        name: githubRepoName,
+        description: `Hackfest Repository - ${githubTeam.team.name}`,
+        private: true,
+        team_id: githubTeam.githubTeamId,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+      console.log(`Github repo created : ${githubRepo.data.name}`)
+
+      const { id: githubRepoId } = githubRepo.data
+
+      //TODO: Is this necessary
+      await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+        owner: ORGANIZATION_NAME,
+        repo: githubRepoName,
+        path: 'README.md',
+        message: 'Initial Commit',
+        content: btoa(`# ${githubTeamName}`),
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+
+      const githubInDB = await ctx.db.github.update({
+        where: {
+          id: githubTeam.id
+        },
+        data: {
+          githubRepoId: {
+            push: githubRepoId
+          },
+          githubRepoName: {
+            push: githubRepoName
+          }
+        }
+      })
+      console.log(githubInDB)
+    }),
+
+  // TODO: is this necessary
+  getNumberOfRepos: protectedProcedure
+    .input(z.object({
+      teamId: z.string()
+    }))
+    .query(async ({ input, ctx }) => {
+      if (ctx.session.user.role !== "ADMIN"
+        && ctx.session.user.role !== "ORGANISER") {
+        throw new TRPCClientError("Unauthorized to get number of repos")
+      }
+
+      const githubTeams = await ctx.db.github.findUnique({
+        where: {
+          teamId: input.teamId
+        },
+        select: {
+          githubRepoId: true
+        }
+      })
+
+      if (!githubTeams) {
+        console.log(`Could not find team with id : ${input.teamId}`)
+        throw new TRPCClientError("Could not find team")
+      }
+
+      return githubTeams.githubRepoId.length
+    })
 });

@@ -21,17 +21,26 @@ import {
   CommandItem,
 } from "../ui/command";
 import { Input } from "../ui/input";
+import Spinner from "../spinner";
+import { RxDash } from "react-icons/rx";
 
 const GithubSheet = () => {
   const [teamId, setTeamId] = useState<string>("");
   const [userTeamId, setUserTeamId] = useState<string>("");
-  const [teamQuery, setTeamQuery] = useState("");
-  const [userTeamQuery, setUserTeamQuery] = useState("");
-  const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
-  const [userTeamDropdownOpen, setUserTeamDropdownOpen] = useState(false);
-  const [githubUsername, setGithubUsername] = useState("");
+  const [teamQuery, setTeamQuery] = useState<string>("");
+  const [userTeamQuery, setUserTeamQuery] = useState<string>("");
+  const [teamDropdownOpen, setTeamDropdownOpen] = useState<boolean>(false);
+  const [userTeamDropdownOpen, setUserTeamDropdownOpen] =
+    useState<boolean>(false);
+  const [githubUsername, setGithubUsername] = useState<string>("");
 
   const { data: githubTeams } = api.github.getAllGithubTeams.useQuery();
+
+  const {
+    data: repoCount,
+    refetch: refetchRepoCount,
+    isLoading: repoCountLoading,
+  } = api.github.getNumberOfRepos.useQuery({ teamId: teamId });
 
   const sendInvitation = api.github.sendInvitation.useMutation({
     onSuccess: () => {
@@ -143,6 +152,17 @@ const GithubSheet = () => {
     },
   });
 
+  const addRepoToTeam = api.github.addRepoToTeam.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Successfully added repo to team");
+    },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -230,7 +250,7 @@ const GithubSheet = () => {
               <h3 className="text-xl font-bold text-white">
                 Actions for particular team
               </h3>
-              <div className="grid grid-cols-2 grid-rows-5 items-center justify-center gap-1 px-3 md:grid-cols-3 md:grid-rows-3 md:gap-3">
+              <div className="grid grid-cols-2 grid-rows-6 items-center justify-center gap-1 px-3 md:grid-cols-3 md:grid-rows-4 md:gap-3">
                 <div className="col-span-2 flex items-center justify-center md:col-span-3">
                   <Popover
                     open={teamDropdownOpen}
@@ -272,6 +292,7 @@ const GithubSheet = () => {
                                     ? ""
                                     : githubTeam.teamId,
                                 );
+                                refetchRepoCount();
                                 setTeamDropdownOpen(false);
                               }}
                             >
@@ -290,6 +311,33 @@ const GithubSheet = () => {
                     </PopoverContent>
                   </Popover>
                 </div>
+                <div>Repo Count</div>
+                <div>
+                  {teamId ? (
+                    !repoCountLoading ? (
+                      repoCount
+                    ) : (
+                      <Spinner size={"small"} />
+                    )
+                  ) : (
+                    <RxDash />
+                  )}
+                </div>
+                <Button
+                  className="col-span-2 md:col-span-1"
+                  onClick={() => {
+                    if (repoCountLoading) {
+                      toast.warning("Please wait till repo count is displayed");
+                    } else {
+                      toast.loading("Adding new repo to team");
+                      addRepoToTeam.mutate({
+                        teamId: teamId,
+                      });
+                    }
+                  }}
+                >
+                  Add Repo
+                </Button>
                 <h3 className="col-span-2 font-semibold md:col-span-1">
                   Commits
                 </h3>
