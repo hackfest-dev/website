@@ -213,7 +213,7 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      for (let repoName of githubTeam.githubRepoName) {
+      for (const repoName of githubTeam.githubRepoName) {
         await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
           org: ORGANIZATION_NAME,
           team_slug: githubTeam.githubTeamSlug,
@@ -257,7 +257,7 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      for (let repoName of githubTeam.githubRepoName) {
+      for (const repoName of githubTeam.githubRepoName) {
         await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
           org: ORGANIZATION_NAME,
           team_slug: githubTeam.githubTeamSlug,
@@ -292,7 +292,7 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        for (let repoName of githubTeam.githubRepoName) {
+        for (const repoName of githubTeam.githubRepoName) {
           await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
             org: ORGANIZATION_NAME,
             team_slug: githubTeam.githubTeamSlug,
@@ -327,7 +327,7 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        for (let repoName of githubTeam.githubRepoName) {
+        for (const repoName of githubTeam.githubRepoName) {
           await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
             org: ORGANIZATION_NAME,
             team_slug: githubTeam.githubTeamSlug,
@@ -372,7 +372,7 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      for (let repoName of githubTeam.githubRepoName) {
+      for (const repoName of githubTeam.githubRepoName) {
         await octokit.request('PATCH /repos/{owner}/{repo}', {
           owner: ORGANIZATION_NAME,
           repo: repoName,
@@ -414,7 +414,7 @@ export const githubRouter = createTRPCRouter({
         throw new TRPCClientError("Could not find team")
       }
 
-      for (let repoName of githubTeam.githubRepoName) {
+      for (const repoName of githubTeam.githubRepoName) {
         await octokit.request('PATCH /repos/{owner}/{repo}', {
           owner: ORGANIZATION_NAME,
           repo: repoName,
@@ -446,7 +446,7 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        for (let repoName of githubTeam.githubRepoName) {
+        for (const repoName of githubTeam.githubRepoName) {
           await octokit.request('PATCH /repos/{owner}/{repo}', {
             owner: ORGANIZATION_NAME,
             repo: repoName,
@@ -479,7 +479,7 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        for (let repoName of githubTeam.githubRepoName) {
+        for (const repoName of githubTeam.githubRepoName) {
           await octokit.request('PATCH /repos/{owner}/{repo}', {
             owner: ORGANIZATION_NAME,
             repo: repoName,

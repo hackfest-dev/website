@@ -281,7 +281,7 @@ const GithubSheet = () => {
                             <CommandItem
                               key={githubTeam.id}
                               value={githubTeam.team.name}
-                              onSelect={(currentValue) => {
+                              onSelect={async (currentValue) => {
                                 setTeamQuery(
                                   currentValue === teamQuery
                                     ? ""
@@ -292,7 +292,7 @@ const GithubSheet = () => {
                                     ? ""
                                     : githubTeam.teamId,
                                 );
-                                refetchRepoCount();
+                                await refetchRepoCount();
                                 setTeamDropdownOpen(false);
                               }}
                             >
