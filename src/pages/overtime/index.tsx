@@ -35,6 +35,9 @@ import {
 } from "~/components/ui/tooltip";
 import { api } from "~/utils/api";
 import NotFound from "../404";
+import { AiOutlineCopy } from "react-icons/ai";
+import Image from "next/image";
+import { Crown } from "lucide-react";
 
 const GamingEvent: NextPage = () => {
   const { data: session, status: sessionStatus } = useSession();
@@ -120,7 +123,6 @@ const GamingEvent: NextPage = () => {
         <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[url('/images/noise.svg'),linear-gradient(180deg,#060e3c_0%,#052d4f_30%,#001933_100%)] bg-repeat">
           <div>
             <Spinner size={"large"} />
-            <h3 className="mt-5 text-3xl font-semibold">Reloading gun...</h3>
           </div>
         </div>
       </Layout>
@@ -131,13 +133,16 @@ const GamingEvent: NextPage = () => {
   return (
     <Layout>
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[url('/images/noise.svg'),linear-gradient(180deg,#060e3c_0%,#052d4f_30%,#001933_100%)] bg-repeat p-4 pt-20">
-        <h1 className="text-center text-6xl font-bold">Overtime</h1>
+        <h1 className="text-center text-6xl font-bold">OVERTIME</h1>
+        <h3 className="font-semibold italic">
+          Exclusively for NMAMIT students
+        </h3>
         <div className="flex flex-row items-center justify-center gap-4">
           <Modal
             title="Valorant Rules"
             buttonContent="Valorant Rules"
             customizable
-            className="max-h-[75vh] overflow-scroll bg-gray-600 text-white"
+            className="max-h-[60vh] overflow-scroll bg-slate-950 text-white"
           >
             <ValoRules />
           </Modal>
@@ -145,7 +150,7 @@ const GamingEvent: NextPage = () => {
             title="BGMI Rules"
             buttonContent="BGMI Rules"
             customizable
-            className="max-h-[75vh] overflow-scroll bg-gray-600 text-white"
+            className="max-h-[60vh] overflow-scroll bg-slate-950 text-white"
           >
             <BGMIRules />
           </Modal>
@@ -159,91 +164,126 @@ const GamingEvent: NextPage = () => {
               <CardFooter>Loading...</CardFooter>
             </Card>
           ) : userGameTeam ? (
-            <Card className="flex min-h-96 w-96 flex-col items-center justify-center">
-              <CardHeader>
-                <CardTitle>Team Details</CardTitle>
-              </CardHeader>
-              <CardContent className="grid grid-cols-2 items-center justify-center gap-3">
-                <div>Team Name</div>
-                <div>{userGameTeam.name}</div>
-                <div>Team Id</div>
-                <TooltipProvider delayDuration={0}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        size={"sm"}
+            <Card className="w-full">
+              <CardContent>
+                <div className="m-auto my-4 flex flex-col justify-evenly gap-3 p-0 pt-4 sm:my-auto md:p-4">
+                  <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-0">
+                    <h1 className="flex items-center justify-center gap-5 text-center text-2xl font-bold uppercase">
+                      {userGameTeam.name}
+                    </h1>
+                    <div className="flex gap-2">
+                      <Badge className="border border-red-500 bg-red-500/20 text-white hover:bg-red-500/20">
+                        {userGameTeam.game}
+                      </Badge>
+                      <Badge
                         onClick={async () => {
                           await navigator.clipboard.writeText(userGameTeam.id);
                           toast.success("Copied to clipboard");
                         }}
+                        className="flex cursor-pointer items-center justify-evenly gap-2 rounded-full border px-2 py-1 text-sm transition-colors duration-300 hover:border-white"
                       >
-                        Copy
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>{userGameTeam.id}</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <div>Playing</div>
-                <div>{userGameTeam.game}</div>
-                <div className="col-span-2 text-lg font-semibold">Members</div>
-                <div className="col-span-2 grid grid-cols-2 items-center justify-center gap-3 rounded-md border border-white p-3">
-                  {userGameTeam.members.map((member, idx) => {
-                    return (
-                      <>
-                        <div key={idx}>{member.name}</div>
-                        <Avatar>
-                          {member.image && <AvatarImage src={member.image} />}
-                          <AvatarFallback>PFP</AvatarFallback>
-                        </Avatar>
-                      </>
-                    );
-                  })}
-                </div>
-                {!userGameTeam.isConfirmed && (
-                  <div className="col-span-2 text-red-500">
-                    Note: Once confirmed team cannot be edited
+                        Copy Team ID
+                        <AiOutlineCopy
+                          size={20}
+                          className="cursor-pointer hover:text-gray-400"
+                        />
+                      </Badge>
+                    </div>
                   </div>
-                )}
-                {session.user.isGameLeader ? (
-                  userGameTeam.isConfirmed ? (
-                    <Badge className="bg-green-600 text-white">
-                      Team Confirmed
+
+                  <div className="w-full">
+                    {userGameTeam.members.map((member) => {
+                      return (
+                        <div
+                          key={member.id}
+                          className="mx-2 mt-5 flex items-center rounded-xl border p-5 md:mx-0"
+                        >
+                          <div className="md:text-md flex w-full flex-col items-center justify-between gap-3 text-sm lg:flex-row lg:gap-0">
+                            <div className="relative">
+                              <Image
+                                src={member.image!}
+                                alt="Profile image"
+                                width={50}
+                                height={50}
+                                className="rounded-xl"
+                              />
+                              <div className="absolute -top-3 right-0 h-5 w-5 rotate-12">
+                                {member.isGameLeader && (
+                                  <Crown color="yellow" />
+                                )}
+                              </div>
+                            </div>
+                            <div className="overflow-hidden truncate text-center">
+                              <p className="overflow-hidden truncate font-bold">
+                                {member.name}
+                              </p>
+                            </div>
+                            <div className="flex flex-col items-center justify-center gap-1">
+                              <p className="font-bold">{member.phone}</p>
+                              <Badge>
+                                {member.isGameLeader ? "Leader" : "Member"}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }) || "Not Available"}
+                  </div>
+                  {!userGameTeam.isConfirmed ? (
+                    <Badge className="flex justify-center border border-amber-500 bg-amber-500/20 py-2 text-white hover:bg-amber-500/20">
+                      Once confirmed team cannot be edited
                     </Badge>
                   ) : (
-                    <>
+                    <Badge className="self-center border bg-green-600 text-white hover:bg-green-600">
+                      Team Confirmed
+                    </Badge>
+                  )}
+                  <div className="flex flex-row-reverse justify-between">
+                    {session.user.isGameLeader ? (
+                      userGameTeam.isConfirmed ? (
+                        <></>
+                      ) : (
+                        <>
+                          <Button
+                            className="bg-green-600 text-white hover:scale-105 hover:bg-green-700"
+                            onClick={() => {
+                              toast.loading("Confirming team...");
+                              confirmTeam.mutate();
+                            }}
+                          >
+                            Confirm Team
+                          </Button>
+                          <Button
+                            className="hover:scale-105"
+                            variant={"destructive"}
+                            onClick={() => {
+                              toast.loading("Deleting team...");
+                              deleteTeam.mutate();
+                            }}
+                          >
+                            Delete Team
+                          </Button>
+                        </>
+                      )
+                    ) : (
                       <Button
+                        variant={"destructive"}
+                        className="hover:scale-105"
                         onClick={() => {
-                          toast.loading("Confirming team...");
-                          confirmTeam.mutate();
+                          toast.loading("Leaving team...");
+                          leaveTeam.mutate();
                         }}
                       >
-                        Confirm Team
+                        Leave Team
                       </Button>
-                      <Button
-                        onClick={() => {
-                          toast.loading("Deleting team...");
-                          deleteTeam.mutate();
-                        }}
-                      >
-                        Delete Team
-                      </Button>
-                    </>
-                  )
-                ) : (
-                  <Button
-                    onClick={() => {
-                      toast.loading("Leaving team...");
-                      leaveTeam.mutate();
-                    }}
-                  >
-                    Leave Team
-                  </Button>
-                )}
+                    )}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           ) : (
             <>
-              <Card className="flex size-96 flex-col items-center justify-center">
+              <Card className="flex size-72 flex-col items-center justify-center">
                 <CardHeader>
                   <CardTitle>Create Team</CardTitle>
                   <CardDescription>Create a team as leader</CardDescription>
@@ -272,6 +312,10 @@ const GamingEvent: NextPage = () => {
                   </Select>
                   <Button
                     onClick={() => {
+                      if (!session.user.email?.endsWith("nmamit.in")) {
+                        toast.error("Please login with your college email");
+                        return;
+                      }
                       toast.loading("Creating team...");
                       createTeam.mutate({ teamName: teamName, game: game });
                     }}
@@ -280,7 +324,7 @@ const GamingEvent: NextPage = () => {
                   </Button>
                 </CardContent>
               </Card>
-              <Card className="flex size-96 flex-col items-center justify-center">
+              <Card className="flex size-72 flex-col items-center justify-center">
                 <CardHeader>
                   <CardTitle>Join Team</CardTitle>
                   <CardDescription>Join team as member</CardDescription>
@@ -295,6 +339,10 @@ const GamingEvent: NextPage = () => {
                   />
                   <Button
                     onClick={() => {
+                      if (!session.user.email?.endsWith("nmamit.in")) {
+                        toast.error("Please login with your college email");
+                        return;
+                      }
                       toast.loading("Joining team");
                       joinTeam.mutate({ teamId });
                     }}
