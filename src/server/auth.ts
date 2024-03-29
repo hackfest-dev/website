@@ -9,7 +9,7 @@ import { type Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env";
 import { db } from "~/server/db";
-import type { GameTeam, Progress, Role } from "@prisma/client";
+import type { GameTeam, Progress, Role, TeamProgress } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -27,11 +27,13 @@ declare module "next-auth" {
             name: string;
             isComplete: boolean;
             ideaSubmission: string | undefined;
+            teamProgress : TeamProgress
           }
         | null
         | undefined;
       college: string;
       isLeader: boolean;
+      isGameLeader: boolean;
       phone: string;
       role: Role;
       profileProgress: Progress;
@@ -76,6 +78,7 @@ export const authOptions: NextAuthOptions = {
           name: dbUser?.team?.name,
           isComplete: dbUser?.team?.isComplete,
           ideaSubmission: dbUser?.team?.ideaSubmission?.pptUrl,
+          teamProgress: dbUser?.team?.teamProgress,
         };
         session.user.team = team;
       } else session.user.team = null;
@@ -84,6 +87,7 @@ export const authOptions: NextAuthOptions = {
       session.user.phone = dbUser?.phone ?? "";
       session.user.profileProgress = dbUser?.profileProgress;
       session.user.gameTeam = dbUser?.gameTeam;
+      session.user.isGameLeader = dbUser?.isGameLeader;
       
       return session;
     },

@@ -31,6 +31,10 @@ export const GamefestRouter = createTRPCRouter({
             console.log(input.teamName, input.game)
             try {
                 const user = ctx.session.user;
+                if(user.team?.teamProgress === 'SELECTED') throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "You are cannot participate in gamefest as you are selected in the main event"
+                })
                 if (user.gameTeam) throw new TRPCError({
                     code: "BAD_REQUEST",
                     message: "User already in a team"
@@ -52,7 +56,7 @@ export const GamefestRouter = createTRPCRouter({
                         id: user.id
                     },
                     data: {
-                        isLeader: true
+                        isGameLeader: true
                     }
                 })
                 await Promise.all([team, updatedUser]);
@@ -75,6 +79,10 @@ export const GamefestRouter = createTRPCRouter({
         .mutation(async ({ input, ctx }) => {
             try {
                 const user = ctx.session.user;
+                if(user.team?.teamProgress === 'SELECTED') throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "You are cannot participate in gamefest as you are selected in the main event"
+                })
                 if (user.gameTeam)
                     throw new TRPCError({
                         code: "BAD_REQUEST",
@@ -175,7 +183,7 @@ export const GamefestRouter = createTRPCRouter({
             try {
                 const user = ctx.session.user;
 
-                if (!user?.isLeader) {
+                if (!user?.isGameLeader) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
                         message: "You are not the leader of this team",
@@ -190,7 +198,7 @@ export const GamefestRouter = createTRPCRouter({
                                     teamId: user.team?.id,
                                 },
                                 data: {
-                                    isLeader: false,
+                                    isGameLeader: false,
                                 },
                             },
                         },
@@ -224,7 +232,7 @@ export const GamefestRouter = createTRPCRouter({
         .mutation(async ({ ctx, input }) => {
             try {
                 const user = ctx.session.user;
-                if (!user.isLeader) {
+                if (!user.isGameLeader) {
                     throw new TRPCError({
                         code: "FORBIDDEN",
                         message: "You are not the leader of this team",
