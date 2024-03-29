@@ -64,6 +64,9 @@ model User {
   sessions        Session[]
   college         College?   @relation(fields: [collegeId], references: [id])
   team            Team?      @relation(fields: [teamId], references: [id])
+  github          String?
+  gameTeam        GameTeam?  @relation(fields: [gameTeamId], references: [id])
+  gameTeamId      String?
 
   @@index([collegeId])
   @@index([teamId])
@@ -102,8 +105,22 @@ model Team {
   referral                 Referral?         @relation(fields: [referralId], references: [id])
   members                  User[]
   videoSubmission          VideoSubmissions?
-  paymentProof    String?
-  transactionId   String?
+  github                   Github?
+  paymentProof             String?
+  transactionId            String?
+  transportation           Boolean           @default(false)
+}
+
+model GameTeam {
+  id           String          @id @default(cuid())
+  name         String       @unique
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  teamProgress TeamProgress @default(NOT_SELECTED)
+  attended     Boolean      @default(false)
+  members      User[]
+  game        Game @default(VALORANT)
+  isConfirmed  Boolean @default(false)
 }
 
 model VideoSubmissions {
@@ -187,6 +204,16 @@ model Judges {
   scores ScoresByJudge[]
 }
 
+model Github {
+  id             Int      @id @default(autoincrement())
+  githubTeamId   Int
+  githubTeamSlug String
+  teamId         String   @unique
+  githubRepoName String[]
+  githubRepoId   Int[]
+  team           Team     @relation(fields: [teamId], references: [id])
+}
+
 enum JudgeType {
   JUDGE
   VALIDATOR
@@ -228,6 +255,11 @@ enum Progress {
   FORM_TEAM
   SUBMIT_IDEA
   COMPLETE
+}
+
+enum Game{
+  VALORANT
+  BGMI
 }
 
 enum Tracks {
@@ -298,4 +330,9 @@ enum Category {
   FOOD
   STAY
   TRAVEL
+}
+
+enum Event {
+  HACKFEST
+  GAMEFEST
 }
