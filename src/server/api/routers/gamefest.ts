@@ -6,6 +6,8 @@ export const GamefestRouter = createTRPCRouter({
     getUserTeam: protectedProcedure
         .query(async ({ ctx }) => {
             try {
+                if(!ctx.session.user.gameTeam) return null;
+
                 return await ctx.db.gameTeam.findUnique({
                     where: {
                         id: ctx.session.user.gameTeam?.id
