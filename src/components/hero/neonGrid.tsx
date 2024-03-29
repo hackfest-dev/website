@@ -99,98 +99,103 @@ const NeonGrid = () => {
     });
   };
 
-  return (
+  // return (
+  //   <>
+  //     <div className="h-full w-full bg-base-300" style={{ contain: "paint" }}>
+  //       <div style={{ perspective }}>
+  //         <div
+  //           className="relative h-screen"
+  //           style={{
+  //             transformOrigin: "center",
+  //             transform: "rotateX(18deg)",
+  //             transformStyle: "preserve-3d",
+  //           }}
+  //         >
+  //           {/* Grid container */}
+  //           <div className="relative flex -translate-y-1/3 rotate-45 flex-col items-center justify-center gap-1">
+  //             {temp.map((itm, i) => {
+  //               boxes.current[i] = [];
+  //               return (
+  //                 <>
+  //                   {/* Grid rows */}
+  //                   <div
+  //                     className={`flex gap-1 -mt-[${
+  //                       boxSize.height * Math.cos(Math.PI / 10)
+  //                     }px] items-center justify-center`}
+  //                     key={i}
+  //                   >
+  //                     {temp.map((itm, j) => {
+  //                       return (
+  //                         <>
+  //                           {/* Grid boxes */}
+  //                           <div
+  //                             onTouchStart={(e) => handleHover(e)}
+  //                             onTouchEnd={() => handleMouseLeave()}
+  //                             onMouseEnter={(e) => handleHover(e)}
+  //                             onMouseLeave={() => handleMouseLeave()}
+  //                             className="relative ease-linear"
+  //                             key={`${i}-${j}`}
+  //                             style={{
+  //                               transitionProperty: "transform, box-shadow",
+  //                               height: boxSize.height - 4,
+  //                               width: boxSize.width - 4,
+  //                               transformStyle: "preserve-3d",
+  //                               transitionDuration: "0.3s",
+  //                               perspective: "100px",
+  //                               transform: "rotate3d(1.5, -1.5, -0.25, 45deg)",
+  //                             }}
+  //                             ref={(ref) => (boxes.current[i]![j] = ref)}
+  //                           >
+  //                             {/* Top face */}
+  //                             <div
+  //                               className="absolute inset-0 border-[1px] border-white/25 bg-gray-900"
+  //                               style={{
+  //                                 transform: "scaleY(1) ",
+  //                               }}
+  //                             ></div>
+  //                             {/* Front face: this */}
+  //                             <div
+  //                               className="absolute bottom-0 h-full w-full bg-gray-900"
+  //                               style={{
+  //                                 transform: "rotateX(90deg)",
+  //                                 transformOrigin: "bottom",
+  //                               }}
+  //                             ></div>
+  //                             {/* Right face */}
+  //                             {/* <div
+  //                               className="absolute left-0 bg-gray-900 h-full w-full"
+  //                               style={{
+  //                                 transform: "rotateY(90deg) scaleY(1)",
+  //                                 transformOrigin: "left",
+  //                               }}
+  //                             ></div> */}
+  //                             {/* Left face : this */}
+  //                             <div
+  //                               className="absolute right-0 h-full w-full bg-gray-900"
+  //                               style={{
+  //                                 transform: "rotateY(-90deg) scaleY(1)",
+  //                                 transformOrigin: "right",
+  //                               }}
+  //                             ></div>
+  //                           </div>
+  //                         </>
+  //                       );
+  //                     })}
+  //                   </div>
+  //                 </>
+  //               );
+  //             })}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </>
+  return(
     <>
-      <div className="h-full w-full bg-base-300" style={{ contain: "paint" }}>
-        <div style={{ perspective }}>
-          <div
-            className="relative h-screen"
-            style={{
-              transformOrigin: "center",
-              transform: "rotateX(18deg)",
-              transformStyle: "preserve-3d",
-            }}
-          >
-            {/* Grid container */}
-            <div className="relative flex -translate-y-1/3 rotate-45 flex-col items-center justify-center gap-1">
-              {temp.map((itm, i) => {
-                boxes.current[i] = [];
-                return (
-                  <>
-                    {/* Grid rows */}
-                    <div
-                      className={`flex gap-1 -mt-[${
-                        boxSize.height * Math.cos(Math.PI / 10)
-                      }px] items-center justify-center`}
-                      key={i}
-                    >
-                      {temp.map((itm, j) => {
-                        return (
-                          <>
-                            {/* Grid boxes */}
-                            <div
-                              onTouchStart={(e) => handleHover(e)}
-                              onTouchEnd={() => handleMouseLeave()}
-                              onMouseEnter={(e) => handleHover(e)}
-                              onMouseLeave={() => handleMouseLeave()}
-                              className="relative ease-linear"
-                              key={`${i}-${j}`}
-                              style={{
-                                transitionProperty: "transform, box-shadow",
-                                height: boxSize.height - 4,
-                                width: boxSize.width - 4,
-                                transformStyle: "preserve-3d",
-                                transitionDuration: "0.3s",
-                                perspective: "100px",
-                                transform: "rotate3d(1.5, -1.5, -0.25, 45deg)",
-                              }}
-                              ref={(ref) => (boxes.current[i]![j] = ref)}
-                            >
-                              {/* Top face */}
-                              <div
-                                className="absolute inset-0 border-[1px] border-white/25 bg-gray-900"
-                                style={{
-                                  transform: "scaleY(1) ",
-                                }}
-                              ></div>
-                              {/* Front face: this */}
-                              <div
-                                className="absolute bottom-0 h-full w-full bg-gray-900"
-                                style={{
-                                  transform: "rotateX(90deg)",
-                                  transformOrigin: "bottom",
-                                }}
-                              ></div>
-                              {/* Right face */}
-                              {/* <div
-                                className="absolute left-0 bg-gray-900 h-full w-full"
-                                style={{
-                                  transform: "rotateY(90deg) scaleY(1)",
-                                  transformOrigin: "left",
-                                }}
-                              ></div> */}
-                              {/* Left face : this */}
-                              <div
-                                className="absolute right-0 h-full w-full bg-gray-900"
-                                style={{
-                                  transform: "rotateY(-90deg) scaleY(1)",
-                                  transformOrigin: "right",
-                                }}
-                              ></div>
-                            </div>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+  
+  </>
+  )
+  
 };
 
 export default NeonGrid;

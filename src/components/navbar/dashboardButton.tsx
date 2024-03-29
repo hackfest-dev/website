@@ -41,7 +41,7 @@ export default function DashboardButton({ role }: { role: Role }) {
           <PopoverTrigger asChild>
             <Button>Dashboard</Button>
           </PopoverTrigger>
-          <PopoverContent sideOffset={10}>
+          <PopoverContent sideOffset={10} className="z-50">
             <Card>
               <CardContent className="pt-6">
                 <div className="flex w-full flex-col gap-2 ">

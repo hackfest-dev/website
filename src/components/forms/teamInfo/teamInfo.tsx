@@ -28,8 +28,8 @@ import { type inferRouterOutputs } from "@trpc/server";
 import { type teamRouter } from "~/server/api/routers/team";
 import { api } from "~/utils/api";
 import { env } from "~/env";
-import FinalSubmission from "~/components/finalSubmissionModal";
-
+import FinalSubmission from "~/components/finalSubmission";
+import ResumeGithubModal from "~/components/finalSubmission/resumeGithubModal";
 
 export default function TeamInfo({
   teamdata,
@@ -102,15 +102,13 @@ export default function TeamInfo({
           <CardContent>
             <div className="m-auto my-4 flex flex-col justify-evenly p-0 pt-4 sm:my-auto md:p-4">
               <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-0">
-                <h1 className="text-center text-2xl font-bold uppercase flex gap-5 justify-center items-center">
+                <h1 className="flex items-center justify-center gap-5 text-center text-2xl font-bold uppercase">
                   {teamdata?.name ?? "Not Available"}
-                  {
-                    teamdata?.teamProgress === 'SELECTED' && (
-                      <Badge className="text-white bg-green-500/20 border border-green-500">
-                        Top 60
-                      </Badge>
-                    )
-                  }
+                  {teamdata?.teamProgress === "SELECTED" && (
+                    <Badge className="border border-green-500 bg-green-500/20 text-white">
+                      Top 60
+                    </Badge>
+                  )}
                 </h1>
                 <div
                   onClick={copyCode}
@@ -158,25 +156,39 @@ export default function TeamInfo({
                     <LogOut size={16} />
                   )}
                 </Button> */}
-                {
-                  (teamdata?.transactionId && teamdata?.paymentStatus === 'PAID') && (
-                    <Badge className="bg-green-500/20 text-white border border-green-500">
+                {teamdata?.transactionId &&
+                  teamdata?.paymentStatus === "PAID" && (
+                    <Badge className="border border-green-500 bg-green-500/20 text-white">
                       Paid
                     </Badge>
-                  )
-                }
-                {
-                  (teamdata?.transactionId && teamdata?.paymentStatus !== 'PAID') && (
-                    <Badge className="bg-amber-500/20 text-white border border-amber-500">
+                  )}
+                {teamdata?.transactionId &&
+                  teamdata?.paymentStatus !== "PAID" && (
+                    <Badge className="border border-amber-500 bg-amber-500/20 text-white">
                       Processing
                     </Badge>
-                  )
-                }
-                {
-                  teamdata?.teamProgress === 'SELECTED' && !teamdata?.transactionId && userId === teamMembers[0]?.id && (
-                    <FinalSubmission refetchTeam={refetchTeam} teamId={teamdata?.id ?? ''} teamlength={teamdata?.members?.length ?? 0}  />
-                  )
-                }
+                  )}
+                {teamdata?.teamProgress === "SELECTED" &&
+                  !teamdata?.transactionId &&
+                  userId === teamMembers[0]?.id && (
+                    <FinalSubmission
+                      refetchTeam={refetchTeam}
+                      teamId={teamdata?.id ?? ""}
+                      teamlength={teamdata?.members?.length ?? 0}
+                    />
+                  )}
+                {teamdata?.teamProgress === "SELECTED" &&
+                  teamMembers.filter(
+                    (member) => !member.resume && !member.github,
+                  ).length !== 0 && (
+                    <>
+                      <ResumeGithubModal
+                        refetchTeam={refetchTeam}
+                        teamdata={teamdata}
+                        userId={userId}
+                      />
+                    </>
+                  )}
               </div>
 
               <div className="w-full">

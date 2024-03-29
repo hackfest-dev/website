@@ -24,16 +24,17 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { Team } from "@prisma/client";
+import { IdeaSubmission, Team, TeamProgress } from "@prisma/client";
 import { Check, X } from "lucide-react";
+import Link from "next/link";
 
 interface MembersRow {
   members: { college: { name: string } }[];
 }
 
-export default function FinalParticipantsTable({
+export default function PaymentVerification({
   data,
-  dataRefecth
+  dataRefecth,
 }: {
   data:
     | inferRouterOutputs<typeof teamRouter>["getTeamsList"]
@@ -45,34 +46,22 @@ export default function FinalParticipantsTable({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const toggleAttendance = api.team.toggleAttendance.useMutation({
-    onSuccess: () => {
-      toast.dismiss("attendanceToast");
-      toast.success("Attendance Updated");
-      dataRefecth();
-    },
+
+  const verifyPayment = api.finalSubmission.verifyPaymentStatus.useMutation({
     onError: (error) => {
       toast.error(error.message);
+    },
+    onSuccess: () => {
+      dataRefecth();
+      toast.success('Verified Payment')
     }
-  });
-  async function ToggleAttendance(id: string) {
-    await toggleAttendance.mutateAsync({
-        teamId: id
-    })
-  }
-
-  if(toggleAttendance.isLoading){
-    toast.loading("Updating Attendance", {id: "attendanceToast"});
-  }
+  })
+  const verifyUser = api.user.verifyUser.useMutation();
 
   const columns: ColumnDef<
     unknown,
     inferRouterOutputs<typeof teamRouter>["getTeamsList"]
   >[] = [
-    {
-      accessorKey: "id",
-      header: "Team ID",
-    },
     {
       accessorKey: "name",
       header: "Team Name",
@@ -87,59 +76,41 @@ export default function FinalParticipantsTable({
       ),
     },
     {
-      accessorKey: "referral",
-      header: "Referral",
-      cell: (referral) => (
-        <span>
-          {referral.getValue()
-            ? `HF2024_${(
-                "00" +
-                (
-                  referral.row.original as {
-                    referral: { id: string };
-                  }
-                ).referral?.id
-              ).slice(-3)}`
-            : "No"}
-        </span>
-      ),
+      accessorKey: 'transactionId',
+      header: 'Transaction ID'
     },
     {
-      accessorKey: "paymentStatus",
-      header: "Payment Status",
-    },
-    {
-      accessorKey: '',
-      header: 'Attendance',
-      cell: async ({cell}) => {
+      accessorKey: 'paymentProof',
+      header: 'Payment Proof',
+      cell: (cell) => {
         return(
-          <>
-            <div className="flex">
-            {
-              !(cell.row.original as Team).attended ? (
-                <div className="bg-green-500 inline-block p-2 rounded-lg">
-                  <span className=" text-white cursor-pointer" onClick={async () => {
-                       await ToggleAttendance(`${(cell.row.original as Team).id}`);
-                  }} ><Check /></span>
-                </div>
-              ) : (
-                <div className="bg-red-500 inline-block p-2 rounded-lg">
-                  <span className=" text-white cursor-pointer" onClick={async () => {
-                      await ToggleAttendance(`${(cell.row.original as Team).id}`);
-                  }}>
-                  <X/>
-                </span>
-                </div>
-              )
-              
-            }
-            </div>
-          </>
+          <a href={(cell.row.original as Team).paymentProof ?? ''} target="_blank">
+          <Button>
+            Proof
+          </Button>
+          </a>
         )
       }
     },
-    
-    
+    {
+      accessorKey: '',
+      header: 'Verify',
+      cell: (cell) => {
+        return(
+          <>
+            <Button className="bg-green-500 rounded-lg p-4 text-white font-bold"
+              onClick={async () => {
+                await verifyPayment.mutateAsync({
+                  teamId: (cell.row.original as Team).id
+                })
+              }}
+            >
+              <Check />
+            </Button>
+          </>
+        )
+      }
+    }
   ];
 
   const table = useReactTable({
@@ -149,14 +120,7 @@ export default function FinalParticipantsTable({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    // onRowSelectionChange: getSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+    
   });
 
   return (
@@ -166,6 +130,7 @@ export default function FinalParticipantsTable({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
+                <TableHead>Sl. No</TableHead>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -188,6 +153,7 @@ export default function FinalParticipantsTable({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
+                  <TableCell>{parseInt(row.id) + 1}</TableCell>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(

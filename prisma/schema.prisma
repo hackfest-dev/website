@@ -90,6 +90,7 @@ model College {
 
 model Team {
   id                       String            @id @default(cuid())
+  teamNo                   Int?
   name                     String            @unique
   isComplete               Boolean           @default(false)
   createdAt                DateTime          @default(now())

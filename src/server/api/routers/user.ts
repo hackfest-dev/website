@@ -256,6 +256,7 @@ export const userRouter = createTRPCRouter({
       return await ctx.db.user.findMany({
         include: {
           college: true,
+          team: true
         },
       });
     } catch (e) {

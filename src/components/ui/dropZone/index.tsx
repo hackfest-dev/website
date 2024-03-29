@@ -136,7 +136,7 @@ export function Dropzone({
         )}
         <div className="text-center text-xs text-muted-foreground">
           {pdf
-            ? "Only .pdf is allowed less than 5MB. Convert your .ppt to .pdf before uploading."
+            ? "Only .pdf is allowed less than 2MB"
             : "Only .png, .jpg, and .jpeg files are allowed less than 2MB."}
         </div>
 

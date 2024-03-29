@@ -348,7 +348,7 @@ export const teamRouter = createTRPCRouter({
           },
         },
         orderBy: {
-          ValidatorTotalScore: "desc",
+          name: 'asc'
         },
       });
     } catch (error) {
