@@ -10,6 +10,7 @@ import { organiserRouter } from "./routers/organiser";
 import { superValidatorRouter } from "./routers/super-validator";
 import { finalSubmissionRoute } from "./routers/finalSubmission";
 import { githubRouter } from "./routers/github";
+import { GamefestRouter } from "./routers/gamefest";
 
 
 
@@ -29,7 +30,8 @@ export const appRouter = createTRPCRouter({
   organiser: organiserRouter,
   superValidator: superValidatorRouter,
   finalSubmission: finalSubmissionRoute,
-  github: githubRouter
+  github: githubRouter,
+  gamefest: GamefestRouter
 });
 
 // export type definition of API
