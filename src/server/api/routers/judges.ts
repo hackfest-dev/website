@@ -10,7 +10,20 @@ export const JudgeRouter = createTRPCRouter({
                 code:"FORBIDDEN",
                 message:"You are not authorized to perform this action"
             })
-            const teams = await ctx.db.team.findMany();
+            const teams = await ctx.db.team.findMany({
+                where : {
+                    teamNo: {
+                        not: null
+                    }
+                },
+                include: {
+                    Remarks: true,
+                    ideaSubmission: true
+                },
+                orderBy: {
+                    teamNo: 'asc'
+                }
+            });
             return teams;
         } catch (error) {
             console.log(error);
