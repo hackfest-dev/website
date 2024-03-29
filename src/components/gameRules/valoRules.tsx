@@ -3,7 +3,6 @@ import React from "react";
 const ValoRules = () => {
   return (
     <div>
-      <h2>Rules</h2>
       <ul>
         <li>Each team must consist of 5 players </li>1
         <li>

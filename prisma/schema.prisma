@@ -67,7 +67,7 @@ model User {
   github          String?
   gameTeam        GameTeam?  @relation(fields: [gameTeamId], references: [id])
   gameTeamId      String?
-  isGameLeader   Boolean    @default(false)
+  isGameLeader    Boolean    @default(false)
 
   @@index([collegeId])
   @@index([teamId])
@@ -91,7 +91,7 @@ model College {
 
 model Team {
   id                       String            @id @default(cuid())
-  teamNo                   Int?               @default(0)
+  teamNo                   Int?              @default(0)
   name                     String            @unique
   isComplete               Boolean           @default(false)
   createdAt                DateTime          @default(now())

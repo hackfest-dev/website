@@ -11,7 +11,14 @@ export const GamefestRouter = createTRPCRouter({
                         id: ctx.session.user.gameTeam?.id
                     },
                     include: {
-                        members: true
+                        members: {
+                            select: {
+                                id: true,
+                                name: true,
+                                image: true,
+                                isGameLeader: true
+                            }
+                        }
                     }
                 })
             } catch (error) {
@@ -31,7 +38,7 @@ export const GamefestRouter = createTRPCRouter({
             console.log(input.teamName, input.game)
             try {
                 const user = ctx.session.user;
-                if(user.team?.teamProgress === 'SELECTED') throw new TRPCError({
+                if (user.team?.teamProgress === 'SELECTED') throw new TRPCError({
                     code: "BAD_REQUEST",
                     message: "You are cannot participate in gamefest as you are selected in the main event"
                 })
@@ -47,7 +54,7 @@ export const GamefestRouter = createTRPCRouter({
                             connect: {
                                 id: user.id,
                             }
-                        }
+                        },
                     }
                 })
 
@@ -79,7 +86,7 @@ export const GamefestRouter = createTRPCRouter({
         .mutation(async ({ input, ctx }) => {
             try {
                 const user = ctx.session.user;
-                if(user.team?.teamProgress === 'SELECTED') throw new TRPCError({
+                if (user.team?.teamProgress === 'SELECTED') throw new TRPCError({
                     code: "BAD_REQUEST",
                     message: "You are cannot participate in gamefest as you are selected in the main event"
                 })
@@ -178,6 +185,7 @@ export const GamefestRouter = createTRPCRouter({
                 });
             }
         }),
+
     deleteTeam: protectedProcedure
         .mutation(async ({ ctx }) => {
             try {
@@ -195,7 +203,7 @@ export const GamefestRouter = createTRPCRouter({
                         members: {
                             updateMany: {
                                 where: {
-                                    teamId: user.team?.id,
+                                    teamId: user.gameTeam?.id,
                                 },
                                 data: {
                                     isGameLeader: false,
@@ -204,13 +212,13 @@ export const GamefestRouter = createTRPCRouter({
                         },
                     },
                     where: {
-                        id: user.team?.id,
+                        id: user.gameTeam?.id,
                     },
                 });
 
-                await ctx.db.team.delete({
+                await ctx.db.gameTeam.delete({
                     where: {
-                        id: user.team?.id,
+                        id: user.gameTeam?.id,
                     },
                 });
 
@@ -223,13 +231,9 @@ export const GamefestRouter = createTRPCRouter({
                 });
             }
         }),
+
     confirmTeam: protectedProcedure
-        .input(
-            z.object({
-                teamId: z.string(),
-            }),
-        )
-        .mutation(async ({ ctx, input }) => {
+        .mutation(async ({ ctx }) => {
             try {
                 const user = ctx.session.user;
                 if (!user.isGameLeader) {
@@ -240,7 +244,7 @@ export const GamefestRouter = createTRPCRouter({
                 }
                 const team = await ctx.db.gameTeam.findUnique({
                     where: {
-                        id: input.teamId,
+                        id: ctx.session.user.gameTeam?.id,
                     },
                     include: {
                         members: true,

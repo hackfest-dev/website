@@ -3,7 +3,6 @@ import React from "react";
 const BGMIRules = () => {
   return (
     <div>
-      <h2>Rules</h2>
       <ul>
         <li>Each team&apos;s roster must contain 4 players. </li>
         <li>

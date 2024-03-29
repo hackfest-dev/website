@@ -126,19 +126,25 @@ export function Modal({
   buttonContent,
   title,
   description,
+  customizable = false,
+  className,
 }: {
   title: string;
-  description: string;
+  description?: string;
   buttonContent: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
+  customizable?: boolean;
+  className?: string;
 }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">{buttonContent}</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        className={`${customizable ? className : "sm:max-w-[425px]"}`}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
