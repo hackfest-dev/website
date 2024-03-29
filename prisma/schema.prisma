@@ -110,18 +110,19 @@ model Team {
   paymentProof             String?
   transactionId            String?
   transportation           Boolean           @default(false)
+  Remarks                  Remarks[]
 }
 
 model GameTeam {
-  id           String          @id @default(cuid())
+  id           String       @id @default(cuid())
   name         String       @unique
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   teamProgress TeamProgress @default(NOT_SELECTED)
   attended     Boolean      @default(false)
   members      User[]
-  game        Game @default(VALORANT)
-  isConfirmed  Boolean @default(false)
+  game         Game         @default(VALORANT)
+  isConfirmed  Boolean      @default(false)
 }
 
 model VideoSubmissions {
@@ -197,12 +198,22 @@ model Scores {
 }
 
 model Judges {
-  track  Tracks
-  userId String          @unique
-  id     Int             @id @default(autoincrement())
-  type   JudgeType       @default(VALIDATOR)
-  User   User            @relation(fields: [userId], references: [id])
-  scores ScoresByJudge[]
+  track   Tracks
+  userId  String          @unique
+  id      Int             @id @default(autoincrement())
+  type    JudgeType       @default(VALIDATOR)
+  User    User            @relation(fields: [userId], references: [id])
+  scores  ScoresByJudge[]
+  Remarks Remarks[]
+}
+
+model Remarks {
+  id       Int    @id @default(autoincrement())
+  teamId   String
+  remarks  String
+  judge    Judges @relation(fields: [judgesId], references: [id])
+  team     Team   @relation(fields: [teamId], references: [id])
+  judgesId Int
 }
 
 model Github {
@@ -216,7 +227,9 @@ model Github {
 }
 
 enum JudgeType {
-  JUDGE
+  DAY1
+  DAY2
+  DAY3
   VALIDATOR
   SUPER_VALIDATOR
 }
@@ -258,7 +271,7 @@ enum Progress {
   COMPLETE
 }
 
-enum Game{
+enum Game {
   VALORANT
   BGMI
 }

@@ -11,6 +11,7 @@ import { superValidatorRouter } from "./routers/super-validator";
 import { finalSubmissionRoute } from "./routers/finalSubmission";
 import { githubRouter } from "./routers/github";
 import { GamefestRouter } from "./routers/gamefest";
+import { JudgeRouter } from "./routers/judges";
 
 
 
@@ -31,7 +32,8 @@ export const appRouter = createTRPCRouter({
   superValidator: superValidatorRouter,
   finalSubmission: finalSubmissionRoute,
   github: githubRouter,
-  gamefest: GamefestRouter
+  gamefest: GamefestRouter,
+  judges: JudgeRouter
 });
 
 // export type definition of API

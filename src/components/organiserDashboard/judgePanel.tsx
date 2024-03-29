@@ -63,7 +63,7 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
     defaultValues: {
       userId: "",
       track: "ALL",
-      type: "VALIDATOR",
+      type: "DAY1",
     },
   });
 
@@ -199,11 +199,15 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
                             <SelectValue placeholder={field.value} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="VALIDATOR">Validator</SelectItem>
+                          <SelectItem value="DAY1">DAY1</SelectItem>
+                          <SelectItem value="DAY2">DAY2</SelectItem>
+                          <SelectItem value="DAY3">DAY3</SelectItem>
+
+                            {/* <SelectItem value="VALIDATOR">Validator</SelectItem>
                             <SelectItem value="SUPER_VALIDATOR">
                               Super Validator
-                            </SelectItem>
-                            <SelectItem value="JUDGE">Judge</SelectItem>
+                            </SelectItem> */}
+                           
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -213,7 +217,7 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
                 }}
               ></FormField>
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="track"
                 render={({ field }) => {
@@ -225,7 +229,7 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
                           disabled={judgeType === "VALIDATOR"}
                           onValueChange={field.onChange}
                           value={
-                            judgeType !== "JUDGE"
+                            judgeType !== "SUPER_VALIDATOR" && judgeType !== "VALIDATOR" 
                               ? "ALL"
                               : form.getValues().track
                           }
@@ -255,7 +259,7 @@ const JudgePanel: FunctionComponent<Props> = ({ users }) => {
                     </FormItem>
                   );
                 }}
-              ></FormField>
+              ></FormField> */}
 
               <Button type="submit">Add Judge</Button>
             </form>

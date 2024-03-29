@@ -1,4 +1,4 @@
-import { Category, Courses, Tracks, TshirtSize } from "@prisma/client";
+import { Category, Courses, JudgeType, Tracks, TshirtSize } from "@prisma/client";
 import { X } from "lucide-react";
 import { z } from "zod";
 
@@ -145,7 +145,7 @@ const addReferralCodeZ = z.object({
 
 const addJudgeZ = z.object({
   userId: z.string(),
-  type: z.enum(["VALIDATOR", "JUDGE","SUPER_VALIDATOR"]),
+  type: z.nativeEnum(JudgeType),
   track: z.enum(['FINTECH',
   'SUSTAINABLE_DEVELOPMENT',
   'HEALTHCARE',

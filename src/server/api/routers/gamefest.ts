@@ -37,7 +37,7 @@ export const GamefestRouter = createTRPCRouter({
                     isLeader: true
                 }
             })
-            Promise.all([team, updatedUser]);
+            await Promise.all([team, updatedUser]);
     
             return team;
         } catch (error) {

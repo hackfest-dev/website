@@ -50,13 +50,14 @@ export const organiserRouter = createTRPCRouter({
               id: input.userId,
             },
             data: {
-              role: input.type,
+              role: 'JUDGE',
             },
           });
           await ctx.db.judges.create({
             data: {
               userId: input.userId,
               track: input.track,
+              type: input.type,
             },
           });
         } else {
@@ -65,7 +66,7 @@ export const organiserRouter = createTRPCRouter({
               id: input.userId,
             },
             data: {
-              role: input.type,
+              role: 'JUDGE',
             },
           });
           await ctx.db.judges.update({
