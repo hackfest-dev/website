@@ -8,9 +8,10 @@ import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { type Role } from "@prisma/client";
 import { Card, CardContent } from "../ui/card";
+import { api } from "~/utils/api";
 export default function DashboardButton({ role }: { role: Role }) {
   const [dashboards, setDashboards] = useState<string[]>([]);
-
+ 
   useEffect(() => {
     if (role) {
       if (role === "ADMIN") {
@@ -20,7 +21,6 @@ export default function DashboardButton({ role }: { role: Role }) {
           "team",
           "organiser",
           "validator",
-          "judge",
         ]);
       } else if (role === "TEAM") {
         setDashboards(["team", "attendance"]);
