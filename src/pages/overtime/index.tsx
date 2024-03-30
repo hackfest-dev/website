@@ -94,6 +94,7 @@ const GamingEvent: NextPage = () => {
   const deleteTeam = api.gamefest.deleteTeam.useMutation({
     onSuccess: async () => {
       await refetchUserGameTeam();
+      console.log("hello", userGameTeam);
       toast.dismiss();
       toast.success("Deleted team successfully");
     },
@@ -155,7 +156,7 @@ const GamingEvent: NextPage = () => {
             <BGMIRules />
           </Modal>
         </div>
-        <div className="flex flex-col items-center justify-center gap-10 md:flex-row">
+        <div className="flex flex-col items-center justify-center gap-10 md:flex-row mx-5">
           {userGameTeamIsLoading ? (
             <Card className="flex size-96 flex-col items-center justify-center">
               <CardContent className="flex flex-col items-center justify-center gap-4">
@@ -199,6 +200,7 @@ const GamingEvent: NextPage = () => {
                           className="mx-2 mt-5 flex items-center rounded-xl border p-5 md:mx-0"
                         >
                           <div className="md:text-md flex w-full flex-col items-center justify-between gap-3 text-sm lg:flex-row lg:gap-0">
+                            <div className="flex gap-3 items-center">
                             <div className="relative">
                               <Image
                                 src={member.image!}
@@ -223,6 +225,7 @@ const GamingEvent: NextPage = () => {
                               <Badge>
                                 {member.isGameLeader ? "Leader" : "Member"}
                               </Badge>
+                            </div>
                             </div>
                           </div>
                         </div>
@@ -312,6 +315,10 @@ const GamingEvent: NextPage = () => {
                   </Select>
                   <Button
                     onClick={() => {
+                      if (!teamName) {
+                        toast.error("Please enter a team name");
+                        return;
+                      }
                       if (!session.user.email?.endsWith("nmamit.in")) {
                         toast.error("Please login with your college email");
                         return;
@@ -339,6 +346,10 @@ const GamingEvent: NextPage = () => {
                   />
                   <Button
                     onClick={() => {
+                      if (!teamId) {
+                        toast.error("Please enter a valid Team ID");
+                        return;
+                      }
                       if (!session.user.email?.endsWith("nmamit.in")) {
                         toast.error("Please login with your college email");
                         return;
