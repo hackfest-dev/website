@@ -30,6 +30,31 @@ export const JudgeRouter = createTRPCRouter({
       throw new Error("Something went wrong");
     }
   }),
+  getDay: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const user = ctx.session.user;
+      if (user.role !== "JUDGE" && user.role !== "ADMIN")
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not authorized to perform this action",
+        });
+      
+      const judges = await ctx.db.judges.findFirst({
+        where:{
+          User:{
+            id:user.id
+          }
+        },
+        select:{
+          type:true,
+        }
+      })
+      return judges;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
+  }),
   addRemark: protectedProcedure
     .input(
       z.object({
