@@ -187,7 +187,7 @@ model ScoresByJudge {
   score    Scores  @relation(fields: [scoreId], references: [id])
   Team     Team    @relation(fields: [teamId], references: [id])
 
-  @@unique([teamId, userId])
+  @@unique([teamId, userId, scoreId])
 }
 
 model Scores {

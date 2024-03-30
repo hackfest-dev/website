@@ -12,6 +12,7 @@ import { finalSubmissionRoute } from "./routers/finalSubmission";
 import { githubRouter } from "./routers/github";
 import { GamefestRouter } from "./routers/gamefest";
 import { JudgeRouter } from "./routers/judges";
+import { criteraRouter } from "./routers/criteria";
 
 
 
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   team: teamRouter,
   college: collegeRouter,
+  criteria: criteraRouter,
   idea: ideaRouter,
   faq: FAQRouter,
   referrals: referralRouter,

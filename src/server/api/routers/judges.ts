@@ -19,6 +19,14 @@ export const JudgeRouter = createTRPCRouter({
         include: {
           Remarks: true,
           ideaSubmission: true,
+		  Scores: {
+			where: {
+			  userId: user.id,
+			},
+			include: {
+			  score: true,
+			},
+		  },
         },
         orderBy: {
           teamNo: "asc",
@@ -38,17 +46,17 @@ export const JudgeRouter = createTRPCRouter({
           code: "FORBIDDEN",
           message: "You are not authorized to perform this action",
         });
-      
+
       const judges = await ctx.db.judges.findFirst({
-        where:{
-          User:{
-            id:user.id
-          }
+        where: {
+          User: {
+            id: user.id,
+          },
         },
-        select:{
-          type:true,
-        }
-      })
+        select: {
+          type: true,
+        },
+      });
       return judges;
     } catch (error) {
       console.log(error);
