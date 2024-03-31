@@ -19,14 +19,14 @@ export const JudgeRouter = createTRPCRouter({
         include: {
           Remarks: true,
           ideaSubmission: true,
-		  Scores: {
-			where: {
-			  userId: user.id,
-			},
-			include: {
-			  score: true,
-			},
-		  },
+          Scores: {
+            where: {
+              userId: user.id,
+            },
+            include: {
+              score: true,
+            },
+          },
         },
         orderBy: {
           teamNo: "asc",
@@ -177,7 +177,19 @@ export const JudgeRouter = createTRPCRouter({
             message: "Not a day 2 judge!",
           });
 
+        const team = await ctx.db.team.findUnique({
+          where: {
+            id: input.teamId,
+          },
+        });
+        if (!team)
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Team not found",
+          });
+
         //Check if score already exists
+        let prevTotalScore = 0;
         const scoreExists = await ctx.db.scoresByJudge.findFirst({
           where: {
             teamId: input.teamId,
@@ -189,6 +201,24 @@ export const JudgeRouter = createTRPCRouter({
         });
 
         if (scoreExists) {
+          //Get current total score by this judge for this team
+          const scoresByjudge = await ctx.db.scoresByJudge.findMany({
+            where: {
+              teamId: input.teamId,
+              userId: user.id,
+            },
+            include: {
+              score: true,
+            },
+          });
+
+          //Calculate total score
+          let totalScore = 0;
+          scoresByjudge.forEach((score) => {
+            totalScore += parseInt(score.score.score);
+          });
+          prevTotalScore = totalScore / 4;
+
           await ctx.db.scoresByJudge.update({
             where: {
               id: scoreExists.id,
@@ -245,13 +275,15 @@ export const JudgeRouter = createTRPCRouter({
           totalScore += parseInt(score.score.score);
         });
 
+        const newTotalScore =
+          team?.JudgeTotalScore - prevTotalScore + totalScore / 4;
         //Update team score
         await ctx.db.team.update({
           where: {
             id: input.teamId,
           },
           data: {
-            JudgeTotalScore: totalScore / 4, // there are 4 judges
+            JudgeTotalScore: newTotalScore, // there are 4 judges
           },
         });
       } catch (error) {
