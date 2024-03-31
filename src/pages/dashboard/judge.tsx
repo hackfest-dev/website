@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "~/components/ui/dialog";
 
 export default function Judge() {
   const { data, status } = useSession();
@@ -133,17 +133,19 @@ export default function Judge() {
                             </button>
                           </DialogTrigger>
                           <DialogContent>
-                            <div className="p-4">
+                            <DialogHeader className="font-semibold ">Add Score</DialogHeader>
+                            {/* <DialogDescription>Add scores corresponding to each criteria</DialogDescription> */}
+                            
                               <form className="text-center text-white">
-                                <h1 className="text-white">
-                                  Team Name: {team.name}
+                                <h1 className="text-white italic font-semibold text-lg">
+                                  Team: {team.name}
                                 </h1>
-                                <table className="m-auto">
-                                  <th>Criterias</th>
-                                  <th>Score</th>
+                                <table className="flex flex-col  justify-center items-center">
+                                  {/* <th>Criterias</th>
+                                  <th>Score</th> */}
                                   {criterias?.map((criteria, key) => (
-                                    <tr key={key} className="p-4">
-                                      <td className="text-white">
+                                    <tr key={key} className="p-4 flex gap-4 items-center justify-center">
+                                      <td className="text-white text-xl font-bold">
                                         {criteria.name}
                                       </td>
                                       <td>
@@ -160,7 +162,7 @@ export default function Judge() {
                                           type="number"
                                           name="score"
                                           id="score"
-                                          className="mt-1 block w-full rounded-md border-gray-300 text-center text-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="  rounded-md h-8 w-12 border-gray-300 text-center text-gray-700 shadow-sm focus:border-black focus:ring-black sm:text-sm"
                                         />
                                       </td>
                                     </tr>
@@ -172,7 +174,7 @@ export default function Judge() {
                                                           <input type="number" name="score" id="score" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                                                       </div> */}
                               </form>
-                            </div>
+                           
                           </DialogContent>
                         </Dialog>
                       </TableCell>
