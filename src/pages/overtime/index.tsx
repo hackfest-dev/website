@@ -135,19 +135,8 @@ const GamingEvent: NextPage = () => {
   return (
     <Layout>
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[url('/images/noise.svg'),linear-gradient(180deg,#060e3c_0%,#052d4f_30%,#001933_100%)] bg-repeat p-4 pt-20">
-        <h1 className="text-center text-6xl font-bold">OVERTIME</h1>
-        <div className="flex flex-col items-center justify-center gap-1 text-center">
-          <h3 className="font-semibold italic">
-            Exclusively for NMAMIT students
-          </h3>
-          <h3 className="font-semibold italic">Prize pool: ₹20k</h3>
-          <h3 className="font-semibold italic">Venue: SMV Block</h3>
-          <h3 className="font-semibold italic">Time: TBD</h3>
-          <h3 className="font-semibold italic">Date: 6th April, 2024</h3>
-          <h3 className="font-semibold italic">
-            Registration fees: ₹100 per team member
-          </h3>
-        </div>
+        {/* <h1 className="text-center text-6xl font-bold">OVERTIME</h1> */}
+        <Image src={'/images/overtime.png'} height={300} width={300} alt="Overtime Banner" className="md:pt-0 pt-4"/>
         <div className="flex flex-row items-center justify-center gap-4">
           <Modal
             title="Valorant Rules"
@@ -157,14 +146,14 @@ const GamingEvent: NextPage = () => {
           >
             <ValoRules />
           </Modal>
-          <Modal
+          {/* <Modal
             title="BGMI Rules"
             buttonContent="BGMI Rules"
             customizable
             className="max-h-[60vh] overflow-scroll bg-slate-950 text-white"
           >
             <BGMIRules />
-          </Modal>
+          </Modal> */}
         </div>
         <div className="mx-5 flex flex-col items-center justify-center gap-10 md:flex-row">
           {userGameTeamIsLoading ? (
@@ -309,7 +298,7 @@ const GamingEvent: NextPage = () => {
                       setTeamName(e.target.value);
                     }}
                   />
-                  <Select
+                  {/* <Select
                     onValueChange={(value) => {
                       setGame(value as "VALORANT" | "BGMI");
                     }}
@@ -322,7 +311,7 @@ const GamingEvent: NextPage = () => {
                       <SelectItem value="VALORANT">Valorant</SelectItem>
                       <SelectItem value="BGMI">BGMI</SelectItem>
                     </SelectContent>
-                  </Select>
+                  </Select> */}
                   <Button
                     onClick={() => {
                       if (!teamName) {
