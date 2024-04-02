@@ -38,6 +38,7 @@ import NotFound from "../404";
 import { AiOutlineCopy } from "react-icons/ai";
 import Image from "next/image";
 import { Crown } from "lucide-react";
+import NotLoggedIn from "~/components/notLoggedIn";
 
 const GamingEvent: NextPage = () => {
   const { data: session, status: sessionStatus } = useSession();
@@ -129,15 +130,13 @@ const GamingEvent: NextPage = () => {
       </Layout>
     );
 
-  if (!session) return <NotFound />;
+  if (!session) return <NotLoggedIn />;
 
   return (
     <Layout>
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[url('/images/noise.svg'),linear-gradient(180deg,#060e3c_0%,#052d4f_30%,#001933_100%)] bg-repeat p-4 pt-20">
-        <h1 className="text-center text-6xl font-bold">OVERTIME</h1>
-        <h3 className="font-semibold italic">
-          Exclusively for NMAMIT students
-        </h3>
+        {/* <h1 className="text-center text-6xl font-bold">OVERTIME</h1> */}
+        <Image src={'/images/overtime.png'} height={300} width={300} alt="Overtime Banner" className="md:pt-0 pt-4"/>
         <div className="flex flex-row items-center justify-center gap-4">
           <Modal
             title="Valorant Rules"
@@ -147,16 +146,16 @@ const GamingEvent: NextPage = () => {
           >
             <ValoRules />
           </Modal>
-          <Modal
+          {/* <Modal
             title="BGMI Rules"
             buttonContent="BGMI Rules"
             customizable
             className="max-h-[60vh] overflow-scroll bg-slate-950 text-white"
           >
             <BGMIRules />
-          </Modal>
+          </Modal> */}
         </div>
-        <div className="flex flex-col items-center justify-center gap-10 md:flex-row mx-5">
+        <div className="mx-5 flex flex-col items-center justify-center gap-10 md:flex-row">
           {userGameTeamIsLoading ? (
             <Card className="flex size-96 flex-col items-center justify-center">
               <CardContent className="flex flex-col items-center justify-center gap-4">
@@ -200,32 +199,32 @@ const GamingEvent: NextPage = () => {
                           className="mx-2 mt-5 flex items-center rounded-xl border p-5 md:mx-0"
                         >
                           <div className="md:text-md flex w-full flex-col items-center justify-between gap-3 text-sm lg:flex-row lg:gap-0">
-                            <div className="flex gap-3 items-center">
-                            <div className="relative">
-                              <Image
-                                src={member.image!}
-                                alt="Profile image"
-                                width={50}
-                                height={50}
-                                className="rounded-xl"
-                              />
-                              <div className="absolute -top-3 right-0 h-5 w-5 rotate-12">
-                                {member.isGameLeader && (
-                                  <Crown color="yellow" />
-                                )}
+                            <div className="flex items-center gap-3">
+                              <div className="relative">
+                                <Image
+                                  src={member.image!}
+                                  alt="Profile image"
+                                  width={50}
+                                  height={50}
+                                  className="rounded-xl"
+                                />
+                                <div className="absolute -top-3 right-0 h-5 w-5 rotate-12">
+                                  {member.isGameLeader && (
+                                    <Crown color="yellow" />
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                            <div className="overflow-hidden truncate text-center">
-                              <p className="overflow-hidden truncate font-bold">
-                                {member.name}
-                              </p>
-                            </div>
-                            <div className="flex flex-col items-center justify-center gap-1">
-                              <p className="font-bold">{member.phone}</p>
-                              <Badge>
-                                {member.isGameLeader ? "Leader" : "Member"}
-                              </Badge>
-                            </div>
+                              <div className="overflow-hidden truncate text-center">
+                                <p className="overflow-hidden truncate font-bold">
+                                  {member.name}
+                                </p>
+                              </div>
+                              <div className="flex flex-col items-center justify-center gap-1">
+                                <p className="font-bold">{member.phone}</p>
+                                <Badge>
+                                  {member.isGameLeader ? "Leader" : "Member"}
+                                </Badge>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -299,7 +298,7 @@ const GamingEvent: NextPage = () => {
                       setTeamName(e.target.value);
                     }}
                   />
-                  <Select
+                  {/* <Select
                     onValueChange={(value) => {
                       setGame(value as "VALORANT" | "BGMI");
                     }}
@@ -312,7 +311,7 @@ const GamingEvent: NextPage = () => {
                       <SelectItem value="VALORANT">Valorant</SelectItem>
                       <SelectItem value="BGMI">BGMI</SelectItem>
                     </SelectContent>
-                  </Select>
+                  </Select> */}
                   <Button
                     onClick={() => {
                       if (!teamName) {
