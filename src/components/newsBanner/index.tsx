@@ -14,7 +14,7 @@ export default function NewsBanner() {
               href={"/overtime"}
               className="mr-1 underline underline-offset-4"
             >
-              Register for Gaming Event
+              Register for Overtime
             </Link>
             <span className="ml-5">◆</span>
           </div>

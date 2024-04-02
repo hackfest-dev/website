@@ -39,7 +39,15 @@ export const GamefestRouter = createTRPCRouter({
         }))
         .mutation(async ({ input, ctx }) => {
             const user = ctx.session.user;
-
+            const confirmedTeams = await ctx.db.gameTeam.findMany({
+                where: {
+                    isConfirmed: true,
+                },
+            });
+            if(confirmedTeams.length >= 16) throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: "Registrations closed."
+            })
             if (!user.email?.endsWith("nmamit.in"))
                 throw new TRPCError({
                     code: "FORBIDDEN",
@@ -282,4 +290,13 @@ export const GamefestRouter = createTRPCRouter({
 
             return updatedteam;
         }),
+
+    getTeams: protectedProcedure
+    .query(async ({ctx}) => {
+        return await ctx.db.gameTeam.findMany({
+            include: {
+                members: true
+            }
+        })
+    })
 });

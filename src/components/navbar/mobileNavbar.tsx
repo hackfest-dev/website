@@ -27,12 +27,12 @@ export const MobileNavbar = () => {
       </div>
 
       <div
-        className={`fixed top-28 mt-1 flex w-full justify-center transition-transform duration-200 ${
-          isOpen ? "z-[60] translate-y-0" : "z-0 -translate-y-[30rem]"
+        className={`fixed top-28 flex w-full justify-center transition-transform duration-200 ${
+          isOpen ? "z-[60] translate-y-0 mt-3" : "z-0 -translate-y-[30rem] -mt-1"
         } px-2 lg:hidden`}
       >
         <div
-          className={`justify-center" z-[60] mt-2 flex w-full flex-col space-y-3 rounded-xl border border-white/30 bg-white/5 bg-clip-padding py-5 backdrop-blur-lg 
+          className={`justify-center" z-[60] w-full flex flex-col space-y-3 rounded-xl border border-white/30 bg-white/5 bg-clip-padding py-5 backdrop-blur-lg 
                backdrop-filter hover:border-white/40 lg:hidden 
             `}
         >

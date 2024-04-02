@@ -106,6 +106,7 @@ const GamingEvent: NextPage = () => {
     },
   });
 
+  const getTeams = api.gamefest.getTeams.useQuery().data?.filter((item) => item.isConfirmed);
   const leaveTeam = api.gamefest.leaveTeam.useMutation({
     onSuccess: async () => {
       await refetchUserGameTeam();
@@ -131,6 +132,18 @@ const GamingEvent: NextPage = () => {
     );
 
   if (!session) return <NotLoggedIn />;
+
+  if(getTeams && getTeams.length >= 16) return(
+    <>
+      <Layout>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[url('/images/noise.svg'),linear-gradient(180deg,#060e3c_0%,#052d4f_30%,#001933_100%)] bg-repeat p-4 pt-20">
+        <div className="flex justify-center items-center w-full">
+          <h1 className="md:text-5xl text-3xl font-bold">Registrations closed</h1>
+        </div>
+      </div>
+      </Layout>
+    </>
+  )
 
   return (
     <Layout>
