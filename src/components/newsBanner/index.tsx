@@ -7,7 +7,7 @@ export default function NewsBanner() {
       className="fixed bg-[#06103d] py-2 text-sm text-white"
       pauseOnHover
     >
-      {/* {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map((item) => {
+      {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map((item) => {
         return (
           <div key={item} className="mr-5 flex">
             <Link
@@ -19,8 +19,8 @@ export default function NewsBanner() {
             <span className="ml-5">◆</span>
           </div>
         );
-      })} */}
-      {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map((item) => {
+      })}
+      {/* {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map((item) => {
         return (
           <div key={item} className="mr-5 flex">
             <Link
@@ -32,7 +32,7 @@ export default function NewsBanner() {
             <span className="ml-5">◆</span>
           </div>
         );
-      })}
+      })} */}
     </Marquee>
   );
 }
