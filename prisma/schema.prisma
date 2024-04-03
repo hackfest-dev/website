@@ -338,6 +338,11 @@ enum TeamProgress {
   NOT_SELECTED
   SEMI_SELECTED
   SELECTED
+  TOP15
+  WINNER
+  RUNNER
+  SECOND_RUNNER
+  TRACK
 }
 
 enum Category {

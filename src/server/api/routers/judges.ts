@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
+import { TeamProgress } from "@prisma/client";
 export const JudgeRouter = createTRPCRouter({
   getTeams: protectedProcedure.query(async ({ ctx }) => {
     try {
@@ -284,6 +285,107 @@ export const JudgeRouter = createTRPCRouter({
           },
           data: {
             JudgeTotalScore: newTotalScore, // there are 4 judges
+          },
+        });
+      } catch (error) {
+        console.log(error);
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST")
+          throw error;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong",
+        });
+      }
+    }),
+  moveToTop15: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        //Check if user is validator
+        const user = ctx.session.user;
+        const judge = await ctx.db.judges.findFirst({
+          where: {
+            userId: user.id,
+          },
+        });
+        if (!judge || judge?.type !== "DAY2")
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Not a day 2 judge!",
+          });
+
+        const team = await ctx.db.team.findUnique({
+          where: {
+            id: input.teamId,
+          },
+        });
+        if (!team)
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Team not found",
+          });
+
+        return await ctx.db.team.update({
+          where: {
+            id: input.teamId,
+          },
+          data: {
+            teamProgress: "TOP15",
+          },
+        });
+      } catch (error) {
+        console.log(error);
+        if (error instanceof TRPCError && error.code === "BAD_REQUEST")
+          throw error;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong",
+        });
+      }
+    }),
+  setFinal: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+		winnerType:z.enum(["WINNER","RUNNER","SECOND_RUNNER","TRACK"])
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        //Check if user is validator
+        const user = ctx.session.user;
+        const judge = await ctx.db.judges.findFirst({
+          where: {
+            userId: user.id,
+          },
+        });
+        if (!judge || judge?.type !== "DAY2")
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Not a day 2 judge!",
+          });
+
+        const team = await ctx.db.team.findUnique({
+          where: {
+            id: input.teamId,
+          },
+        });
+        if (!team)
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Team not found",
+          });
+
+        return await ctx.db.team.update({
+          where: {
+            id: input.teamId,
+          },
+          data: {
+            teamProgress: input.winnerType,
           },
         });
       } catch (error) {
