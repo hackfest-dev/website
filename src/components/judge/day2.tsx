@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import TeamRemarks from "./teamRemarks";
   
 export default function DAY2(){
     const { data, status } = useSession();
@@ -24,7 +25,6 @@ export default function DAY2(){
     const criterias = api.criteria.getCriteria.useQuery().data;
     const updateScore = api.judges.setScore.useMutation();
     const fetchedRemark = api.judges.getRemarkByJudge.useQuery();
-
     const setRemarkMutation = api.judges.addRemark.useMutation({
         onSuccess: async () => {
             await fetchedRemark.refetch();
@@ -161,20 +161,7 @@ export default function DAY2(){
                                                             </Dialog>                                                            
                                                         </div>
                                                         <div className="flex flex-col gap-4 pt-6">
-                                                            {
-                                                                api.judges.getRemarksByteam.useQuery({teamId: team.id}).data?.map((remark, index) => {
-                                                                    return(
-                                                                        <div key={index} className="bg-slate-900 p-3 rounded-xl flex flex-col gap-3">
-                                                                            <Badge className={`w-fit ${judgeDay?.type === 'DAY1' ? 'bg-blue-500' : 'bg-green-500'}`}
-                                                                            >
-                                                                                {remark.judge.type === 'DAY1' ? 'MENTOR' : 'JUDGE'}</Badge>
-                                                                            <span>
-                                                                                {remark.remarks}
-                                                                            </span>
-                                                                        </div>
-                                                                    )
-                                                                })
-                                                            }
+                                                           <TeamRemarks teamId={team.id} judgeDay={judgeDay!.type}/>
                                                         </div>
 
                                                     </div>

@@ -20,6 +20,7 @@ export default function DAY1(){
     const teamsQuery = api.judges.getTeams.useQuery();
     const judgeDay = api.judges.getDay.useQuery().data;
     const teams = teamsQuery.data;
+    
 
     const setRemarkMutation = api.judges.addRemark.useMutation({
         onSuccess: async () => {
