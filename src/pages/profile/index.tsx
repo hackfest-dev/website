@@ -40,6 +40,7 @@ export default function ProfilePage() {
           ) : (
             <TeamDetails
               userId={userInfo.data.id}
+              userIsLeader={userInfo.data.isLeader}
               teamid={userInfo.data.team.id}
               userProgress={userInfo.data.profileProgress}
               userRefetch={userInfo.refetch}
