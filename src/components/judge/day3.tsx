@@ -16,7 +16,7 @@ import { toast } from "sonner";
   
 export default function DAY3(){
     const { data, status } = useSession();
-    const teamsQuery = api.judges.getTeams.useQuery();
+    const teamsQuery = api.judges.getTop15Teams.useQuery();
     const judgeDay = api.judges.getDay.useQuery().data;
     const teams = teamsQuery.data;
     const changeProgress = api.judges.changeTeamProgress.useMutation({
@@ -55,17 +55,9 @@ export default function DAY3(){
                                                     <div className="border-r flex flex-col gap-4">
                                                         <h3 className="text-3xl">Action on Team</h3>
                                                         <div className="flex flex-col w-full justify-center items-center h-full gap-6">
-                                                            <Button className={team.teamProgress === 'TOP15' ? 'bg-green-500 text-white hover:bg-green-500' : 'bg-white text-black'}
-                                                                onClick={async () => {
-                                                                    await changeProgress.mutateAsync({
-                                                                        teamId: team.id,
-                                                                        progress: 'TOP15'
-                                                                    });
-                                                                }}
-                                                            >
-                                                                Top 15
-                                                            </Button>
+                                                            
                                                             <Button className={team.teamProgress === 'WINNER' ? 'bg-green-500 text-white hover:bg-green-500' : 'bg-white text-black'}
+                                                                
                                                                 onClick={async () => {
                                                                     await changeProgress.mutateAsync({
                                                                         teamId: team.id,
@@ -109,7 +101,7 @@ export default function DAY3(){
                                                                 onClick={async () => {
                                                                     await changeProgress.mutateAsync({
                                                                         teamId: team.id,
-                                                                        progress: 'SELECTED'
+                                                                        progress: 'TOP15'
                                                                     });
                                                                 }}
                                                             >
