@@ -259,151 +259,245 @@ export const JudgeRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      try {
-        //Check if user is validator
-        const user = ctx.session.user;
-        const judge = await ctx.db.judges.findFirst({
-          where: {
-            userId: user.id,
-          },
-        });
-        if (!judge || judge?.type !== "DAY2")
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Not a day 2 judge!",
-          });
+    //   try {
+    //     //Check if user is validator
+        // const user = ctx.session.user;
+        // const judge = await ctx.db.judges.findFirst({
+        //   where: {
+        //     userId: user.id,
+        //   },
+        // });
+        // if (!judge || judge?.type !== "DAY2")
+        //   throw new TRPCError({
+        //     code: "BAD_REQUEST",
+        //     message: "Not a day 2 judge!",
+        //   });
 
-        const team = await ctx.db.team.findUnique({
-          where: {
-            id: input.teamId,
-          },
-        });
-        if (!team)
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Team not found",
-          });
+    //     const team = await ctx.db.team.findUnique({
+    //       where: {
+    //         id: input.teamId,
+    //       },
+    //     });
+    //     if (!team)
+    //       throw new TRPCError({
+    //         code: "BAD_REQUEST",
+    //         message: "Team not found",
+    //       });
 
-        //Check if score already exists
-        let prevTotalScore = 0;
-        const scoreExists = await ctx.db.scoresByJudge.findFirst({
-          where: {
-            teamId: input.teamId,
-            judgesId: judge.id,
-            score: {
-              criteriaId: input.criteriaId,
-            },
-          },
-        });
+    //     //Check if score already exists
+    //     let prevTotalScore = 0;
+    //     const scoreExists = await ctx.db.scoresByJudge.findFirst({
+    //       where: {
+    //         teamId: input.teamId,
+    //         judgesId: judge.id,
+    //         score: {
+    //           criteriaId: input.criteriaId,
+    //         },
+    //       },
+    //     });
 
-        if (scoreExists) {
-		prevTotalScore = team.JudgeTotalScore;
-          console.log("Score exists");
-          console.log(scoreExists);
-          //Get current total score by this judge for this team
-          const scoresByjudge = await ctx.db.scoresByJudge.findMany({
-            where: {
-              teamId: input.teamId,
-              userId: user.id,
-            },
-            include: {
-              score: true,
-            },
-          });
+    //     if (scoreExists) {
+		// prevTotalScore = team.JudgeTotalScore;
+    //       console.log("Score exists");
+    //       console.log(scoreExists);
+    //       //Get current total score by this judge for this team
+    //       const scoresByjudge = await ctx.db.scoresByJudge.findMany({
+    //         where: {
+    //           teamId: input.teamId,
+    //           userId: user.id,
+    //         },
+    //         include: {
+    //           score: true,
+    //         },
+    //       });
 
-          //Calculate total score
-          let totalScore = 0;
-          scoresByjudge.forEach((score) => {
-            totalScore += parseFloat(score.score.score);
-          });
-          prevTotalScore = totalScore / 4;
-          console.log("Prev total score", prevTotalScore);
+    //       //Calculate total score
+    //       let totalScore = 0;
+    //       scoresByjudge.forEach((score) => {
+    //         totalScore += parseFloat(score.score.score);
+    //       });
+    //       prevTotalScore = totalScore / 4;
+    //       console.log("Prev total score", prevTotalScore);
 
-          await ctx.db.scoresByJudge.update({
-            where: {
-              id: scoreExists.id,
-            },
-            data: {
-              score: {
-                update: {
-                  score: input.score.toString(),
-                },
-              },
-            },
-          });
-        } else {
-          console.log("Score does not exist");
-          await ctx.db.scoresByJudge.create({
-            data: {
-              score: {
-                create: {
-                  score: input.score.toString(),
-                  criteria: {
-                    connect: {
-                      id: input.criteriaId,
-                    },
-                  },
-                },
-              },
-              Team: {
-                connect: {
-                  id: input.teamId,
-                },
-              },
-              Judges: {
-                connect: {
-                  id: judge.id,
-                },
-              },
-              userId: user.id, //Don't know why this is needed
-            },
-          });
-        }
+    //       await ctx.db.scoresByJudge.update({
+    //         where: {
+    //           id: scoreExists.id,
+    //         },
+    //         data: {
+    //           score: {
+    //             update: {
+    //               score: input.score.toString(),
+    //             },
+    //           },
+    //         },
+    //       });
+    //     } else {
+    //       console.log("Score does not exist");
+    //       await ctx.db.scoresByJudge.create({
+    //         data: {
+    //           score: {
+    //             create: {
+    //               score: input.score.toString(),
+    //               criteria: {
+    //                 connect: {
+    //                   id: input.criteriaId,
+    //                 },
+    //               },
+    //             },
+    //           },
+    //           Team: {
+    //             connect: {
+    //               id: input.teamId,
+    //             },
+    //           },
+    //           Judges: {
+    //             connect: {
+    //               id: judge.id,
+    //             },
+    //           },
+    //           userId: user.id, //Don't know why this is needed
+    //         },
+    //       });
+    //     }
 
-        //Get total score by this judge for this team
-        console.log("Updating total score for team");
-        const scoresByjudge = await ctx.db.scoresByJudge.findMany({
-          where: {
-            teamId: input.teamId,
-            userId: user.id,
-          },
-          include: {
-            score: true,
-          },
-        });
+    //     //Get total score by this judge for this team
+    //     console.log("Updating total score for team");
+    //     const scoresByjudge = await ctx.db.scoresByJudge.findMany({
+    //       where: {
+    //         teamId: input.teamId,
+    //         userId: user.id,
+    //       },
+    //       include: {
+    //         score: true,
+    //       },
+    //     });
 
-        //Calculate total score
-        let totalScore = 0;
-        scoresByjudge.forEach((score) => {
-          totalScore += parseFloat(score.score.score);
-        });
+    //     //Calculate total score
+    //     let totalScore = 0;
+    //     scoresByjudge.forEach((score) => {
+    //       totalScore += parseFloat(score.score.score);
+    //     });
 
-        console.log("Previous Score", prevTotalScore);
-        console.log("Current Score", totalScore);
+    //     console.log("Previous Score", prevTotalScore);
+    //     console.log("Current Score", totalScore);
 
-        const newTotalScore =
-          team?.JudgeTotalScore - prevTotalScore + totalScore / 4;
+    //     const newTotalScore =
+    //       team?.JudgeTotalScore - prevTotalScore + totalScore / 4;
         
-        console.log("New Score", newTotalScore);
-        //Update team score
-        const result = await ctx.db.team.update({
-          where: {
-            id: input.teamId,
+    //     console.log("New Score", newTotalScore);
+    //     //Update team score
+    //     const result = await ctx.db.team.update({
+    //       where: {
+    //         id: input.teamId,
+    //       },
+    //       data: {
+    //         JudgeTotalScore: newTotalScore, // there are 5 judges
+    //       },
+    //     });
+    //     console.log(result);
+    //   } catch (error) {
+    //     console.log(error);
+    //     if (error instanceof TRPCError && error.code === "BAD_REQUEST")
+    //       throw error;
+    //     throw new TRPCError({
+    //       code: "INTERNAL_SERVER_ERROR",
+    //       message: "Something went wrong",
+    //     });
+    //   }
+
+    const user = ctx.session.user;
+    const judge = await ctx.db.judges.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+    if (!judge || judge?.type !== "DAY2")
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Not a day 2 judge!",
+    });
+
+    const checkPreviousScore = await ctx.db.scoresByJudge.findFirst({
+      where: {
+        teamId: input.teamId,
+        judgesId: judge.id,
+        score: {
+          criteriaId: input.criteriaId,
+        },
+      }  
+    })
+    if(checkPreviousScore){
+      await ctx.db.scoresByJudge.update({
+        where: {
+          id: checkPreviousScore.id,
+        },
+        data: {
+          score: {
+            update: {
+              score: input.score.toString(),
+            },
           },
-          data: {
-            JudgeTotalScore: newTotalScore, // there are 5 judges
+        },
+      });
+    }else{
+      await ctx.db.scoresByJudge.create({
+        data: {
+          score: {
+            create: {
+              score: input.score.toString(),
+              criteria: {
+                connect: {
+                  id: input.criteriaId,
+                },
+              },
+            },
           },
-        });
-        console.log(result);
-      } catch (error) {
-        console.log(error);
-        if (error instanceof TRPCError && error.code === "BAD_REQUEST")
-          throw error;
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Something went wrong",
-        });
+          Team: {
+            connect: {
+              id: input.teamId,
+            },
+          },
+          Judges: {
+            connect: {
+              id: judge.id,
+            },
+          },
+          userId: user.id,
+        },
+      });
+    }
+    const scoresByJudges = await ctx.db.scoresByJudge.findMany({
+      where: {
+        teamId: input.teamId,
+      },
+      include: {
+        score: true,
+      },
+    })
+    console.log(scoresByJudges);
+
+    const judgeScoreMap = new Map<number, number>();
+    scoresByJudges.forEach((item, index) => {
+      if(item.judgesId){
+        const currentScore = judgeScoreMap.get(item.judgesId);
+        judgeScoreMap.set(item.judgesId, (currentScore ?? 0) + parseFloat(item.score.score));
       }
+    })
+    judgeScoreMap.forEach((value, key) => {
+      judgeScoreMap.set(key, value/4);
+    })
+    let totalScore = 0;
+    judgeScoreMap.forEach((value) => {
+      totalScore += value;
+    })
+    const team = await ctx.db.team.update({
+      where: {
+        id: input.teamId,
+      },
+      data: {
+        JudgeTotalScore: totalScore,
+      },
+    })
     }),
   changeTeamProgress: protectedProcedure
     .input(
