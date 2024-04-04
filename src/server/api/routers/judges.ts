@@ -52,7 +52,7 @@ export const JudgeRouter = createTRPCRouter({
           teamNo: {
             not: null,
           },
-          teamProgress: 'TOP15'
+          teamProgress: "TOP15",
         },
         include: {
           Remarks: true,
@@ -157,27 +157,26 @@ export const JudgeRouter = createTRPCRouter({
         throw new Error("Something went wrong");
       }
     }),
-    getRemarkByJudge: protectedProcedure
-    .query(async ({input, ctx }) => {
-      const judge = await ctx.db.judges.findFirst({
-        where: {
-          userId: ctx.session.user.id,
-        },
+  getRemarkByJudge: protectedProcedure.query(async ({ input, ctx }) => {
+    const judge = await ctx.db.judges.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    if (!judge)
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Judge not found",
       });
 
-      if (!judge)
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Judge not found",
-        });
+    const remarks = await ctx.db.remarks.findMany({
+      where: {
+        judgesId: judge.id,
+      },
+    });
 
-      const remarks = await ctx.db.remarks.findMany({
-        where: {
-          judgesId: judge.id,
-        },
-      })
-
-      return remarks;
+    return remarks;
   }),
   updateRemark: protectedProcedure
     .input(
@@ -188,29 +187,30 @@ export const JudgeRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-        if (user.role !== "JUDGE")
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You are not authorized to perform this action",
-          });
-        const remark = await ctx.db.remarks.findUnique({
-          where: {
-            id: input.remarkId,
-          }})
-        if (!remark)
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Remark not found",
-          });
-        await ctx.db.remarks.update({
-          where: {
-            id: input.remarkId,
-          },
-          data: {
-            remarks: input.remark,
-          },
+      if (user.role !== "JUDGE")
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not authorized to perform this action",
         });
-        return remark;
+      const remark = await ctx.db.remarks.findUnique({
+        where: {
+          id: input.remarkId,
+        },
+      });
+      if (!remark)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Remark not found",
+        });
+      await ctx.db.remarks.update({
+        where: {
+          id: input.remarkId,
+        },
+        data: {
+          remarks: input.remark,
+        },
+      });
+      return remark;
     }),
   getRemarksByteam: protectedProcedure
     .input(
@@ -285,7 +285,7 @@ export const JudgeRouter = createTRPCRouter({
           });
 
         //Check if score already exists
-        let prevTotalScore = 0;
+        let prevTotalScore = team.JudgeTotalScore;
         const scoreExists = await ctx.db.scoresByJudge.findFirst({
           where: {
             teamId: input.teamId,
@@ -297,6 +297,8 @@ export const JudgeRouter = createTRPCRouter({
         });
 
         if (scoreExists) {
+          console.log("Score exists");
+          console.log(scoreExists);
           //Get current total score by this judge for this team
           const scoresByjudge = await ctx.db.scoresByJudge.findMany({
             where: {
@@ -311,9 +313,10 @@ export const JudgeRouter = createTRPCRouter({
           //Calculate total score
           let totalScore = 0;
           scoresByjudge.forEach((score) => {
-            totalScore += parseInt(score.score.score);
+            totalScore += parseFloat(score.score.score);
           });
-          prevTotalScore = totalScore / 5;
+          prevTotalScore = totalScore / 4;
+          console.log("Prev total score", prevTotalScore);
 
           await ctx.db.scoresByJudge.update({
             where: {
@@ -327,7 +330,8 @@ export const JudgeRouter = createTRPCRouter({
               },
             },
           });
-        } else
+        } else {
+          console.log("Score does not exist");
           await ctx.db.scoresByJudge.create({
             data: {
               score: {
@@ -353,8 +357,10 @@ export const JudgeRouter = createTRPCRouter({
               userId: user.id, //Don't know why this is needed
             },
           });
+        }
 
         //Get total score by this judge for this team
+        console.log("Updating total score for team");
         const scoresByjudge = await ctx.db.scoresByJudge.findMany({
           where: {
             teamId: input.teamId,
@@ -368,13 +374,18 @@ export const JudgeRouter = createTRPCRouter({
         //Calculate total score
         let totalScore = 0;
         scoresByjudge.forEach((score) => {
-          totalScore += parseInt(score.score.score);
+          totalScore += parseFloat(score.score.score);
         });
 
+        console.log("Previous Score", prevTotalScore);
+        console.log("Current Score", totalScore);
+
         const newTotalScore =
-          team?.JudgeTotalScore - prevTotalScore + totalScore / 5;
+          team?.JudgeTotalScore - prevTotalScore + totalScore / 4;
+        
+        console.log("New Score", newTotalScore);
         //Update team score
-        await ctx.db.team.update({
+        const result = await ctx.db.team.update({
           where: {
             id: input.teamId,
           },
@@ -382,6 +393,7 @@ export const JudgeRouter = createTRPCRouter({
             JudgeTotalScore: newTotalScore, // there are 5 judges
           },
         });
+        console.log(result);
       } catch (error) {
         console.log(error);
         if (error instanceof TRPCError && error.code === "BAD_REQUEST")
@@ -392,37 +404,38 @@ export const JudgeRouter = createTRPCRouter({
         });
       }
     }),
-    changeTeamProgress: protectedProcedure
+  changeTeamProgress: protectedProcedure
     .input(
       z.object({
         teamId: z.string(),
-        progress: z.nativeEnum(TeamProgress)
+        progress: z.nativeEnum(TeamProgress),
       }),
-    ).mutation(async ({input,ctx}) => {
+    )
+    .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
-        if (user.role !== "JUDGE")
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You are not authorized to perform this action",
-          });
-        const team = await ctx.db.team.findUnique({
-          where: {
-            id: input.teamId,
-          },
+      if (user.role !== "JUDGE")
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not authorized to perform this action",
         });
-        if (!team)
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Team not found",
-          });
-        const updatedTeam = await ctx.db.team.update({
-          where: {
-            id: input.teamId,
-          },
-          data: {
-            teamProgress: input.progress
-          }
+      const team = await ctx.db.team.findUnique({
+        where: {
+          id: input.teamId,
+        },
+      });
+      if (!team)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Team not found",
         });
-        return updatedTeam;
+      const updatedTeam = await ctx.db.team.update({
+        where: {
+          id: input.teamId,
+        },
+        data: {
+          teamProgress: input.progress,
+        },
+      });
+      return updatedTeam;
     }),
 });

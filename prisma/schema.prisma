@@ -98,7 +98,7 @@ model Team {
   updatedAt                DateTime          @updatedAt
   referralId               Int?
   paymentStatus            PaymentStatus     @default(PENDING)
-  JudgeTotalScore		   Int               @default(0)
+  JudgeTotalScore		       Float               @default(0)
   ValidatorTotalScore      Int               @default(0)
   teamProgress             TeamProgress      @default(NOT_SELECTED)
   attended                 Boolean           @default(false)
