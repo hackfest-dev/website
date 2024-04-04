@@ -11,11 +11,13 @@ export default function TeamDetails({
   userId,
   userProgress,
   userRefetch,
+  userIsLeader,
 }: {
   teamid: string;
   userId: string;
   userProgress: Progress;
   userRefetch: () => void;
+  userIsLeader: boolean;
 }) {
   const teamdata = api.team.getTeamDetailsById.useQuery({
     teamId: teamid,
@@ -35,6 +37,7 @@ export default function TeamDetails({
         <TeamInfo
           userRefetch={userRefetch}
           userId={userId}
+          userIsLeader={userIsLeader}
           teamdata={teamdata.data}
           userProgress={userProgress}
           refetchTeam={teamdata.refetch}
