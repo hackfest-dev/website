@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
+import { TeamProgress } from "@prisma/client";
 export const JudgeRouter = createTRPCRouter({
   getTeams: protectedProcedure.query(async ({ ctx }) => {
     try {
@@ -119,13 +120,68 @@ export const JudgeRouter = createTRPCRouter({
         throw new Error("Something went wrong");
       }
     }),
+    getRemarkByJudge: protectedProcedure
+    .query(async ({input, ctx }) => {
+      const judge = await ctx.db.judges.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (!judge)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Judge not found",
+        });
+
+      const remarks = await ctx.db.remarks.findMany({
+        where: {
+          judgesId: judge.id,
+        },
+      })
+
+      return remarks;
+  }),
+  updateRemark: protectedProcedure
+    .input(
+      z.object({
+        remarkId: z.number(),
+        remark: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+        if (user.role !== "JUDGE")
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You are not authorized to perform this action",
+          });
+        const remark = await ctx.db.remarks.findUnique({
+          where: {
+            id: input.remarkId,
+          }})
+        if (!remark)
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Remark not found",
+          });
+        await ctx.db.remarks.update({
+          where: {
+            id: input.remarkId,
+          },
+          data: {
+            remarks: input.remark,
+          },
+        });
+        return remark;
+    }),
   getRemarksByteam: protectedProcedure
     .input(
       z.object({
         teamId: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .query(async ({ input, ctx }) => {
       try {
         const user = ctx.session.user;
         if (user.role !== "JUDGE")
@@ -146,6 +202,9 @@ export const JudgeRouter = createTRPCRouter({
         const remarks = await ctx.db.remarks.findMany({
           where: {
             teamId: input.teamId,
+          },
+          include: {
+            judge: true,
           },
         });
         return remarks;
@@ -217,7 +276,7 @@ export const JudgeRouter = createTRPCRouter({
           scoresByjudge.forEach((score) => {
             totalScore += parseInt(score.score.score);
           });
-          prevTotalScore = totalScore / 4;
+          prevTotalScore = totalScore / 5;
 
           await ctx.db.scoresByJudge.update({
             where: {
@@ -276,14 +335,14 @@ export const JudgeRouter = createTRPCRouter({
         });
 
         const newTotalScore =
-          team?.JudgeTotalScore - prevTotalScore + totalScore / 4;
+          team?.JudgeTotalScore - prevTotalScore + totalScore / 5;
         //Update team score
         await ctx.db.team.update({
           where: {
             id: input.teamId,
           },
           data: {
-            JudgeTotalScore: newTotalScore, // there are 4 judges
+            JudgeTotalScore: newTotalScore, // there are 5 judges
           },
         });
       } catch (error) {
@@ -295,5 +354,38 @@ export const JudgeRouter = createTRPCRouter({
           message: "Something went wrong",
         });
       }
+    }),
+    changeTeamProgress: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+        progress: z.nativeEnum(TeamProgress)
+      }),
+    ).mutation(async ({input,ctx}) => {
+      const user = ctx.session.user;
+        if (user.role !== "JUDGE")
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You are not authorized to perform this action",
+          });
+        const team = await ctx.db.team.findUnique({
+          where: {
+            id: input.teamId,
+          },
+        });
+        if (!team)
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Team not found",
+          });
+        const updatedTeam = await ctx.db.team.update({
+          where: {
+            id: input.teamId,
+          },
+          data: {
+            teamProgress: input.progress
+          }
+        });
+        return updatedTeam;
     }),
 });

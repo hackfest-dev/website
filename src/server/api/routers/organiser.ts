@@ -209,4 +209,43 @@ export const organiserRouter = createTRPCRouter({
         });
       }
     }),
+    // assignTeamNumbers: protectedProcedure.mutation(async ({ ctx }) => {
+    //   try {
+    //     if (
+    //       ctx.session.user.role !== "ORGANISER" &&
+    //       ctx.session.user.role !== "ADMIN"
+    //     ) {
+    //       throw new TRPCError({
+    //         code: "UNAUTHORIZED",
+    //         message: "You cannot perform this action",
+    //       });
+    //     }
+
+    //     const teams = await ctx.db.team.findMany({
+    //       where: {
+    //         teamProgress: 'SELECTED'
+    //       },
+    //       orderBy: {
+    //         name: 'asc'
+    //       }
+    //     })
+
+    //     for (let i = 0; i < teams.length; i++) {
+    //       await ctx.db.team.update({
+    //         where: {
+    //           id: teams[i]?.id
+    //         },
+    //         data: {
+    //           teamNo: i + 1
+    //         }
+    //       })
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //     throw new TRPCError({
+    //       code: "INTERNAL_SERVER_ERROR",
+    //       message: "Something went wrong",
+    //     });
+    //   }
+    // }),
 });
