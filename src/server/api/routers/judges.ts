@@ -39,6 +39,43 @@ export const JudgeRouter = createTRPCRouter({
       throw new Error("Something went wrong");
     }
   }),
+  getTop15Teams: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const user = ctx.session.user;
+      if (user.role !== "JUDGE" && user.role !== "ADMIN")
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not authorized to perform this action",
+        });
+      const teams = await ctx.db.team.findMany({
+        where: {
+          teamNo: {
+            not: null,
+          },
+          teamProgress: 'TOP15'
+        },
+        include: {
+          Remarks: true,
+          ideaSubmission: true,
+          Scores: {
+            where: {
+              userId: user.id,
+            },
+            include: {
+              score: true,
+            },
+          },
+        },
+        orderBy: {
+          teamNo: "asc",
+        },
+      });
+      return teams;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
+  }),
   getDay: protectedProcedure.query(async ({ ctx }) => {
     try {
       const user = ctx.session.user;
