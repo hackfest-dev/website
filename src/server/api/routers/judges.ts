@@ -285,7 +285,7 @@ export const JudgeRouter = createTRPCRouter({
           });
 
         //Check if score already exists
-        let prevTotalScore = team.JudgeTotalScore;
+        let prevTotalScore = 0;
         const scoreExists = await ctx.db.scoresByJudge.findFirst({
           where: {
             teamId: input.teamId,
@@ -297,6 +297,7 @@ export const JudgeRouter = createTRPCRouter({
         });
 
         if (scoreExists) {
+		prevTotalScore = team.JudgeTotalScore;
           console.log("Score exists");
           console.log(scoreExists);
           //Get current total score by this judge for this team
