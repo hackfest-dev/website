@@ -30,12 +30,14 @@ import { api } from "~/utils/api";
 import { env } from "~/env";
 import FinalSubmission from "~/components/finalSubmission";
 import ResumeGithubModal from "~/components/finalSubmission/resumeGithubModal";
+import AddVideoSubmission from "~/components/addVideoSubmission";
 
 export default function TeamInfo({
   teamdata,
   userId,
   userProgress,
   refetchTeam,
+  userIsLeader,
   userRefetch,
 }: {
   teamdata:
@@ -44,6 +46,7 @@ export default function TeamInfo({
     | undefined;
   userId: string;
   userProgress: Progress;
+  userIsLeader: boolean;
   refetchTeam?: () => void;
   userRefetch?: () => void;
 }) {
@@ -92,6 +95,24 @@ export default function TeamInfo({
     });
   };
 
+  function getLabNo(teamNo: number) {
+    if (teamNo >= 1 && teamNo <= 10) {
+      return 51;
+    } else if (teamNo >= 10 && teamNo <= 20) {
+      return 52;
+    } else if (teamNo >= 20 && teamNo <= 30) {
+      return 53;
+    } else if (teamNo >= 30 && teamNo <= 40) {
+      return 54;
+    } else if (teamNo >= 40 && teamNo <= 50) {
+      return 55;
+    } else if (teamNo >= 50 && teamNo <= 60) {
+      return 56;
+    } else {
+      return "N/A";
+    }
+  }
+
   return (
     <Card className="h-fit w-full">
       <CardHeader>
@@ -110,7 +131,7 @@ export default function TeamInfo({
                     </Badge>
                   )}
                 </h1>
-                <div
+                {/* <div
                   onClick={copyCode}
                   className="flex cursor-pointer items-center justify-evenly gap-2 rounded-full border px-2 py-1 text-sm transition-colors duration-300 hover:border-white"
                 >
@@ -120,7 +141,7 @@ export default function TeamInfo({
                     size={20}
                     className="cursor-pointer hover:text-gray-400"
                   />
-                </div>
+                </div> */}
                 {/* <Button
                   onClick={(e) => {
                     toast.promise(() => onSubmit(e), {
@@ -156,41 +177,49 @@ export default function TeamInfo({
                     <LogOut size={16} />
                   )}
                 </Button> */}
-                {teamdata?.transactionId &&
-                  teamdata?.paymentStatus === "PAID" && (
-                    <Badge className="border border-green-500 bg-green-500/20 text-white">
-                      Paid
-                    </Badge>
-                  )}
-                {teamdata?.transactionId &&
-                  teamdata?.paymentStatus !== "PAID" && (
-                    <Badge className="border border-amber-500 bg-amber-500/20 text-white">
-                      Processing
-                    </Badge>
-                  )}
-                {teamdata?.teamProgress === "SELECTED" &&
-                  !teamdata?.transactionId &&
-                  userId === teamMembers[0]?.id && (
-                    <FinalSubmission
-                      refetchTeam={refetchTeam}
-                      teamId={teamdata?.id ?? ""}
-                      teamlength={teamdata?.members?.length ?? 0}
-                    />
-                  )}
-                {teamdata?.teamProgress === "SELECTED" &&
-                  teamMembers.filter(
-                    (member) => !member.resume && !member.github,
-                  ).length !== 0 && (
-                    <>
-                      <ResumeGithubModal
+                <div className="flex flex-row items-center justify-center gap-3">
+                  {userIsLeader && <AddVideoSubmission />}
+                  {teamdata?.transactionId &&
+                    teamdata?.paymentStatus === "PAID" && (
+                      <Badge className="border border-green-500 bg-green-500/20 text-white">
+                        Paid
+                      </Badge>
+                    )}
+                  {teamdata?.transactionId &&
+                    teamdata?.paymentStatus !== "PAID" && (
+                      <Badge className="border border-amber-500 bg-amber-500/20 text-white">
+                        Processing
+                      </Badge>
+                    )}
+                  {teamdata?.teamProgress === "SELECTED" &&
+                    teamdata?.teamNo && (
+                      <h3 className="text-xl font-bold">
+                        SMVL-{getLabNo(teamdata.teamNo)}
+                      </h3>
+                    )}
+                  {teamdata?.teamProgress === "SELECTED" &&
+                    !teamdata?.transactionId &&
+                    userId === teamMembers[0]?.id && (
+                      <FinalSubmission
                         refetchTeam={refetchTeam}
-                        teamdata={teamdata}
-                        userId={userId}
+                        teamId={teamdata?.id ?? ""}
+                        teamlength={teamdata?.members?.length ?? 0}
                       />
-                    </>
-                  )}
+                    )}
+                  {teamdata?.teamProgress === "SELECTED" &&
+                    teamMembers.filter(
+                      (member) => !member.resume && !member.github,
+                    ).length !== 0 && (
+                      <>
+                        <ResumeGithubModal
+                          refetchTeam={refetchTeam}
+                          teamdata={teamdata}
+                          userId={userId}
+                        />
+                      </>
+                    )}
+                </div>
               </div>
-
               <div className="w-full">
                 {teamMembers.map((member) => {
                   return (
