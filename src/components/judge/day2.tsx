@@ -128,7 +128,7 @@ export default function DAY2(){
                                                             <h3 className="text-3xl">Remarks</h3>
                                                             <Dialog>
                                                                 <DialogTrigger asChild>
-                                                                    <Button>
+                                                                    <Button size={'sm'}>
                                                                         Add Remark
                                                                     </Button>
                                                                 </DialogTrigger>

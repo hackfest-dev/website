@@ -55,7 +55,7 @@ export default function DAY3(){
                                                     <div className="border-r flex flex-col gap-4">
                                                         <h3 className="text-3xl">Action on Team</h3>
                                                         <div className="flex flex-col w-full justify-center items-center h-full gap-6">
-                                                            <Button className={team.teamProgress === 'TOP15' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                                                            <Button className={team.teamProgress === 'TOP15' ? 'bg-green-500 text-white hover:bg-green-500' : 'bg-white text-black'}
                                                                 onClick={async () => {
                                                                     await changeProgress.mutateAsync({
                                                                         teamId: team.id,
@@ -65,7 +65,7 @@ export default function DAY3(){
                                                             >
                                                                 Top 15
                                                             </Button>
-                                                            <Button className={team.teamProgress === 'WINNER' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                                                            <Button className={team.teamProgress === 'WINNER' ? 'bg-green-500 text-white hover:bg-green-500' : 'bg-white text-black'}
                                                                 onClick={async () => {
                                                                     await changeProgress.mutateAsync({
                                                                         teamId: team.id,
@@ -75,7 +75,7 @@ export default function DAY3(){
                                                             >
                                                                 Winner
                                                             </Button>
-                                                            <Button className={team.teamProgress === 'RUNNER' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                                                            <Button className={team.teamProgress === 'RUNNER' ? 'bg-green-500 text-white hover:bg-green-500' : 'bg-white text-black'}
                                                                 onClick={async () => {
                                                                     await changeProgress.mutateAsync({
                                                                         teamId: team.id,
@@ -85,7 +85,7 @@ export default function DAY3(){
                                                             >
                                                                 Runner up
                                                             </Button>
-                                                            <Button className={team.teamProgress === 'SECOND_RUNNER' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                                                            <Button className={team.teamProgress === 'SECOND_RUNNER' ? 'bg-green-500 text-white hover:bg-green-500' : 'bg-white text-black'}
                                                                 onClick={async () => {
                                                                     await changeProgress.mutateAsync({
                                                                         teamId: team.id,
@@ -95,7 +95,7 @@ export default function DAY3(){
                                                             >
                                                                 Second Runner Up
                                                             </Button>
-                                                            <Button className={team.teamProgress === 'TRACK' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                                                            <Button className={team.teamProgress === 'TRACK' ? 'bg-green-500 text-white hover:bg-green-500' : 'bg-white text-black'}
                                                                 onClick={async () => {
                                                                     await changeProgress.mutateAsync({
                                                                         teamId: team.id,
