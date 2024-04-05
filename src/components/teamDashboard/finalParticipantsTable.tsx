@@ -70,10 +70,6 @@ export default function FinalParticipantsTable({
     inferRouterOutputs<typeof teamRouter>["getTeamsList"]
   >[] = [
     {
-      accessorKey: "id",
-      header: "Team ID",
-    },
-    {
       accessorKey: "name",
       header: "Team Name",
     },
@@ -161,12 +157,14 @@ export default function FinalParticipantsTable({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row,index) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
+                  <TableCell key={index}>{index}</TableCell>
                   {row.getVisibleCells().map((cell) => (
+                    
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
