@@ -97,17 +97,17 @@ export default function TeamInfo({
 
   function getLabNo(teamNo: number) {
     if (teamNo >= 1 && teamNo <= 10) {
-      return 51;
-    } else if (teamNo >= 10 && teamNo <= 20) {
-      return 52;
-    } else if (teamNo >= 20 && teamNo <= 30) {
-      return 53;
-    } else if (teamNo >= 30 && teamNo <= 40) {
-      return 54;
-    } else if (teamNo >= 40 && teamNo <= 50) {
-      return 55;
-    } else if (teamNo >= 50 && teamNo <= 60) {
-      return 56;
+      return "NC-44";
+    } else if (teamNo >= 11 && teamNo <= 19) {
+      return "NC-45";
+    } else if (teamNo >= 20 && teamNo <= 29) {
+      return "NC-54";
+    } else if (teamNo >= 30 && teamNo <= 39) {
+      return "NC-55";
+    } else if (teamNo >= 40 && teamNo <= 43) {
+      return "NC-53";
+    } else if (teamNo >= 44 && teamNo <= 60) {
+      return "ADL-04";
     } else {
       return "N/A";
     }
@@ -124,12 +124,10 @@ export default function TeamInfo({
             <div className="m-auto my-4 flex flex-col justify-evenly p-0 pt-4 sm:my-auto md:p-4">
               <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-0">
                 <h1 className="flex items-center justify-center gap-5 text-center text-2xl font-bold uppercase">
-                  {teamdata?.name ?? "Not Available"}
-                  {teamdata?.teamProgress === "SELECTED" && (
-                    <Badge className="border border-green-500 bg-green-500/20 text-white">
-                      Top 60
-                    </Badge>
+                {teamdata?.teamProgress === "SELECTED" && (
+                    <span className="border border-white rounded-full w-10 h-10 text-lg font-semibold flex justify-center items-center">{teamdata.teamNo ?? 0}</span>
                   )}
+                  {teamdata?.name ?? "Not Available"}  
                 </h1>
                 {/* <div
                   onClick={copyCode}
@@ -179,22 +177,22 @@ export default function TeamInfo({
                 </Button> */}
                 <div className="flex flex-row items-center justify-center gap-3">
                   {userIsLeader && <AddVideoSubmission />}
-                  {teamdata?.transactionId &&
+                  {/* {teamdata?.transactionId &&
                     teamdata?.paymentStatus === "PAID" && (
                       <Badge className="border border-green-500 bg-green-500/20 text-white">
                         Paid
                       </Badge>
-                    )}
-                  {teamdata?.transactionId &&
+                    )} */}
+                  {/* {teamdata?.transactionId &&
                     teamdata?.paymentStatus !== "PAID" && (
                       <Badge className="border border-amber-500 bg-amber-500/20 text-white">
                         Processing
                       </Badge>
-                    )}
+                    )} */}
                   {teamdata?.teamProgress === "SELECTED" &&
                     teamdata?.teamNo && (
                       <h3 className="text-xl font-bold">
-                        SMVL-{getLabNo(teamdata.teamNo)}
+                        {getLabNo(teamdata.teamNo)}
                       </h3>
                     )}
                   {teamdata?.teamProgress === "SELECTED" &&
