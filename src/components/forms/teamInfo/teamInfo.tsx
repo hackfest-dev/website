@@ -101,11 +101,11 @@ export default function TeamInfo({
     } else if (teamNo >= 11 && teamNo <= 19) {
       return "NC-45";
     } else if (teamNo >= 20 && teamNo <= 29) {
-      return "NC-54";
+      return "SMVL-54";
     } else if (teamNo >= 30 && teamNo <= 39) {
-      return "NC-55";
+      return "SMVL-55";
     } else if (teamNo >= 40 && teamNo <= 43) {
-      return "NC-53";
+      return "SMVL-53";
     } else if (teamNo >= 44 && teamNo <= 60) {
       return "ADL-04";
     } else {
