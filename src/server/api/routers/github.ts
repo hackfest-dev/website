@@ -292,8 +292,10 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        for (const repoName of githubTeam.githubRepoName) {
-          await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
+        try{
+
+          for (const repoName of githubTeam.githubRepoName) {
+            await octokit.request ('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
             org: ORGANIZATION_NAME,
             team_slug: githubTeam.githubTeamSlug,
             owner: ORGANIZATION_NAME,
@@ -304,6 +306,8 @@ export const githubRouter = createTRPCRouter({
             }
           })
         }
+      }
+      catch{continue}
 
         console.log(`Enabled commit for team : ${githubTeam.team.name}`)
       }

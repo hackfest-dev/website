@@ -91,7 +91,7 @@ export default function DAY1(){
 
                                                 <div className="w-full flex-flex-col  h-[60%] pt-4 space-y-6">
                                                     <h3 className="text-3xl">Remarks</h3>
-                                                    <Textarea  rows={10} defaultValue={remarks[index]?.remarks } onChange={(e) => {setUpdatedRemarks(e.target.value)}}/>
+                                                    <Textarea  rows={3} defaultValue={remarks[index]?.remarks } onChange={(e) => {setUpdatedRemarks(e.target.value)}}/>
                                                     {
                                                         fetchedRemark.status === 'success' && fetchedRemark.data[index]?.remarks ? (
                                                             <Button
