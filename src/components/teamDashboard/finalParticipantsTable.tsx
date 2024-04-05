@@ -87,45 +87,23 @@ export default function FinalParticipantsTable({
       ),
     },
     {
-      accessorKey: "referral",
-      header: "Referral",
-      cell: (referral) => (
-        <span>
-          {referral.getValue()
-            ? `HF2024_${(
-                "00" +
-                (
-                  referral.row.original as {
-                    referral: { id: string };
-                  }
-                ).referral?.id
-              ).slice(-3)}`
-            : "No"}
-        </span>
-      ),
-    },
-    {
-      accessorKey: "paymentStatus",
-      header: "Payment Status",
-    },
-    {
       accessorKey: '',
       header: 'Attendance',
-      cell: async ({cell}) => {
+      cell: (cell) => {
         return(
           <>
             <div className="flex">
             {
-              !(cell.row.original as Team).attended ? (
+              !(cell.cell.row.original as Team).attended ? (
                 <div className="bg-green-500 inline-block p-2 rounded-lg">
                   <span className=" text-white cursor-pointer" onClick={async () => {
-                       await ToggleAttendance(`${(cell.row.original as Team).id}`);
+                       await ToggleAttendance(`${(cell.cell.row.original as Team).id}`);
                   }} ><Check /></span>
                 </div>
               ) : (
                 <div className="bg-red-500 inline-block p-2 rounded-lg">
                   <span className=" text-white cursor-pointer" onClick={async () => {
-                      await ToggleAttendance(`${(cell.row.original as Team).id}`);
+                      await ToggleAttendance(`${(cell.cell.row.original as Team).id}`);
                   }}>
                   <X/>
                 </span>
