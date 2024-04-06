@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import FilterSheet from "~/components/organiserDashboard/filterSheet";
 import GithubSheet from "~/components/organiserDashboard/githubSheet";
+import { Button } from "~/components/ui/button";
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery();
   const users = api.user.getAllUsers.useQuery().data;
@@ -50,6 +51,15 @@ export default function Organiser() {
   };
 
   const { data, status } = useSession();
+  // const assignteamNumbers = api.organiser.assignTeamNumbers.useMutation({
+  //   onSuccess: async () => {
+  //     toast.success("Team Numbers assigned successfully");
+  //     await res.refetch();
+  //   },
+  //   onError: () => {
+  //     toast.error("Error assigning team numbers");
+  //   },
+  // })
 
   useEffect(() => {
     setSelectedTeams(() => {
@@ -71,6 +81,8 @@ export default function Organiser() {
           (team) => team.paymentStatus === paymentQuery,
         );
       }
+
+      
 
       if (top60Query !== "ALL") {
         partiallyFiltered = partiallyFiltered?.filter((team) => {
@@ -176,6 +188,13 @@ export default function Organiser() {
             </h1>
             <div className="my-4 flex h-full w-full flex-col items-center justify-around gap-3 md:flex-row">
               <DownloadDataButtons />
+              {/* <Button 
+                onClick={async () => {
+                  await assignteamNumbers.mutateAsync();
+                }}
+              >
+                Assign Team Numbers
+              </Button> */}
               {/* {data.user.role === "ADMIN" && (
                 <Button
                   onClick={async () => {

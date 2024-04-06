@@ -128,11 +128,11 @@ const HeroParallax = () => {
           className="h-screen w-screen object-cover object-top"
         />
       </div> */}
-      <div className="absolute left-1/2 top-1/4 -z-[29] mx-3 w-full max-w-6xl -translate-x-1/2 md:top-24 md:mt-5">
+      {/* <div className="absolute left-1/2 top-1/4 -z-[29] mx-3 w-full max-w-6xl -translate-x-1/2 md:top-24 md:mt-5">
         <div className="absolute left-1/2 -translate-x-1/2 text-[#c1f0a8] opacity-60 md:left-0 md:translate-x-0">
           <Countown />
         </div>
-      </div>
+      </div> */}
 
       <div className="absolute inset-0 -z-[28]">
         <Image

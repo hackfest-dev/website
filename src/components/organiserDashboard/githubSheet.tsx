@@ -155,8 +155,32 @@ const GithubSheet = () => {
   const addRepoToTeam = api.github.addRepoToTeam.useMutation({
     onSuccess: () => {
       toast.dismiss();
-      toast.success("Successfully added repo to team");
+      toast.success("Added repo to team");
     },
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
+  const enableVideoSubmission = api.video.enableVideoSubmission.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Enabled video submission");
+    },
+
+    onError: ({ message }) => {
+      toast.dismiss();
+      toast.error(message);
+    },
+  });
+
+  const disableVideoSubmission = api.video.disableVideoSubmission.useMutation({
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Disabled video submission");
+    },
+
     onError: ({ message }) => {
       toast.dismiss();
       toast.error(message);
@@ -166,7 +190,7 @@ const GithubSheet = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <Button className="font-semibold">Github</Button>
+        <Button className="font-semibold">Github & Video</Button>
       </SheetTrigger>
       <SheetContent className="dark overflow-scroll bg-slate-950">
         <SheetHeader>
@@ -467,6 +491,27 @@ const GithubSheet = () => {
                   }}
                 >
                   Send Invitation
+                </Button>
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-center justify-center gap-3 rounded-sm border p-3">
+              <h3 className="text-xl font-bold text-white">Video Submission</h3>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <Button
+                  onClick={() => {
+                    toast.loading("Enabling video submission");
+                    enableVideoSubmission.mutate();
+                  }}
+                >
+                  Enable Submission
+                </Button>
+                <Button
+                  onClick={() => {
+                    toast.loading("Disabling video submission");
+                    disableVideoSubmission.mutate();
+                  }}
+                >
+                  Disable Submission
                 </Button>
               </div>
             </div>

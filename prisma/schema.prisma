@@ -98,7 +98,7 @@ model Team {
   updatedAt                DateTime          @updatedAt
   referralId               Int?
   paymentStatus            PaymentStatus     @default(PENDING)
-  JudgeTotalScore		   Int               @default(0)
+  JudgeTotalScore		       Float               @default(0)
   ValidatorTotalScore      Int               @default(0)
   teamProgress             TeamProgress      @default(NOT_SELECTED)
   attended                 Boolean           @default(false)
@@ -338,6 +338,11 @@ enum TeamProgress {
   NOT_SELECTED
   SEMI_SELECTED
   SELECTED
+  TOP15
+  WINNER
+  RUNNER
+  SECOND_RUNNER
+  TRACK
 }
 
 enum Category {

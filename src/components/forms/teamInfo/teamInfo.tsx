@@ -30,12 +30,14 @@ import { api } from "~/utils/api";
 import { env } from "~/env";
 import FinalSubmission from "~/components/finalSubmission";
 import ResumeGithubModal from "~/components/finalSubmission/resumeGithubModal";
+import AddVideoSubmission from "~/components/addVideoSubmission";
 
 export default function TeamInfo({
   teamdata,
   userId,
   userProgress,
   refetchTeam,
+  userIsLeader,
   userRefetch,
 }: {
   teamdata:
@@ -44,6 +46,7 @@ export default function TeamInfo({
     | undefined;
   userId: string;
   userProgress: Progress;
+  userIsLeader: boolean;
   refetchTeam?: () => void;
   userRefetch?: () => void;
 }) {
@@ -92,6 +95,24 @@ export default function TeamInfo({
     });
   };
 
+  function getLabNo(teamNo: number) {
+    if (teamNo >= 1 && teamNo <= 10) {
+      return "NC-44";
+    } else if (teamNo >= 11 && teamNo <= 19) {
+      return "NC-45";
+    } else if (teamNo >= 20 && teamNo <= 29) {
+      return "SMVL-54";
+    } else if (teamNo >= 30 && teamNo <= 39) {
+      return "SMVL-55";
+    } else if (teamNo >= 40 && teamNo <= 43) {
+      return "SMVL-53";
+    } else if (teamNo >= 44 && teamNo <= 60) {
+      return "ADL-04";
+    } else {
+      return "N/A";
+    }
+  }
+
   return (
     <Card className="h-fit w-full">
       <CardHeader>
@@ -103,14 +124,12 @@ export default function TeamInfo({
             <div className="m-auto my-4 flex flex-col justify-evenly p-0 pt-4 sm:my-auto md:p-4">
               <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-0">
                 <h1 className="flex items-center justify-center gap-5 text-center text-2xl font-bold uppercase">
-                  {teamdata?.name ?? "Not Available"}
-                  {teamdata?.teamProgress === "SELECTED" && (
-                    <Badge className="border border-green-500 bg-green-500/20 text-white">
-                      Top 60
-                    </Badge>
+                {teamdata?.teamProgress === "SELECTED" && (
+                    <span className="border border-white rounded-full w-10 h-10 text-lg font-semibold flex justify-center items-center">{teamdata.teamNo ?? 0}</span>
                   )}
+                  {teamdata?.name ?? "Not Available"}  
                 </h1>
-                <div
+                {/* <div
                   onClick={copyCode}
                   className="flex cursor-pointer items-center justify-evenly gap-2 rounded-full border px-2 py-1 text-sm transition-colors duration-300 hover:border-white"
                 >
@@ -120,7 +139,7 @@ export default function TeamInfo({
                     size={20}
                     className="cursor-pointer hover:text-gray-400"
                   />
-                </div>
+                </div> */}
                 {/* <Button
                   onClick={(e) => {
                     toast.promise(() => onSubmit(e), {
@@ -156,41 +175,49 @@ export default function TeamInfo({
                     <LogOut size={16} />
                   )}
                 </Button> */}
-                {teamdata?.transactionId &&
-                  teamdata?.paymentStatus === "PAID" && (
-                    <Badge className="border border-green-500 bg-green-500/20 text-white">
-                      Paid
-                    </Badge>
-                  )}
-                {teamdata?.transactionId &&
-                  teamdata?.paymentStatus !== "PAID" && (
-                    <Badge className="border border-amber-500 bg-amber-500/20 text-white">
-                      Processing
-                    </Badge>
-                  )}
-                {teamdata?.teamProgress === "SELECTED" &&
-                  !teamdata?.transactionId &&
-                  userId === teamMembers[0]?.id && (
-                    <FinalSubmission
-                      refetchTeam={refetchTeam}
-                      teamId={teamdata?.id ?? ""}
-                      teamlength={teamdata?.members?.length ?? 0}
-                    />
-                  )}
-                {teamdata?.teamProgress === "SELECTED" &&
-                  teamMembers.filter(
-                    (member) => !member.resume && !member.github,
-                  ).length !== 0 && (
-                    <>
-                      <ResumeGithubModal
+                <div className="flex flex-row items-center justify-center gap-3">
+                  {userIsLeader && <AddVideoSubmission />}
+                  {/* {teamdata?.transactionId &&
+                    teamdata?.paymentStatus === "PAID" && (
+                      <Badge className="border border-green-500 bg-green-500/20 text-white">
+                        Paid
+                      </Badge>
+                    )} */}
+                  {/* {teamdata?.transactionId &&
+                    teamdata?.paymentStatus !== "PAID" && (
+                      <Badge className="border border-amber-500 bg-amber-500/20 text-white">
+                        Processing
+                      </Badge>
+                    )} */}
+                  {teamdata?.teamProgress === "SELECTED" &&
+                    teamdata?.teamNo && (
+                      <h3 className="text-xl font-bold">
+                        {getLabNo(teamdata.teamNo)}
+                      </h3>
+                    )}
+                  {teamdata?.teamProgress === "SELECTED" &&
+                    !teamdata?.transactionId &&
+                    userId === teamMembers[0]?.id && (
+                      <FinalSubmission
                         refetchTeam={refetchTeam}
-                        teamdata={teamdata}
-                        userId={userId}
+                        teamId={teamdata?.id ?? ""}
+                        teamlength={teamdata?.members?.length ?? 0}
                       />
-                    </>
-                  )}
+                    )}
+                  {teamdata?.teamProgress === "SELECTED" &&
+                    teamMembers.filter(
+                      (member) => !member.resume && !member.github,
+                    ).length !== 0 && (
+                      <>
+                        <ResumeGithubModal
+                          refetchTeam={refetchTeam}
+                          teamdata={teamdata}
+                          userId={userId}
+                        />
+                      </>
+                    )}
+                </div>
               </div>
-
               <div className="w-full">
                 {teamMembers.map((member) => {
                   return (
