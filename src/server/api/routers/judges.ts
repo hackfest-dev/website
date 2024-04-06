@@ -418,7 +418,7 @@ export const JudgeRouter = createTRPCRouter({
 
       const done = criteria.map(async (c, k) => {
         if (k != 3) return;
-        const judgeId = 17;
+        const judgeId = 19;
         const allScores = await ctx.db.scoresByJudge.findMany({
           where: {
             judgesId: judgeId,
