@@ -89,19 +89,17 @@ export default function DownloadDataButtons() {
 
   function top60TeamMembers(){
     let csv = "";
-    const Headers = "Name,Phone,Email,Team Name,\n";
+    const Headers = "Team No.,Team Name, Track,\n";
     csv += Headers;
 
     data?.map((user) => {
-      if ( user?.team?.teamProgress === "SELECTED") {
+      if ( user?.team?.teamProgress === "SELECTED" && user.isLeader) {
         csv +=
-          `${user.name}` +
-          ',' + 
-          `${user.phone}` +
-          "," +
-          `${user.email}` +
-          "," +
+        `${user.team?.teamNo}` +
+        "," +
           `${user.team?.name}` +
+          "," +
+          `${user.team?.ideaSubmission?.track}` +
           "," +
           "\n";
       }

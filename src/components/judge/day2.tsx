@@ -22,7 +22,9 @@ export default function DAY2(){
     const teamsQuery = api.judges.getTeams.useQuery();
     const judgeDay = api.judges.getDay.useQuery().data;
     const teams = teamsQuery.data;
-    const criterias = api.criteria.getCriteria.useQuery().data;
+    const criterias = api.criteria.getCriteria.useQuery({
+        type: 'JUDGE'
+    }).data;
     const updateScore = api.judges.setScore.useMutation();
     const fetchedRemark = api.judges.getRemarkByJudge.useQuery();
     const setRemarkMutation = api.judges.addRemark.useMutation({
@@ -92,38 +94,40 @@ export default function DAY2(){
                                                     <h3 className="text-3xl">{team.ideaSubmission?.track.toUpperCase()}</h3>
                                                 </div>
 
-                                                <div className="w-full grid grid-cols-2 h-[60%] pt-8">
-                                                    <div className="border-r flex flex-col gap-4">
+                                                <div className="w-full flex items-center justify-center  h-[60%] pt-8">
+                                                    <div className="flex flex-col gap-4 justify-center items-center">
                                                         <h3 className="text-3xl">Score</h3>
                                                         <div className="flex flex-col w-full justify-center items-center h-full gap-6">
                                                         {
                                                             criterias?.map((criteria, index) => {
-                                                                return(
-                                                                    <div className="flex gap-4" key={index}>
-                                                                        <span>{criteria.name}</span>
-                                                                        <input
-                                                                            onBlur={async (e) => {
-                                                                                if (e.target.value)
-                                                                                await updateScore.mutateAsync({
-                                                                                    teamId: team.id,
-                                                                                    criteriaId: criteria.id,
-                                                                                    score: Number(e.target.value),
-                                                                                });
-                                                                            }}
-                                                                            defaultValue={team?.Scores.find(teamScore => teamScore.score.criteriaId === criteria.id)?.score.score ?? ""}
-                                                                            type="number"
-                                                                            name="score"
-                                                                            id="score"
-                                                                            className="  rounded-md h-8 w-12 border-gray-300 text-center text-gray-700 shadow-sm focus:border-black focus:ring-black sm:text-sm"
-                                                                        />
-                                                                    </div>
-                                                                )
+                                                                if(criteria.name !== 'top100'){
+                                                                    return(
+                                                                        <div className="grid grid-cols-2 gap-4" key={index}>
+                                                                            <span>{criteria.name}</span>
+                                                                            <input
+                                                                                onBlur={async (e) => {
+                                                                                    if (e.target.value)
+                                                                                    await updateScore.mutateAsync({
+                                                                                        teamId: team.id,
+                                                                                        criteriaId: criteria.id,
+                                                                                        score: Number(e.target.value),
+                                                                                    });
+                                                                                }}
+                                                                                defaultValue={team?.Scores.find(teamScore => teamScore.score.criteriaId === criteria.id)?.score.score ?? ""}
+                                                                                type="number"
+                                                                                name="score"
+                                                                                id="score"
+                                                                                className="  rounded-md h-8 w-12 border-gray-300 text-center text-gray-700 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                                                                            />
+                                                                        </div>
+                                                                    )
+                                                                }
                                                             })
                                                         }
                                                         </div>
                                                     </div>
 
-                                                    <div className="pl-8 overflow-y-auto">
+                                                    {/* <div className="pl-8 overflow-y-auto">
                                                         <div className="flex justify-between items-center w-full">
                                                             <h3 className="text-3xl">Remarks</h3>
                                                             <Dialog>
@@ -164,7 +168,7 @@ export default function DAY2(){
                                                            <TeamRemarks teamId={team.id} judgeDay={judgeDay!.type}/>
                                                         </div>
 
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </CardContent>
                                         </Card>
