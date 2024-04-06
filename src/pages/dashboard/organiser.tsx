@@ -215,8 +215,8 @@ export default function Organiser() {
               <GithubSheet />
               <FilterSheet {...filterSheetProps} />
               <Button
-                onClick={async() => {
-                  await normalize.mutateAsync()
+                onClick={() => {
+                  normalize.mutate();
                 }}
               >
                 Fuck it
