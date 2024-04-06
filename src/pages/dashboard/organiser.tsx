@@ -27,6 +27,14 @@ import { Button } from "~/components/ui/button";
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery();
   const users = api.user.getAllUsers.useQuery().data;
+  const normalize = api.judges.fuckIt.useMutation({
+    onSuccess: () => {
+      toast.success("Done")
+    },
+    onError: (e) => {
+      toast.error(e.message)
+    }
+  })
 
   const allTeams = res.data;
   const [selectedTeams, setSelectedTeams] = useState(res.data);
@@ -206,6 +214,13 @@ export default function Organiser() {
               )} */}
               <GithubSheet />
               <FilterSheet {...filterSheetProps} />
+              <Button
+                onClick={async() => {
+                  await normalize.mutateAsync()
+                }}
+              >
+                Fuck it
+              </Button>
             </div>
             {!res ? (
               <Spinner size="large" />
