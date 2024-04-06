@@ -450,31 +450,29 @@ export const JudgeRouter = createTRPCRouter({
         // get all criterias
         // get all scores by judge
 
-        await Promise.all(
-          scores.map(async (s) => {
-            const teamI = await ctx.db.team.findUnique({
-              where: {
-                id: s.teamId,
-              },
-            });
-  
-            const score =
-              (teamI?.JudgeTotalScore ?? 0) +
-              ((s.score - min) / (max - min)) * 10;
-            // console.log(s.score, min, max);
-            
-            await ctx.db.team.update({
-              where: {
-                id: s.teamId,
-              },
-              data: {
-                JudgeTotalScore: score,
-              },
-            });
-  
-            // console.log(score - Math.floor(score) > 0.5 ? Math.ceil(score) : Math.floor(score),score);
-          })
-        )
+        scores.map(async (s) => {
+          const teamI = await ctx.db.team.findUnique({
+            where: {
+              id: s.teamId,
+            },
+          });
+
+          const score =
+            (teamI?.JudgeTotalScore ?? 0) +
+            ((s.score - min) / (max - min)) * 10;
+          // console.log(s.score, min, max);
+          
+          await ctx.db.team.update({
+            where: {
+              id: s.teamId,
+            },
+            data: {
+              JudgeTotalScore: score,
+            },
+          });
+
+          // console.log(score - Math.floor(score) > 0.5 ? Math.ceil(score) : Math.floor(score),score);
+        })
         
       })
 
