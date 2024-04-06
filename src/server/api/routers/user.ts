@@ -256,7 +256,11 @@ export const userRouter = createTRPCRouter({
       return await ctx.db.user.findMany({
         include: {
           college: true,
-          team: true
+          team: {
+            include: {
+              ideaSubmission: true
+            }
+          }
         },
       });
     } catch (e) {
@@ -294,6 +298,7 @@ export const userRouter = createTRPCRouter({
             team: {
               include: {
                 members: true,
+                ideaSubmission: true,
               },
             },
           },
