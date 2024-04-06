@@ -12,7 +12,9 @@ export default function Judge() {
   const teamsQuery = api.judges.getTeams.useQuery();
   const judgeDay = api.judges.getDay.useQuery().data;
   const teams = teamsQuery.data;
-  const criterias = api.criteria.getCriteria.useQuery().data;
+  const criterias = api.criteria.getCriteria.useQuery({
+    type: "JUDGE",
+  }).data;
   const updateScore = api.judges.setScore.useMutation();
 
   if (status === "loading")
