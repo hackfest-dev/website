@@ -6,6 +6,7 @@ import NotFound from "~/components/not-found";
 import DAY1 from "~/components/judge/day1";
 import DAY2 from "~/components/judge/day2";
 import DAY3 from "~/components/judge/day3";
+import { toast } from "sonner";
 
 export default function Judge() {
   const { data, status } = useSession();
@@ -15,6 +16,7 @@ export default function Judge() {
   const criterias = api.criteria.getCriteria.useQuery({
     type: "JUDGE",
   }).data;
+  
   const updateScore = api.judges.setScore.useMutation();
 
   if (status === "loading")

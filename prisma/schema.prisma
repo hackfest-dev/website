@@ -90,28 +90,29 @@ model College {
 }
 
 model Team {
-  id                       String            @id @default(cuid())
-  teamNo                   Int?              @default(0)
-  name                     String            @unique
-  isComplete               Boolean           @default(false)
-  createdAt                DateTime          @default(now())
-  updatedAt                DateTime          @updatedAt
-  referralId               Int?
-  paymentStatus            PaymentStatus     @default(PENDING)
-  JudgeTotalScore		       Float               @default(0)
-  ValidatorTotalScore      Int               @default(0)
-  teamProgress             TeamProgress      @default(NOT_SELECTED)
-  attended                 Boolean           @default(false)
-  ideaSubmission           IdeaSubmission?
-  Scores                   ScoresByJudge[]
-  referral                 Referral?         @relation(fields: [referralId], references: [id])
-  members                  User[]
-  videoSubmission          VideoSubmissions?
-  github                   Github?
-  paymentProof             String?
-  transactionId            String?
-  transportation           Boolean           @default(false)
-  Remarks                  Remarks[]
+  id                  String            @id @default(cuid())
+  teamNo              Int?              @default(0)
+  name                String            @unique
+  isComplete          Boolean           @default(false)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  referralId          Int?
+  paymentStatus       PaymentStatus     @default(PENDING)
+  JudgeTotalScore     Float             @default(0)
+  ValidatorTotalScore Int               @default(0)
+  teamProgress        TeamProgress      @default(NOT_SELECTED)
+  attended            Boolean           @default(false)
+  ideaSubmission      IdeaSubmission?
+  Scores              ScoresByJudge[]
+  referral            Referral?         @relation(fields: [referralId], references: [id])
+  members             User[]
+  videoSubmission     VideoSubmissions?
+  github              Github?
+  paymentProof        String?
+  transactionId       String?
+  transportation      Boolean           @default(false)
+  Remarks             Remarks[]
+  FinalScores         FinalScores[]
 }
 
 model GameTeam {
@@ -175,6 +176,13 @@ model Criteria {
   type   CriteriaType
   weight Int          @default(1)
   scores Scores[]
+}
+
+model FinalScores {
+  id     Int    @id @default(autoincrement())
+  score  Int
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
 }
 
 model ScoresByJudge {
