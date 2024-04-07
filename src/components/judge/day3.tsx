@@ -53,7 +53,7 @@ export default function DAY3(){
                                                     <h3 className="text-3xl">{team.ideaSubmission?.track.toUpperCase()}</h3>
                                                 </div>
 
-                                                <div className="w-full h-[60%] pt-8">
+                                                <div className="w-full h-[60%] pt-4">
                                                     <div className="flex flex-col gap-4">
                                                         <div className="flex flex-col w-full justify-center items-center h-full gap-6">
                                                             
