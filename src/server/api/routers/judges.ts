@@ -53,7 +53,7 @@ export const JudgeRouter = createTRPCRouter({
           teamNo: {
             not: null,
           },
-          teamProgress: "TOP15",
+          teamProgress: "TOP15" || "WINNER" || "RUNNER" || "SECOND_RUNNER" || "TRACK"
         },
         include: {
           Remarks: true,
