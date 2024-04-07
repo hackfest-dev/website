@@ -27,6 +27,7 @@ import { Button } from "~/components/ui/button";
 export default function Organiser() {
   const res = api.team.getTeamsList.useQuery();
   const users = api.user.getAllUsers.useQuery().data;
+  const top15 = api.team.top15.useQuery().data;
   const normalize = api.judges.fuckIt.useMutation({
     onSuccess: () => {
       toast.success("Done")
@@ -37,7 +38,7 @@ export default function Organiser() {
   })
 
   const allTeams = res.data;
-  const [selectedTeams, setSelectedTeams] = useState(res.data);
+  const [selectedTeams, setSelectedTeams] = useState(top15);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [paymentQuery, setPaymentQuery] = useState("ALL");
@@ -100,7 +101,7 @@ export default function Organiser() {
               : top60Query === "TOP 100"
                 ? "SEMI_SELECTED"
                 : top60Query === "TOP 60"
-                  ? "SELECTED"
+               ? "SELECTED"
                   : "";
 
           return team.teamProgress === temp;
@@ -214,13 +215,6 @@ export default function Organiser() {
               )} */}
               <GithubSheet />
               <FilterSheet {...filterSheetProps} />
-              <Button
-                onClick={() => {
-                  normalize.mutate();
-                }}
-              >
-                Fuck it
-              </Button>
             </div>
             {!res ? (
               <Spinner size="large" />

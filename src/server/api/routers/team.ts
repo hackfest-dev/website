@@ -362,6 +362,49 @@ export const teamRouter = createTRPCRouter({
       return null;
     }
   }),
+  top15: protectedProcedure.query(async ({ ctx }) => {
+    console.log(ctx.session.user.role);
+    if (ctx.session.user.role === "PARTICIPANT")
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You are not an organiser",
+      });
+    try {
+      return await ctx.db.team.findMany({
+		  where:{
+			  teamProgress:"TOP15"
+		  },
+        include: {
+          members: {
+            include: { college: true },
+          },
+          ideaSubmission: true,
+          referral: true,
+          Scores: {
+            where: {
+              userId: ctx.session.user.id,
+            },
+            include: {
+              score: true,
+              Judges: true,
+            },
+			orderBy:{
+				score:{
+					score:"desc"
+				}
+			}
+          },
+			videoSubmission:true
+        },
+        orderBy: {
+          name: 'asc'
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }),
   moveToTop100: protectedProcedure
     .input(
       z.object({
