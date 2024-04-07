@@ -24,7 +24,12 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { IdeaSubmission, Team, TeamProgress, VideoSubmissions } from "@prisma/client";
+import {
+  IdeaSubmission,
+  Team,
+  TeamProgress,
+  VideoSubmissions,
+} from "@prisma/client";
 import { Check, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { members } from "~/types";
@@ -58,7 +63,7 @@ export default function ParticipantsTable({
     onError: (e) => {
       toast.error(e.message);
     },
-  })
+  });
   const moveToTop100 = api.team.moveToTop100.useMutation({
     onSuccess: async () => {
       dataRefecth();
@@ -251,7 +256,7 @@ export default function ParticipantsTable({
       accessorKey: "teamProgress",
       header: "Progress",
     },
-{
+    {
       accessorKey: "videoSubmission",
       header: "Actions",
       cell: (cell) => {
@@ -261,21 +266,29 @@ export default function ParticipantsTable({
               href={
                 (
                   cell.cell.row.original as Team & {
-                    videoSubmission: VideoSubmissions| null;
+                    videoSubmission: VideoSubmissions | null;
                   }
-                ).videoSubmission?.videoUrl?.split(";")[0]
+                ).videoSubmission?.url?.split(";")[0]
               }
               target="_blank"
             >
               <Button
-	disabled={videoSubmission?.videoUrl === null}
-			  >View Video </Button>
+                disabled={
+                  (
+                    cell.cell.row.original as Team & {
+                      videoSubmission: VideoSubmissions | null;
+                    }
+                  ).videoSubmission?.url === null
+                }
+              >
+                View Video{" "}
+              </Button>
             </a>
           </>
         );
       },
     },
-	{
+    {
       accessorKey: "teamProgress",
       header: "Actions",
       cell: (cell) => {
@@ -368,7 +381,7 @@ export default function ParticipantsTable({
               onClick={async () => {
                 await moveToTop15.mutateAsync({
                   teamId: (cell.cell.row.original as Team).id,
-				  progress: "SELECTED"
+                  progress: "SELECTED",
                 });
               }}
             >
