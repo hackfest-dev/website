@@ -68,7 +68,9 @@ export const JudgeRouter = createTRPCRouter({
           },
         },
         orderBy: {
-          teamNo: "asc",
+          ideaSubmission: {
+			  track: "asc"
+		  },
         },
       });
       return teams;
