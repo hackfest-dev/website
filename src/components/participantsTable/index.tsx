@@ -24,7 +24,7 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { IdeaSubmission, Team, TeamProgress } from "@prisma/client";
+import { IdeaSubmission, Team, TeamProgress, VideoSubmissions } from "@prisma/client";
 import { Check, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { members } from "~/types";
@@ -49,6 +49,16 @@ export default function ParticipantsTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const moveToTop15 = api.judges.changeTeamProgress.useMutation({
+    onSuccess: async () => {
+      dataRefecth();
+      toast.success("Moved to Top 15");
+      toast.dismiss("moveToTop15");
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  })
   const moveToTop100 = api.team.moveToTop100.useMutation({
     onSuccess: async () => {
       dataRefecth();
@@ -241,6 +251,50 @@ export default function ParticipantsTable({
       accessorKey: "teamProgress",
       header: "Progress",
     },
+{
+      accessorKey: "videoSubmission",
+      header: "Actions",
+      cell: (cell) => {
+        return (
+          <>
+            <a
+              href={
+                (
+                  cell.cell.row.original as Team & {
+                    videoSubmission: VideoSubmissions| null;
+                  }
+                ).videoSubmission?.videoUrl?.split(";")[0]
+              }
+              target="_blank"
+            >
+              <Button
+	disabled={videoSubmission?.videoUrl === null}
+			  >View Video </Button>
+            </a>
+          </>
+        );
+      },
+    },
+	{
+      accessorKey: "teamProgress",
+      header: "Actions",
+      cell: (cell) => {
+        return (
+          <>
+            <button
+              className={`${(cell.cell.row.original as Team).teamProgress === "SEMI_SELECTED" ? "bg-green-700 text-white" : "bg-white text-black"} rounded-lg px-4 py-2`}
+              onClick={async () => {
+                await moveToTop100.mutateAsync({
+                  teamId: (cell.cell.row.original as Team).id,
+                });
+              }}
+            >
+              Top 15
+            </button>
+          </>
+        );
+      },
+    },
     {
       accessorKey: "ideaSubmission",
       header: "Actions",
@@ -312,8 +366,9 @@ export default function ParticipantsTable({
             <button
               className={`${(cell.cell.row.original as Team).teamProgress === "NOT_SELECTED" ? "pointer-events-none" : "bg-red-400 text-black"} rounded-lg px-4 py-2`}
               onClick={async () => {
-                await resetProgress.mutateAsync({
+                await moveToTop15.mutateAsync({
                   teamId: (cell.cell.row.original as Team).id,
+				  progress: "SELECTED"
                 });
               }}
             >

@@ -345,6 +345,11 @@ export const teamRouter = createTRPCRouter({
               score: true,
               Judges: true,
             },
+			orderBy:{
+				score:{
+					score:"desc"
+				}
+			}
           },
         },
         orderBy: {
