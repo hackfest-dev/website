@@ -351,6 +351,7 @@ export const teamRouter = createTRPCRouter({
 				}
 			}
           },
+			videoSubmission:true
         },
         orderBy: {
           name: 'asc'

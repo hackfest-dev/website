@@ -262,6 +262,22 @@ export default function ParticipantsTable({
       cell: (cell) => {
         return (
           <>
+              <Button
+			  onClick={()=>console.log(
+(
+                  cell.cell.row.original as Team & {
+                    videoSubmission: VideoSubmissions | null;
+                  }
+                )
+)}
+                disabled={
+                  (
+                    cell.cell.row.original as Team & {
+                      videoSubmission: VideoSubmissions | null;
+                    }
+                  ).videoSubmission?.url === null
+                }
+              >
             <a
               href={
                 (
@@ -272,18 +288,9 @@ export default function ParticipantsTable({
               }
               target="_blank"
             >
-              <Button
-                disabled={
-                  (
-                    cell.cell.row.original as Team & {
-                      videoSubmission: VideoSubmissions | null;
-                    }
-                  ).videoSubmission?.url === null
-                }
-              >
                 View Video{" "}
-              </Button>
             </a>
+              </Button>
           </>
         );
       },
