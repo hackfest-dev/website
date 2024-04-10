@@ -5,6 +5,9 @@
 </p>
 
 <p align="center">
+Hackfest '24, a 3-day national level hackathon hosted by Finite Loop Club from April 5th to 7th, 2024, at NMAM Institute of Technology, focused on the theme "Retrofuturism: Hack the Timestream”. Hosted by Finite Loop Club – NMAM Institute of Technology, Nitte, and proudly powered by EGDK India Pvt. Ltd., along with co-sponsorship from Niveus Solutions Pvt. Ltd. and the Global Point - Study abroad.
+</p>
+<p align="center">
 <a href="https://github.com/hackfest-dev/website/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/hackfest-dev/website"></a>
 <a href="https://github.com/hackfest-dev/website/"><img alt="GitHub stars" src="https://img.shields.io/github/last-commit/hackfest-dev/website"></a>
 </p>
@@ -20,14 +23,14 @@
 ## Built with:
 
 <p align="left">
-<img src="https://ui-lib.com/blog/wp-content/uploads/2021/12/nextjs-boilerplate-logo.png" height="50px">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1024px-Typescript_logo_2020.svg.png?20221110153201" height="50px">
-<img src="https://www.svgrepo.com/show/374118/tailwind.svg" height="50px">
-<img src="https://pbs.twimg.com/profile_images/1504919223168077836/RSsCSpKf_400x400.jpg" height="50px">
-<img src="https://trpc.io/img/logo.svg" height="50px">
-<img src="https://www.svgrepo.com/show/374002/prisma.svg" height="50px">
-<img src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg" height="50px">
-<img src="https://bestofjs.org/logos/shadcnui.dark.svg" height="50px">
+<img src="https://ui-lib.com/blog/wp-content/uploads/2021/12/nextjs-boilerplate-logo.png" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1024px-Typescript_logo_2020.svg.png?20221110153201" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://www.svgrepo.com/show/374118/tailwind.svg" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://techcommunity.microsoft.com/t5/image/serverpage/image-id/118085i29BA4C3A757E0103/image-size/large?v=v2&px=999" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://trpc.io/img/logo.svg" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://www.svgrepo.com/show/374002/prisma.svg" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://bestofjs.org/logos/shadcnui.dark.svg" height="50px">&nbsp; &nbsp; &nbsp;
 <img src="https://us.v-cdn.net/6036703/uploads/2GBTXLD32F2O/cloudinary-cloud-glyph-blue-png.png" height="50px">
 </p>
 
@@ -47,7 +50,7 @@
 > **Note**
 > This project was bootstrapped with [create-t3-app](https://create.t3.gg/)
 
-### Project Setup
+## Project Setup
 
 1. Fork the [project](https://github.com/hackfest-dev/website) to your account
 2. Clone your fork to your local system
@@ -97,8 +100,17 @@ to use Prisma Studio(visual editor).
 
 Open [port 5555 on localhost](http://localhost:5555) with your browser.
 
-### Contributors
+## Contributors
 
 <a href="https://github.com/hackfest-dev/website/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=hackfest-dev/website" />
 </a>
+
+## License
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+This repository is licensed under [Apache License 2.0](https://github.com/swasthikshetty10/hackoverflow/blob/main/LICENSE)
+
+## Appendix
+- [Landing Page wireframe](https://ibb.co/WPZMpKr)
+- [Registration Flow wireframe](https://ibb.co/64DwX61)
