@@ -17,7 +17,6 @@ Hackfest '24, a 3-day national level hackathon hosted by Finite Loop Club from A
 - [✨ Features](#features)
 - [🛠️ Built with](#built-with)
 - [⚙️ Project Setup](#project-setup)
-- [🚀 Building](#building-and-running-for-production)
 - [🏋🏼 Contributors](#contributors)
 - [📃 License](#license)
 - [📑 Appendix](#appendix)
