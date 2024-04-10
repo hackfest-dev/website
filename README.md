@@ -12,6 +12,16 @@ Hackfest '24, a 3-day national level hackathon hosted by Finite Loop Club from A
 <a href="https://github.com/hackfest-dev/website/"><img alt="GitHub stars" src="https://img.shields.io/github/last-commit/hackfest-dev/website"></a>
 </p>
 
+## Table of Contents
+
+- [✨ Features](#features)
+- [🛠️ Built with](#built-with)
+- [⚙️ Project Setup](#project-setup)
+- [🚀 Building](#building-and-running-for-production)
+- [🏋🏼 Contributors](#contributors)
+- [📃 License](#license)
+- [📑 Appendix](#appendix)
+
 ## Features
 - Retrofuturism theme based Landing page
 - Paperless system with 5 Robust dashboards with extensive features for Admin, Team, Organiser, Volunteer, Validator
@@ -20,14 +30,15 @@ Hackfest '24, a 3-day national level hackathon hosted by Finite Loop Club from A
 - User Profile Management
 - Dynamic FAQ section with anonymous QnA
 
-## Built with:
+## Built with
 
 <p align="left">
 <img src="https://ui-lib.com/blog/wp-content/uploads/2021/12/nextjs-boilerplate-logo.png" height="50px">&nbsp; &nbsp; &nbsp;
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1024px-Typescript_logo_2020.svg.png?20221110153201" height="50px">&nbsp; &nbsp; &nbsp;
-<img src="https://www.svgrepo.com/show/374118/tailwind.svg" height="50px">&nbsp; &nbsp; &nbsp;
-<img src="https://techcommunity.microsoft.com/t5/image/serverpage/image-id/118085i29BA4C3A757E0103/image-size/large?v=v2&px=999" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://www.svgrepo.com/show/374118/tailwind.svg" height="50px">
+<img src="https://techcommunity.microsoft.com/t5/image/serverpage/image-id/118085i29BA4C3A757E0103/image-size/large?v=v2&px=999" height="50px">
 <img src="https://trpc.io/img/logo.svg" height="50px">&nbsp; &nbsp; &nbsp;
+<img src="https://seeklogo.com/images/Z/zod-logo-B57E684330-seeklogo.com.png" height="50px">&nbsp; &nbsp; &nbsp;
 <img src="https://www.svgrepo.com/show/374002/prisma.svg" height="50px">&nbsp; &nbsp; &nbsp;
 <img src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg" height="50px">&nbsp; &nbsp; &nbsp;
 <img src="https://bestofjs.org/logos/shadcnui.dark.svg" height="50px">&nbsp; &nbsp; &nbsp;
