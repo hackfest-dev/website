@@ -483,15 +483,20 @@ export const githubRouter = createTRPCRouter({
       })
 
       for (const githubTeam of githubTeams) {
-        for (const repoName of githubTeam.githubRepoName) {
-          await octokit.request('PATCH /repos/{owner}/{repo}', {
-            owner: ORGANIZATION_NAME,
-            repo: repoName,
-            private: false,
-            headers: {
-              'X-GitHub-Api-Version': '2022-11-28'
-            }
-          })
+        try {
+          for (const repoName of githubTeam.githubRepoName) {
+            await octokit.request('PATCH /repos/{owner}/{repo}', {
+              owner: ORGANIZATION_NAME,
+              repo: repoName,
+              private: false,
+              headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            })
+          }
+        } catch (error) {
+          console.log(githubTeam.githubRepoName)
+          continue
         }
 
         console.log(`Made repo public for team : ${githubTeam.team.name}`)
