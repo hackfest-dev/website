@@ -119,7 +119,7 @@ Open [port 5555 on localhost](http://localhost:5555) with your browser.
 ## License
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-This repository is licensed under [Apache License 2.0](https://github.com/swasthikshetty10/hackoverflow/blob/main/LICENSE)
+This repository is licensed under [Apache License 2.0](https://github.com/hackfest-dev/website/blob/master/LICENSE)
 
 ## Appendix
 - [Landing Page wireframe](https://ibb.co/WPZMpKr)
